@@ -97,3 +97,70 @@ describe('User Register /register', () => {
         })
     })
 })
+
+describe(`User Login /login`, () => {
+    test(`success login`, (done) => {
+        request(app)
+        .post('/login')
+        .send({email: 'user@mail.com', password: 'user'})
+        .end((err, res) => {
+            const {status, body} = res
+            if (err) {
+                console.log('>>>>>>>>>>>>>>>>>>> ini error dari test <<<<<<<<<');
+                return done(err)
+            }else{
+                expect(status).toBe(201)
+                expect(body).toBe(expect.any(String))
+                done()
+            }
+        })
+    })
+    test(`Email or password Invalid`, (done) => {
+        request(app)
+        .post('/login')
+        .send({email: 'user@mail.com', password: 'user22'})
+        .end((err, res) => {
+            const {status, body} = res
+            if (err) {
+                console.log('>>>>>>>>>>>>>>>>>>> ini error dari test <<<<<<<<<');
+                return done(err)
+            }else{
+                expect(status).toBe(401)
+                expect(body).toBe("email or password invalid")
+                done()
+            }
+        })
+    })
+    test(`Email or password invalid v2`, (done) => {
+        request(app)
+        .post('/login')
+        .send({email: 'user2@mail.com', password: 'user'})
+        .end((err, res) => {
+            const {status, body} = res
+            if (err) {
+                console.log('>>>>>>>>>>>>>>>>>>> ini error dari test <<<<<<<<<');
+                return done(err)
+            }else{
+                expect(status).toBe(401)
+                expect(body).toBe("invalid account")
+                done()
+            }
+        })
+    })
+    test(`Email or password Invalid v3`, (done) => {
+        request(app)
+        .post('/login')
+        .send({email: 'use.com', password: 'user'})
+        .end((err, res) => {
+            const {status, body} = res
+            if (err) {
+                console.log('>>>>>>>>>>>>>>>>>>> ini error dari test <<<<<<<<<');
+                return done(err)
+            }else{
+                expect(status).toBe(401)
+                expect(body).toBe("invalid account")
+                done()
+            }
+        })
+    })
+})

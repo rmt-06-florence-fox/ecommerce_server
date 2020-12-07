@@ -14,8 +14,33 @@ class UserController{
             res.status(201).json({email: value.email})
         })
         .catch(error => {
-            console.log(error, '<<<<<');
             next(error)
+        })
+    }
+    static login(req, res, next){
+        const email = req.body.email
+        const password = req.body.password
+        User.findOne({where:{
+            email: email
+        }})
+        .then(value => {
+            if (!value) {
+                throw {
+                    status: 401,
+                    message: `invalid account`
+                }
+            }else if(Bcrypt.compare(password, value.password)){
+                const token = Jwt.Sign({email: value.email, id: value.id})
+                res.status(201).json(token)
+            }else{
+                throw {
+                    status: 401,
+                    message: `email or password invalid`
+                }
+            }
+        })
+        .catch(error => {
+           next(error)
         })
     }
 }
