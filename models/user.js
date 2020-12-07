@@ -23,7 +23,15 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    password: DataTypes.STRING,
+    password: {
+      type : DataTypes.STRING,
+      validate :{
+        len : {
+          args : [6, 20],
+          msg : "must be between 6 to 20 characters"
+        }
+      }
+    },
     role: DataTypes.STRING
   }, {
     sequelize,
