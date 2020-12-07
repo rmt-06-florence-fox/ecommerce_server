@@ -1,0 +1,18 @@
+[
+    {
+        "fullName": "Pondel",
+        "userName": "ponds",
+        "role" : "admin",
+        "email" : "pondel@gmail.com",
+        "password" : "rahasia"
+    },
+    {
+        "fullName": "Hendri Budi S",
+        "userName": "hndrbs",
+        "role": "customer",
+        "email": "hndrbs153@gmail.com",
+        "password": "rahasia"
+    }
+
+
+]
