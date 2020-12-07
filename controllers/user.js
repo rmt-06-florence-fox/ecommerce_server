@@ -2,7 +2,7 @@ const { User } = require('../models')
 const { comparePassword } = require('../helpers/bcryptjs')
 const { generateAccessToken } = require('../helpers/jsonwebtoken')
 
-class userController {
+class UserController {
 
     static async loginAdmin(req, res, next) {
         const payload = {
@@ -46,10 +46,10 @@ class userController {
                 }
             }
         } catch (error) {
-            res.status(error.status).json({message: error.message})
+            next(error)
         }
     }
 
 }
 
-module.exports = userController
+module.exports = UserController
