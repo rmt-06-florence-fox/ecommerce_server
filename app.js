@@ -9,7 +9,7 @@ const router = require('./routes')
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
-console.log(process.env.TEST)
+// console.log(process.env.TEST)
 
 app.use('/', router)
 

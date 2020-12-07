@@ -36,8 +36,8 @@ describe('route /login', ()=>{
           if(err) return done(err)
 
           const { body , status} =  res
-          expect(status).toBe(400)
-          expect(body).toHaveProperty('message','invalid')
+          expect(status).toBe(404)
+          expect(body).toHaveProperty('message','email is not registered yet')
           done()
         })
     }),
@@ -54,6 +54,24 @@ describe('route /login', ()=>{
           const { body , status} =  res
           expect(status).toBe(400)
           expect(body).toHaveProperty('message','invalid')
+          done()
+        })
+    })
+  })
+  describe('empty value',()=>{
+    test('empty value', (done)=>{
+      request(app)
+        .post('/login')
+        .send({
+          email : '',
+          password : '',
+        })
+        .end((err, res)=>{
+          if(err) return done(err)
+
+          const { body , status} =  res
+          expect(status).toBe(400)
+          expect(body).toHaveProperty('message', 'field can not be empty')
           done()
         })
     })
