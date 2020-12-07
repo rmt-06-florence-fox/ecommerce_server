@@ -6,9 +6,11 @@ class UserController{
     static register(req, res, next){
         const email = req.body.email
         const password = req.body.password
+        const role = 'customer'
         const obj = {
             email,
-            password
+            password,
+            role
         }
         User.create(obj).then(value => {
             res.status(201).json({email: value.email})
@@ -30,7 +32,7 @@ class UserController{
                     message: `invalid account`
                 }
             }else if(Bcrypt.compare(password, value.password)){
-                const token = Jwt.Sign({email: value.email, id: value.id})
+                const token = Jwt.Sign({id: value.id, email: value.email, id: value.id})
                 res.status(201).json(token)
             }else{
                 throw {

@@ -33,7 +33,8 @@ module.exports = (sequelize, DataTypes) => {
         args: [3, 100],
         msg: 'Password min 3 characters'
       }
-    }}
+    }},
+    role: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'User',
