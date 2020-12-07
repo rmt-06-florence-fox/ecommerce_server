@@ -12,7 +12,7 @@ module.exports = async (req, res, next)=>{
     else{
       throw{
         status: 401,
-        message: `You aren't admin`
+        message: `You aren't admin !`
       }
     }
   }catch(err){

@@ -54,5 +54,23 @@ class ProductController{
       }else next(err)
     }
   }
+  static async deleteProduct(req, res, next){
+    try{
+      const findData = await Product.findByPk(req.params.id)
+      if(findData){
+        const result = await Product.destroy({
+          where: { id: req.params.id }
+        })
+        res.status(200).json({ message: `Successfully deleted data product !`})
+      }else{
+        throw{
+          status: 400,
+          message: `Data Not Found`
+        }
+      }
+    }catch(err){
+      next(err)
+    }
+  }
 }
 module.exports = ProductController
