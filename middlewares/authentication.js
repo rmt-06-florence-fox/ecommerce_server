@@ -3,10 +3,11 @@ const JwtHelper = require('../helpers/jwtHelper')
 const { User } = require('../models')
 
 module.exports = async (req, res, next)=>{
-  // console.log(req.headers.access_token);
   let decodedToken
   
   try {
+    if(!req.headers.access_token) throw { status : 401, message : 'please login first' }
+
     decodedToken = JwtHelper.decode(req.headers.access_token)
 
     if(decodedToken){

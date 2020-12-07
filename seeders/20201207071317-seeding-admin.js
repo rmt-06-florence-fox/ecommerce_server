@@ -19,7 +19,15 @@ module.exports = {
      role : 'admin',
      createdAt : new Date(),
      updatedAt : new Date()
-   }])
+   },
+   {
+    email : 'joko@mail.com',
+    password : PassHelper.passGenerate('jokojoko'),
+    role : 'user',
+    createdAt : new Date(),
+    updatedAt : new Date()
+   }
+  ])
   },
 
   down: async (queryInterface, Sequelize) => {
