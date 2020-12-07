@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { UserController, ProductController } = require('../controller');2,
+const { UserController, ProductController } = require('../controller');
 const authentication = require('../middlewares/authentication');
 const isAdmin = require('../middlewares/isAdmin');
 
@@ -7,7 +7,7 @@ router.post('/register', UserController.register);
 
 router.post('/login', UserController.login);
 
-router.use(authentication);2,
+router.use(authentication);
 
 router.get('/products', ProductController.getProducts);
 
