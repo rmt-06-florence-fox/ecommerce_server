@@ -14,10 +14,10 @@ module.exports = {
      * }], {});
     */
       return queryInterface.bulkInsert('Users', [{
-          name: 'tommy',
-          email: 'tommysusanto77@gmail.com',
+          name: 'tonny',
+          email: 'tonnysusanto77@gmail.com',
           password: passwordAdmin,
-          status: 'admin',
+          status: 'customer',
           createdAt: new Date(),
           updatedAt: new Date()
          }], {});

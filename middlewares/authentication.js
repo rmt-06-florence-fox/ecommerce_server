@@ -23,10 +23,9 @@ module.exports = (req,res,next) => {
                     }
                 }
             })
-            .catch (error => {
-                next(error)
-            })
-            
+            .catch (error => { 
+                
+            })       
         }
     } catch (error) {
         next(error)
