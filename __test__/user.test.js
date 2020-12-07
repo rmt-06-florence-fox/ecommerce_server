@@ -6,7 +6,7 @@ afterAll(() => {
     User.destroy({where :  {fullName : "testing"}})
 },5000)
 
-describe('testing user routes when success', () => {
+describe('testing user register when success', () => {
     test('user name  & email should be unique & password should be at least six chars', (done) => {
         request(app)
             .post('/register')
@@ -18,9 +18,9 @@ describe('testing user routes when success', () => {
                 password : "testing123"
             })
             .end((err, res) => {
-                const {body, status} = res
-
                 if(err) return done(err)
+
+                const {body, status} = res
                 expect(status).toBe(201)
                 expect(body).toHaveProperty("email", "testing0@gmail.com")
                 done()
@@ -28,7 +28,7 @@ describe('testing user routes when success', () => {
     })
 })
 
-describe('testing user routes when error', () => {
+describe('testing user register when error', () => {
     test('error response when user name is not unique', (done) => {
         request(app)
             .post('/register')
@@ -135,6 +135,65 @@ describe('testing user routes when error', () => {
                 expect(status).toBe(400)
                 expect(body).toHaveProperty("messages", [
                     "Please check your email, was its format correct ?"
+                ])
+                done()
+            })
+    })
+})
+
+describe('testing user login', () => {
+    test('response if login successfully should be an object with access_token in it', (done) => {
+        request(app)
+            .post('/login')
+            .set('Accept', 'application/json')
+            .send({ 
+                email: "hndrbs153@gmail.com", 
+                password: "rahasia" })
+            .end((err, res) => {
+                if(err) return done(err)
+
+                const {status, body} = res
+                expect(status).toBe(200)
+                expect(body).toHaveProperty("access_token")
+                done()
+            })
+    })
+
+    test('response login if submitted PASSWORD is wrong, the message should tell user that password and/or email is not found', (done) => {
+        request(app)
+            .post('/login')
+            .set('Accept', 'application/json')
+            .send({
+                email: "hndrbs153@gmail.com",
+                password: "rahaaaaaia"
+            })
+            .end((err, res) => {
+                if (err) return done(err)
+
+                const { status, body } = res
+                expect(status).toBe(404)
+                expect(body).toHaveProperty("messages", [
+                    "Cannot find a matched password and email"
+                ])
+                done()
+            })
+    })
+
+    test('response login if submitted EMAIL is wrong, the message should tell user that password and/or email is not found', (done) => {
+        request(app)
+            .post('/login')
+            .set('Accept', 'application/json')
+            .send({
+                email: "h53@gmail.com",
+                password: "rahasia"
+            })
+            .end((err, res) => {
+                if (err) return done(err)
+
+                const { status, body } = res
+                expect(status).toBe(404)
+                expect(body).toHaveProperty("messages", [
+                    "Cannot find a matched password and email"
                 ])
                 done()
             })

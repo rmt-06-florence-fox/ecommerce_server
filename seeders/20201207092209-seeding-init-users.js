@@ -1,4 +1,5 @@
 'use strict';
+const Helper = require('../helpers') 
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -6,6 +7,7 @@ module.exports = {
     data.forEach(d => {
       d.createdAt = new Date()
       d.updatedAt = new Date()
+      d.password = Helper.hash(d.password)
     })
 
     try{

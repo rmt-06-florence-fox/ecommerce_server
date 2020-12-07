@@ -1,7 +1,7 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
+const Helper = require('../helpers')
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     
@@ -46,6 +46,7 @@ module.exports = (sequelize, DataTypes) => {
     hooks : {
       beforeCreate(user, option){
         if (!user.role) user.role = 'customer'
+        user.password = Helper.hash(user.password)
       }
     },
     sequelize,
