@@ -18,7 +18,7 @@ class UserController{
           email :  user.email,
           role : user.role
          })})
-      }else throw {status : 400, message : "not found"}
+      }else throw {status : 400, message : "invalid"}
     } catch (error) {
       next(error)
     }

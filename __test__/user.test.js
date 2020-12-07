@@ -24,4 +24,38 @@ describe('route /login', ()=>{
         })
     })
   })
+  describe('wrong input', ()=>{
+    test('wrong email', (done)=>{
+      request(app)
+        .post('/login')
+        .send({
+          email : 'wrong@mail.com',
+          password : 'tiotio',
+        })
+        .end((err, res)=>{
+          if(err) return done(err)
+
+          const { body , status} =  res
+          expect(status).toBe(400)
+          expect(body).toHaveProperty('message','invalid')
+          done()
+        })
+    }),
+    test('wrong password', (done)=>{
+      request(app)
+        .post('/login')
+        .send({
+          email : 'tio@mail.com',
+          password : 'wrongwrong',
+        })
+        .end((err, res)=>{
+          if(err) return done(err)
+
+          const { body , status} =  res
+          expect(status).toBe(400)
+          expect(body).toHaveProperty('message','invalid')
+          done()
+        })
+    })
+  })
 })
