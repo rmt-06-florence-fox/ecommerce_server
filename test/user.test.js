@@ -1,18 +1,9 @@
+const { where } = require('sequelize/types')
 const request = require('supertest')
 const app = require('../app')
 const {sequelize} = require('../models/index')
 
-// afterAll(done => {
-//     sequelize.queryInterface.bulkDelete('Users')
-//     .then(response => {
-//         done()
-//     })
-//     .catch(err => {
-//         done(err)
-//     })
-// })
-
-beforeAll(done => {
+afterAll(done => {
     sequelize.queryInterface.bulkDelete('Users')
     .then(response => {
         done()
@@ -21,6 +12,16 @@ beforeAll(done => {
         done(err)
     })
 })
+
+// beforeAll(done => {
+//     sequelize.queryInterface.bulkDelete('Users')
+//     .then(response => {
+//         done()
+//     })
+//     .catch(err => {
+//         done(err)
+//     })
+// })
 
 
 describe('User Register /register', () => {

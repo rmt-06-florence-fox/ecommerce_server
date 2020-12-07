@@ -6,5 +6,6 @@ router.use(authentication)
 router.get('/', ProductController.getAll)
 router.use(authorization)
 router.post('/', ProductController.create)
-
+router.put('/:id', ProductController.put)
+router.delete('/:id', ProductController.remove)
 module.exports = router

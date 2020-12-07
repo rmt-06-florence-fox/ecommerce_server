@@ -108,9 +108,9 @@ describe(`create product POST /product`, () => {
         .set('access_token', token)
         .send({
             name: ``,
-            image_url: '',
-            price: '',
-            stock: ''
+            image_url: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.logolynx.com%2Ftopic%2Fgudang%2Bgaram&psig=AOvVaw3WWn7hCG8Mj2gBQ25W8fqy&ust=1607435942181000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCNjA8dWDvO0CFQAAAAAdAAAAABAN',
+            price: 20000,
+            stock: 2000
           })
         .end((err, res) => {
             const {status, body} = res
@@ -119,7 +119,7 @@ describe(`create product POST /product`, () => {
                 return done(err)
             }else{
                 expect(status).toBe(401)
-                expect(body).toBe(expect.any(String))
+                expect(body).toBe('Fill the name')
                 done()
             }
         })

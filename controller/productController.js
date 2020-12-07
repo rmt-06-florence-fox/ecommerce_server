@@ -29,7 +29,33 @@ class ProductController{
        })
     }
     static put(req, res, next){
-
+        const id = +req.params.id
+        const obj = {
+            name: req.body.name,
+            image_url: req.body.image_url,
+            price: req.body.price,
+            stock: req.body.stock
+        }
+        Product.findByPk(id)
+        .then(value => {
+            if (!value) {
+               throw {
+                   status: 404,
+                   message: `data not found`
+               }
+            }else{
+               return Product.update(obj, {
+                   where: {id : id},
+                   returning: true
+                 })
+            }
+        })
+       .then(value => {
+           res.status(201).json(value)
+       })
+       .catch(error => {
+           next(error)
+       })
     }
     static patch(req, res, next){
 
@@ -41,7 +67,7 @@ class ProductController{
             if (!value) {
                 throw {
                     status: 404,
-                    message: `data not ound`
+                    message: `data not found`
                 }
              }else{
                 return Product.destroy({
@@ -50,7 +76,7 @@ class ProductController{
              }
          })
          .then(value => {
-            res.status(200).json(`todo succes to delete`)
+            res.status(201).json(`Product succes to delete`)
         })
         .catch(error => {
             next(error)
