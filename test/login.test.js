@@ -1,7 +1,5 @@
 const request = require('supertest')
 const app = require('../app')
-const { sequelize } = require('../models')
-const { queryInterface } = sequelize
 const Helper = require('../helpers/helper')
 
 let access_token = ''
@@ -70,7 +68,7 @@ describe('Login User POST /login', () => {
         })
     })
   })
-  describe('Error Login with No Account', () => {
+  describe('Error Login with No Email and Password', () => {
     test(`response with message invalid account `, (done)=>{
       request(app)
         .post('/login')
