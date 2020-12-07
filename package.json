@@ -1,0 +1,20 @@
+{
+  "name": "ecommerce_server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "jest --detectOpenHandles --runInBand",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/icanq/ecommerce_server.git"
+  },
+  "author": "Ichsan Natawijaya",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/icanq/ecommerce_server/issues"
+  },
+  "homepage": "https://github.com/icanq/ecommerce_server#readme"
+}
