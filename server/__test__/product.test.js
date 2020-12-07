@@ -34,14 +34,14 @@ beforeAll((done)=>{
     })
 })
 
-// afterAll((done) => {
-//   queryInterface
-//       .bulkDelete("Products")
-//       .then(() => done())
-//       .catch((err) => {
-//           done();
-//       });
-// });
+afterAll((done) => {
+  queryInterface
+      .bulkDelete("Products")
+      .then(() => done())
+      .catch((err) => {
+          done();
+      });
+});
 
 let product_data = {
   name: 'Product name',
