@@ -16,7 +16,6 @@ class UserController{
           res.status(200).json({
             id: findData.id,
             email: findData.email,
-            role: findData.role,
             access_token
           })
         }else{

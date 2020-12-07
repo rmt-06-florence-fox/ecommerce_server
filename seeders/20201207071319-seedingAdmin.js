@@ -12,10 +12,18 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    queryInterface.bulkInsert('Users', [{
+    queryInterface.bulkInsert('Users', [
+    {
       email: `admin@mail.com`,
       password: Helper.generatePassword('1234567'),
       role: 'admin',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    {
+      email: `user@mail.com`,
+      password: Helper.generatePassword('1234567'),
+      role: 'user',
       createdAt: new Date(),
       updatedAt: new Date()
     }])
