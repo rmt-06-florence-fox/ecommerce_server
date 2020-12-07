@@ -10,6 +10,7 @@ module.exports = {
       },
       username: {
         type: Sequelize.STRING,
+        allowNull: false,
         unique: true,
       },
       role: {
@@ -18,10 +19,12 @@ module.exports = {
       },
       email: {
         type: Sequelize.STRING,
+        allowNull: false,
         unique: true,
       },
       password: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,
