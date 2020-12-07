@@ -8,8 +8,8 @@ products.get('/', (req, res) => {
 })
 
 //crud
+products.post('/', authorize, productController.create)
 products.get('/', authorize, productController.get)
-products.post('/', productController.create)
 products.put('/:id', productController.update)
 products.delete('/:id', productController.delete)
 
