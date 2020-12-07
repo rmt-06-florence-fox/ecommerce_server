@@ -13,7 +13,7 @@ class UserController{
             id: findData.id,
             email: findData.email
           })
-          res.status(201).json({
+          res.status(200).json({
             id: findData.id,
             email: findData.email,
             role: findData.role,
