@@ -12,7 +12,7 @@ class UserController {
                 }
             } else {
                 if (comparePassword(req.body.password, data.password)) {
-                    let access_token = generateToken({ id: data.id, name: data.name, email: data.email })
+                    let access_token = generateToken({ id: data.id, email: data.email })
                     res.status(200).json({ access_token })
                 } else {
                     throw {
