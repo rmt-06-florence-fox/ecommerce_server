@@ -10,6 +10,14 @@ class Helper {
     static degenHash (pass, hash) {
         return bcrypt.compareSync(pass, hash)
     }
+
+    static genToken (data) {
+        return jwt.sign(data, process.env.SEC_KEY);
+    }
+
+    static degenToken (token) {
+        return jwt.verify(token, process.env.SEC_KEY)
+    }
 }
 
 module.exports = Helper

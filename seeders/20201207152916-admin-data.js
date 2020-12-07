@@ -15,8 +15,7 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-      const password = genHash(process.env.ADM_PASS)
-      console.log(password)
+    const password = genHash(process.env.ADM_PASS)
     await queryInterface.bulkInsert('Users', [{
         username: 'Admin',
         email: 'admin@ecom.com',
