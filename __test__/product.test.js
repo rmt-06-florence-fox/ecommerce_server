@@ -3,10 +3,13 @@ const { post } = require('../app.js')
 const app = require('../app.js')
 const {sequelize} = require('../models') 
 const queryInterface = sequelize.getQueryInterface();
+const exampleToken ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBvbmRlbEBnbWFpbC5jb20iLCJ1c2VyTmFtZSI6InBvbmRzIiwiZnVsbE5hbWUiOiJQb25kZWwiLCJpZCI6MjIsImlhdCI6MTYwNzM2MTcyNH0.l0C0M7Ylchs8o6QcNbDqrFMBIvjbdUqkVrs2ncuQPaI"
+
 
 afterAll(() => {
     queryInterface.bulkDelete('Products', null, {})
 })
+
 
 describe('testing response in case submitting correct product data', () => {
     test(`product should be :
@@ -18,6 +21,7 @@ describe('testing response in case submitting correct product data', () => {
         request(app)
             .post('/products')
             .set('Accept', 'application/json')
+            .set({ 'access_token': exampleToken })
             .send({
                 name : "Buku JS",
                 imageUrl:"https://intip.in/ysgE",
@@ -34,11 +38,13 @@ describe('testing response in case submitting correct product data', () => {
             })
     })
 })
-describe('testing error response in case : ', () => {
+
+describe('testing error response when submittin data in case : ', () => {
     test('name is empty', done => {
         request(app)
             .post('/products')
             .set('Accept', 'application/json')
+            .set({ 'access_token': exampleToken })
             .send({
                 name: "",
                 imageUrl: "https://intip.in/ysgE",
@@ -61,6 +67,7 @@ describe('testing error response in case : ', () => {
         request(app)
             .post('/products')
             .set('Accept', 'application/json')
+            .set({ 'access_token': exampleToken })
             .send({
                 name: "Buku JS",
                 imageUrl: "httasjkbfkajsb",
@@ -83,6 +90,7 @@ describe('testing error response in case : ', () => {
         request(app)
             .post('/products')
             .set('Accept', 'application/json')
+            .set({ 'access_token': exampleToken })
             .send({
                 name: "Buku JS",
                 imageUrl: "https://intip.in/ysgE",
@@ -105,6 +113,7 @@ describe('testing error response in case : ', () => {
         request(app)
             .post('/products')
             .set('Accept', 'application/json')
+            .set({ 'access_token': exampleToken })
             .send({
                 name: "Buku JS",
                 imageUrl: "https://intip.in/ysgE",
@@ -122,4 +131,18 @@ describe('testing error response in case : ', () => {
                 return done()
             })
     })
+})
+
+describe('testing for fetching products', () => {
+    test('using the correct access_token', done => {
+        request(app)
+        .get('/products')
+        .set({'access_token': exampleToken})
+        .end((err, res) => {
+            if(err) done(err)
+            expect(res.status).toBe(200)
+            done()
+        })
+    })
+
 })

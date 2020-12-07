@@ -14,6 +14,9 @@ class Helper {
     static checkPassword(plainString, hashedString){
         return bcrypt.compareSync(plainString, hashedString)
     }
+    static decodeToken(token) {
+        return jwt.verify(token, process.env.JWT)
+    }
 }
 
 module.exports = Helper
