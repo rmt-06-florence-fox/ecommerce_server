@@ -23,7 +23,7 @@ describe('Login User POST /login', () => {
     })
   })
   describe('Error Login with Wrong Password', () => {
-    test(`response error with message invalid email / password `, (done)=>{
+    test(`Invalid email / password `, (done)=>{
       request(app)
         .post('/login')
         .send({
@@ -42,7 +42,7 @@ describe('Login User POST /login', () => {
     })
   })
   describe('Error Login with No Account', () => {
-    test(`response with message invalid account `, (done)=>{
+    test(`Invalid Account `, (done)=>{
       request(app)
         .post('/login')
         .send({
@@ -61,7 +61,7 @@ describe('Login User POST /login', () => {
     })
   })
   describe('Error Login with empty input', () => {
-    test(`response with message invalid account `, (done)=>{
+    test(`empty input`, (done)=>{
       request(app)
         .post('/login')
         .send({

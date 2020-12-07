@@ -65,7 +65,7 @@ describe('Create products POST /products', () => {
     })
   })
   describe('Error Create because No Access Token', () => {
-    test('response error ', done => {
+    test('should login first ', done => {
       request(app)
         .post('/products')
         .set('access_token', '')
@@ -87,7 +87,7 @@ describe('Create products POST /products', () => {
     })
   })
   describe('Error Create because role Not Admin', () => {
-    test('response error ', done => {
+    test('unauthorized ! ', done => {
       request(app)
         .post('/products')
         .set('access_token', access_token_user)
@@ -125,7 +125,14 @@ describe('Create products POST /products', () => {
             return done(err)
           }
           expect(status).toBe(400)
-          expect(body).toHaveProperty('messages')   //ini isinya array dari seq validation error
+          expect(body).toHaveProperty('messages', [
+            {"message": "Name of product can't be empty"},
+            {"message": "Image URL of product can't be empty"},
+            {"message": "Price of product can't be empty"},
+            {"message": "Price of product must be an integer "},
+            {"message": "Stock of product can't be empty"},
+            {"message": "Stock of product must be an integer "}
+          ])
           done()
         })    
     })
@@ -147,7 +154,7 @@ describe('Create products POST /products', () => {
             return done(err)
           }
           expect(status).toBe(400)
-          expect(body).toHaveProperty('messages')   //ini isinya array dari seq validation error
+          expect(body).toHaveProperty('messages', [ {"message": "Stock of product must be more than 0"} ])  
           done()
         })    
     })
@@ -167,7 +174,7 @@ describe('Create products POST /products', () => {
             return done(err)
           }
           expect(status).toBe(400)
-          expect(body).toHaveProperty('messages')   //ini isinya array dari seq validation error
+          expect(body).toHaveProperty('messages', [ { "message": "Price of product must be more than 0" } ] )   
           done()
         })    
     })
@@ -187,12 +194,13 @@ describe('Create products POST /products', () => {
             return done(err)
           }
           expect(status).toBe(400)
-          expect(body).toHaveProperty('messages')   //ini isinya array dari seq validation error
+          expect(body).toHaveProperty('messages', [ { "message": "Stock of product must be an integer " } ])   
           done()
         })    
     })
   })
 })
+
 describe('UPDATE products PUT /products/:id', () => {
   describe('Success Update', () => {
     test('response with result ', done => {
@@ -220,7 +228,7 @@ describe('UPDATE products PUT /products/:id', () => {
     })
   })
   describe('Error Update because No Access Token', () => {
-    test('response error ', done => {
+    test('should login first ', done => {
       request(app)
         .put('/products/' + id)
         .set('access_token', '')
@@ -242,7 +250,7 @@ describe('UPDATE products PUT /products/:id', () => {
     })
   })
   describe('Error Update because role Not Admin', () => {
-    test('response error ', done => {
+    test('unauthorized ! ', done => {
       request(app)
         .put('/products/' + id)
         .set('access_token', access_token_user)
@@ -280,7 +288,7 @@ describe('UPDATE products PUT /products/:id', () => {
             return done(err)
           }
           expect(status).toBe(400)
-          expect(body).toHaveProperty('messages')   
+          expect(body).toHaveProperty('messages', [ {"message": "Stock of product must be more than 0"} ])  
           done()
         })    
     })
@@ -300,7 +308,7 @@ describe('UPDATE products PUT /products/:id', () => {
             return done(err)
           }
           expect(status).toBe(400)
-          expect(body).toHaveProperty('messages')   
+          expect(body).toHaveProperty('messages', [ { "message": "Stock of product must be an integer " } ])   
           done()
         })    
     })
@@ -320,7 +328,7 @@ describe('UPDATE products PUT /products/:id', () => {
             return done(err)
           }
           expect(status).toBe(400)
-          expect(body).toHaveProperty('messages')   
+          expect(body).toHaveProperty('messages', [ { "message": "Price of product must be more than 0" } ])   
           done()
         })    
     })
@@ -345,7 +353,7 @@ describe('DELETE /products/:id', () => {
     })
   })
   describe('Error Delete because No Access Token', () => {
-    test('response error ', done => {
+    test('should login first ! ', done => {
       request(app)
         .delete('/products/' + id)
         .set('access_token', '')
@@ -361,7 +369,7 @@ describe('DELETE /products/:id', () => {
     })
   })
   describe('Error Delete because role Not Admin', () => {
-    test('response error ', done => {
+    test('unauthorized ! ', done => {
       request(app)
         .delete('/products/' + id)
         .set('access_token', access_token_user)
