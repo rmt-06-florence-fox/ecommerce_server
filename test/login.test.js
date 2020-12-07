@@ -2,11 +2,11 @@ const request = require('supertest')
 const app = require('../app')
 const Helper = require('../helpers/helper')
 
-let access_token = ''
-beforeAll((done)=>{
-  access_token = Helper.generateToken({id: 1, email: `admin@mail.com`})
-  done()
-})
+// let access_token = ''
+// beforeAll((done)=>{
+//   access_token = Helper.generateToken({id: 1, email: `admin@mail.com`})
+//   done()
+// })
 
 describe('Login User POST /login', () => {
   describe('Success Login', () => {
@@ -25,7 +25,7 @@ describe('Login User POST /login', () => {
           expect(status).toBe(200)
           expect(body).toHaveProperty('email', 'admin@mail.com')
           expect(body).toHaveProperty('role', 'admin')
-          expect(body).toHaveProperty('access_token', access_token)
+          expect(body).toHaveProperty('access_token')
           done()
         })
     })

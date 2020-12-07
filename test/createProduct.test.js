@@ -36,6 +36,28 @@ describe('Create products POST /products', () => {
         })    
     })
   })
+  describe('Error Create with No Access Token', () => {
+    test('response with error ', done => {
+      request(app)
+        .post('/products')
+        .set('access_token', '')
+        .send({
+          name: `Al-Qur'an`,
+          image_url: 'https://i.pinimg.com/564x/d1/d3/65/d1d36559c2ed91e701609a1aa96994b0.jpg',
+          price: 100000,
+          stock: 17
+        })
+        .end((err, res)=>{
+          const { body, status } = res
+          if(err){
+            return done(err)
+          }
+          expect(status).toBe(401)
+          expect(body).toHaveProperty('message')
+          done()
+        })    
+    })
+  })
   describe('Error Create with role No Admin', () => {
     test('response with error ', done => {
       request(app)

@@ -29,6 +29,30 @@ class ProductController{
       }else next(err)
     }
   }
-
+  static async replaceDataProduct(req, res, next){
+    try{
+      const payload = {
+        name: req.body.name,
+        image_url: req.body.image_url,
+        price: req.body.price,
+        stock: req.body.stock
+      }
+      const result = await Product.update(payload, {
+        where: {
+          id: req.params.id
+        }, 
+        returning: true
+      })
+      res.status(200).json(result[1][0])
+    }catch(err){
+      if(err.name === 'SequelizeValidationError'){
+        next({
+          name: 'Validation Error',
+          status: 400,
+          message: err.errors
+        })
+      }else next(err)
+    }
+  }
 }
 module.exports = ProductController
