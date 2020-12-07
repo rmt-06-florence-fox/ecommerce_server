@@ -10,6 +10,7 @@ class UserController {
                 { fullName, userName, email, password 
             }, {returning : true})
 
+            console.log(newUser)
             res.status(201).json({
                 fullName : newUser.fullName,
                 userName : newUser.userName,
@@ -17,7 +18,9 @@ class UserController {
             })
 
         } catch (err){
+            //res.status(500).json(err)
             next(err)
+
         }
     } 
 }

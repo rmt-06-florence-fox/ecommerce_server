@@ -13,14 +13,35 @@ module.exports = (sequelize, DataTypes) => {
     fullName: DataTypes.STRING,
     userName: {
       type : DataTypes.STRING,
-      unique : true
+      unique : {
+        msg : "Oops, someone else has been using this user name"
+      }
     },
     role: DataTypes.STRING,
     email: {
       type: DataTypes.STRING,
-      unique: true
+      unique: {
+        msg : "Looks like this email has already been used by another user"
+      },
+      validate : {
+        notEmpty : {
+          msg : "Email cannot be empty"
+        },
+        isEmail : {
+          msg : "Please check your email, was its format correct ?"
+        }
+      }
     },
-    password: DataTypes.STRING
+    password:{ 
+      type : DataTypes.STRING,
+      validate : {
+        len : {
+          args : [6, 200],
+          msg : "Your password should be at least 6 characters"
+        }
+      }
+    
+    }
   }, {
     hooks : {
       beforeCreate(user, option){
