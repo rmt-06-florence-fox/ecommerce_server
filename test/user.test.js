@@ -22,7 +22,7 @@ describe ("Login Admin POST /login", ()=> {
         test ("Response Error 404", done => {
             request (app)
             .post ("/login")
-            .send ({email: "admin@mail.com", password : "123456"})
+            .send ({email: "bukanadmin@mail.com", password : "123456"})
             .end ((err, res) => {
                 const {body, status} = res
                 if (err){
@@ -33,10 +33,10 @@ describe ("Login Admin POST /login", ()=> {
                 done ()
             })
         })
-        test ("Response Error 401", done => {
+        test ("Response Error 401 Password", done => {
             request (app)
             .post ("/login")
-            .send ({email: "admin@mail.com", password : "123456"})
+            .send ({email: "admin@mail.com", password : "12345"})
             .end ((err, res) => {
                 const {body, status} = res
                 if (err){
@@ -47,45 +47,10 @@ describe ("Login Admin POST /login", ()=> {
                 done ()
             })
         })
-    })
-})
-
-describe ("Login Customer POST /login", ()=> {
-    describe ("Success Login", ()=> {
-        test ("Response with access_token", done => {
+        test ("Response Error 401 email", done => {
             request (app)
             .post ("/login")
-            .send ({email: "customer@mail.com", password : "123456"})
-            .end ((err, res) => {
-                const {body, status} = res
-                if (err){
-                    return done (err)
-                }
-                expect(status).toBe(200)
-                expect(body).toHaveProperty("access_token", expect.any(String))
-                done ()
-            })
-        })
-    })
-    describe ("Failed Login", ()=> {
-        test ("Response Error 404", done => {
-            request (app)
-            .post ("/login")
-            .send ({email: "customer@mail.com", password : "123456"})
-            .end ((err, res) => {
-                const {body, status} = res
-                if (err){
-                    return done (err)
-                }
-                expect(status).toBe(404)
-                expect(body).toHaveProperty("message", "Invalid Account")
-                done ()
-            })
-        })
-        test ("Response Error 401", done => {
-            request (app)
-            .post ("/login")
-            .send ({email: "customer@mail.com", password : "123456"})
+            .send ({email: "admi@mail.com", password : "123456"})
             .end ((err, res) => {
                 const {body, status} = res
                 if (err){
