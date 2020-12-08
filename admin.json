@@ -1,0 +1,12 @@
+[
+    {
+        "email" : "admin@mail.com",
+        "password" : 12345,
+        "role" : "admin"
+    },
+    {
+        "email" : "wrong@mail.com",
+        "password" : 12345,
+        "role" : "customer"
+    }
+]
