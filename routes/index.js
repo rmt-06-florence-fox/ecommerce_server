@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { UserController, ProductController } = require('../controller');
 const authentication = require('../middlewares/authentication');
-const isAdmin = require('../middlewares/isAdmin');
+const authorization = require('../middlewares/authorization');
 
 router.post('/register', UserController.register);
 
@@ -11,7 +11,7 @@ router.use(authentication);
 
 router.get('/products', ProductController.getProducts);
 
-router.use(isAdmin);
+router.use(authorization);
 
 router.post('/products', ProductController.createProduct);
 
