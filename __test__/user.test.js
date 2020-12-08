@@ -1,10 +1,35 @@
 const app = require('../app.js')
 const request = require('supertest')
-const {User} = require('../models')
+const Helper = require('../helpers')
+const { sequelize } = require('../models')
+const queryInterface = sequelize.getQueryInterface()
 
-afterAll(() => {
-    User.destroy({where :  {fullName : "testing"}})
-},5000)
+afterAll(async (done) => {
+    try {
+        await queryInterface.bulkDelete('Users', null, {})
+        done()
+    } catch (err) {
+        //console.log(err)
+        done(err)
+    }
+})
+
+beforeAll(async (done) => {
+    const data = require('../seedingData/users.json')
+    data.forEach(d => {
+        d.createdAt = new Date()
+        d.updatedAt = new Date()
+        d.password = Helper.hash(d.password)
+    })
+
+    try {
+        await queryInterface.bulkInsert("Users", data, {}, {})
+        done()
+        
+    } catch (err) {
+        done(err)
+    }
+})
 
 describe('testing user register when success', () => {
     test('user name  & email should be unique & password should be at least six chars', (done) => {

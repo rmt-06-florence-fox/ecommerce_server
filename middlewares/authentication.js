@@ -11,11 +11,6 @@ module.exports = async (req, res, next) => {
         
         const userData = Helper.decodeToken(access_token)
         const {email} = userData
-        
-        if (!email) throw {
-            message: "you are not authenticated, token is unknown",
-            status: 403
-        }
 
         const user = await User.findOne({where : {email}})
         
@@ -26,6 +21,7 @@ module.exports = async (req, res, next) => {
         }
 
     } catch(err){
+        //console.log(err)
         next(err)
     }
 }
