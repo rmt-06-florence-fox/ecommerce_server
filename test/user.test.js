@@ -15,8 +15,6 @@ describe("Login User Post /login", () => {
                     if (err) {
                         return done(err)
                     }
-                    console.log(body,'<<<<login')
-                    console.log(status,'<<<<<<loginni')
                     expect(status).toBe(200)
                     expect(body).toHaveProperty('access_token')
                     done()
@@ -57,6 +55,25 @@ describe("Login User Post /login", () => {
                     }
                     expect(status).toBe(400)
                     expect(body).toHaveProperty('message', 'invalid email/password')
+                    done()
+                })
+        })
+    })
+    describe("Failed Login With Empty Value", () => {
+        test("response with error message empty value", done => {
+            request(app)
+                .post('/login')
+                .send({
+                    email: '',
+                    password: ''
+                })
+                .end((err, res) => {
+                    const { body, status } = res
+                    if (err) {
+                        return done(err)
+                    }
+                    expect(status).toBe(400)
+                    expect(body).toHaveProperty('message', 'field is required')
                     done()
                 })
         })

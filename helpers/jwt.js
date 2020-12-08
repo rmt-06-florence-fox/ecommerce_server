@@ -5,7 +5,15 @@ function generateToken(payload) {
 }
 
 function verifyToken(access_token) {
-    return jwt.verify(access_token, process.env.SECRET)
+    try {
+        const decoded = jwt.verify(access_token, process.env.SECRET)
+        return decoded
+    } catch (err) {
+        throw {
+            status: 401,
+            message: "Please Login First"
+        }
+    }
 }
 
 module.exports = {

@@ -5,6 +5,12 @@ const { generateToken } = require('../helpers/jwt')
 class UserController {
     static async login(req, res, next) {
         try {
+            if (!req.body.email && !req.body.password){
+                throw {
+                    status : 400, 
+                    message : "field is required"
+                }
+            }
             const user = await User.findOne({
                 where: {
                     email: req.body.email
