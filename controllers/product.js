@@ -12,6 +12,16 @@ class ProductController{
     }
   }
 
+  static async read(req, res, next){
+    try {
+      const products = await Product.findAll()
+
+      res.status(200).json({products})
+    } catch (error) {
+      next(error)
+    }
+  }
+
   static async update(req, res, next){
     // console.log(req.body);
     

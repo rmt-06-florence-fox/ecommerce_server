@@ -32,8 +32,13 @@ beforeAll((done)=>{
   
 })
 
-afterAll(async ()=>{
-  await queryInterface.bulkDelete('Products',null,{})
+afterAll(async (done)=>{
+  try {
+    await queryInterface.bulkDelete('Products',null,{})
+    done()
+  } catch (error) {
+    done(error)
+  }
 })
 
 describe('route post /products', ()=>{
@@ -63,7 +68,7 @@ describe('route post /products', ()=>{
     })
   })
 
-  describe('fail create', ()=>{
+describe('fail create', ()=>{
     test('no access token', (done)=>{
       request(app)
         .post('/products')
@@ -217,7 +222,22 @@ describe('route post /products', ()=>{
 
 
   })
+  
+})
 
+describe('route get /products', ()=>{
+  test('success fetch', (done)=>{
+    request(app)
+      .get('/products')
+      .set('access_token', access_token)
+      .end((err, res)=>{
+        if(err) return done(err)
+        const { body , status} =  res
+        expect(status).toBe(200)
+        expect(body).toHaveProperty('products')
+        done()
+      })
+  })
 })
 
 describe('route put /products/:id', ()=>{
