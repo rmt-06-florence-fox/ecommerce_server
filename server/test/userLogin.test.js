@@ -1,13 +1,13 @@
 const request = require("supertest");
 const app = require("../app");
 
-describe("Login user POST /login", () => {
+describe("Login User POST /users/login", () => {
   describe(
     "success login",
     () => {
       test("should response with access_token", (done) => {
         request(app)
-          .post("/login")
+          .post("/users/login")
           .send({ email: "admin@user.com", password: "admin" })
           .end((err, res) => {
             const { body, status } = res;
@@ -23,7 +23,7 @@ describe("Login user POST /login", () => {
     describe("failed login", () => {
       test("email true, password false", (done) => {
         request(app)
-          .post("/login")
+          .post("/users/login")
           .send({ email: "admin@user.com", password: "wrongpass" })
           .end((err, res) => {
             const { body, status } = res;
@@ -37,7 +37,7 @@ describe("Login user POST /login", () => {
       });
       test("email true, password empty", (done) => {
         request(app)
-          .post("/login")
+          .post("/users/login")
           .send({ email: "admin@user.com", password: "" })
           .end((err, res) => {
             const { body, status } = res;
@@ -51,7 +51,7 @@ describe("Login user POST /login", () => {
       });
       test("email empty, password empty", (done) => {
         request(app)
-          .post("/login")
+          .post("/users/login")
           .send({ email: "", password: "" })
           .end((err, res) => {
             const { body, status } = res;
