@@ -74,36 +74,26 @@ describe("Login User POST /login", () => {
           expect(status).toBe(401)
           expect(body).toHaveProperty('message', 'sorry, wrong email/ password')
           done() 
-      })
-    })
-    test("wrong password", (done) => {
-      request(app)
-        .post("/login")
-        .send({email:email, password:"123"})
-        .end((err, res) => {
-          const { body, status } = res
-          if(err){
-            return done(err)
-          }
-          expect(status).toBe(401)
-          expect(body).toHaveProperty(
-            'message', 
-            'sorry, wrong email/ password'
-          )
-          done() 
         })
       })
+      test("wrong password", (done) => {
+        request(app)
+          .post("/login")
+          .send({email:email, password:"123"})
+          .end((err, res) => {
+            const { body, status } = res
+            if(err){
+              return done(err)
+            }
+            expect(status).toBe(401)
+            expect(body).toHaveProperty(
+              'message', 
+              'sorry, wrong email/ password'
+            )
+            done() 
+          })
+        })
     })
-})
-
-afterAll(done => {
-  queryInterface.bulkDelete("Users")
-  .then(response => {
-    done()
-  })
-  .catch(err => {
-    done(err)
-  })
 })
 
 describe("Register User POST /register", () => {
@@ -137,24 +127,41 @@ describe("Register User POST /register", () => {
         expect(status).toBe(400)
         expect(body).toHaveProperty('message', 'email must be unique')
         done() 
-    })
-  })
-  test("cant create user because of password length", (done) => {
-    request(app)
-      .post("/register")
-      .send({email:"testing@mail.com", password:"123"})
-      .end((err, res) => {
-        const { body, status } = res
-        if(err){
-          return done(err)
-        }
-        expect(status).toBe(400)
-        expect(body).toHaveProperty(
-          'message', 
-          'password must be or longer than 5'
-        )
-        done() 
       })
+    })
+    test("cant create user because of password length", (done) => {
+      request(app)
+        .post("/register")
+        .send({email:"testing@mail.com", password:"123"})
+        .end((err, res) => {
+          const { body, status } = res
+          if(err){
+            return done(err)
+          }
+          expect(status).toBe(400)
+          expect(body).toHaveProperty(
+            'message', 
+            'password must be or longer than 5'
+          )
+          done() 
+        })
+    })
+    test("cant create user because of no email", (done) => {
+      request(app)
+        .post("/register")
+        .send({password:"123456"})
+        .end((err, res) => {
+          const { body, status } = res
+          if(err){
+            return done(err)
+          }
+          expect(status).toBe(400)
+          expect(body).toHaveProperty(
+            'message', 
+            'Email is required'
+          )
+          done() 
+        })
     })
   })
 })

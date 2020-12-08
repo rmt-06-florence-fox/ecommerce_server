@@ -36,7 +36,7 @@ class ProductController {
             }, returning: true
         })
         .then(data => {
-            res.status(200).json(data)
+            res.status(200).json(data[1])
         })
         .catch(err => {
             // console.log(err, "masuk ke error bro")
@@ -63,16 +63,24 @@ class ProductController {
             }, returning: true
         })
         .then(data => {
-            res.status(200).json(data)
+            res.status(200).json(data[1])
         })
         .catch(err => {
             next(err)
         })
     }
     static delete(req,res, next){
-        Product.destroy({where:{id: req.params.id}})
+        Product.findOne({where:{id: req.params.id}})
+        .then((data) => {
+            if (data){
+                return Product.destroy({where:{id: data.id}})
+            }
+            else {
+                throw {status: 400, name: "NotFound"}
+            }
+        })
         .then(() => {
-            res.status(204).send({msg: "Product success to delete"})
+            res.status(200).json({message: "Product success to delete"})
         })
         .catch(err => {
             next(err)
