@@ -245,7 +245,7 @@ describe("test product's CRUD section", () => {
         })
       })
     })
-    describe("test for get list by id in products without access token", ()=> {
+    describe("error test for get list by id in products without access token", ()=> {
       test("get list by id in product test", (done) => {
         request(app)
         .get(`/products/${idProduct}`)
@@ -259,10 +259,10 @@ describe("test product's CRUD section", () => {
         })
       })
     })
-    describe("test for get list by id in products with riddiculous id", ()=> {
+    describe("error test for get list by id in products with riddiculous id", ()=> {
       test("get list by id in product test", (done) => {
         request(app)
-        .get(`/products/2`)
+        .get(`/products/99999`)
         .set('access_token', `${access_token}`)
         .end((err, res) => {
           if (err) {
@@ -276,4 +276,135 @@ describe("test product's CRUD section", () => {
     })
   })
   
+  describe("test for update list by id", () => {
+    describe("test for update list by id in products", ()=> {
+      test("success update list product test", (done) => {
+        request(app)
+        .put(`/products/${idProduct}`)
+        .set('access_token', `${access_token}`)
+        .send({
+          name : 'Playstation millenium',
+          image_url : 'https://cdn-2.tstatic.net/jogja/foto/bank/images/playstation-5-ps5-dipasarkan-secara-online-saat-rilis-perdana.jpg',
+          price : 10000000,
+          stock : 20
+        })
+        .end((err, res) => {
+          if (err) {
+            return done(err)
+          }
+          expect(res.status).toBe(200)
+          expect(res.body).toHaveProperty("id", res.body.id)
+          expect(res.body).toHaveProperty("name" , 'Playstation millenium')
+          expect(res.body).toHaveProperty("price", 10000000)
+          done()
+        })
+      })
+    })
+    describe("error test for update list by id in products without access_token", ()=> {
+      test("update list product without access_token test", (done) => {
+        request(app)
+        .put(`/products/${idProduct}`)
+        .send({
+          name : 'Playstation millenium',
+          image_url : 'https://cdn-2.tstatic.net/jogja/foto/bank/images/playstation-5-ps5-dipasarkan-secara-online-saat-rilis-perdana.jpg',
+          price : 10000000,
+          stock : 20
+        })
+        .end((err, res) => {
+          if (err) {
+            return done(err)
+          }
+          expect(res.status).toBe(401)
+          expect(res.body).toHaveProperty("message", `you must login first as admin`)
+          done()
+        })
+      })
+    })
+    describe("error test for update list by id in products with empty list", ()=> {
+      test("update list product test", (done) => {
+        request(app)
+        .put(`/products/${idProduct}`)
+        .set('access_token', `${access_token}`)
+        .send({
+          name : '',
+          image_url : '',
+          price : '',
+          stock : ''
+        })
+        .end((err, res) => {
+          if (err) {
+            return done(err)
+          }
+          expect(res.status).toBe(400)
+          expect(res.body).toHaveProperty('message', expect.arrayContaining([
+            `name musn't be empty`,
+            `image url musn't be empty`,
+            `price musn't be empty`,
+            `stock musn't be empty`
+          ]))
+          done()
+        })
+      })
+      describe("error test for update list by id in products with half empty list", ()=> {
+        test("update list product test", (done) => {
+          request(app)
+          .put(`/products/${idProduct}`)
+          .set('access_token', `${access_token}`)
+          .send({
+            name : 'Playstation millenium',
+            image_url : 'https://cdn-2.tstatic.net/jogja/foto/bank/images/playstation-5-ps5-dipasarkan-secara-online-saat-rilis-perdana.jpg',
+            price : '',
+            stock : ''
+          })
+          .end((err, res) => {
+            if (err) {
+              return done(err)
+            }
+            expect(res.status).toBe(400)
+            expect(res.body).toHaveProperty('message', expect.arrayContaining([
+              `price musn't be empty`,
+              `stock musn't be empty`,
+              `price must filled by number`,
+              `stock must filled by number`
+            ]))
+            done()
+          })
+        })
+      })
+    })
+  })
+  
+  describe("test for delete list by id", () => {
+    describe("test for delete list by id in products", ()=> {
+      test("success delete list product test", (done) => {
+        request(app)
+        .delete(`/products/${idProduct}`)
+        .set('access_token', `${access_token}`)
+        .end((err, res) => {
+          if (err) {
+            return done(err)
+          }
+          expect(res.status).toBe(200)
+          expect(res.body).toHaveProperty("message", `your list's deleted`)
+          done()
+        })
+      })
+    })
+    describe("error test for delete list by id in products", ()=> {
+      test("error delete list product test", (done) => {
+        request(app)
+        .delete(`/products/999`)
+        .set('access_token', `${access_token}`)
+        .end((err, res) => {
+          if (err) {
+            return done(err)
+          }
+          expect(res.status).toBe(404)
+          expect(res.body).toHaveProperty("message", `error not found`)
+          done()
+        })
+      })
+    })
+  })
+
 })

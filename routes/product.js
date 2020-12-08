@@ -9,5 +9,7 @@ route.use(authentication)
 route.post('/', ProductController.create)
 // route.use('/:id', authorization)
 route.get('/:id', ProductController.getList)
+route.put('/:id', ProductController.update)
+route.delete('/:id', ProductController.destroy)
 
 module.exports = route
