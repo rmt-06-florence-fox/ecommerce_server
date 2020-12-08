@@ -1,5 +1,5 @@
 'use strict';
-const { query } = require('express');
+
 const { hash } = require('../helpers/bcrypt')
 module.exports = {
   up: async (queryInterface, Sequelize) => {
