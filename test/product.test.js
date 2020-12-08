@@ -446,3 +446,24 @@ describe("Delete Product", () => {
         })
     })
 })
+
+describe("Get Product", () => {
+    test("response with data products", (done) => {
+        request(app)
+        .get("/product")
+        .end(function(err, res) {
+            const { status, body } = res
+            if (err) {
+                done(err)
+            }
+            expect(status).toBe(200)
+            for (let i = 0; i < res.body.length; i++) {
+                expect(body).toHaveProperty("name", body.name)
+                expect(body).toHaveProperty("image_url", body.image_url)
+                expect(body).toHaveProperty("price", body.price)
+                expect(body).toHaveProperty("stock", body.stock)
+            }
+            done()
+        })
+    })
+})
