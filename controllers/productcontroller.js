@@ -20,7 +20,6 @@ class ProductController {
         UserId: req.signedInUser.id
       }
       const newProduct = await Product.create(product)
-      console.log(newProduct)
       res.status(201).json(newProduct)
     } catch (error) {
       next(error)

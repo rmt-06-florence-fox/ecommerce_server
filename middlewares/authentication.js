@@ -10,7 +10,7 @@ module.exports = async (req, res, next) => {
       req.signedInUser = decoded
       const checker = await User.findOne({ where: { id: decoded.id } })
       if (checker) next()
-      else throw { status: 401, message: 'Please login first' }
+      else throw { status: 401, message: 'Unauthorized user' }
     }
   } catch (error) {
     next(error)

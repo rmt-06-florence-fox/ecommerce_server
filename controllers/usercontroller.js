@@ -9,7 +9,7 @@ class UserController {
       const verifyAdmin = await User.findOne({ where: { email } })
       if (!verifyAdmin) throw { status: 404, message: 'Invalid account' }
       else if (comparePwd(password, verifyAdmin.password)) {
-        const access_token = generateToken({ id: verifyAdmin.id, email: verifyAdmin.email })
+        const access_token = generateToken({ id: verifyAdmin.id, email: verifyAdmin.email, role: verifyAdmin.role })
         res.status(200).json({ access_token })
       }
       else throw { status: 400, message: 'Invalid email/password' }

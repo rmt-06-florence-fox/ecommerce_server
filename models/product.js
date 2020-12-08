@@ -14,10 +14,62 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Product.init({
-    name: DataTypes.STRING,
-    image_url: DataTypes.STRING,
-    price: DataTypes.INTEGER,
-    stock: DataTypes.INTEGER
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: `Name can't be empty`
+        }
+      }
+    },
+    image_url: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: `Image URL can't be empty`
+        }
+      }
+    },
+    price: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: `Price can't be empty`
+        },
+        min: {
+          args: 1,
+          msg: `Price can't be negative number`
+        },
+        isNumeric: {
+          args: true,
+          msg: 'Price must be a number'
+        }
+      }
+    },
+    stock: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: `Stock can't be empty`
+        },
+        min: {
+          args: 1,
+          msg: `Stock can't be negative number`
+        },
+        isNumeric: {
+          args: true,
+          msg: 'Stock must be a number'
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Product',
