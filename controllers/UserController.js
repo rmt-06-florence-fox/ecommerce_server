@@ -7,7 +7,7 @@ class UserController {
     try {
       const payload = {
         email: req.body.email,
-        password: req.body.password,
+        password: req.body.password
       }
 
       let person = await User.findOne({

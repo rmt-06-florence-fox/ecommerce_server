@@ -37,7 +37,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     role: {
       type: DataTypes.STRING,
-      allowNull: false,
       validate: {
         isIn: {
           args:[['User', 'Admin']],
@@ -53,6 +52,7 @@ module.exports = (sequelize, DataTypes) => {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(instance.password, salt)
 
+    instance.role = 'User'
     instance.password = hash
   });
   return User;

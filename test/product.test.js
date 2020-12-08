@@ -1,15 +1,39 @@
 const app = require('../app.js')
 const request = require('supertest')
 const { generateToken } = require('../helpers/token')
+const { Product } = require('../models')
 
-const id = 27
 let access_token = ''
 let user_access_token = ''
 
-beforeAll((done) => {
+beforeAll(() => {
   access_token = generateToken({id: 1, email: 'admin@mail.com'})
   user_access_token = generateToken({id: 2, email: 'user@mail.com'})
-  done()
+  Product.create({
+    id: 100,
+    name: 'Mouse Gaming',
+    image_url: 'gambar_mouse_gaming.img',
+    price: 1000000,
+    stock: 10
+  })
+
+  Product.create({
+    id: 101,
+    name: 'Mouse Gaming',
+    image_url: 'gambar_mouse_gaming.img',
+    price: 2000000,
+    stock: 20
+  })
+})
+
+afterAll(done => {
+  Product.destroy({where:{}})
+    .then(() => {
+      done()
+    })
+    .catch(err => {
+      done(err)
+    })
 })
 
 
@@ -55,9 +79,7 @@ describe('Create product test for E-Commerce CMS', () => {
       .then(response => {
         let { body, status } = response;
         expect(status).toBe(401);
-        expect(body).toEqual(
-          expect.stringContaining("You have to login first")
-          );
+        expect(body).toBe("You have to login first");
         done();
       })
       .catch(err => {
@@ -80,9 +102,7 @@ describe('Create product test for E-Commerce CMS', () => {
       .then(response => {
         let { body, status } = response;
         expect(status).toBe(403);
-        expect(body).toEqual(
-          expect.stringContaining("User not Authenticated")
-          );
+        expect(body).toBe("User not Authenticated");
         done();
       })
       .catch(err => {
@@ -106,9 +126,7 @@ describe('Create product test for E-Commerce CMS', () => {
       .then(response => {
         let { body, status } = response;
         expect(status).toBe(400);
-        expect(body).toEqual(
-          expect.stringContaining(output)
-          );
+        expect(body).toBe(output)
         done();
       })
       .catch(err => {
@@ -132,9 +150,7 @@ describe('Create product test for E-Commerce CMS', () => {
       .then(response => {
         let { body, status } = response;
         expect(status).toBe(400);
-        expect(body).toEqual(
-          expect.stringContaining(output)
-          );
+        expect(body).toBe(output);
         done();
       })
       .catch(err => {
@@ -178,7 +194,7 @@ describe('Update product test for E-Commerce CMS', () => {
         stock: 10
       }
       request(app)
-        .put('/products/' + id)
+        .put('/products/100')
         .set('access_token', access_token)
         .send(input)
         .then(response => {
@@ -204,15 +220,13 @@ describe('Update product test for E-Commerce CMS', () => {
         stock: 10
       }
       request(app)
-        .put('/products/' + id)
+        .put('/products/100')
         .set('access_token', '')
         .send(input)
         .then(response => {
           let { body, status } = response;
           expect(status).toBe(401);
-          expect(body).toEqual(
-            expect.stringContaining("You have to login first")
-            );
+          expect(body).toBe("You have to login first");
           done();
         })
         .catch(err => {
@@ -229,15 +243,13 @@ describe('Update product test for E-Commerce CMS', () => {
         stock: 10
       }
       request(app)
-        .put('/products/' + id)
+        .put('/products/100')
         .set('access_token', user_access_token)
         .send(input)
         .then(response => {
           let { body, status } = response;
           expect(status).toBe(403);
-          expect(body).toEqual(
-            expect.stringContaining("User not Authenticated")
-            );
+          expect(body).toBe("User not Authenticated");
           done();
         })
         .catch(err => {
@@ -254,15 +266,13 @@ describe('Update product test for E-Commerce CMS', () => {
         stock: -5
       }
       request(app)
-        .put('/products/' + id)
+        .put('/products/100')
         .set('access_token', access_token)
         .send(input)
         .then(response => {
           let { body, status } = response;
           expect(status).toBe(400);
-          expect(body).toEqual(
-            expect.stringContaining("Stock must be greater than 0")
-            );
+          expect(body).toBe("Stock must be greater than 0");
           done();
         })
         .catch(err => {
@@ -279,15 +289,13 @@ describe('Update product test for E-Commerce CMS', () => {
         stock: "lima"
       }
       request(app)
-        .put('/products/' + id)
+        .put('/products/100')
         .set('access_token', access_token)
         .send(input)
         .then(response => {
           let { body, status } = response;
           expect(status).toBe(400);
-          expect(body).toEqual(
-            expect.stringContaining("Price must be a number, Stock must be a number")
-            );
+          expect(body).toBe("Price must be a number, Stock must be a number");
           done();
         })
         .catch(err => {
@@ -304,15 +312,13 @@ describe('Update product test for E-Commerce CMS', () => {
         stock: 5
       }
       request(app)
-        .put('/products/' + id)
+        .put('/products/100')
         .set('access_token', access_token)
         .send(input)
         .then(response => {
           let { body, status } = response;
           expect(status).toBe(400);
-          expect(body).toEqual(
-            expect.stringContaining("Price must be greater than 0")
-            );
+          expect(body).toBe("Price must be greater than 0");
           done();
         })
         .catch(err => {
@@ -326,14 +332,12 @@ describe('Delete product test for E-Commerce CMS', () => {
   describe('Success deleting product', () => {
     it('Should return 200 and message success', (done) => {
       request(app)
-        .delete('/products/' + id)
+        .delete('/products/100')
         .set('access_token', access_token)
         .then(response => {
           let { body, status } = response;
           expect(status).toBe(200);
-          expect(body).toEqual(
-            expect.stringContaining("Successfully deleted product")
-            );
+          expect(body).toBe("Successfully deleted product");
           done();
         })
         .catch(err => {
@@ -344,14 +348,12 @@ describe('Delete product test for E-Commerce CMS', () => {
   describe('Error to delete product with no access token', () => {
     it('Should return 401 and message error', done => {
       request(app)
-        .delete('/products/' + id)
+        .delete('/products/101')
         .set('access_token', '')
         .then(response => {
           let { body, status } = response;
           expect(status).toBe(401);
-          expect(body).toEqual(
-            expect.stringContaining("You have to login first")
-            );
+          expect(body).toBe("You have to login first");
           done();
         })
         .catch(err => {
@@ -359,17 +361,15 @@ describe('Delete product test for E-Commerce CMS', () => {
         })
     })
   });
-  describe('Error to update product with User role account', () => {
+  describe('Error to delete product with User role account', () => {
     it('Should return 403 and message error', done => {
       request(app)
-        .put('/products/' + id)
+        .put('/products/101')
         .set('access_token', user_access_token)
         .then(response => {
           let { body, status } = response;
           expect(status).toBe(403);
-          expect(body).toEqual(
-            expect.stringContaining("User not Authenticated")
-            );
+          expect(body).toBe("User not Authenticated");
           done();
         })
         .catch(err => {
