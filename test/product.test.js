@@ -184,7 +184,7 @@ describe('GET /products', () => {
   })
 })
 
-describe('PUT /products', () => {
+describe('PUT /products/:id', () => {
   test('Case 1: Success update product', done => {
     request(app)
       .put(`/products/${idProduct}`)
@@ -271,6 +271,46 @@ describe('PUT /products', () => {
         const { body, status } = res
         expect(status).toBe(400)
         expect(body).toEqual(expect.arrayContaining([{ message: `Price can't be a negative number` }]))
+        done()
+      })
+  })
+})
+
+describe('DELETE /products/:id', () => {
+  test('Case 1: Success delete product', done => {
+    request(app)
+      .delete(`/products/${idProduct}`)
+      .set('access_token', access_token)
+      .end((err, res) => {
+        if (err) return done(err)
+        const { status, body } = res
+        expect(status).toBe(200)
+        expect(body).toHaveProperty('message', 'Product has been deleted:)')
+        done()
+      })
+  })
+
+  test(`Case 2: Don't have access token`, done => {
+    request(app)
+      .delete(`/products/${idProduct}`)
+      .end((err, res) => {
+        if (err) return done(err)
+        const { status, body } = res
+        expect(status).toBe(401)
+        expect(body).toHaveProperty('message', 'Please login first')
+        done()
+      })
+  })
+
+  test('Case 3: Wrong access token', done => {
+    request(app)
+      .delete(`/products/${idProduct}`)
+      .set('access_token', wrong_access_token)
+      .end((err, res) => {
+        if (err) return done(err)
+        const { status, body } = res
+        expect(status).toBe(401)
+        expect(body).toHaveProperty('message', 'Unauthorized user')
         done()
       })
   })

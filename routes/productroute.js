@@ -9,5 +9,6 @@ product.post('/', ProductController.createProduct)
 
 product.use('/:id', authorization)
 product.put('/:id', ProductController.updateProduct)
+product.delete('/:id', ProductController.deleteProduct)
 
 module.exports = product
