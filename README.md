@@ -193,6 +193,14 @@ access_token = `admin access token`
 }
 ```
 #
+##### ERROR *`'Unauthorized'`*
+- Response *`(401)`*
+```JS
+{
+  "message": "You aren't admin !"
+}
+```
+#
 ##### ERROR *`'Internal Server Error'`*
 - Response *`(500)`*
 ```JS

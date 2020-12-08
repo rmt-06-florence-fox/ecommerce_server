@@ -1,5 +1,36 @@
 const request = require('supertest')
 const app = require('../app')
+const {sequelize, User} = require('../models')
+const {queryInterface} = sequelize
+const Helper = require('../helpers/helper')
+
+let data_admin = {
+  email: `admin2@mail.com`,
+  password: Helper.generatePassword('1234567'),
+  role: 'admin'
+}
+
+let access_token = ''
+beforeAll(async (done)=>{
+  try{
+    const dataAdmin = await User.create(data_admin)
+    if(dataAdmin) access_token = Helper.generateToken({id: dataAdmin.id, email: dataAdmin.email})
+    done()
+  }catch(err){
+    done(err)
+  }
+})
+afterAll(async (done)=>{
+  try{
+    // await queryInterface.bulkDelete('Users', null, {})
+    await User.destroy({
+      where: {email: data_admin.email}
+    })
+    done()
+  }catch(err){
+    done(err)
+  }
+})
 
 describe('Login User POST /login', () => {
   describe('Success Login', () => {

@@ -9,6 +9,7 @@ module.exports = async (req, res, next)=>{
       }
     })
     if(isAdmin) next()
+    // if(req.loginUser.role === 'admin') next()
     else{
       throw{
         status: 401,
