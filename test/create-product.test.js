@@ -14,7 +14,7 @@ beforeAll(done => {
     done()
 })
 
-let id = 5
+let idProduct
 
 describe('Create Product POST /products', () => {
     describe('Add Product Success', () => {
@@ -33,6 +33,7 @@ describe('Create Product POST /products', () => {
                     if(err) {
                         return done(err)
                     }
+                    idProduct = res.body.id
                     expect(status).toBe(201)
                     expect(body).toHaveProperty('name', 'Adidas NMD R1')
                     expect(body).toHaveProperty('image_url', 'https://assets.adidas.com/images/w_600,f_auto,q_auto/73101ab9d9ee445db281ab57011a0229_9366/NMD_R1_Shoes_Blue_FV1734_01_standard.jpg')
@@ -198,7 +199,7 @@ describe('Update Product PUT /products/:id', () => {
     describe('Update Product Success', () => {
         test('Response update product', done => {
             request(app)
-                .put('/products/' + id)
+                .put('/products/' + idProduct)
                 .set('access_token', access_token)
                 .send({
                     name: 'Adidas NMD R2', 
@@ -226,7 +227,7 @@ describe('Update Product PUT /products/:id', () => {
     describe('Update Product Error No Token', () => {
         test('Response Unauthorized Error Message', done => {
             request(app)
-                .put('/products/' + id)
+                .put('/products/' + idProduct)
                 .set('access_token', '')
                 .send({
                     name: 'Adidas NMD R2', 
@@ -251,7 +252,7 @@ describe('Update Product PUT /products/:id', () => {
     describe('Update Product Error Not Admin Token', () => {
         test('Response Unauthorized Error Message', done => {
             request(app)
-                .put('/products/' + id)
+                .put('/products/' + idProduct)
                 .set('access_token', noadmin_access_token)
                 .send({
                     name: 'Adidas NMD R2', 
@@ -276,7 +277,7 @@ describe('Update Product POST /products', () => {
     describe('Update Product Error Stock', () => {
         test('Update message Minimum stock is 0', done => {
             request(app)
-                .put('/products/' + id)
+                .put('/products/' + idProduct)
                 .set('access_token', access_token)
                 .send({
                     name: 'Adidas NMD R2', 
@@ -301,7 +302,7 @@ describe('Update Product POST /products', () => {
     describe('Update Product Error Stock', () => {
         test('Response message Minimum price is 0', done => {
             request(app)
-                .put('/products/' + id)
+                .put('/products/' + idProduct)
                 .set('access_token', access_token)
                 .send({
                     name: 'Adidas NMD R1', 
@@ -326,7 +327,7 @@ describe('Update Product POST /products', () => {
     describe('Update Product Required Value', () => {
         test('Response message Name is Required', done => {
             request(app)
-                .put('/products/' + id)
+                .put('/products/' + idProduct)
                 .set('access_token', access_token)
                 .send({
                     name: '', 
@@ -351,7 +352,7 @@ describe('Update Product POST /products', () => {
     describe('Update Product Stock Invalid Datatype', () => {
         test('Response message Only number allowed', done => {
             request(app)
-                .put('/products/' + id)
+                .put('/products/' + idProduct)
                 .set('access_token', access_token)
                 .send({
                     name: 'Adidas NMD R2', 
@@ -376,7 +377,7 @@ describe('Delete Product DELETE /products/:id', () => {
     describe('Delete Product Success', () => {
         test('Response delete successfuly', done => {
             request(app)
-                .delete('/products/' + id)
+                .delete('/products/' + idProduct)
                 .set('access_token', access_token)
                 .end((err, res) => {
                     const { body, status } = res
@@ -395,7 +396,7 @@ describe('Delete Product DELETE /products/:id', () => {
     describe('Delete Product Error No Token', () => {
         test('Response Unauthorized Error Message', done => {
             request(app)
-                .delete('/products/' + id)
+                .delete('/products/' + idProduct)
                 .set('access_token', '')
                 .end((err, res) => {
                     const { body, status } = res
@@ -414,7 +415,7 @@ describe('Delete Product DELETE /products/:id', () => {
     describe('Delete Product Error Not Admin Token', () => {
         test('Response Unauthorized Error Message', done => {
             request(app)
-                .delete('/products/' + id)
+                .delete('/products/' + idProduct)
                 .set('access_token', noadmin_access_token)
                 .end((err, res) => {
                     const { body, status } = res
