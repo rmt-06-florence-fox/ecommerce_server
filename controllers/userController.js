@@ -3,8 +3,8 @@ const { comparePwd } = require('../helpers/password')
 const { generateToken } = require('../helpers/jwt')
 
 
-class userCOntroller {
-    static login (req, res) {
+class userController {
+    static login (req, res, next) {
         User.findOne({ where: {email: req.body.email}})
         .then(data => {
             if (!data) {
@@ -23,4 +23,4 @@ class userCOntroller {
 
 }
 
-module.exports = userCOntroller
+module.exports = userController

@@ -5,10 +5,9 @@ class ProductController {
         const { name, image_url, price, stock } = req.body
         const UserId = req.loggedInUser.id
         const payload = { name, image_url, price, stock, UserId}
-
         try {
             const product = await Product.create(payload);
-            res.status(201).json({product});   
+            res.status(201).json(product);   
         }
         catch (error) {
             next(error)
