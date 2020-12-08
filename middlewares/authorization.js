@@ -1,7 +1,7 @@
 const { Product } = require('../models')
 
 module.exports = (req,res,next) => {
-        Todo.findOne({where: {id: req.params.id}})
+        Product.findOne({where: {id: req.params.id}})
         .then(data => {
             if(data){
                 if (data.UserId == req.loggedInUser.id){

@@ -25,7 +25,7 @@ class UserController {
             } else {
                 throw {
                     status: 404,
-                    message: "username/password salah"
+                    message: "email hasn't been registered"
                 }
             }      
         })
