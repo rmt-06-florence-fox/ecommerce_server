@@ -53,8 +53,8 @@ module.exports = (sequelize, DataTypes) => {
           msg: "Price is required"
         },
         validatePrice(value) {
-          if(value <= 0) {
-            throw new Error('Price must greater than 0')
+          if(value < 0) {
+            throw new Error('Price must greater than or equal to 0')
           }
         },
         isInt: {
@@ -76,7 +76,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         validatePrice(value) {
           if(value < 0) {
-            throw new Error('Stock can not negative')
+            throw new Error('Stock must greater than or equal to 0')
           }
         },
         isInt: {

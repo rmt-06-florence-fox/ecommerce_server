@@ -9,6 +9,13 @@ module.exports = {
       role: 'admin',
       createdAt: new Date(),
       updatedAt: new Date()
+    },
+    {
+      email: 'customer1@mail.com',
+      password: bcrypt.hashSync('123456', 10),
+      role: 'customer',
+      createdAt: new Date(),
+      updatedAt: new Date()
     }], {})
     /**
      * Add seed commands here.
