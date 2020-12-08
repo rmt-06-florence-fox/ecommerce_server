@@ -6,17 +6,20 @@ class Controller {
 
     static login(req, res) {
 
-        User.findOne({
+        User.findAll({
             where:{
                 email : req.body.email
             }
         })
+        console.log(req.body.email, '<<<<<<<')
+
         .then(user => {
+            console.log('xxxxxxxxxxxxxxxx')
             if(!user){
                 res.status(401).json({message : "invalid account"})
             } else {
                 if(bcrypt.compareSync(req.body.password, user.password)){
-                    let access_token = jwt.sign({id: user.id, email: user.email}, 'process.env.SECRET')
+                    let access_token = jwt.sign({id: user.id, email: user.email, role: user.role}, 'process.env.SECRET')
                     res.status(200).json({access_token})
                 } else {
                 res.status(401).json({message : "invalid account"})
@@ -24,7 +27,6 @@ class Controller {
             }
         })
         .catch(err =>{
-            console.log('masuk loginnnn')
             res.status(500).json({err})
         })
     }
@@ -62,6 +64,41 @@ class Controller {
         })
         .catch(err =>{
             res.status(406).json({message: 'wrong or empty data input'})
+        })
+    }
+    static delete(req, res) {
+        Product.destroy({
+            where:{
+                id : req.params.id
+            }
+        })
+        .then(result => {
+            res.status(200).json({message: 'Delete success'})
+        })
+        .catch(err => {
+            res.status(500).json(err)
+        })
+    }
+    static fetchData (req, res) {
+        Product.findAll()
+        .then(result => {
+            res.status(200).json(result)
+        })
+        .catch(err => {
+            res.status(500).json(err)
+        })
+    }
+    static getData (req, res) {
+        product.findOne({
+            where: {
+                id: req.params.id
+            }
+        })
+        .then(data => {
+            res.status(200).json(data)
+        })
+        .catch(err => {
+            res.status(500).json(err)
         })
     }
 
