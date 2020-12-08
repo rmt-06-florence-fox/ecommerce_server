@@ -74,7 +74,15 @@ let product8 = {
 }
 
 beforeAll( (done)=>{
-    done()
+    request(app)
+        .post('/products')
+        .send(product1)
+        .set('access_token',jwtAdmin)
+        .end((err,res)=>{
+            if(err) return done(err)
+            productId = res.body.products.id
+            done()
+        })
 })
 
 afterAll((done)=>{
@@ -225,7 +233,6 @@ describe('routes for all',()=>{
                 stock: expect.any(Number),
                 category: expect.any(String)
             }))
-            productId = res.body.id
             done()
         })
     })
@@ -290,6 +297,27 @@ describe('routes for all',()=>{
         .end((err,res)=>{
             if(err) return done(err)
             expect(res.body).toHaveProperty('message','please insert price correctly')
+            done()
+        })
+    })
+    
+    test('update product bawa access_token admin semua betul',done=>{
+        request(app)
+        .put(`/products/${productId}`)
+        .send(product8)
+        .set('access_token',jwtAdmin)
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .end((err,res)=>{
+            if(err) return done(err)
+            expect(res.body).toHaveProperty('products',expect.objectContaining({
+                id: expect.any(Number),
+                name: expect.any(String),
+                image_url: expect.any(String),
+                price: expect.any(Number),
+                stock: expect.any(Number),
+                category: expect.any(String)
+            }))
             done()
         })
     })

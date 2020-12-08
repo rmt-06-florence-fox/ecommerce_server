@@ -34,27 +34,52 @@ class ProductController{
         }
         let id = req.params.id
         try {
-            let editProduct = await Product.update(obj,{
-                where: {
+            console.log(req.params, '<-----params');
+            console.log(id , '<---- id');
+            let targetProduct = await Product.findOne({
+                where:{
                     id:id
-                },
-                returning: true
+                }
             })
-            res.status(200).json({ products : editProduct[1][0]})
+            if(targetProduct){
+                let editProduct = await Product.update(obj,{
+                    where: {
+                        id:id
+                    },
+                    returning: true
+                })
+                res.status(200).json({ products : editProduct[1][0]})
+            }else{
+                throw {
+                    status: 404,
+                    message: 'error product not found'
+                }
+            }
         } catch (err) {
-            console.log(err);
             next(err)
         }
     }
     static async deleteProduct(req,res,next){
         let id = req.params.id
         try {
-            let deleteProduct = await Product.destroy({
+            let targetProduct = await Product.findOne({
                 where:{
                     id:id
                 }
             })
-            res.status(200).json({message:'products deleted'})
+            if(targetProduct){
+                let deleteProduct = await Product.destroy({
+                    where:{
+                        id:id
+                    }
+                })
+                res.status(200).json({message:'products deleted'})
+            }else{
+                throw {
+                    status: 404,
+                    message: 'error product not found'
+                }
+            }
         } catch (err) {
             next(err)
         }
