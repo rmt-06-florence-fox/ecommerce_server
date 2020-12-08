@@ -146,7 +146,7 @@ describe('Login User POST /login', () => {
 		});
 	});
 	describe('Error Login', () => {
-		test('Error Login Response with Status 400 - Invalid Account or Password', (done) => {
+		test('Error Login Response with Status 401 - Invalid Password', (done) => {
 			request(app)
 				.post('/login')
 				.send({ email: email, password: 'some wrong password' })
@@ -155,7 +155,21 @@ describe('Login User POST /login', () => {
 					if (err) {
 						return done(err);
 					}
-					expect(status).toBe(400);
+					expect(status).toBe(401);
+					expect(body).toHaveProperty('message', 'Invalid Account Or Password');
+					done();
+				});
+		});
+		test('Error Login Response with Status 401 - Invalid email', (done) => {
+			request(app)
+				.post('/login')
+				.send({ email: 'some wrong email', password: password })
+				.end((err, res) => {
+					const { status, body } = res;
+					if (err) {
+						return done(err);
+					}
+					expect(status).toBe(401);
 					expect(body).toHaveProperty('message', 'Invalid Account Or Password');
 					done();
 				});

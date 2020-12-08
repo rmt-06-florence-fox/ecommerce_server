@@ -11,31 +11,8 @@ class ProductController {
 			});
 	}
 
-	static createProduct(req, res, next) {
-		const newProduct = {
-			name: req.body.name,
-			image_url: req.body.image_url,
-			price: req.body.price,
-			stock: req.body.stock,
-		};
-		Product.create(newProduct)
-			.then((data) => {
-				res.status(201).json(data);
-			})
-			.catch((err) => {
-				next(err);
-			});
-	}
-
-	static editProduct(req, res, next) {
+	static getProductById(req, res, next) {
 		const id = req.params.id;
-		const editProduct = {
-			name: req.body.name,
-			image_url: req.body.image_url,
-			price: req.body.price,
-			stock: req.body.stock,
-		};
-
 		Product.findOne({
 			where: {
 				id,
@@ -48,20 +25,89 @@ class ProductController {
 						name: errorName,
 					});
 				} else {
-					return Product.update(editProduct, {
-						where: {
-							id,
-						},
-						returning: true,
-					});
+					res.status(200).json(data);
 				}
-			})
-			.then((data) => {
-				res.status(200).json(data[1][0]);
 			})
 			.catch((err) => {
 				next(err);
 			});
+	}
+
+	static createProduct(req, res, next) {
+		const newProduct = {
+			name: req.body.name,
+			image_url: req.body.image_url,
+			price: req.body.price,
+			stock: req.body.stock,
+		};
+		if (req.body.stock < 0) {
+			const errorName = 'StockCannotLessThanZero';
+			next({
+				name: errorName,
+			});
+		} else if (req.body.price < 0) {
+			const errorName = 'PriceCannotLessThanZero';
+			next({
+				name: errorName,
+			});
+		} else {
+			Product.create(newProduct)
+				.then((data) => {
+					res.status(201).json(data);
+				})
+				.catch((err) => {
+					next(err);
+				});
+		}
+	}
+
+	static editProduct(req, res, next) {
+		const id = req.params.id;
+		const editProduct = {
+			name: req.body.name,
+			image_url: req.body.image_url,
+			price: req.body.price,
+			stock: req.body.stock,
+		};
+
+		if (req.body.stock < 0) {
+			const errorName = 'StockCannotLessThanZero';
+			next({
+				name: errorName,
+			});
+		} else if (req.body.price < 0) {
+			const errorName = 'PriceCannotLessThanZero';
+			next({
+				name: errorName,
+			});
+		} else {
+			Product.findOne({
+				where: {
+					id,
+				},
+			})
+				.then((data) => {
+					if (!data) {
+						const errorName = 'ProductNotFound';
+						next({
+							name: errorName,
+						});
+					} else {
+						return Product.update(editProduct, {
+							where: {
+								id,
+							},
+							returning: true,
+						});
+					}
+				})
+				.then((data) => {
+					res.status(200).json(data[1][0]);
+				})
+				.catch((err) => {
+					next(err);
+				});
+		}
 	}
 
 	static updateProduct(req, res, next) {
@@ -70,12 +116,7 @@ class ProductController {
 			stock: req.body.stock,
 		};
 
-		if (!req.body.stock) {
-			const errorName = 'StockCannotBeNull';
-			next({
-				name: errorName,
-			});
-		} else if (req.body.stock < 0) {
+		if (req.body.stock < 0) {
 			const errorName = 'StockCannotLessThanZero';
 			next({
 				name: errorName,

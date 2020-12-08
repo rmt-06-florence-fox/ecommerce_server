@@ -124,18 +124,18 @@ describe('Fetch Product GET /products', () => {
 				.get('/products')
 				.set('access_token', token_admin)
 				.end((err, res) => {
-					// console.log(res.body);
 					const { body, status } = res;
 					if (err) {
 						return done(err);
 					}
 					expect(status).toBe(200);
-					expect(body[0].name).toBe('Barang Dummy');
-					expect(body[0].image_url).toBe('Gambar Dummy URL');
+					expect(body[0]).toHaveProperty('name');
+					expect(body[0]).toHaveProperty('image_url');
 					done();
 				});
 		});
 	});
+
 	describe('Error Fetch Product', () => {
 		test('Error response with Status 401 - No Access Token', (done) => {
 			request(app)
@@ -150,7 +150,7 @@ describe('Fetch Product GET /products', () => {
 					done();
 				});
 		});
-		test('Error response with Status 404 - Invalid Access Token', (done) => {
+		test('Error response with Status 401 - Invalid Access Token', (done) => {
 			request(app)
 				.get('/products')
 				.set('access_token', 'some wrong token')
@@ -159,8 +159,71 @@ describe('Fetch Product GET /products', () => {
 					if (err) {
 						return done(err);
 					}
-					expect(status).toBe(404);
+					expect(status).toBe(401);
 					expect(body).toHaveProperty('message', 'Invalid Account Or Password');
+					done();
+				});
+		});
+	});
+});
+
+describe('Get Product by Id GET /products/:id', () => {
+	describe('Success Get Product by Id', () => {
+		test('Success response with Status 200 - returning the detail of the dummy product', (done) => {
+			request(app)
+				.get(`/products/${dummyProductId}`)
+				.set('access_token', token_admin)
+				.end((err, res) => {
+					const { body, status } = res;
+					if (err) {
+						return done(err);
+					}
+					expect(status).toBe(200);
+					expect(body.name).toBe('Barang Dummy');
+					expect(body.image_url).toBe('Gambar Dummy URL');
+					done();
+				});
+		});
+	});
+	describe('Error Get Product by Id', () => {
+		test('Error response with Status 401 - No Access Token', (done) => {
+			request(app)
+				.get(`/products/${dummyProductId}`)
+				.end((err, res) => {
+					const { body, status } = res;
+					if (err) {
+						return done(err);
+					}
+					expect(status).toBe(401);
+					expect(body).toHaveProperty('message', 'Please Login First');
+					done();
+				});
+		});
+		test('Error response with Status 401 - Invalid Access Token', (done) => {
+			request(app)
+				.get(`/products/${dummyProductId}`)
+				.set('access_token', 'some wrong token')
+				.end((err, res) => {
+					const { body, status } = res;
+					if (err) {
+						return done(err);
+					}
+					expect(status).toBe(401);
+					expect(body).toHaveProperty('message', 'Invalid Account Or Password');
+					done();
+				});
+		});
+		test('Error response with Status 404 - Product Not Found', (done) => {
+			request(app)
+				.get(`/products/0`)
+				.set('access_token', token_admin)
+				.end((err, res) => {
+					const { body, status } = res;
+					if (err) {
+						return done(err);
+					}
+					expect(status).toBe(404);
+					expect(body).toHaveProperty('message', 'Product Not Found');
 					done();
 				});
 		});
@@ -171,7 +234,7 @@ describe('Create Product POST /products', () => {
 	describe('Success Create Product', () => {
 		test('Success response with Status 201 - returning value of the product', (done) => {
 			request(app)
-				.post('/products')
+				.post(`/products`)
 				.set('access_token', token_admin)
 				.send({
 					name: 'Tas',
@@ -233,7 +296,7 @@ describe('Create Product POST /products', () => {
 					done();
 				});
 		});
-		test('Error response with Status 404 - Invalid Access Token', (done) => {
+		test('Error response with Status 401 - Invalid Access Token', (done) => {
 			request(app)
 				.post('/products')
 				.set('access_token', 'some wrong token')
@@ -248,7 +311,7 @@ describe('Create Product POST /products', () => {
 					if (err) {
 						return done(err);
 					}
-					expect(status).toBe(404);
+					expect(status).toBe(401);
 					expect(body).toHaveProperty('message', 'Invalid Account Or Password');
 					done();
 				});
@@ -275,6 +338,134 @@ describe('Create Product POST /products', () => {
 						"Product's Price Cannot be Empty",
 						"Product's Stock Cannot be Empty",
 					]);
+					done();
+				});
+		});
+		test('Error response while Creating with Status 400 - Products Name Cannot be Empty', (done) => {
+			request(app)
+				.post(`/products`)
+				.set('access_token', token_admin)
+				.send({
+					name: '',
+					image_url: 'Gambar Tas',
+					price: 15000,
+					stock: 10,
+				})
+				.end((err, res) => {
+					const { body, status } = res;
+					if (err) {
+						return done(err);
+					}
+					expect(status).toBe(400);
+					expect(body).toHaveProperty('message', [
+						"Product's Name Cannot be Empty",
+					]);
+					done();
+				});
+		});
+		test('Error response while Creating with Status 400 - Products Image URL Cannot be Empty', (done) => {
+			request(app)
+				.post(`/products`)
+				.set('access_token', token_admin)
+				.send({
+					name: 'Tas',
+					image_url: '',
+					price: 10000,
+					stock: 15,
+				})
+				.end((err, res) => {
+					const { body, status } = res;
+					if (err) {
+						return done(err);
+					}
+					expect(status).toBe(400);
+					expect(body).toHaveProperty('message', [
+						"Product's Image Cannot be Empty",
+					]);
+					done();
+				});
+		});
+		test('Error response while Creating with Status 400 - Products Price Cannot be Empty', (done) => {
+			request(app)
+				.post(`/products`)
+				.set('access_token', token_admin)
+				.send({
+					name: 'Tas',
+					image_url: 'Gambar Tas',
+					price: '',
+					stock: 16,
+				})
+				.end((err, res) => {
+					const { body, status } = res;
+					if (err) {
+						return done(err);
+					}
+					expect(status).toBe(400);
+					expect(body).toHaveProperty('message', [
+						"Product's Price Cannot be Empty",
+					]);
+					done();
+				});
+		});
+		test('Error response while Creating with Status 400 - Products Stock Cannot be Empty', (done) => {
+			request(app)
+				.post(`/products`)
+				.set('access_token', token_admin)
+				.send({
+					name: 'Tas',
+					image_url: 'Gambar Tas',
+					price: 10000,
+					stock: '',
+				})
+				.end((err, res) => {
+					const { body, status } = res;
+					if (err) {
+						return done(err);
+					}
+					expect(status).toBe(400);
+					expect(body).toHaveProperty('message', [
+						"Product's Stock Cannot be Empty",
+					]);
+					done();
+				});
+		});
+		test('Error response while Creating with Status 400 - Products Stock Cannot Less Than Zero', (done) => {
+			request(app)
+				.post(`/products`)
+				.set('access_token', token_admin)
+				.send({
+					name: 'Tas',
+					image_url: 'Gambar Tas',
+					price: 10000,
+					stock: -15,
+				})
+				.end((err, res) => {
+					const { body, status } = res;
+					if (err) {
+						return done(err);
+					}
+					expect(status).toBe(400);
+					expect(body).toHaveProperty('message', 'Stock cannot Less Than Zero');
+					done();
+				});
+		});
+		test('Error response while Creating with Status 400 - Products Price Cannot Less Than Zero', (done) => {
+			request(app)
+				.post(`/products`)
+				.set('access_token', token_admin)
+				.send({
+					name: 'Tas',
+					image_url: 'Gambar Tas',
+					price: -10000,
+					stock: 15,
+				})
+				.end((err, res) => {
+					const { body, status } = res;
+					if (err) {
+						return done(err);
+					}
+					expect(status).toBe(400);
+					expect(body).toHaveProperty('message', 'Price cannot Less Than Zero');
 					done();
 				});
 		});
@@ -330,7 +521,7 @@ describe('Edit Product PUT /products/:id', () => {
 		});
 		test('Error response while Editing with Status 404 - Product Id Not Found', (done) => {
 			request(app)
-				.put(`/products/1`)
+				.put(`/products/0`)
 				.set('access_token', token_admin)
 				.send({
 					name: 'Barang Baru',
@@ -382,7 +573,7 @@ describe('Edit Product PUT /products/:id', () => {
 					if (err) {
 						return done(err);
 					}
-					expect(status).toBe(404);
+					expect(status).toBe(401);
 					expect(body).toHaveProperty('message', 'Invalid Account Or Password');
 					done();
 				});
@@ -409,6 +600,134 @@ describe('Edit Product PUT /products/:id', () => {
 						"Product's Price Cannot be Empty",
 						"Product's Stock Cannot be Empty",
 					]);
+					done();
+				});
+		});
+		test('Error response while Editing with Status 400 - Update Products Name Cannot be Empty', (done) => {
+			request(app)
+				.put(`/products/${dummyProductId}`)
+				.set('access_token', token_admin)
+				.send({
+					name: '',
+					image_url: 'Gambar Tas Baru',
+					price: 15000,
+					stock: 10,
+				})
+				.end((err, res) => {
+					const { body, status } = res;
+					if (err) {
+						return done(err);
+					}
+					expect(status).toBe(400);
+					expect(body).toHaveProperty('message', [
+						"Product's Name Cannot be Empty",
+					]);
+					done();
+				});
+		});
+		test('Error response while Editing with Status 400 - Update Products Image URL Cannot be Empty', (done) => {
+			request(app)
+				.put(`/products/${dummyProductId}`)
+				.set('access_token', token_admin)
+				.send({
+					name: 'Gambar Tas Baru',
+					image_url: '',
+					price: 10000,
+					stock: 15,
+				})
+				.end((err, res) => {
+					const { body, status } = res;
+					if (err) {
+						return done(err);
+					}
+					expect(status).toBe(400);
+					expect(body).toHaveProperty('message', [
+						"Product's Image Cannot be Empty",
+					]);
+					done();
+				});
+		});
+		test('EError response while Editing with Status 400 - Update Price Cannot be Empty', (done) => {
+			request(app)
+				.put(`/products/${dummyProductId}`)
+				.set('access_token', token_admin)
+				.send({
+					name: 'Tas Baru',
+					image_url: 'Gambar Tas Baru',
+					price: '',
+					stock: 16,
+				})
+				.end((err, res) => {
+					const { body, status } = res;
+					if (err) {
+						return done(err);
+					}
+					expect(status).toBe(400);
+					expect(body).toHaveProperty('message', [
+						"Product's Price Cannot be Empty",
+					]);
+					done();
+				});
+		});
+		test('Error response while Editing with Status 400 - Update Stock Cannot be Empty', (done) => {
+			request(app)
+				.put(`/products/${dummyProductId}`)
+				.set('access_token', token_admin)
+				.send({
+					name: 'Tas',
+					image_url: 'Gambar Tas',
+					price: 10000,
+					stock: '',
+				})
+				.end((err, res) => {
+					const { body, status } = res;
+					if (err) {
+						return done(err);
+					}
+					expect(status).toBe(400);
+					expect(body).toHaveProperty('message', [
+						"Product's Stock Cannot be Empty",
+					]);
+					done();
+				});
+		});
+		test('Error response while Editing with Status 400 - Products Stock Cannot Less Than Zero', (done) => {
+			request(app)
+				.put(`/products/${dummyProductId}`)
+				.set('access_token', token_admin)
+				.send({
+					name: 'Tas Baru',
+					image_url: 'Gambar Tas Baru',
+					price: 10000,
+					stock: -15,
+				})
+				.end((err, res) => {
+					const { body, status } = res;
+					if (err) {
+						return done(err);
+					}
+					expect(status).toBe(400);
+					expect(body).toHaveProperty('message', 'Stock cannot Less Than Zero');
+					done();
+				});
+		});
+		test('Error response while Editing with Status 400 - Products Price Cannot Less Than Zero', (done) => {
+			request(app)
+				.put(`/products/${dummyProductId}`)
+				.set('access_token', token_admin)
+				.send({
+					name: 'Tas',
+					image_url: 'Gambar Tas',
+					price: -10000,
+					stock: 15,
+				})
+				.end((err, res) => {
+					const { body, status } = res;
+					if (err) {
+						return done(err);
+					}
+					expect(status).toBe(400);
+					expect(body).toHaveProperty('message', 'Price cannot Less Than Zero');
 					done();
 				});
 		});
@@ -458,7 +777,7 @@ describe('Update Product PATCH /products/:id', () => {
 		});
 		test('Error response while Updating with Status 404 - Product Id Not Found', (done) => {
 			request(app)
-				.patch(`/products/1`)
+				.patch(`/products/0`)
 				.set('access_token', token_admin)
 				.send({
 					stock: 11,
@@ -489,7 +808,7 @@ describe('Update Product PATCH /products/:id', () => {
 					done();
 				});
 		});
-		test('Error response while Updating with Status 404 - Wrong Access Token', (done) => {
+		test('Error response while Updating with Status 401 - Wrong Access Token', (done) => {
 			request(app)
 				.patch(`/products/${dummyProductId}`)
 				.set('access_token', 'wrong access token')
@@ -501,7 +820,7 @@ describe('Update Product PATCH /products/:id', () => {
 					if (err) {
 						return done(err);
 					}
-					expect(status).toBe(404);
+					expect(status).toBe(401);
 					expect(body).toHaveProperty('message', 'Invalid Account Or Password');
 					done();
 				});
@@ -510,13 +829,18 @@ describe('Update Product PATCH /products/:id', () => {
 			request(app)
 				.patch(`/products/${dummyProductId}`)
 				.set('access_token', token_admin)
+				.send({
+					stock: '',
+				})
 				.end((err, res) => {
 					const { body, status } = res;
 					if (err) {
 						return done(err);
 					}
 					expect(status).toBe(400);
-					expect(body).toHaveProperty('message', 'Stock Cannot be Empty');
+					expect(body).toHaveProperty('message', [
+						"Product's Stock Cannot be Empty",
+					]);
 					done();
 				});
 		});
@@ -577,7 +901,7 @@ describe('Delete Product DELETE /products/:id', () => {
 		});
 		test('Error Response while Deleting with Status 404 - Product Id Not Found', (done) => {
 			request(app)
-				.delete(`/products/1`)
+				.delete(`/products/0`)
 				.set('access_token', token_admin)
 				.end((err, res) => {
 					const { body, status } = res;
@@ -602,7 +926,7 @@ describe('Delete Product DELETE /products/:id', () => {
 					done();
 				});
 		});
-		test('Error Response while Deleting with Status 404 - Wrong Access Token', (done) => {
+		test('Error Response while Deleting with Status 401 - Invalid Access Token', (done) => {
 			request(app)
 				.delete(`/products/${dummyProductId}`)
 				.set('access_token', 'wrong access token')
@@ -611,7 +935,7 @@ describe('Delete Product DELETE /products/:id', () => {
 					if (err) {
 						return done(err);
 					}
-					expect(status).toBe(404);
+					expect(status).toBe(401);
 					expect(body).toHaveProperty('message', 'Invalid Account Or Password');
 					done();
 				});

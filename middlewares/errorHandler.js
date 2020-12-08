@@ -14,7 +14,7 @@ module.exports = (err, req, res, next) => {
 		status = 400;
 		message = 'This Email has been Taken, try another one';
 	} else if (err.name === 'InvalidAccountOrPassword') {
-		status = 400;
+		status = 401;
 		message = 'Invalid Account Or Password';
 	} else if (err.name === 'NotAdmin') {
 		status = 401;
@@ -23,13 +23,12 @@ module.exports = (err, req, res, next) => {
 		status = 401;
 		message = 'Please Login First';
 	} else if (err.name === 'JsonWebTokenError') {
-		status = 404;
+		status = 401;
 		message = 'Invalid Account Or Password';
 	} else if (err.name === 'EmailOrPasswordCannotBeNull') {
 		status = 400;
 		message = 'Email or Password Cannot be Empty';
 	} else if (err.name === 'ProductNotFound') {
-		// console.log('MASUK ERROR HANDLER');
 		status = 404;
 		message = 'Product Not Found';
 	} else if (err.name === 'StockCannotBeNull') {
@@ -38,6 +37,9 @@ module.exports = (err, req, res, next) => {
 	} else if (err.name === 'StockCannotLessThanZero') {
 		status = 400;
 		message = 'Stock cannot Less Than Zero';
+	} else if (err.name === 'PriceCannotLessThanZero') {
+		status = 400;
+		message = 'Price cannot Less Than Zero';
 	}
 	res.status(status).json({
 		message: message,

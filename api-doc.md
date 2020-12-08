@@ -72,7 +72,7 @@ _Response (200 - Ok)_
 }
 ```
 
-_Response (400 - Bad Request - Invalid Account or Password)_
+_Response (401 - Bad Request - Invalid Account or Password)_
 
 ```
 {
@@ -132,7 +132,65 @@ _Response (401 - Unauthorized - No Access Token)_
 }
 ```
 
-_Response (404 - Not Found - Invalid Access Token)_
+_Response (401 - Not Found - Invalid Access Token)_
+
+```
+{
+    "message": "Invalid Account Or Password"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```
+{
+    "message": "Internal Server Error"
+}
+```
+
+---
+
+## GET /products/:id
+
+_Request Headers_
+
+```
+{
+    (REQUIRED) "access_token": "/token from login with any role/"
+}
+```
+
+_Response (200 - Ok)_
+
+```
+{
+    id: 1,
+    name: 'Barang Dummy',
+    image_url: 'Gambar Dummy URL',
+    price: 100000,
+    stock: 10,
+    createdAt: '2020-12-07T18:18:4544Z',
+    updatedAt: '2020-12-07T18:18:48.544Z'
+}
+```
+
+_Response (404 - Not Found - Product's Id Not Found)_
+
+```
+{
+    "message": "Product Not Found"
+}
+```
+
+_Response (401 - Unauthorized - No Access Token)_
+
+```
+{
+    "message": "Please Login First"
+}
+```
+
+_Response (401 - Not Found - Invalid Access Token)_
 
 ```
 {
@@ -201,7 +259,7 @@ _Response (401 - Unauthorized - No Access Token)_
 }
 ```
 
-_Response (404 - Not Found - Invalid Access Token)_
+_Response (401 - Not Found - Invalid Access Token)_
 
 ```
 {
@@ -291,7 +349,7 @@ _Response (401 - Unauthorized - No Access Token)_
 }
 ```
 
-_Response (404 - Not Found - Invalid Access Token)_
+_Response (401 - Not Found - Invalid Access Token)_
 
 ```
 {
@@ -378,7 +436,7 @@ _Response (401 - Unauthorized - No Access Token)_
 }
 ```
 
-_Response (404 - Not Found - Invalid Access Token)_
+_Response (401 - Not Found - Invalid Access Token)_
 
 ```
 {
@@ -454,7 +512,7 @@ _Response (401 - Unauthorized - No Access Token)_
 }
 ```
 
-_Response (404 - Not Found - Invalid Access Token)_
+_Response (401 - Not Found - Invalid Access Token)_
 
 ```
 {

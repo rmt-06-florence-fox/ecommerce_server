@@ -11,6 +11,8 @@ router.use(authentication);
 
 router.get('/products', ProductController.getProducts);
 
+router.get('/products/:id', ProductController.getProductById);
+
 router.use(authorization);
 
 router.post('/products', ProductController.createProduct);
