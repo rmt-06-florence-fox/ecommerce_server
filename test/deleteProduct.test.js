@@ -2,13 +2,12 @@ const request = require("supertest")
 const app = require("../app.js")
 const { sequelize } = require("../models/index.js")
 const { queryInterface } = sequelize
-let productList;
 let bcrypt = require("bcryptjs")
 let jwt = require("jsonwebtoken")
 let access_token_admin;
 let access_token_customer;
-let salt;
-let hash;
+let ProductId;
+
 
 afterAll(done => {
   queryInterface.bulkDelete("Products")
@@ -38,7 +37,7 @@ beforeAll(done => {
     returning: true
   })
     .then(products => {
-      productList = products
+      ProductId = products[0].id
       salt = bcrypt.genSaltSync(10);
       hash = bcrypt.hashSync("qweqwe", salt);
       return queryInterface.bulkInsert("Admins" , [{
@@ -71,48 +70,57 @@ beforeAll(done => {
       done(err)
     })
 })
-describe("Product Read GET /products", () => {
-  describe("Succesfully fetch products", () => {
-    test ("response with product list with admin token", (done) => {
+
+describe("Delete Products DELETE /admin/products/:id", () => {
+  describe("Succesfully delete", () => {
+    test ("response succesfully delete", done => {
       request(app)
-        .get("/products")
+        .delete(`/admin/products/${ProductId}`)
         .set("access_token", access_token_admin)
         .end((err, res) => {
           const { body, status } = res
           if(err) return done(err)
           expect(status).toBe(200)
-          expect(body[0]).toHaveProperty("name", productList[0].name)
-          expect(body[0]).toHaveProperty("image_url", productList[0].image_url)
-          expect(body[0]).toHaveProperty("price", productList[0].price)
-          expect(body[0]).toHaveProperty("stock", productList[0].stock)
+          expect(body).toMatchObject({message: "Successfully delete product"})
           done()
         })
     })
   })
 
-  describe("Succesfully fetch products", () => {
-    test ("response with product list with customer token", (done) => {
+  describe("Failed delete", () => {
+    test ("wrong token", done => {
       request(app)
-        .get("/products")
+        .delete(`/admin/products/${ProductId}`)
         .set("access_token", access_token_customer)
         .end((err, res) => {
           const { body, status } = res
           if(err) return done(err)
-          expect(status).toBe(200)
-          expect(body[0]).toHaveProperty("name", productList[0].name)
-          expect(body[0]).toHaveProperty("image_url", productList[0].image_url)
-          expect(body[0]).toHaveProperty("price", productList[0].price)
-          expect(body[0]).toHaveProperty("stock", productList[0].stock)
+          expect(status).toBe(401)
+          expect(body).toMatchObject({message: "You are not authorized"})
           done()
         })
     })
   })
 
-
-  describe("Failed fetch products", () => {
-    test ("empty token", (done) => {
+  describe("Failed delete", () => {
+    test ("data not found", done => {
       request(app)
-        .get("/products")
+        .delete(`/admin/products/${ProductId-1}`)
+        .set("access_token", access_token_admin)
+        .end((err, res) => {
+          const { body, status } = res
+          if(err) return done(err)
+          expect(status).toBe(404)
+          expect(body).toMatchObject({message: "Error! Data not found"})
+          done()
+        })
+    })
+  })
+
+  describe("Failed delete", () => {
+    test ("no token", done => {
+      request(app)
+        .delete(`/admin/products/${ProductId}`)
         .end((err, res) => {
           const { body, status } = res
           if(err) return done(err)

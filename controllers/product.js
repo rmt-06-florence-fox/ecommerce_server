@@ -31,6 +31,43 @@ class ProductController {
         next (err)
       })
   }
+
+  static editProduct(req, res, next){
+    let updatedProduct = {
+      name: req.body.name,
+      image_url: req.body.image_url,
+      price: req.body.price,
+      stock: req.body.stock
+    }
+    Product.update(updatedProduct, {
+      where: {
+        id: +req.params.id
+      },
+      returning: true
+    })
+      .then(product => {
+        res.status(200).json(product[1][0])
+      })
+      .catch(err => {
+        next (err)
+      })
+  }
+
+  static deleteProduct(req, res, next){
+    Product.destroy({
+      where:{
+        id: req.params.id
+      }
+    })
+    .then(response => {
+      res.status(200).json({
+        message: "Successfully delete product"
+      })
+    })
+    .catch(err => {
+      next(err)
+    })
+  }
 }
 
 module.exports = ProductController

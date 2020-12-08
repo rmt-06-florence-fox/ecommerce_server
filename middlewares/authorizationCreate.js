@@ -1,6 +1,6 @@
 function authorizeAdmin (req, res, next) {
   try {
-    if (req.loggedInAdmin){
+    if (req.loggedIn.role === "admin"){
       next()
     }
     else {

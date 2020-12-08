@@ -27,14 +27,51 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     image_url: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Image URL should not be empty"
+        },
+        notNull: {
+          msg: "Image URL should not be empty"
+        }
+      }
     },
     price: {
-      type: DataTypes.DOUBLE
+      type: DataTypes.DOUBLE,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Price should not be empty"
+        },
+        notNull: {
+          msg: "Price should not be empty"
+        },
+        isLessThanZero(value){
+          if(value < 0){
+            throw new Error('Price should not be less than 0');
+          }
+        }
+      }
     },
     stock: {
-      type: DataTypes.INTEGER
-    }
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Stock should not be empty"
+        },
+        notNull: {
+          msg: "Stock should not be empty"
+        },
+        isLessThanZero(value){
+          if(value < 0){
+            throw new Error('Stock should not be less than 0');
+          }
+        }
+      }
+    },
   }, {
     sequelize,
     modelName: 'Product',

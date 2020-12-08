@@ -42,7 +42,7 @@ describe("Login Admin POST /login", () => {
   describe("Successful login Admin" , () => {
     test ("response with access_token", (done) => {
       request(app)
-      .post("/login")
+      .post("/admin/login")
       .send({email: "admintest@mail.com", password: "qweqwe"})
       .end((err, res) => {
         const { body, status } = res
@@ -56,7 +56,7 @@ describe("Login Admin POST /login", () => {
   describe("Failed login admin", () => {
     test("Right email, wrong password", (done) => {
       request(app)
-      .post("/login")
+      .post("/admin/login")
       .send({email: "admintest@mail.com", password: "qweqw"})
       .end((err, res) => {
         const { body, status } = res
@@ -70,7 +70,7 @@ describe("Login Admin POST /login", () => {
   describe("Failed login admin", () => {
     test("Non-existent email", (done) => {
       request(app)
-      .post("/login")
+      .post("/admin/login")
       .send({email: "admintest2@mail.com", password: "qweqw"})
       .end((err, res) => {
         const { body, status } = res

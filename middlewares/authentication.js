@@ -1,7 +1,7 @@
 const verifyToken = require("../helpers/verifyToken")
 const { User, Admin } = require("../models")
 
-function authenticateUser(req, res, next){
+function authenticateAdmin(req, res, next){
   try {
     const { access_token } = req.headers
 
@@ -13,42 +13,39 @@ function authenticateUser(req, res, next){
     }
     else {
       const decoded = verifyToken(access_token)
-      User.findOne({
+      Admin.findOne({
         where: {
           id: decoded.id,
-          email: decoded.email,
-          role: decoded.role
+          email: decoded.email
         }
       })
-        .then(user => {
-          if(user){
-            req.loggedInUser = decoded
-            next()
+        .then(admin => {
+          if(admin){
+            return admin
           }
           else {
-            return Admin.findOne({
+            return User.findOne({
               where: {
                 id: decoded.id,
-                email: decoded.email,
-                role: decoded.role
+                email: decoded.email
               }
             })
           }
         })
-        .then(admin => {
-          if(admin) {
-            req.loggedInAdmin = decoded
+        .then(user => {
+          if (user) {
+            req.loggedIn = decoded
             next()
           }
           else {
-            throw({
+            throw {
               status: 401,
-              message: "You must login first"
-            })
+              message: "Please login first"
+            }
           }
         })
-        .catch(error => {
-          next(error)
+        .catch(err => {
+          next(err)
         })
     }
   } catch (error) {
@@ -56,4 +53,4 @@ function authenticateUser(req, res, next){
   }
 }
 
-module.exports = authenticateUser
+module.exports = authenticateAdmin
