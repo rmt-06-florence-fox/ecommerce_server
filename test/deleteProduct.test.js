@@ -6,9 +6,10 @@ let access_token = ''
 let wrong_access_token = ''
 let id = 4
 
-beforeAll(() => {
+beforeAll(done => {
     access_token = Helper.generateToken({email: "admin@mail.com", id: 1, role: "admin"})
     wrong_access_token = Helper.generateToken({email: "user@mail.com", id: 2, role: "costumer"})
+    done()
 })
 
 describe("Delete Product", () => {

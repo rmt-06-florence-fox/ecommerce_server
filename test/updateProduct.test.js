@@ -3,10 +3,12 @@ const app = require('../app')
 const Helper = require('../helper/Helper')
 
 let access_token = ''
+let wrong_access_token = ''
 let id = 1
-beforeAll(() => {
+beforeAll(done => {
     access_token = Helper.generateToken({email: "admin@mail.com", id: 1, role: "admin"})
     wrong_access_token = Helper.generateToken({email: "user@mail.com", id: 2, role: "costumer"})
+    done()
 })
 
 describe("Update Product", () => {
@@ -36,7 +38,7 @@ describe("Update Product", () => {
         })
     })
     describe("Access Token is not Admin", () => {
-        test("Response", done => {
+        test.only("Response", done => {
             request(app)
                 .put('/products/' + id)
                 .set("access_token", wrong_access_token)
@@ -102,7 +104,7 @@ describe("Update Product", () => {
         })
     })
     describe("Edit Stock lesser Than 0", () => {
-        test.only("Response", done => {
+        test("Response", done => {
             request(app)
                 .post('/products')
                 .set("access_token", access_token)
