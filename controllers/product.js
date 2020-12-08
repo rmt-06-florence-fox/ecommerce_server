@@ -1,10 +1,31 @@
-const { Product } = require('../models')
+const { Product, Category } = require('../models')
 
 class ProductController {
     static async getProduct(req, res, next) {
         try {
-            const products = await Product.findAll()
+            const products = await Product.findAll({
+              include: {
+                model: Category
+              }
+            })
             res.status(200).json({products})
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    static async getProductById(req, res, next) {
+        const id = req.params.id
+        try {
+            const product = await Product.findOne({
+              where: {
+                id
+              },
+              include: {
+                model: Category
+              }
+            })
+            res.status(200).json({product})
         } catch (error) {
             next(error)
         }
@@ -33,8 +54,8 @@ class ProductController {
         const payload = {
             name: req.body.name,
             image_url: req.body.image_url,
-            price: +req.body.price,
-            stock: +req.body.stock,
+            price: req.body.price,
+            stock: req.body.stock,
             CategoryId: req.body.CategoryId
         }
         
@@ -46,7 +67,7 @@ class ProductController {
                 returning: true
             })
 
-            res.status(200).json({product})
+            res.status(200).json({product: product[1][0]})
         } catch (error) {
             next(error)
         }

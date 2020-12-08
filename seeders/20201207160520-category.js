@@ -13,26 +13,26 @@ module.exports = {
     */
    await queryInterface.bulkInsert('Categories', [
      {
-       name: "Toys",
-       image: "gamepad",
+       name: "Mouse",
+       image: "mouse",
        createdAt: new Date(),
        updatedAt: new Date()
      },
      {
-       name: "Clothes",
-       image: "tshirt",
+       name: "Printer",
+       image: "print",
        createdAt: new Date(),
        updatedAt: new Date()
      },
      {
-       name: "Otomotif",
-       image: "motorcycle",
+       name: "Laptop",
+       image: "laptop",
        createdAt: new Date(),
        updatedAt: new Date()
      },
      {
-       name: "Stationary",
-       image: "pencil-ruler",
+       name: "Keyboard",
+       image: "keyboard",
        createdAt: new Date(),
        updatedAt: new Date()
      }
