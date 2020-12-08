@@ -59,9 +59,10 @@ module.exports = (sequelize, DataTypes) => {
         isInt: {
           msg: `Stock only accept numbers`
         },
-        min: {
-          args: 0,
-          msg: `Stock can't be lower than`
+        minZero (value) {
+          if (value < 0 ) {
+            throw new Error (`Stock can't be lower than 0`)
+          }
         }
       }
     }

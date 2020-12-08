@@ -1,7 +1,11 @@
 module.exports = async (req, res, next) => {
-    if (req.loggedUser.role == 'admin') {
+    try {
+        if (req.loggedUser.role == 'admin') {
             next ()
-    } else {
-        throw {status: 400, message: `Access admin only`}
+        } else {
+            throw {status: 400, message: `Access admin only`}
+        }
+    } catch (err) {
+        next(err)
     }
 }
