@@ -18,7 +18,8 @@ async function authentication(req,res,next){
         if(loginUser){
             req.loggedInUser = {
                 id: loginUser.id,
-                email: loginUser.email
+                email: loginUser.email,
+                role: loginUser.role
             }
             next()
         }else{

@@ -65,6 +65,13 @@ let product7 = {
     stock: 4,
     category: 'shirt'
 }
+let product8 = {
+    name:'mambo',
+    image_url: 'test_url',
+    price: 20000,
+    stock: 4,
+    category: 'makanan'
+}
 
 beforeAll( (done)=>{
     done()
@@ -126,8 +133,8 @@ describe('routes for all',()=>{
     test('create product tapi access_token customer',done=>{
         request(app)
         .post('/products')
-        .set('access_token',jwtCustomer)
         .send(product1)
+        .set('access_token',jwtCustomer)
         .expect('Content-Type', /json/)
         .expect(403)
         .end((err,res)=>{
@@ -139,8 +146,8 @@ describe('routes for all',()=>{
     test('create product bawa token admin tapi name kosong',done=>{
         request(app)
         .post('/products')
-        .set('access_token',jwtAdmin)
         .send(product2)
+        .set('access_token',jwtAdmin)
         .expect('Content-Type', /json/)
         .expect(400)
         .end((err,res)=>{
@@ -152,21 +159,21 @@ describe('routes for all',()=>{
     test('create product bawa token admin tapi price negatif',done=>{
         request(app)
         .post('/products')
-        .set('access_token',jwtAdmin)
         .send(product3)
+        .set('access_token',jwtAdmin)
         .expect('Content-Type', /json/)
         .expect(400)
         .end((err,res)=>{
             if(err) return done(err)
-            expect(res.body).toHaveProperty('message','please insert price correctly')
+            expect(res.body).toHaveProperty('message','price cannot be negative')
             done()
         })
     })
     test('create product bawa token admin tapi price diisi pake string',done=>{
         request(app)
         .post('/products')
-        .set('access_token',jwtAdmin)
         .send(product6)
+        .set('access_token',jwtAdmin)
         .expect('Content-Type', /json/)
         .expect(400)
         .end((err,res)=>{
@@ -178,21 +185,21 @@ describe('routes for all',()=>{
     test('create product bawa token admin tapi stock negatif',done=>{
         request(app)
         .post('/products')
-        .set('access_token',jwtAdmin)
         .send(product4)
+        .set('access_token',jwtAdmin)
         .expect('Content-Type', /json/)
         .expect(400)
         .end((err,res)=>{
             if(err) return done(err)
-            expect(res.body).toHaveProperty('message','please insert stock correctly')
+            expect(res.body).toHaveProperty('message','stock cannot be negative')
             done()
         })
     })
     test('create product bawa token admin tapi category kosong',done=>{
         request(app)
         .post('/products')
-        .set('access_token',jwtAdmin)
         .send(product5)
+        .set('access_token',jwtAdmin)
         .expect('Content-Type', /json/)
         .expect(400)
         .end((err,res)=>{
@@ -224,7 +231,7 @@ describe('routes for all',()=>{
     })
     test('update product tidak bawa access_token',done=>{
         request(app)
-        .put(`/products${productId}`)
+        .put(`/products/${productId}`)
         .send(product7)
         .expect('Content-Type', /json/)
         .expect(401)
@@ -236,9 +243,9 @@ describe('routes for all',()=>{
     })
     test('update product bawa access_token bukan admin',done=>{
         request(app)
-        .put(`/products${productId}`)
-        .set('access_token',jwtCustomer)
+        .put(`/products/${productId}`)
         .send(product7)
+        .set('access_token',jwtCustomer)
         .expect('Content-Type', /json/)
         .expect(403)
         .end((err,res)=>{
@@ -249,35 +256,35 @@ describe('routes for all',()=>{
     })
     test('update product bawa token admin tapi stock negatif',done=>{
         request(app)
-        .put(`/products${productId}`)
-        .set('access_token',jwtAdmin)
+        .put(`/products/${productId}`)
         .send(product4)
+        .set('access_token',jwtAdmin)
         .expect('Content-Type', /json/)
         .expect(400)
         .end((err,res)=>{
             if(err) return done(err)
-            expect(res.body).toHaveProperty('message','please insert stock correctly')
+            expect(res.body).toHaveProperty('message','stock cannot be negative')
             done()
         })
     })
-    test('create product bawa token admin tapi price negatif',done=>{
+    test('update product bawa token admin tapi price negatif',done=>{
         request(app)
-        .put(`/products${productId}`)
-        .set('access_token',jwtAdmin)
+        .put(`/products/${productId}`)
         .send(product3)
-        .expect('Content-Type', /json/)
-        .expect(400)
-        .end((err,res)=>{
-            if(err) return done(err)
-            expect(res.body).toHaveProperty('message','please insert price correctly')
-            done()
-        })
-    })
-    test('create product bawa token admin tapi price diisi pake string',done=>{
-        request(app)
-        .put(`/products${productId}`)
         .set('access_token',jwtAdmin)
+        .expect('Content-Type', /json/)
+        .expect(400)
+        .end((err,res)=>{
+            if(err) return done(err)
+            expect(res.body).toHaveProperty('message','price cannot be negative')
+            done()
+        })
+    })
+    test('update product bawa token admin tapi price diisi pake string',done=>{
+        request(app)
+        .put(`/products/${productId}`)
         .send(product6)
+        .set('access_token',jwtAdmin)
         .expect('Content-Type', /json/)
         .expect(400)
         .end((err,res)=>{
@@ -286,10 +293,9 @@ describe('routes for all',()=>{
             done()
         })
     })
-    
     test('delete product tidak bawa access_token',done=>{
         request(app)
-        .delete(`/products${productId}`)
+        .delete(`/products/${productId}`)
         .expect('Content-Type', /json/)
         .expect(401)
         .end((err,res)=>{
@@ -300,7 +306,7 @@ describe('routes for all',()=>{
     })
     test('delete product bawa access_token bukan admin',done=>{
         request(app)
-        .delete(`/products${productId}`)
+        .delete(`/products/${productId}`)
         .set('access_token',jwtCustomer)
         .expect('Content-Type', /json/)
         .expect(403)
