@@ -25,6 +25,24 @@ class ProductController {
       next(error)
     }
   }
+
+  static async updateProduct(req, res, next) {
+    try {
+      const id = req.params.id
+      const editProduct = {
+        name: req.body.name,
+        image_url: req.body.image_url,
+        price: req.body.price,
+        stock: req.body.stock
+      }
+      const editedProduct = await Product.update(editProduct, {
+        where: { id }, returning: true
+      })
+      res.status(200).json(editedProduct[1][0])
+    } catch (error) {
+      next(error)
+    }
+  }
 }
 
 module.exports = ProductController
