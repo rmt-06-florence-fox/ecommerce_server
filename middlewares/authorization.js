@@ -2,10 +2,12 @@ const { User } = require('../models/index')
 
 class Authorization {
     static async admin( req, res, next) {
+        console.log('sampe error')
         try {
             const user = req.loggedIn
+            console.log(user.role)
             if(user.role !== 'admin') {
-                throw {name: 'not Authorized'}
+                throw {name: 'OutOfAuthority'}
             }
             else {
                 next()

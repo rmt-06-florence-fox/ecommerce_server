@@ -1,6 +1,7 @@
 class ErrorHandler {
     static handle(err, req, res, next) {
       let status = 500;
+      console.log(err)
       let msg = 'Internal Server Error';
       if (err.name === 'SequelizeValidationError' || err.name === 'SequelizeUniqueConstraintError') {
         msg = err.errors.map(element => {

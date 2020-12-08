@@ -9,7 +9,7 @@ afterAll(done=> {
         done()
     })
     .catch(err => {
-        done()
+        done(err)
     })
 })
 
