@@ -9,7 +9,7 @@ module.exports = (err, req, res, next) => {
       for (let i = 0; i < err.errors.length; i++) {
           arrErrors.push( err.errors[i].message)
       }
-    res.status(400).json({message: `${arrErrors} ,required`} )
+    res.status(400).json({message: `${arrErrors}`} )
    
     }
     else {

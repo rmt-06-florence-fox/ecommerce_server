@@ -8,7 +8,7 @@ class UserController {
 
     console.log('masuk regist')
     const newUser = {
-      name: req.body.name,
+      role: req.body.role,
       email: req.body.email,
       password: req.body.password
     }

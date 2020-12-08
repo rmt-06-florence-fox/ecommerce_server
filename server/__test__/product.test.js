@@ -8,6 +8,12 @@ let id = ''
 
 
 beforeAll((done)=>{
+  // const admin = User.create({
+  //   email: 'admin2@mail.com',
+  //   password: 'aa',
+  //   role: 'admin'
+  // });
+  // id = admin.id;
   request(app)
     .post('/login')
     .send({
@@ -18,8 +24,14 @@ beforeAll((done)=>{
       if(err) return done(err)
       const { body, status } = res
       access_token = res.body.access_token
-
+     
     })
+
+    // const user = User.create({
+    //   email: 'user@mail.com',
+    //   password: 'aa',
+    //   role: 'bukanadmin'
+    // });
   request(app)
     .post('/login')
     .send({
@@ -32,19 +44,27 @@ beforeAll((done)=>{
       access_token_user = res.body.access_token
       done()
     })
+
+    // let product_data = {
+    //   name: 'Product name',
+    //   image_url: 'link image',
+    //   price: 1000,
+    //   stock: 20
+    // }
+    // return queryInterface.bulkInsert('Products', product_data, { returning: true })
 })
 
-afterAll((done) => {
-  queryInterface
-      .bulkDelete("Products")
-      .then(() => done())
-      .catch((err) => {
-          done();
-      });
-});
+// afterAll((done) => {
+//   queryInterface
+//       .bulkDelete("Products")
+//       .then(() => done())
+//       .catch((err) => {
+//           done();
+//       });
+// });
 
 let product_data = {
-  name: 'Product name',
+  name: 'Product2 name',
   image_url: 'link image',
   price: 1000,
   stock: 20
@@ -92,7 +112,7 @@ describe('Create product POST / SUCCESS CASE', () => {
                 if (err) throw err
                 else {
                     expect(res.status).toBe(400)
-                    expect(res.body).toHaveProperty('message','Name cannot be blank,Image cannot be blank,price cannot be blank,Stock cannot be blank ,required')
+                    expect(res.body).toHaveProperty('message')
                     done()
                 }
             })
@@ -137,7 +157,7 @@ describe('Create product POST / SUCCESS CASE', () => {
     })
   })
 
-  describe('FAILED CASE: invalid input stock and price < 0', () => {
+  describe('FAILED CASE: invalid input stock < 0', () => {
     test('test should send object with message error', (done) => {
         request(app)
             .post('/products')
@@ -145,7 +165,7 @@ describe('Create product POST / SUCCESS CASE', () => {
             .send({
               name: 'Product name',
               image_url: 'link image',
-              price: -1000,
+              price: 1000,
               stock: -2
             })
             .end((err, res) => {
@@ -159,28 +179,71 @@ describe('Create product POST / SUCCESS CASE', () => {
     })
   })
 
+  describe('FAILED CASE: invalid input price < 0', () => {
+    test('test should send object with message error', (done) => {
+        request(app)
+            .post('/products')
+            .set('access_token',access_token )
+            .send({
+              name: 'Product name',
+              image_url: 'link image',
+              price: -1000,
+              stock: 2
+            })
+            .end((err, res) => {
+                if (err) throw err
+                else {
+                    expect(res.status).toBe(400)
+                    expect(res.body).toHaveProperty('message','Stock / Price Must be greater than 0')
+                    done()
+                }
+            })
+    })
+  })
 
-  // describe('FAILED CASE: invalid input stock and price not an Integer', () => {
-  //   test('test should send object with message error', (done) => {
-  //       request(app)
-  //           .post('/products')
-  //           .set('access_token',access_token )
-  //           .send({
-  //             name: 'Product name',
-  //             image_url: 'link image',
-  //             price: 2000,
-  //             stock:  'yeyeye'
-  //           })
-  //           .end((err, res) => {
-  //               if (err) throw err
-  //               else {
-  //                   expect(res.status).toBe(400)
-  //                   expect(res.body).toHaveProperty('message','Stock / Price Must be a number')
-  //                   done()
-  //               }
-  //           })
-  //   })
-  // })
+
+  describe('FAILED CASE: invalid input price not an Integer', () => {
+    test('test should send object with message error', (done) => {
+        request(app)
+            .post('/products')
+            .set('access_token',access_token )
+            .send({
+              name: 'Product name',
+              image_url: 'link image',
+              price: 'lalala',
+              stock: 2
+            })
+            .end((err, res) => {
+                if (err) throw err
+                else {
+                    expect(res.status).toBe(400)
+                    expect(res.body).toHaveProperty('message','Stock / Price Must be a number')
+                    done()
+                }
+            })
+    })
+  })
+  describe('FAILED CASE: invalid input stock not an Integer', () => {
+    test('test should send object with message error', (done) => {
+        request(app)
+            .post('/products')
+            .set('access_token',access_token )
+            .send({
+              name: 'Product name',
+              image_url: 'link image',
+              price: 30000,
+              stock:  'yeyeye'
+            })
+            .end((err, res) => {
+                if (err) throw err
+                else {
+                    expect(res.status).toBe(400)
+                    expect(res.body).toHaveProperty('message','Stock / Price Must be a number')
+                    done()
+                }
+            })
+    })
+  })
 })
 
 describe('EDIT Product PUT/products/:id ', () => {
@@ -233,7 +296,7 @@ describe(' FAILED CASE UPDATE : invalid sequelize validation error', () => {
               if (err) throw err
               else {
                   expect(res.status).toBe(400)
-                  expect(res.body).toHaveProperty('message','Name cannot be blank,Image cannot be blank,price cannot be blank,Stock cannot be blank ,required')
+                  expect(res.body).toHaveProperty('message')
                   done()
               }
           })
@@ -293,7 +356,7 @@ describe('FAILED CASE UPDATE : invalid input stock and price < 0', () => {
               if (err) throw err
               else {
                   expect(res.status).toBe(400)
-                  expect(res.body).toHaveProperty('message','Stock / Price Must be greater than 0')
+                  expect(res.body).toHaveProperty('message')
                   done()
               }
           })
@@ -301,27 +364,27 @@ describe('FAILED CASE UPDATE : invalid input stock and price < 0', () => {
 })
 
 
-// describe('FAILED CASE UPDATE: invalid input stock and price not an Integer', () => {
-//   test('test should send object with message error', (done) => {
-//       request(app)
-//           .put(`/products/${id}`)
-//           .set('access_token',access_token )
-//           .send({
-//             name: 'Product name',
-//             image_url: 'link image',
-//             price: 2000,
-//             stock: 'yeyeye'
-//           })
-//           .end((err, res) => {
-//               if (err) throw err
-//               else {
-//                   expect(res.status).toBe(400)
-//                   expect(res.body).toHaveProperty('message','Stock / Price Must be a number')
-//                   done()
-//               }
-//           })
-//   })
-// })
+describe('FAILED CASE UPDATE: invalid input stock and price not an Integer', () => {
+  test('test should send object with message error', (done) => {
+      request(app)
+          .put(`/products/${id}`)
+          .set('access_token',access_token )
+          .send({
+            name: 'Product name',
+            image_url: 'link image',
+            price: 'lalala',
+            stock: 'yeyeye'
+          })
+          .end((err, res) => {
+              if (err) throw err
+              else {
+                  expect(res.status).toBe(400)
+                  expect(res.body).toHaveProperty('message')
+                  done()
+              }
+          })
+  })
+})
 })
 
 describe('DELETE /products/:id', () => {

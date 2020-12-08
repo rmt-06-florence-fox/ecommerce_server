@@ -8,7 +8,7 @@ describe('Login User /login', () => {
       request(app)
         .post('/login')
         .send({
-          email: "admin@mail.com",
+          email: "admin2@mail.com",
           password: "aa"
         })
         .end((err, res)=>{
@@ -28,7 +28,7 @@ describe('Login User /login', () => {
       request(app)
         .post('/login')
         .send({
-          email: "admin@mail.com",
+          email: "admin2@mail.com",
           password: "aaa"
         })
         .end((err, res)=>{
@@ -48,7 +48,7 @@ describe('Login User /login', () => {
       request(app)
         .post('/login')
         .send({
-          email: "admin@maillllllll.com",
+          email: "admin2@maillllllll.com",
           password: "12345"
         })
         .end((err, res)=>{
