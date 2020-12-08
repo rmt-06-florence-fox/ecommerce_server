@@ -15,10 +15,60 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Product.init({
-    name: DataTypes.STRING,
-    image_url: DataTypes.STRING,
-    price: DataTypes.INTEGER,
-    stock: DataTypes.INTEGER,
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: `name musn't be empty`
+        },
+        notNull: {
+          msg: `name musn't be null`
+        }
+      }
+    },
+    image_url: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: `image url musn't be empty`
+        },
+        notNull: {
+          msg: `image url musn't be null`
+        }
+      }
+    },
+    price: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: `price musn't be empty`
+        },
+        notNull: {
+          msg: `price url musn't be null`
+        },
+        isNumeric:{
+          msg : `price must filled by number`
+        }
+      }
+    },
+    stock: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: `stock musn't be empty`
+        },
+        notNull: {
+          msg: `stock url musn't be null`
+        },
+        isNumeric:{
+          msg : `stock must filled by number`
+        }
+      }
+    },
     UserId: DataTypes.INTEGER
   }, {
     sequelize,
