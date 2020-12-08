@@ -3,6 +3,7 @@ const app = require("../app");
 
 let admin_access_token = "";
 let cust_access_token = "";
+let id = 1;
 
 beforeAll((done) => {
   request(app)
@@ -27,9 +28,8 @@ describe("Delete Product DELETE /products/", () => {
   describe("success delete", () => {
     test("should response with message", (done) => {
       request(app)
-        .delete("/products/:id")
-        .query({ id: "1" })
-        .set("access_token", admin_access_token)
+        .put(`/products/${id}`)
+        .set("access_token", admin_access_token.access_token)
         .end((err, res) => {
           const { body, status } = res;
           if (err) {
@@ -47,8 +47,7 @@ describe("Delete Product DELETE /products/", () => {
   describe("failed delete", () => {
     test("no access_token", (done) => {
       request(app)
-        .delete("/products/:id")
-        .query({ id: "1" })
+        .put(`/products/${id}`)
         .set("access_token", "")
         .end((err, res) => {
           const { body, status } = res;
@@ -64,7 +63,7 @@ describe("Delete Product DELETE /products/", () => {
       request(app)
         .delete("/products/:id")
         .query({ id: "1" })
-        .set("access_token", cust_access_token)
+        .set("access_token", cust_access_token.access_token)
         .end((err, res) => {
           const { body, status } = res;
           if (err) {

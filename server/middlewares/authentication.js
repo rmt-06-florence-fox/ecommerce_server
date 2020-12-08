@@ -9,7 +9,7 @@ module.exports = (req, res, next) => {
       });
     } else {
       const decoded = decode(access_token);
-      console.log(decoded);
+      // console.log(decoded);
       if (decoded.role == "admin") {
         req.userData = decoded;
         console.log(req.userData);

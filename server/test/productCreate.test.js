@@ -11,6 +11,7 @@ beforeAll((done) => {
     .end((err, res) => {
       const { body } = res;
       admin_access_token = body;
+      console.log(admin_access_token);
       done();
     });
   request(app)
@@ -19,6 +20,7 @@ beforeAll((done) => {
     .end((err, res) => {
       const { body } = res;
       cust_access_token = body;
+      console.log(cust_access_token);
       done();
     });
 });
@@ -36,7 +38,7 @@ describe("Create Product POST /products/", () => {
           stock: 100,
           UserId: 1,
         })
-        .set("access_token", admin_access_token)
+        .set("access_token", admin_access_token.access_token)
         .end((err, res) => {
           const { body, status } = res;
           if (err) {
@@ -46,8 +48,8 @@ describe("Create Product POST /products/", () => {
           expect(body).toHaveProperty("id", expect.any(Number));
           expect(body).toHaveProperty("name", expect.any(String));
           expect(body).toHaveProperty("image_url", expect.any(String));
-          expect(body).toHaveProperty("price", expect.toBeGreaterThan(0));
-          expect(body).toHaveProperty("stock", expect.toBeGreaterThan(1));
+          expect(body).toHaveProperty("price", expect.any(Number));
+          expect(body).toHaveProperty("stock", expect.any(Number));
           done();
         });
     });
@@ -86,7 +88,7 @@ describe("Create Product POST /products/", () => {
           stock: 100,
           UserId: 1,
         })
-        .set("access_token", cust_access_token)
+        .set("access_token", cust_access_token.access_token)
         .end((err, res) => {
           const { body, status } = res;
           if (err) {
@@ -108,14 +110,16 @@ describe("Create Product POST /products/", () => {
           stock: 100,
           UserId: 1,
         })
-        .set("access_token", admin_access_token)
+        .set("access_token", admin_access_token.access_token)
         .end((err, res) => {
           const { body, status } = res;
           if (err) {
             return done(err);
           }
           expect(status).toBe(400);
-          expect(body).toHaveProperty("message", "name required");
+          expect(body).toEqual(
+            expect.arrayContaining([{ message: "name required" }])
+          );
           done();
         });
     });
@@ -123,23 +127,24 @@ describe("Create Product POST /products/", () => {
       request(app)
         .post("/products/")
         .send({
-          name: "",
+          name: "Iphone 12",
           image_url:
             "https://www.citypng.com/public/uploads/small/21602681980nyvpfanmd9fycm48ugtwzaiejtxxvsjzc8uaf0yglia3ijghfcd343eq3cdqvl6sgxs8gl05dh7ttkigntwkvme8x1uxazefw9rb.png",
           price: 14999000,
           stock: -100,
           UserId: 1,
         })
-        .set("access_token", admin_access_token)
+        .set("access_token", admin_access_token.access_token)
         .end((err, res) => {
           const { body, status } = res;
           if (err) {
             return done(err);
           }
           expect(status).toBe(400);
-          expect(body).toHaveProperty(
-            "message",
-            "stock must be greater than 1"
+          expect(body).toEqual(
+            expect.arrayContaining([
+              { message: "stock must be greater than 1" },
+            ])
           );
           done();
         });
@@ -148,23 +153,24 @@ describe("Create Product POST /products/", () => {
       request(app)
         .post("/products/")
         .send({
-          name: "",
+          name: "Iphone 12",
           image_url:
             "https://www.citypng.com/public/uploads/small/21602681980nyvpfanmd9fycm48ugtwzaiejtxxvsjzc8uaf0yglia3ijghfcd343eq3cdqvl6sgxs8gl05dh7ttkigntwkvme8x1uxazefw9rb.png",
           price: -14999000,
           stock: 100,
           UserId: 1,
         })
-        .set("access_token", admin_access_token)
+        .set("access_token", admin_access_token.access_token)
         .end((err, res) => {
           const { body, status } = res;
           if (err) {
             return done(err);
           }
           expect(status).toBe(400);
-          expect(body).toHaveProperty(
-            "message",
-            "price must be greater than 0"
+          expect(body).toEqual(
+            expect.arrayContaining([
+              { message: "price must be greater than 0" },
+            ])
           );
           done();
         });
@@ -173,21 +179,23 @@ describe("Create Product POST /products/", () => {
       request(app)
         .post("/products/")
         .send({
-          name: "",
+          name: "Iphone 12",
           image_url:
             "https://www.citypng.com/public/uploads/small/21602681980nyvpfanmd9fycm48ugtwzaiejtxxvsjzc8uaf0yglia3ijghfcd343eq3cdqvl6sgxs8gl05dh7ttkigntwkvme8x1uxazefw9rb.png",
           price: 14999000,
           stock: "seratus",
           UserId: 1,
         })
-        .set("access_token", admin_access_token)
+        .set("access_token", admin_access_token.access_token)
         .end((err, res) => {
           const { body, status } = res;
           if (err) {
             return done(err);
           }
           expect(status).toBe(400);
-          expect(body).toHaveProperty("message", "must be number");
+          expect(body).toEqual(
+            expect.arrayContaining([{ message: "must be number" }])
+          );
           done();
         });
     });
