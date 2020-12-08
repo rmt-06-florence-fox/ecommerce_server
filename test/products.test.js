@@ -5,6 +5,7 @@ const { makeToken } = require('../helper/jsonwebtoken')
 const {sequelize} = require('../models')
 const {queryInterface} = sequelize
 let access_token 
+let idProduct
 
 beforeAll((done) => {
   queryInterface.bulkInsert('Users', [{
@@ -37,12 +38,8 @@ beforeAll((done) => {
 afterAll((done)=>{
   queryInterface.bulkDelete('Products')
   .then (()=> {
-    done()
+    return queryInterface.bulkDelete('Users')
   })
-  .catch((err) => {
-    done(err)
-  })
-  queryInterface.bulkDelete('Users')
   .then (()=> {
     done()
   })
@@ -51,7 +48,7 @@ afterAll((done)=>{
   })
 })
 
-describe("test for product's CRUD", () => {
+describe("test product's CRUD section", () => {
 
   describe("test create product function", () => {
     describe("success create product function", () => {
@@ -69,6 +66,7 @@ describe("test for product's CRUD", () => {
           if (err) {
             return done(err)
           }
+          idProduct = res.body.id
           expect(res.status).toBe(201)
           expect(res.body).toHaveProperty("id", res.body.id)
           expect(res.body).toHaveProperty("name" , 'Playstation 5')
@@ -167,6 +165,7 @@ describe("test for product's CRUD", () => {
           done()
         })
       })
+  
       test("error contain number in create product test 2", (done) => {
         request(app)
         .post('/products')
@@ -191,4 +190,90 @@ describe("test for product's CRUD", () => {
     })
   })
 
+  describe("test for read lists", () => {
+    describe("test for read lists in products", ()=> {
+      test("success read products test", (done) => {
+        request(app)
+        .get('/products')
+        .set('access_token', `${access_token}`)
+        .end((err, res) => {
+          if (err) {
+            return done(err)
+          }
+          expect(res.status).toBe(200)
+          expect(res.body[0]).toHaveProperty("id", res.body[0].id)
+          expect(res.body[0]).toHaveProperty("name" , 'Playstation 5')
+          expect(res.body[1]).toHaveProperty("id", res.body[1].id)
+          expect(res.body[1]).toHaveProperty("stock", 30)
+          done()
+        })
+      })
+    })
+    describe("test for read lists in products without access token", ()=> {
+      test("success read products test", (done) => {
+        request(app)
+        .get('/products')
+        .end((err, res) => {
+          if (err) {
+            return done(err)
+          }
+          expect(res.status).toBe(200)
+          expect(res.body[0]).toHaveProperty("id", res.body[0].id)
+          expect(res.body[0]).toHaveProperty("name" , 'Playstation 5')
+          expect(res.body[1]).toHaveProperty("id", res.body[1].id)
+          expect(res.body[1]).toHaveProperty("stock", 30)
+          done()
+        })
+      })
+    })
+  })
+  
+  describe("test for get list by id", () => {
+    describe("test for get list by id in products", ()=> {
+      test("success get list product test", (done) => {
+        request(app)
+        .get(`/products/${idProduct}`)
+        .set('access_token', `${access_token}`)
+        .end((err, res) => {
+          if (err) {
+            return done(err)
+          }
+          expect(res.status).toBe(200)
+          expect(res.body).toHaveProperty("id", res.body.id)
+          expect(res.body).toHaveProperty("name" , 'Playstation 5')
+          done()
+        })
+      })
+    })
+    describe("test for get list by id in products without access token", ()=> {
+      test("get list by id in product test", (done) => {
+        request(app)
+        .get(`/products/${idProduct}`)
+        .end((err, res) => {
+          if (err) {
+            return done(err)
+          }
+          expect(res.status).toBe(401)
+          expect(res.body).toHaveProperty("message", 'you must login first as admin')
+          done()
+        })
+      })
+    })
+    describe("test for get list by id in products with riddiculous id", ()=> {
+      test("get list by id in product test", (done) => {
+        request(app)
+        .get(`/products/2`)
+        .set('access_token', `${access_token}`)
+        .end((err, res) => {
+          if (err) {
+            return done(err)
+          }
+          expect(res.status).toBe(404)
+          expect(res.body).toHaveProperty("message", `error not found`)
+          done()
+        })
+      })
+    })
+  })
+  
 })

@@ -8,19 +8,19 @@ module.exports = async (req,res,next) => {
       const {access_token} = req.headers
       const decode = decoded(access_token)
       const found = await User.findOne({where : {id : decode.id}})
-      if (found) {
+      if (found && found.role === 'admin') {
         req.UserLogin = decode
         next()
       } else {
         throw {
           status : 401,
-          message : 'you must login first'
+          message : `sorry you're prohibited to log in except for admin`
         }
       }
     } else {
       throw {
         status : 401,
-        message : 'you must login first'
+        message : 'you must login first as admin'
       }
     }
   } catch (error) {
