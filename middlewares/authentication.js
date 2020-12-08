@@ -18,7 +18,7 @@ module.exports = async (req, res, next) => {
                     email: decode.email
                 }
             })
-            if (user){
+            if (user) {
                 req.loggedInUser = {
                     id: decode.id,
                     email: decode.email,

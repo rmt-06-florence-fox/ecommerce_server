@@ -1,8 +1,7 @@
-const { Task } = require("../models")
+const { User } = require("../models")
 
 module.exports = async (req, res, next) => {
     try {
-        console.log("masuk authorized");
         const user = await User.findOne({
             where: {
                 email: req.loggedInUser.email
@@ -15,7 +14,7 @@ module.exports = async (req, res, next) => {
             }
         } else {
             if (user.role == "admin") {
-                console.log("authorized");
+                console.log("masuk authorized");
                 next()
             } else {
                 throw {

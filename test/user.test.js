@@ -1,17 +1,7 @@
 const request = require("supertest")
 const app = require("../app")
-const { sequelize } = require("../models")
-const { queryInterface } = sequelize
 
-// afterAll((done) => {
-//     queryInterface.bulkDelete("Users")
-//     .then(result => {
-//         done()
-//     })
-//     .catch(err => {
-//         done(err)
-//     });
-// })
+
 
 describe("login user role: admin", () => {
     describe("success login", () => {
@@ -48,7 +38,7 @@ describe("login user role: admin", () => {
                 if (err) {
                     return done(err)
                 } else {
-                    expect(status).toBe(400)
+                    expect(status).toBe(401)
                     expect(body).toHaveProperty("message", "invalid email or password")
                     done()
                 }
@@ -57,7 +47,7 @@ describe("login user role: admin", () => {
     })
 
     describe("error login email is empty", () => {
-        test("error email not found", (done) => [
+        test("error email empty", (done) => [
             request(app)
             .post("/login")
             .send({
@@ -69,7 +59,7 @@ describe("login user role: admin", () => {
                 if (err) {
                     return done(err)
                 } else {
-                    expect(status).toBe(400)
+                    expect(status).toBe(401)
                     expect(body).toHaveProperty("message", "invalid email or password")
                     done()
                 }
@@ -90,7 +80,7 @@ describe("login user role: admin", () => {
                 if (err) {
                     return done(err)
                 } else {
-                    expect(status).toBe(400)
+                    expect(status).toBe(401)
                     expect(body).toHaveProperty("message", "invalid email or password")
                     done()
                 }
@@ -99,7 +89,7 @@ describe("login user role: admin", () => {
     })
 
     describe("error login password empty", () => {
-        test("error password not found", (done) => [
+        test("error password empty", (done) => [
             request(app)
             .post("/login")
             .send({
@@ -111,7 +101,7 @@ describe("login user role: admin", () => {
                 if (err) {
                     return done(err)
                 } else {
-                    expect(status).toBe(400)
+                    expect(status).toBe(401)
                     expect(body).toHaveProperty("message", "invalid email or password")
                     done()
                 }
