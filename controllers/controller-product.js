@@ -2,6 +2,15 @@ const { Product } = require ('../models')
 
 class ControllerProduct {
 
+    static async get (req, res, next) {
+        try {
+            const productList = await Product.findAll ()
+            res.status(200).json({products: productList})
+        } catch (err) {
+            next (err)
+        }
+    }
+
     static async post (req, res, next) {
         try {
             const newPoduct = await Product.create(req.body)

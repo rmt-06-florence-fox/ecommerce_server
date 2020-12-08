@@ -278,6 +278,49 @@ describe('Testing Route Product', () => {
 
     });
 
+    describe('Product get all GET /product', () => {
+        test('return all products on success', (done) => {
+            request(app)
+            .get('/product')
+            .set('access_token', access_token)
+            .end((err, res) => {
+                const { status, body } = res
+                if (err) return done(err);
+                expect(status).toBe(200)
+                expect(body).toHaveProperty("products");
+                return done()
+            })
+        });
+
+        test('return need to login without token', (done) => {
+            request(app)
+            .get('/product')
+            // .set('access_token', access_token)
+            .end((err, res) => {
+                const { status, body } = res
+                if (err) return done(err);
+                expect(status).toBe(400)
+                expect(body).toHaveProperty("error", 'Need login to access');
+                return done()
+            })
+        });
+
+        test('return Access admin only on incorrect token', (done) => {
+            request(app)
+            .get('/product')
+            .set('access_token', token_access)
+            .end((err, res) => {
+                const { status, body } = res
+                if (err) return done(err);
+                expect(status).toBe(400)
+                expect(body).toHaveProperty("error", 'Access admin only');
+                return done()
+            })
+        });
+
+    });
+
+
     describe('Product delete DELETE /product/:id', () => {
         test('return error when required field not filled', (done) => {
             request(app)
