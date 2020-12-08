@@ -3,7 +3,7 @@ const app = require('../app')
 
 describe("Login User POST /login", () => {
     describe("Login Success", () => {
-        test.only("Response", done => {
+        test("Response", done => {
             request(app)
                 .post('/login')
                 .send({
@@ -34,8 +34,8 @@ describe("Login User POST /login", () => {
                     if(err){
                         return done(err)
                     }
-                    expect(status).toBe(401)
-                    expect(body).toHaveProperty('message', 'incorrect password')
+                    expect(status).toBe(400)
+                    expect(body).toHaveProperty('message', 'wrong email/password')
                     done()
                 })            
         })
@@ -53,8 +53,8 @@ describe("Login User POST /login", () => {
                     if(err){
                         return done(err)
                     }
-                    expect(status).toBe(401)
-                    expect(body).toHaveProperty('message', 'invalid account')
+                    expect(status).toBe(400)
+                    expect(body).toHaveProperty('message', 'wrong email/password')
                     done()
                 })            
         })
@@ -72,10 +72,11 @@ describe("Login User POST /login", () => {
                     if(err){
                         return done(err)
                     }
-                    expect(status).toBe(401)
-                    expect(body).toHaveProperty('message', expect.any(String))
+                    expect(status).toBe(400)
+                    expect(body).toHaveProperty('message', 'wrong email/password')
                     done()
                 })            
         })
     })
+    
 })

@@ -11,18 +11,17 @@ class UserController{
         })
         .then(data=>{
             if(!data){
-                console.log(data)
                 throw {
-                    status: 401,
-                    message: 'invalid account'
+                    status: 400,
+                    message: 'wrong email/password'
                 }
             } else if(bcrypt.compareSync(req.body.password, data.password)){
                 const access_token = Helper.generateToken({email: data.email, id: data.id, role: data.role})
                 res.status(200).json({access_token})
             } else {
                 throw {
-                    status: 401,
-                    message: 'incorrect password'
+                    status: 400,
+                    message: 'wrong email/password'
                 }
             }
         })

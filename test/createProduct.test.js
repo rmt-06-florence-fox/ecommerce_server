@@ -38,7 +38,7 @@ describe("Create Product", () => {
         })
     })
     describe("Access Token is Empty", () => {
-        test.only("Response", done => {
+        test("Response", done => {
             request(app)
                 .post('/products')
                 .set("access_token", '')

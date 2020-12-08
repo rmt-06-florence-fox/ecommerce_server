@@ -1,15 +1,28 @@
 const request = require('supertest')
+const {Product} = require('../models/index')
 const app = require('../app')
 const Helper = require('../helper/Helper')
 
 let access_token = ''
 let wrong_access_token = ''
-let id = 4
+let id = ''
+let data = {
+    name: `Harry Potter and The Cursed Child`,
+    image_url: `https://cdn.gramedia.com/uploads/items/9786020386201_Harry-Potter-.jpg`,
+    price: 127000,
+    stock: 10
+}
 
-beforeAll(done => {
-    access_token = Helper.generateToken({email: "admin@mail.com", id: 1, role: "admin"})
-    wrong_access_token = Helper.generateToken({email: "user@mail.com", id: 2, role: "costumer"})
-    done()
+beforeAll(async (done) => {
+    try{
+        access_token = Helper.generateToken({email: "admin@mail.com", id: 1, role: "admin"})
+        wrong_access_token = Helper.generateToken({email: "user@mail.com", id: 2, role: "costumer"})
+        const dummyProduct = await Product.create(data)
+        id = dummyProduct.id
+        done()
+    } catch (e){
+        done(e)
+    }
 })
 
 describe("Delete Product", () => {
@@ -30,7 +43,7 @@ describe("Delete Product", () => {
         })
     })
     describe("Access Token is not Admin", () => {
-        test.only("Response", done => {
+        test("Response", done => {
             request(app)
                 .put('/products/' + id)
                 .set("access_token", wrong_access_token)

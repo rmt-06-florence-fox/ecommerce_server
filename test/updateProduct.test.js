@@ -38,7 +38,7 @@ describe("Update Product", () => {
         })
     })
     describe("Access Token is not Admin", () => {
-        test.only("Response", done => {
+        test("Response", done => {
             request(app)
                 .put('/products/' + id)
                 .set("access_token", wrong_access_token)
@@ -60,7 +60,7 @@ describe("Update Product", () => {
         })
     })
     describe("Edit Price lesser Than 0", () => {
-        test("Response", done => {
+        test.only("Response", done => {
             request(app)
                 .put('/products/' + id)
                 .set("access_token", access_token)

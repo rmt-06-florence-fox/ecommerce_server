@@ -16,6 +16,12 @@ module.exports = async (req, res, next)=>{
             })
             if(user){
                 next()
+            }
+            else {
+                throw {
+                    status: 401,
+                    message: 'please login first'
+                }
             }  
         } else {
             throw {
