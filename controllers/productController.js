@@ -27,16 +27,34 @@ class ProductController {
     }
 
     static async delete (req, res, next) {
-        console.log('<<<<<<<<<<<<<<<<<<<<<<masuk sini con')
-
         const id = +req.params.id
         try {
             await Product.destroy({ where: { id } });
-            res.status(200).json({message: 'task succes to delete'})
+            res.status(200).json({message: 'product succes to delete'})
         } catch (error) {
             next(error)            
         }
     }
+
+    static async getAll (req, res, next) {
+        try {
+            const product = await Product.findAll()
+            res.status(200).json({product})
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    static async getOne (req, res, next) {
+        const id = +req.params.id
+        try {
+            const product = await Product.findByPk(id)
+            res.status(200).json({product})
+        } catch (error) {
+            next(error)
+        }
+    }
+
 }
 
 module.exports = ProductController
