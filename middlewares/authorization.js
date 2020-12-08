@@ -5,7 +5,7 @@ function authorization (req, res, next){
         next()
     }
     else {
-        next({message: "Sorry, you are not authorized"})
+        res.status(401).json({message: "Sorry, you are not authorized"})
     }
 }
 

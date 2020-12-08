@@ -6,7 +6,7 @@ async function authentication (req, res, next){
     const { access_token } = req.headers
     try {
         if(!access_token){
-            throw {msg : "authentication failed", status: 401}
+            throw {name : "Authentication Failed", status: 401}
         }
         else{
             const decoded = verifyToken(access_token)
@@ -16,7 +16,7 @@ async function authentication (req, res, next){
             })
             // console.log(user)
             if(!user){
-                throw {msg : "Authentication Failed", status: 401 }
+                throw {name : "Authentication Failed", status: 401 }
             }
             else {
                 req.loggedInUser = user
