@@ -3,7 +3,6 @@ const app = require("../app");
 const { hash } = require("../helpers/bcrypt");
 const { sequelize } = require("../models");
 const { queryInterface } = sequelize;
-const { Product } = require("../models");
 const { sign } = require("../helpers/jwt");
 
 let adminToken = "";
