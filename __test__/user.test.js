@@ -467,3 +467,121 @@ describe('update PUT /products/:id', () => {
         })
     })
 // ======================================================================
+
+// delete product
+
+
+let access_token ;
+let deleteId;
+
+beforeAll((done) => {
+    User.findOne({
+        where:{
+            email: "admin@mail.com",
+        }
+    })
+    .then(user => {
+        access_token = jwt.sign({id: user.id, email: user.email}, 'process.env.SECRET')
+        return Product.create({
+            name: "sandal", 
+            image_url: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//85/MTA-2825131/swallow_swallow-sandal-jepit-original_full03.jpg",
+            price: 10000,
+            stock: 99,
+            createdAt: new Date(),
+            updatedAt: new Date()
+        })
+    })
+    .then(data =>{
+        deleteId = data.id
+        done()
+
+    })
+    .catch(err =>{
+        done(err)
+    })
+
+})
+afterAll((done) =>{
+    queryInterface.bulkDelete('Products')
+        .then(response => {
+            done()
+        })
+        .catch(err => {
+            done(err)
+        })
+})
+
+
+describe('delete DELETE /products/:id', () => {
+    describe('success delete', () =>{
+        test('response get deleted product', (done) => {
+            request(app)
+            .delete("/products/" + deleteId)
+            .set("access_token", access_token)
+            .send({name: "swallow", 
+                image_url: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//85/MTA-2825131/swallow_swallow-sandal-jepit-original_full03.jpg",
+                price: 70000,
+                stock: 88,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            })
+            .end((err, res) => {
+                const {body, status} = res
+                if(err) {
+                    return done(err)
+                }
+                expect(status).toBe(200)
+                expect(body[1][0]).toHaveProperty('name', 'swallow'),
+                expect(body[1][0]).toHaveProperty('image_url', 'https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//85/MTA-2825131/swallow_swallow-sandal-jepit-original_full03.jpg'),
+                expect(body[1][0]).toHaveProperty('price', 70000),
+                expect(body[1][0]).toHaveProperty('stock', 88),
+                done() 
+            })
+        })
+    })
+    describe('first failed delete', () =>{
+        test('no access token', (done) => {
+            request(app)
+            .delete("/products/" + deleteId)
+            .set("access_token", '')
+            .send({name: "sandal", 
+                image_url: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//85/MTA-2825131/swallow_swallow-sandal-jepit-original_full03.jpg",
+                price: 10000,
+                stock: 99,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            })
+            .end((err, res) => {
+                const {body, status} = res
+                if(err) {
+                    return done(err)
+                }
+                expect(status).toBe(401)
+                expect(body).toHaveProperty('message', 'login first'),
+                done() 
+            })
+        })
+    })
+    describe('second failed delete', () =>{
+        test('wrong access token (not admin)', (done) => {
+            request(app)
+            .delete("/products/" + deleteId)
+            .set("access_token", 'ZzzzZZZzZzZZZZZ')
+            .send({name: "sandal", 
+                image_url: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//85/MTA-2825131/swallow_swallow-sandal-jepit-original_full03.jpg",
+                price: 10000,
+                stock: 99,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            })
+            .end((err, res) => {
+                const {body, status} = res
+                if(err) {
+                    return done(err)
+                }
+                expect(status).toBe(500)
+                done() 
+            })
+        })
+    })
+})
