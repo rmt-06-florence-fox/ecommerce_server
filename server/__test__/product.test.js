@@ -45,13 +45,13 @@ beforeAll((done)=>{
       done()
     })
 
-    // let product_data = {
-    //   name: 'Product name',
-    //   image_url: 'link image',
-    //   price: 1000,
-    //   stock: 20
-    // }
-    // return queryInterface.bulkInsert('Products', product_data, { returning: true })
+    let product_data = {
+      name: 'Product name',
+      image_url: 'link image',
+      price: 1000,
+      stock: 20
+    }
+    return queryInterface.bulkInsert('Products', product_data, { returning: true })
 })
 
 // afterAll((done) => {
