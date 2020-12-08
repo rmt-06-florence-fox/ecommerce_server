@@ -5,29 +5,28 @@ const bcrypt = require ('bcryptjs')
 class Controller {
 
     static login(req, res) {
-
         User.findAll({
             where:{
                 email : req.body.email
             }
         })
-        console.log(req.body.email, '<<<<<<<')
-
+        
         .then(user => {
-            console.log('xxxxxxxxxxxxxxxx')
+
             if(!user){
                 res.status(401).json({message : "invalid account"})
             } else {
-                if(bcrypt.compareSync(req.body.password, user.password)){
+                if(bcrypt.compareSync(req.body.password, user[0].password)){
                     let access_token = jwt.sign({id: user.id, email: user.email, role: user.role}, 'process.env.SECRET')
                     res.status(200).json({access_token})
                 } else {
+
                 res.status(401).json({message : "invalid account"})
                 }
             }
         })
         .catch(err =>{
-            res.status(500).json({err})
+            res.status(401).json({message : "invalid account"})
         })
     }
 
