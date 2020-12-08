@@ -29,6 +29,13 @@ class UserController {
         try {
             const {email, password} = req.body
             
+            if(!email || !password){
+                throw {
+                    message : "Email or Password cannot be empty",
+                    status : 400
+                }
+            }
+
             const user = await User.findOne({where : {email}})
 
             if (user && Helper.checkPassword(password, user.password)){

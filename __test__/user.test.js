@@ -167,7 +167,7 @@ describe('testing user register when error', () => {
 })
 
 describe('testing user login', () => {
-    test('response if login successfully should be an object with access_token in it', (done) => {
+    test('response if login success should be an object with access_token in it', (done) => {
         request(app)
             .post('/login')
             .set('Accept', 'application/json')
@@ -219,6 +219,26 @@ describe('testing user login', () => {
                 expect(status).toBe(404)
                 expect(body).toHaveProperty("messages", [
                     "Cannot find a matched password and email"
+                ])
+                done()
+            })
+    })
+
+    test(`response if submitted email and password is empty should tell user that email or password cannot be empty`, done => {
+        request(app)
+            .post('/login')
+            .set('Accept', 'application/json')
+            .send({
+                email: "",
+                password: ""
+            })
+            .end((err, res) => {
+                if (err) return done(err)
+
+                const { status, body } = res
+                expect(status).toBe(400)
+                expect(body).toHaveProperty('messages', [
+                    "Email or Password cannot be empty"
                 ])
                 done()
             })

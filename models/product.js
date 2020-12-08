@@ -31,6 +31,9 @@ module.exports = (sequelize, DataTypes) => {
     price: {
       type : DataTypes.INTEGER,
       validate : {
+        isInt: {
+          msg: "Price must be INTEGER !"
+        },
         min : {
           args : [1],
           msg : "Price cannot be less than 1"
@@ -40,6 +43,9 @@ module.exports = (sequelize, DataTypes) => {
     stock: {
       type : DataTypes.INTEGER,
       validate : {
+        isInt : {
+          msg : "Stock must be INTEGER !"
+        },
         min : {
           args : [0],
           msg : "Stock cannot be negative !"
