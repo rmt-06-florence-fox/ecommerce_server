@@ -30,6 +30,9 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty : {
           msg: "image is required"
+        },
+        isUrl : {
+          msg: "input must be a valid url"
         }
       }
     },
@@ -43,6 +46,10 @@ module.exports = (sequelize, DataTypes) => {
         min: {
           args: 1,
           msg: "price cannot be a negative value"
+        },
+        isDecimal: {
+          args: true,
+          msg: "input must be a valid number"
         }
       }
     },
@@ -56,8 +63,11 @@ module.exports = (sequelize, DataTypes) => {
         min: {
           args: 1,
           msg: "stock cannot be a negative value"
+        },
+        isDecimal: {
+          args: true,
+          msg: "input must be a valid number"
         }
-
       }
     },
     UserId: DataTypes.INTEGER
