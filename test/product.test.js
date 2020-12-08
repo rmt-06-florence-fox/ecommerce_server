@@ -133,7 +133,7 @@ describe('POST /products', () => {
         if (err) return done(err)
         const { body, status } = res
         expect(status).toBe(400)
-        expect(body).toEqual(expect.arrayContaining([{ message: `Stock can't be negative number` }]))
+        expect(body).toEqual(expect.arrayContaining([{ message: `Stock can't be a negative number` }]))
         done()
       })
   })
@@ -147,7 +147,7 @@ describe('POST /products', () => {
         if (err) return done(err)
         const { body, status } = res
         expect(status).toBe(400)
-        expect(body).toEqual(expect.arrayContaining([{ message: `Price can't be negative number` }]))
+        expect(body).toEqual(expect.arrayContaining([{ message: `Price can't be a negative number` }]))
         done()
       })
   })
@@ -199,6 +199,78 @@ describe('PUT /products', () => {
         expect(body).toHaveProperty('price', 30000)
         expect(body).toHaveProperty('stock', 10)
         expect(body).toHaveProperty('UserId', userIdTester)
+        done()
+      })
+  })
+
+  test(`Case 2: Don't have access token`, done => {
+    request(app)
+      .put(`/products/${idProduct}`)
+      .send({ name: 'Nama diganti ya', image_url: 'Gambarnya gausah ditanya', price: 30000, stock: 10 })
+      .end((err, res) => {
+        if (err) return done(err)
+        const { body, status } = res
+        expect(status).toBe(401)
+        expect(body).toHaveProperty('message', 'Please login first')
+        done()
+      })
+  })
+
+  test('Case 3: Wrong access token', done => {
+    request(app)
+      .put(`/products/${idProduct}`)
+      .set('access_token', wrong_access_token)
+      .send({ name: 'Nama diganti ya', image_url: 'Gambarnya gausah ditanya', price: 30000, stock: 10 })
+      .end((err, res) => {
+        if (err) return done(err)
+        const { body, status } = res
+        expect(status).toBe(401)
+        expect(body).toHaveProperty('message', 'Unauthorized user')
+        done()
+      })
+  })
+
+  test('Case 4: Bad request; stock with negative number', done => {
+    request(app)
+      .put(`/products/${idProduct}`)
+      .set('access_token', access_token)
+      .send({ name: 'Nama diganti ya', image_url: 'Gambarnya gausah ditanya', price: 30000, stock: -10 })
+      .end((err, res) => {
+        if (err) return done(err)
+        const { body, status } = res
+        expect(status).toBe(400)
+        expect(body).toEqual(expect.arrayContaining([{ message: `Stock can't be a negative number` }]))
+        done()
+      })
+  })
+
+  test(`Case 5: Bad request; price and stock can't be filled with letter(string)`, done => {
+    request(app)
+      .put(`/products/${idProduct}`)
+      .set('access_token', access_token)
+      .send({ name: 'Nama diganti ya', image_url: 'Gambarnya gausah ditanya', price: 'jiah', stock: 'hahay' })
+      .end((err, res) => {
+        if (err) return done(err)
+        const { body, status } = res
+        expect(status).toBe(400)
+        expect(body).toEqual(expect.arrayContaining([
+          { message: `Price must be a number` },
+          { message: `Stock must be a number` }
+        ]))
+        done()
+      })
+  })
+
+  test('Case 6: Bad request; price with negative number', done => {
+    request(app)
+      .put(`/products/${idProduct}`)
+      .set('access_token', access_token)
+      .send({ name: 'Nama diganti ya', image_url: 'Gambarnya gausah ditanya', price: -30000, stock: 10 })
+      .end((err, res) => {
+        if (err) return done(err)
+        const { body, status } = res
+        expect(status).toBe(400)
+        expect(body).toEqual(expect.arrayContaining([{ message: `Price can't be a negative number` }]))
         done()
       })
   })

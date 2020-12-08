@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         min: {
           args: 1,
-          msg: `Price can't be negative number`
+          msg: `Price can't be a negative number`
         },
         isNumeric: {
           args: true,
@@ -62,7 +62,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         min: {
           args: 1,
-          msg: `Stock can't be negative number`
+          msg: `Stock can't be a negative number`
         },
         isNumeric: {
           args: true,
