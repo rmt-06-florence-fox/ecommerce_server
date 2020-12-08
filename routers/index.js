@@ -6,9 +6,9 @@ const authentication = require("../middlewares/authentication")
 const adminRouter = require("./admin")
 
 
-router.use("/admin", adminRouter)
-router.use(authentication)
+
 router.get("/products", ProductController.showAll)
+router.use("/admin", adminRouter)
 
 
 module.exports = router
