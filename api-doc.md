@@ -193,13 +193,14 @@
       ```
 
 
-**Fetch Tasks**
+
+**Fetch Products**
 ----
   Returns json data of all tasks.
 
 * **URL**
 
-  /tasks
+  /products
 
 * **Method:**
 
@@ -226,27 +227,30 @@
          "data": [
             {
                   "id": 4,
-                  "title": "coding2",
-                  "CategoryId": 2,
-                  "UserId": 1,
+                  "name": "product1",
+                  "image_url": "https://www.cbronline.com/wp-content/uploads/2016/06/what-is-URL-770x503.jpg",
+                  "price":24000,
+                  "stock":25,
                   "createdAt": "2020-12-01T06:10:32.375Z",
                   "updatedAt": "2020-12-01T06:10:32.375Z"
             },
             {
                   "id": 5,
-                  "title": "coding2",
-                  "CategoryId": 2,
-                  "UserId": 1,
-                  "createdAt": "2020-12-01T06:10:46.078Z",
-                  "updatedAt": "2020-12-01T06:10:46.078Z"
+                  "name": "product2",
+                  "image_url": "https://www.cbronline.com/wp-content/uploads/2016/06/what-is-URL-770x503.jpg",
+                  "price":80000,
+                  "stock":70,
+                  "createdAt": "2020-12-01T06:10:32.375Z",
+                  "updatedAt": "2020-12-01T06:10:32.375Z"
             },
             {
                   "id": 6,
-                  "title": "dari sini",
-                  "CategoryId": 2,
-                  "UserId": 1,
-                  "createdAt": "2020-12-02T22:46:13.164Z",
-                  "updatedAt": "2020-12-02T22:46:13.164Z"
+                  "name": "product3",
+                  "image_url": "https://www.cbronline.com/wp-content/uploads/2016/06/what-is-URL-770x503.jpg",
+                  "price":30000,
+                  "stock":100,
+                  "createdAt": "2020-12-01T06:10:32.375Z",
+                  "updatedAt": "2020-12-01T06:10:32.375Z"
             },
          ]
       }
@@ -263,6 +267,15 @@
       ```
   OR
 
+  * **Code:** 404 <br />
+    **Content:** 
+      ```json 
+         {
+            "message": "Product Not Found"
+         }
+      ```
+  OR
+
   * **Code:** 500 UNAUTHORIZED <br />
     **Content:**
       ```json
@@ -270,6 +283,83 @@
             "message":"Server Error"
          }
       ```
+
+
+
+**Fetch Products By Id**
+----
+  Returns json data of a product.
+
+* **URL**
+
+  /products/:id
+
+* **Method:**
+
+  `GET`
+  
+*  **URL Params**
+
+   **Required:**
+      `id=[integer]`
+
+* **Headers**
+   **Required:**
+   `access_token=[string]`
+
+* **Data Params**
+
+
+* **Success Response:**
+
+  * **Code:** 201 <br />
+    **Content:**
+    ```json
+      {  
+         "data": {
+               "id": 4,
+               "name": "coding2",
+               "image_url": "https://www.cbronline.com/wp-content/uploads/2016/06/what-is-URL-770x503.jpg",
+               "price":24000,
+               "stock":25,
+               "createdAt": "2020-12-01T06:10:32.375Z",
+               "updatedAt": "2020-12-01T06:10:32.375Z"
+            },       
+      }
+    ```
+ 
+* **Error Response:**
+
+  * **Code:** 401 <br />
+    **Content:** 
+      ```json 
+         {
+            "message": "You must login first"
+         }
+      ```
+  OR
+
+  * **Code:** 404 <br />
+    **Content:** 
+      ```json 
+         {
+            "message": "Product Not Found"
+         }
+      ```
+  OR
+
+  * **Code:** 500 UNAUTHORIZED <br />
+    **Content:**
+      ```json
+         {
+            "message":"Server Error"
+         }
+      ```
+
+
+
+
+
 
 **Create Product**
 ----
@@ -422,7 +512,7 @@
       ```
 
 
-**Update Task**
+**Update Product**
 ----
   Returns json data of updated product.
 

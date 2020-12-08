@@ -3,7 +3,7 @@ module.exports = (req,res,next) =>{
    console.log(req.loggedIn,'req logged in')
    if(role ==='admin'){
       next()
-   }else{
+   } else {
       next({
          status:400,
          message: "You are not authorized to add/edit/update/delete product"

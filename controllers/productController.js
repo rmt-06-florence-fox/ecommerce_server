@@ -37,7 +37,11 @@ class ProductController{
             id
          },returning:true})
 
-         
+         if (product[0][1] === 0)
+            throw {
+               status: 404,
+               message: 'Product Not Found'
+            }
          res.status(201).json(product[1][0])
       } catch (error) {
          next(error)
@@ -49,7 +53,46 @@ class ProductController{
 
       try {
          const destroyed = await Product.destroy({where:{id},returning:true}) 
+
+         if (product[0][1] === 0)
+            throw {
+               status: 404,
+               message: 'Product Not Found'
+            }
+            
          res.status(200).json({message:"Resource Deleted Successfully"})
+      } catch (error) {
+         next(error)
+      }
+   }
+
+   static async fetchProducts(req,res,next){
+      try {
+         const products = await Product.findAll()
+         res.status(200).json({data:products})
+      } catch (error) {
+         next(error)
+      }
+   }
+
+   static async fetchProductsById(req,res,next){
+      const id = +req.params.id
+
+      try {
+         const product = Product.findOne({
+            where: {
+               id
+            }
+         })
+
+         if(!product) {
+            throw{
+               status:404,
+               message:'Product Not Found'
+            }
+         }
+         
+         res.status(200).json({data:product})
       } catch (error) {
          next(error)
       }

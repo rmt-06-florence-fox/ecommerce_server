@@ -378,12 +378,12 @@ describe("Update Product PUT /products/:id",() => {
 
 
 describe("Delete Product DELETE /products/:id",() => {
-   describe("Success Delete Product",() =>{
-      test("Delete product with valid value",done =>{
+   describe("Success Delete Product",() => {
+      test("Delete product with valid value",done => {
          request(app)
             .delete('/products/'+productId)
             .set('access_token',token_admin)
-            .end((err,res) =>{
+            .end((err,res) => {
                const { body,status } = res
                if(err)
                   return done(err)
@@ -394,12 +394,12 @@ describe("Delete Product DELETE /products/:id",() => {
             })
       })
    }),
-   describe("Fail Update Product",()=>{
-      describe("Not having token",() =>{
+   describe("Fail Delete Product",()=> {
+      describe("Not having token",() => {
          test("access without token",done =>{
             request(app)
             .delete('/products/'+productId)
-            .end((err,res) =>{
+            .end((err,res) => {
                const { body,status } = res
                if(err)
                   return done(err)
@@ -412,8 +412,8 @@ describe("Delete Product DELETE /products/:id",() => {
             })
          })
       }),
-      describe("Not Admin's Token",() =>{
-         test("login user with Customer Token",done =>{
+      describe("Not Admin's Token",() => {
+         test("login user with Customer Token",done => {
             request(app)
             .delete('/products/'+productId)
             .set('access_token',token_user)
