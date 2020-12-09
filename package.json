@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --detectOpenHandles --passWithNoTests",
+    "test": "jest --detectOpenHandles --passWithNoTests --verbose",
     "start": "node server.js"
   },
   "repository": {
