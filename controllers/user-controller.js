@@ -4,15 +4,16 @@ class UserController {
   static async login(req, res, next) {
     try {
       const { email, password } = req.body
+      if (!email && !password) throw { status: 400, message: 'Please input email and password' }
+      else if (!email) throw { status: 400, message: 'Email cannot be empty' }
+      else if (!password) throw { status: 400, message: 'Password cannot be empty' }
+
       const user = await User.findOne({
         where: { email }
       })
-      if (!user) {
-        throw {
-          status: 404,
-          message: "User not found"
-        }
-      } else if (checkPassword(password, user.password)) {
+
+      if (!user) throw { status: 404, message: "User not found" }
+      else if (checkPassword(password, user.password)) {
         const access_token = generateToken({
           id: user.id,
           email: user.email,
@@ -20,7 +21,7 @@ class UserController {
         })
         res.status(200).json({
           id: user.id,
-          email: user.email,
+          role: user.role,
           access_token
         })
       } else {

@@ -5,66 +5,147 @@ const app = require('../app')
  ** User Login Test */
 describe('Check for User POST /login', () => {
   describe('Login Success', () => {
-    test('Returning access_token', (done) => {
-      request(app)
-        .post('/login')
-        .send({
-          email: 'admin@mail.com',
-          password: 'admin'
-        })
-        .end((err, res) => {
-          const { status, body } = res
-          if (err) {
-            return done(err)
-          }
-          expect(status).toBe(200)
-          expect(body).toHaveProperty('id', expect.any(Number))
-          expect(body).toHaveProperty('email', 'admin@mail.com')
-          expect(body).toHaveProperty('access_token', expect.any(String))
-          done()
-        })
+    describe('Response with access_token', () => {
+      test('Success !', (done) => {
+        request(app)
+          .post('/login')
+          .send({
+            email: 'admin@mail.com',
+            password: 'admin'
+          })
+          .end((err, res) => {
+            const { status, body } = res
+            if (err) {
+              return done(err)
+            }
+            expect(status).toBe(200)
+            expect(body).toHaveProperty('id', expect.any(Number))
+            expect(body).toHaveProperty('role', 'Admin')
+            expect(body).toHaveProperty('access_token', expect.any(String))
+            done()
+          })
 
+      })
+      test('Success !', (done) => {
+        request(app)
+          .post('/login')
+          .send({
+            email: 'admin2@mail.com',
+            password: 'admin2'
+          })
+          .end((err, res) => {
+            const { status, body } = res
+            if (err) {
+              return done(err)
+            }
+            expect(status).toBe(200)
+            expect(body).toHaveProperty('id', expect.any(Number))
+            expect(body).toHaveProperty('role', 'Admin')
+            expect(body).toHaveProperty('access_token', expect.any(String))
+            done()
+          })
+
+      })
     })
-    test('response with access_token', (done) => {
-      request(app)
-        .post('/login')
-        .send({
-          email: 'admin2@mail.com',
-          password: 'admin2'
-        })
-        .end((err, res) => {
-          const { status, body } = res
-          if (err) {
-            return done(err)
-          }
-          expect(status).toBe(200)
-          expect(body).toHaveProperty('id', expect.any(Number))
-          expect(body).toHaveProperty('email', 'admin2@mail.com')
-          expect(body).toHaveProperty('access_token', expect.any(String))
-          done()
-        })
+    describe('User role check', () => {
+      test('User is Admin ', (done) => {
+        request(app)
+          .post('/login')
+          .send({
+            email: 'admin@mail.com',
+            password: 'admin'
+          })
+          .end((err, res) => {
+            const { status, body } = res
+            if (err) {
+              return done(err)
+            }
+            expect(status).toBe(200)
+            expect(body).toHaveProperty('id', expect.any(Number))
+            expect(body).toHaveProperty('role', 'Admin')
+            expect(body).toHaveProperty('access_token', expect.any(String))
+            done()
+          })
 
+      })
+      test('User is Admin ', (done) => {
+        request(app)
+          .post('/login')
+          .send({
+            email: 'admin2@mail.com',
+            password: 'admin2'
+          })
+          .end((err, res) => {
+            const { status, body } = res
+            if (err) {
+              return done(err)
+            }
+            expect(status).toBe(200)
+            expect(body).toHaveProperty('id', expect.any(Number))
+            expect(body).toHaveProperty('role', 'Admin')
+            expect(body).toHaveProperty('access_token', expect.any(String))
+            done()
+          })
+
+      })
+      test('User is Customer ', (done) => {
+        request(app)
+          .post('/login')
+          .send({
+            email: 'customer@mail.com',
+            password: 'customer'
+          })
+          .end((err, res) => {
+            const { status, body } = res
+            if (err) {
+              return done(err)
+            }
+            expect(status).toBe(200)
+            expect(body).toHaveProperty('id', expect.any(Number))
+            expect(body).toHaveProperty('role', 'Customer')
+            expect(body).toHaveProperty('access_token', expect.any(String))
+            done()
+          })
+
+      })
+      test('User is Customer ', (done) => {
+        request(app)
+          .post('/login')
+          .send({
+            email: 'customer2@mail.com',
+            password: 'customer2'
+          })
+          .end((err, res) => {
+            const { status, body } = res
+            if (err) {
+              return done(err)
+            }
+            expect(status).toBe(200)
+            expect(body).toHaveProperty('id', expect.any(Number))
+            expect(body).toHaveProperty('role', 'Customer')
+            expect(body).toHaveProperty('access_token', expect.any(String))
+            done()
+          })
+      })
     })
   })
   describe('Failed login', () => {
     describe('Wrong Password', () => {
       test("Invalid email/password", (done) => {
         request(app)
-          .post('/login')
+          .post('/login') 
           .send({
             email: 'admin@mail.com',
             password: 'amin'
           })
           .end((err, res) => {
-            const { status } = res
+            const { status, body } = res
             if (err) {
               return done(err)
             }
 
             expect(status).toBe(400)
-            expect.objectContaining({
-              message: "Invalid email/password"
-            })
+            expect(body).toHaveProperty("message", "Invalid email/password")
             done()
           })
 
@@ -77,14 +158,12 @@ describe('Check for User POST /login', () => {
             password: 'amdin'
           })
           .end((err, res) => {
-            const { status } = res
+            const { status, body } = res
             if (err) {
               return done(err)
             }
             expect(status).toBe(400)
-            expect.objectContaining({
-              message: "Invalid email/password"
-            })
+            expect(body).toHaveProperty("message", "Invalid email/password")
             done()
           })
       })
@@ -98,15 +177,13 @@ describe('Check for User POST /login', () => {
             password: 'adamin'
           })
           .end((err, res) => {
-            const { status } = res
+            const { status, body } = res
             if (err) {
               return done(err)
             }
 
             expect(status).toBe(404)
-            expect.objectContaining({
-              message: "User not found"
-            })
+            expect(body).toHaveProperty("message", "User not found")
             done()
           })
 
@@ -119,14 +196,12 @@ describe('Check for User POST /login', () => {
             password: 'damin'
           })
           .end((err, res) => {
-            const { status } = res
+            const { status, body } = res
             if (err) {
               return done(err)
             }
             expect(status).toBe(404)
-            expect.objectContaining({
-              message: "User not found"
-            })
+            expect(body).toHaveProperty("message", "User not found")
             done()
           })
       })
@@ -140,15 +215,13 @@ describe('Check for User POST /login', () => {
             password: 'admin'
           })
           .end((err, res) => {
-            const { status } = res
+            const { status, body } = res
             if (err) {
               return done(err)
             }
 
-            expect(status).toBe(404)
-            expect.objectContaining({
-              message: "User not found"
-            })
+            expect(status).toBe(400)
+            expect(body).toHaveProperty("message", "Email cannot be empty")
             done()
           })
 
@@ -161,14 +234,12 @@ describe('Check for User POST /login', () => {
             password: ''
           })
           .end((err, res) => {
-            const { status } = res
+            const { status, body } = res
             if (err) {
               return done(err)
             }
             expect(status).toBe(400)
-            expect.objectContaining({
-              message: "User not found"
-            })
+            expect(body).toHaveProperty("message", "Password cannot be empty")
             done()
           })
       })
@@ -180,14 +251,12 @@ describe('Check for User POST /login', () => {
             password: ''
           })
           .end((err, res) => {
-            const { status } = res
+            const { status, body } = res
             if (err) {
               return done(err)
             }
-            expect(status).toBe(404)
-            expect.objectContaining({
-              message: "User not found"
-            })
+            expect(status).toBe(400)
+            expect(body).toHaveProperty("message", "Please input email and password")
             done()
           })
       })
