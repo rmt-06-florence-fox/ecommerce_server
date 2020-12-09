@@ -1,21 +1,14 @@
 <template>
-  <div id="app row">
+  <div id="app">
+    <Navbar class="col-12"></Navbar>
     <router-view/>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
-
-// import Navbar from './components/Navbar'
-
+import Navbar from '../components/Navbar'
 export default {
-  name: 'Home',
-  components: {
-    // HelloWorld
-    // Navbar
-  }
+  components: { Navbar }
 }
 </script>
 

@@ -2,10 +2,11 @@ const { Product } = require('../models')
 
 module.exports = async (req, res, next) => {
     try {
-        
-        if (req.loggedInUser.role === 'admin') {
+        console.log(req.loggedInUser.role);
+        if (req.loggedInUser.role == 'admin') {
             next()
         } else {
+            // console.log('sinisinisinisinisini');
             res.status(401).json({message: 'Unauthorized'})
         }
     }

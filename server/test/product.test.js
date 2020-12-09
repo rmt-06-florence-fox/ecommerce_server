@@ -107,7 +107,7 @@ describe('add Product POST /products', () => {
 })
 
 
-describe('get Product PUT /products', () => {
+describe('get Product GET /products', () => {
     describe('Success get Product', () => {
         test('return succes message', done => {
             request(app)
@@ -144,8 +144,8 @@ describe('get Product PUT /products', () => {
                 if (err) {
                     return done(err)
                 }
-                expect(status).toBe(401)
-                expect(body.msg).toBe('Login first')
+                expect(status).toBe(200)
+                expect(body).toBe(body)
                 done()
             })
         })

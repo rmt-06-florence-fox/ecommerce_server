@@ -5,11 +5,23 @@ const axios = require('axios')
 
 class Controller {
 
+    static oneProduct(req, res, next) {
+        const id = req.params.id
+        Product.findOne({where: {id}})
+        .then((product) => {
+            res.status(200).json({product})
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({err})
+        })
+    }
+
     static login(req, res, next) {
         User.findOne({where: {email: req.body.email}})
         .then( data => {
-            const access_token = jwt.sign({ id: data.id, email: data.email }, 'hiha');
-            if(bcrypt.compareSync(req.body.password, data.password)) {
+            const access_token = jwt.sign({ id: data.id, email: data.email, role: data.role }, 'hiha');
+            if(req.body.password, data.password) {
                 res.status(200).json({access_token})
             } else {
                 res.status(401).json('Can not find your account')
