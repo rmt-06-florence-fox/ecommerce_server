@@ -2,10 +2,12 @@ if (process.env.NODE_ENV != 'production') {
     require('dotenv').config()
 }
 const express = require('express')
+const cors = require('cors')
 const app = express()
 const router = require ('./routers')
 const errHandler = require ('./middlewares/errHandler')
 
+app.use(cors())
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 app.use(router)
