@@ -1,5 +1,3 @@
-const { Product } = require("../models/index")
-
 function authorization (req, res, next){
     if (req.loggedInUser.role === "admin"){
         next()
