@@ -57,7 +57,7 @@ class ProductController {
     try {
       const id = req.params.id
       const data = await Product.findByPk(id)
-      console.log(data, '<-- dari delete sebelum delete')
+      // console.log(data, '<-- dari delete sebelum delete')
       if (data) {
         const output = await Product.destroy({
           where: {id: id}
@@ -71,7 +71,7 @@ class ProductController {
       }
     }
     catch(err) {
-      console.log(err, '<-- dari delete')
+      // console.log(err, '<-- dari delete')
       next(err)
     }
   }

@@ -14,8 +14,7 @@ module.exports = (err, req, res, next) => {
     });
     // console.log(error, '<-- dari foreach')
     res.status(400).json({ message: error })
-  } 
-  // else {
-  //   res.status(500).json({ message: `Internal Server Error !`})
-  // }
+  } else {
+    res.status(500).json({ message: `Internal Server Error !`})
+  }
 }
