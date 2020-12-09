@@ -128,7 +128,10 @@ export default {
     -webkit-text-shadow: rgba(0, 0, 0, .01) 0 0 1px;
     text-shadow: rgba(0, 0, 0, .01) 0 0 1px
 }
-
+.cart_list:hover {
+  cursor: pointer;
+  background-color: #ccc;
+}
 body {
     font-family: 'Rubik', sans-serif;
     font-size: 14px;

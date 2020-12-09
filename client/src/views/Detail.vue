@@ -96,13 +96,7 @@ export default {
     },
     getProductById () {
       const id = this.$route.params.id
-      axios({
-        method: 'GET',
-        url: '/products/' + id,
-        headers: {
-          access_token: localStorage.getItem('access_token')
-        }
-      })
+      this.$store.dispatch('getProductById', id)
         .then((data) => {
           const product = data.data.product
           this.productDetails = product

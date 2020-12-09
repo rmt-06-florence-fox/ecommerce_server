@@ -29,6 +29,15 @@ export default new Vuex.Store({
           // console.log(this.allProducts)
           context.commit('setAllProducts', data)
         })
+    },
+    getProductById (context, id) {
+      return axios({
+        method: 'GET',
+        url: '/products/' + id,
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        }
+      })
     }
   },
   modules: {
