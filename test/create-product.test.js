@@ -229,7 +229,7 @@ describe('Find By Id Product GET /products/:id', () => {
                         return done(err)
                     }
                     expect(status).toBe(200)
-                    expect(body).toHaveProperty('products')
+                    expect(body).toHaveProperty('product')
                     done()
                 })
         })

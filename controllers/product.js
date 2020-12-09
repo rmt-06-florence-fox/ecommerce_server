@@ -28,9 +28,9 @@ class ProductController {
 
     static async findByIdProduct(req, res, next) {
         try {
-            let { id } = req.body
+            let { id } = req.params
             let data = await Product.findByPk(id)
-            res.status(200).json({ products: data })
+            res.status(200).json({ product: data })
         } catch (error) {
             next(error)
         }
