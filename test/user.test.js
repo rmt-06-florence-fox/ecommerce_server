@@ -1,5 +1,34 @@
 const request = require('supertest')
 const app = require('../app')
+const { sequelize } = require('../models')
+const { queryInterface } = sequelize
+const { hashPassword } = require('../helpers/hash')
+
+beforeAll((done) => {
+    queryInterface.bulkInsert('Users', [{
+        email: 'admin@gmail.com',
+        password: hashPassword('qwerty'),
+        role: 'admin',
+        createdAt: new Date(),
+        updatedAt: new Date()
+    }], {})
+        .then(() => {
+            done()
+        })
+        .catch(err => {
+            done(err)
+        })
+})
+
+afterAll((done) => {
+    queryInterface.bulkDelete('Users')
+        .then(() => {
+            done()
+        })
+        .catch((err) => {
+            done(err)
+        })
+})
 
 describe("Login User Post /login", () => {
     describe("Success Login", () => {
