@@ -90,21 +90,20 @@ class Controller {
             image_url: req.body.image_url,
             stock: req.body.stock,
             price: req.body.price
-
         }
         let id = req.params.id
         Product.update(obj, {where: {id}})
         .then(data => {
-            // console.log(data);
+            console.log(obj);
             if (data != 0) {
                 return Product.findOne({where: {id}})
             } else {
-                // console.log('sinisinisinisinisini');
+                console.log('sinisinisinisinisini');
                 res.status(401).json({msg: 'Data cant be found'})
             }
         })
         .then(result => {
-            res.status(200).json({result})
+            res.status(200).json(result)
         })
         .catch(err => {
             res.status(401).json({msg: 'Data cant be found'})
