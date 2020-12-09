@@ -18,9 +18,7 @@ describe('Login User POST /login', () => {
                 })
         })
     })
-})
 
-describe('Login User POST /login', () => {
     describe('Login Password Wrong', () => {
         test('Response Invalid Email/Password', done => {
             request(app)
@@ -37,9 +35,7 @@ describe('Login User POST /login', () => {
                 })
         })
     })
-})
 
-describe('Login User POST /login', () => {
     describe('Login Unregistered Account', () => {
         test('Response Invalid Account', done => {
             request(app)
@@ -56,9 +52,7 @@ describe('Login User POST /login', () => {
                 })
         })
     })
-})
 
-describe('Login User POST /login', () => {
     describe('Login Empty Account', () => {
         test('Response Invalid Account', done => {
             request(app)

@@ -20,7 +20,17 @@ class ProductController {
     static async findAllProduct(req, res, next) {
         try {
             let data = await Product.findAll()
-            res.status(201).json({ products: data })
+            res.status(200).json({ products: data })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    static async findByIdProduct(req, res, next) {
+        try {
+            let { id } = req.body
+            let data = await Product.findByPk(id)
+            res.status(200).json({ products: data })
         } catch (error) {
             next(error)
         }
@@ -47,7 +57,7 @@ class ProductController {
         try {
             let { id } = req.params
             let data = await Product.destroy({ where: { id } })
-            res.status(200).json({message: 'Product deleted successfuly'})
+            res.status(200).json({ message: 'Product deleted successfuly' })
         } catch (error) {
             next(error)
         }

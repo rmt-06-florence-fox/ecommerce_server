@@ -3,13 +3,10 @@ const app = require('../app')
 const {generateToken} = require('../helpers/jwt')
 
 let access_token
+let noadmin_access_token
+
 beforeAll(done => {
     access_token = generateToken({id: 1, email: 'admin@mail.com'})
-    done()
-})
-
-let noadmin_access_token
-beforeAll(done => {
     noadmin_access_token = generateToken({id: 2, email: 'customer@mail.com'})
     done()
 })
@@ -43,9 +40,7 @@ describe('Create Product POST /products', () => {
                 })
         })
     })
-})
 
-describe('Create Product POST /products', () => {
     describe('Add Product Error No Token', () => {
         test('Response Unauthorized Error Message', done => {
             request(app)
@@ -68,9 +63,7 @@ describe('Create Product POST /products', () => {
                 })
         })
     })
-})
 
-describe('Create Product POST /products', () => {
     describe('Add Product Error Not Admin Token', () => {
         test('Response Unauthorized Error Message', done => {
             request(app)
@@ -93,9 +86,7 @@ describe('Create Product POST /products', () => {
                 })
         })
     })
-})
 
-describe('Create Product POST /products', () => {
     describe('Add Product Error Stock', () => {
         test('Response message Minimum stock is 0', done => {
             request(app)
@@ -118,9 +109,7 @@ describe('Create Product POST /products', () => {
                 })
         })
     })
-})
 
-describe('Create Product POST /products', () => {
     describe('Add Product Error Stock', () => {
         test('Response message Minimum price is 0', done => {
             request(app)
@@ -143,9 +132,7 @@ describe('Create Product POST /products', () => {
                 })
         })
     })
-})
 
-describe('Create Product POST /products', () => {
     describe('Add Product Required Value', () => {
         test('Response message Name is Required', done => {
             request(app)
@@ -168,9 +155,7 @@ describe('Create Product POST /products', () => {
                 })
         })
     })
-})
 
-describe('Create Product POST /products', () => {
     describe('Add Product Stock Invalid Datatype', () => {
         test('Response message Only number allowed', done => {
             request(app)
@@ -189,6 +174,79 @@ describe('Create Product POST /products', () => {
                     }
                     expect(status).toBe(400)
                     expect(body).toHaveProperty('message', 'Only Number is Allowed')
+                    done()
+                })
+        })
+    })
+})
+
+
+describe('Find All Product GET /products', () => {
+    describe('Get Product Success', () => {
+        test('Response get product', done => {
+            request(app)
+                .get('/products')
+                .set('access_token', access_token)
+                .end((err, res) => {
+                    const { body, status } = res
+                    if(err) {
+                        return done(err)
+                    }
+                    expect(status).toBe(200)
+                    expect(body).toHaveProperty('products')
+                    done()
+                })
+        })
+    })
+    
+    describe('Get Product Error No Token', () => {
+        test('Response Unauthorized Error Message', done => {
+            request(app)
+                .get('/products')
+                .set('access_token', '')
+                .end((err, res) => {
+                    const { body, status } = res
+                    if(err) {
+                        return done(err)
+                    }
+                    expect(status).toBe(401)
+                    expect(body).toHaveProperty('message', 'Please Login First')
+                    done()
+                })
+        })
+    })
+})
+
+describe('Find By Id Product GET /products/:id', () => {
+    describe('Get Product Success', () => {
+        test('Response get product', done => {
+            request(app)
+                .get('/products/' + idProduct)
+                .set('access_token', access_token)
+                .end((err, res) => {
+                    const { body, status } = res
+                    if(err) {
+                        return done(err)
+                    }
+                    expect(status).toBe(200)
+                    expect(body).toHaveProperty('products')
+                    done()
+                })
+        })
+    })
+    
+    describe('Get Product Error No Token', () => {
+        test('Response Unauthorized Error Message', done => {
+            request(app)
+                .get('/products/' + idProduct)
+                .set('access_token', '')
+                .end((err, res) => {
+                    const { body, status } = res
+                    if(err) {
+                        return done(err)
+                    }
+                    expect(status).toBe(401)
+                    expect(body).toHaveProperty('message', 'Please Login First')
                     done()
                 })
         })
@@ -221,9 +279,7 @@ describe('Update Product PUT /products/:id', () => {
                 })
         })
     })
-})
 
-describe('Update Product PUT /products/:id', () => {
     describe('Update Product Error No Token', () => {
         test('Response Unauthorized Error Message', done => {
             request(app)
@@ -246,9 +302,7 @@ describe('Update Product PUT /products/:id', () => {
                 })
         })
     })
-})
 
-describe('Update Product PUT /products/:id', () => {
     describe('Update Product Error Not Admin Token', () => {
         test('Response Unauthorized Error Message', done => {
             request(app)
@@ -271,9 +325,7 @@ describe('Update Product PUT /products/:id', () => {
                 })
         })
     })
-})
 
-describe('Update Product POST /products', () => {
     describe('Update Product Error Stock', () => {
         test('Update message Minimum stock is 0', done => {
             request(app)
@@ -296,9 +348,7 @@ describe('Update Product POST /products', () => {
                 })
         })
     })
-})
 
-describe('Update Product POST /products', () => {
     describe('Update Product Error Stock', () => {
         test('Response message Minimum price is 0', done => {
             request(app)
@@ -321,9 +371,7 @@ describe('Update Product POST /products', () => {
                 })
         })
     })
-})
 
-describe('Update Product POST /products', () => {
     describe('Update Product Required Value', () => {
         test('Response message Name is Required', done => {
             request(app)
@@ -346,9 +394,7 @@ describe('Update Product POST /products', () => {
                 })
         })
     })
-})
 
-describe('Update Product POST /products', () => {
     describe('Update Product Stock Invalid Datatype', () => {
         test('Response message Only number allowed', done => {
             request(app)
@@ -390,9 +436,7 @@ describe('Delete Product DELETE /products/:id', () => {
                 })
         })
     })
-})
 
-describe('Delete Product DELETE /products/:id', () => {
     describe('Delete Product Error No Token', () => {
         test('Response Unauthorized Error Message', done => {
             request(app)
@@ -409,9 +453,7 @@ describe('Delete Product DELETE /products/:id', () => {
                 })
         })
     })
-})
 
-describe('Delete Product DELETE /products/:id', () => {
     describe('Delete Product Error Not Admin Token', () => {
         test('Response Unauthorized Error Message', done => {
             request(app)
