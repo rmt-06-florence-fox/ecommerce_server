@@ -6,7 +6,8 @@ class ProductController {
             const products = await Product.findAll({
               include: {
                 model: Category
-              }
+              },
+              order: [['id', 'asc']]
             })
             res.status(200).json({products})
         } catch (error) {
