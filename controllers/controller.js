@@ -26,6 +26,9 @@ class Controller{
          password:req.body.password
       }
 
+      console.log(req.body)
+      console.log(payload)
+
       if(payload.email === '' || payload.password ==='')
          next({
             status:400,
@@ -40,13 +43,15 @@ class Controller{
                status:400,
                message:'Wrong Email/Password'
             }
+
+         console.log(user)
          const comparison = compare(payload.password,user.password)
          if(!comparison)
             throw {
                status:400,
                message:'Wrong Email/Password'
             }
-         const access_token = tokenize({id:user.id,email:user.email})
+         const access_token = tokenize({id:user.id,email:user.email,role:user.role})
 
          console.log('success')
          res.status(200).json({access_token})

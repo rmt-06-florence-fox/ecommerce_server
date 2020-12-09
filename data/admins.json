@@ -1,0 +1,31 @@
+[
+  {
+    "email":"admin1@gmail.com",
+    "password":"12345678",
+    "role":"admin"
+  },
+
+  {
+    "email":"admin2@gmail.com",
+    "password":"12345678",
+    "role":"admin"
+  },
+
+  {
+    "email":"admin3@gmail.com",
+    "password":"12345678",
+    "role":"admin"
+  },
+
+  {
+    "email":"admin4@gmail.com",
+    "password":"12345678",
+    "role":"admin"
+  },
+
+  {
+    "email":"admin5@gmail.com",
+    "password":"12345678",
+    "role":"admin"
+  }
+]

@@ -10,6 +10,8 @@ class ProductController{
          stock:req.body.stock
       }
 
+      console.log('create')
+
       try {
          console.log('masuk create')
          console.log(Product)
@@ -28,6 +30,10 @@ class ProductController{
          price:req.body.price,
          stock:req.body.stock
       }
+
+      console.log(req.body)
+
+      console.log(payload, '<<<<<<<< paylaod')
 
       const id = req.params.id
 
@@ -50,11 +56,12 @@ class ProductController{
 
    static async destroyProduct(req,res,next){
       const id = +req.params.id
-
+      console.log('destroy')
       try {
          const destroyed = await Product.destroy({where:{id},returning:true}) 
+         console.log(destroyed)
 
-         if (product[0][1] === 0)
+         if (destroyed === 0)
             throw {
                status: 404,
                message: 'Product Not Found'
@@ -79,7 +86,7 @@ class ProductController{
       const id = +req.params.id
 
       try {
-         const product = Product.findOne({
+         const product = await Product.findOne({
             where: {
                id
             }
@@ -91,7 +98,9 @@ class ProductController{
                message:'Product Not Found'
             }
          }
-         
+
+         console.log(product)
+
          res.status(200).json({data:product})
       } catch (error) {
          next(error)
