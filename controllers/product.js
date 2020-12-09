@@ -48,6 +48,15 @@ class ProductController{
       next(error)
     }
   }
+
+  static async findProduct (req, res, next) {
+    try {
+      const product = await Product.findByPk(req.params.id)
+      res.status(200).json({product})
+    } catch (error) {
+      next(error)
+    }
+  }
 }
 
 module.exports = ProductController
