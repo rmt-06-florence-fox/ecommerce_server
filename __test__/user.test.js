@@ -44,7 +44,7 @@ describe('login user POST /login', () => {
                     return done(err)
                 }
                 expect(status).toBe(200)
-                expect(body).toHaveProperty('access_token', expect.any(String))
+                expect(body).toHaveProperty('accesstoken', expect.any(String))
                 done() 
             })
         })

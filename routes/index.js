@@ -11,7 +11,7 @@ router.post('/products', adminAuthorize ,Controller.create)
 router.put('/products/:id',adminAuthorize, Controller.update)
 router.put('/products/:id',adminAuthorize, Controller.update)
 router.delete('/products/:id',adminAuthorize, Controller.delete)
-router.get('/products/:id',adminAuthorize, Controller.getData)
+// router.get('/products/:id',adminAuthorize, Controller.getData)
 router.get('/products',adminAuthorize, Controller.fetchData)
 
 module.exports = router

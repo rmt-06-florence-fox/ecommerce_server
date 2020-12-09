@@ -12,20 +12,22 @@ class Controller {
         })
         
         .then(user => {
-
             if(!user){
                 res.status(401).json({message : "invalid account"})
             } else {
                 if(bcrypt.compareSync(req.body.password, user[0].password)){
-                    let access_token = jwt.sign({id: user.id, email: user.email, role: user.role}, 'process.env.SECRET')
-                    res.status(200).json({access_token})
+                    let accesstoken = jwt.sign({id: user[0].dataValues.id, email: user[0].dataValues.email, role: user[0].dataValues.role}, 'process.env.SECRET')
+                    res.status(200).json({accesstoken})
                 } else {
+                console.log('ZZZZZ')
 
                 res.status(401).json({message : "invalid account"})
                 }
             }
         })
         .catch(err =>{
+            console.log('YYYYYY')
+
             res.status(401).json({message : "invalid account"})
         })
     }
@@ -87,19 +89,19 @@ class Controller {
             res.status(500).json(err)
         })
     }
-    static getData (req, res) {
-        product.findOne({
-            where: {
-                id: req.params.id
-            }
-        })
-        .then(data => {
-            res.status(200).json(data)
-        })
-        .catch(err => {
-            res.status(500).json(err)
-        })
-    }
+    // static getData (req, res) {
+    //     product.findOne({
+    //         where: {
+    //             id: req.params.id
+    //         }
+    //     })
+    //     .then(data => {
+    //         res.status(200).json(data)
+    //     })
+    //     .catch(err => {
+    //         res.status(500).json(err)
+    //     })
+    // }
 
 }
 

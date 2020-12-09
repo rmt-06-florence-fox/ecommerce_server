@@ -3,12 +3,13 @@ const jwt = require('jsonwebtoken')
 
 module.exports = (req, res, next) => {
     try {
-        const {access_token} = req.headers
-        if(!access_token) {
+        const {accesstoken} = req.headers
+        console.log(req.headers.accesstoken, '====')
+        if(!accesstoken) {
             res.status(401).json({message: 'login first'})
         } else {
             // console.log('sebelum decoded')
-            var decoded = jwt.verify(access_token, 'process.env.SECRET')
+            var decoded = jwt.verify(accesstoken, 'process.env.SECRET')
             console.log(decoded, "di decoded")
             User.findOne({
                 where:{
@@ -19,16 +20,16 @@ module.exports = (req, res, next) => {
                 console.log('masuk then')
 
                 if(user) {
-                    // console.log('masuk if')
+                    console.log('masuk if')
                     req.loggedIn = decoded
                     next()
                 } else {
-                    // console.log('masuk else')
+                    console.log('masuk else')
                     res.status(401).json({message: 'WRONG token, please relog'})
                 }
             })
             .catch(err => {
-                // console.log(err ,'masuk catch')
+                console.log(err ,'masuk catch')
                 res.status(401).json({message: 'wrong token, please relog'})
             })
         }

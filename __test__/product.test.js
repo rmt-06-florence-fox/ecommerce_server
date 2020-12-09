@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken')
 
 
 // create product test
-let access_token ;
+let accesstoken ;
 let customer_token ;
 let editId;
 
@@ -22,7 +22,7 @@ beforeAll((done) => {
         role : 'admin'
     })
     .then(user => {
-        access_token = jwt.sign({id:user.dataValues.id, email: user.dataValues.email, role: user.dataValues.role}, 'process.env.SECRET')
+        accesstoken = jwt.sign({id:user.dataValues.id, email: user.dataValues.email, role: user.dataValues.role}, 'process.env.SECRET')
         // done()
         return User.create({
             email : 'cust@mail.com',
@@ -32,7 +32,7 @@ beforeAll((done) => {
         
     })
     .then(newData =>{
-        console.log(access_token, 'ACCESSSSSSSSSSS')
+        console.log(accesstoken, 'ACCESSSSSSSSSSS')
         console.log(newData.dataValues, ' INI USERRRRRRR')
 
          customer_token = jwt.sign({id: newData.dataValues.id, email: newData.dataValues.email, role: newData.dataValues.role }, 'process.env.SECRET')
@@ -64,7 +64,7 @@ describe('create POST /products', () => {
         test('response get created product', (done) => {
             request(app)
             .post("/products")
-            .set("access_token", access_token)
+            .set("accesstoken", accesstoken)
             .send({name: "sandal", 
                 image_url: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//85/MTA-2825131/swallow_swallow-sandal-jepit-original_full03.jpg",
                 price: 10000,
@@ -91,7 +91,7 @@ describe('create POST /products', () => {
         test('no access token', (done) => {
             request(app)
             .post("/products")
-            .set("access_token", '')
+            .set("accesstoken", '')
             .send({name: "sandal", 
                 image_url: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//85/MTA-2825131/swallow_swallow-sandal-jepit-original_full03.jpg",
                 price: 10000,
@@ -114,7 +114,7 @@ describe('create POST /products', () => {
         test('wrong access token (not admin)', (done) => {
             request(app)
             .post("/products")
-            .set("access_token", customer_token)
+            .set("accesstoken", customer_token)
             .send({name: "sandal", 
                 image_url: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//85/MTA-2825131/swallow_swallow-sandal-jepit-original_full03.jpg",
                 price: 10000,
@@ -137,7 +137,7 @@ describe('create POST /products', () => {
         test('empty field', (done) => {
             request(app)
             .post("/products")
-            .set("access_token", access_token)
+            .set("accesstoken", accesstoken)
             .send({name: "", 
                 image_url: "",
                 price: 10000,
@@ -161,7 +161,7 @@ describe('create POST /products', () => {
         test('minus price ', (done) => {
             request(app)
             .post("/products")
-            .set("access_token", access_token)
+            .set("accesstoken", accesstoken)
             .send({name: "sandal", 
                 image_url: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//85/MTA-2825131/swallow_swallow-sandal-jepit-original_full03.jpg",
                 price: -10000,
@@ -185,7 +185,7 @@ describe('create POST /products', () => {
         test('minus stock', (done) => {
             request(app)
             .post("/products")
-            .set("access_token", access_token)
+            .set("accesstoken", accesstoken)
             .send({name: "sandal", 
                 image_url: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//85/MTA-2825131/swallow_swallow-sandal-jepit-original_full03.jpg",
                 price: 10000,
@@ -209,7 +209,7 @@ describe('create POST /products', () => {
         test('wrong data type', (done) => {
             request(app)
             .post("/products")
-            .set("access_token", access_token)
+            .set("accesstoken", accesstoken)
             .send({name: "sandal", 
                 image_url: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//85/MTA-2825131/swallow_swallow-sandal-jepit-original_full03.jpg",
                 price: "sleketemb",
@@ -242,7 +242,7 @@ describe('update PUT /products/:id', () => {
             test('response get updated product', (done) => {
                 request(app)
                 .put("/products/" + editId)
-                .set("access_token", access_token)
+                .set("accesstoken", accesstoken)
                 .send({name: "swallow", 
                     image_url: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//85/MTA-2825131/swallow_swallow-sandal-jepit-original_full03.jpg",
                     price: 70000,
@@ -269,7 +269,7 @@ describe('update PUT /products/:id', () => {
             test('no access token', (done) => {
                 request(app)
                 .put("/products/" + editId)
-                .set("access_token", '')
+                .set("accesstoken", '')
                 .send({name: "sandal", 
                     image_url: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//85/MTA-2825131/swallow_swallow-sandal-jepit-original_full03.jpg",
                     price: 10000,
@@ -292,7 +292,7 @@ describe('update PUT /products/:id', () => {
             test('wrong access token (not admin)', (done) => {
                 request(app)
                 .put("/products/" + editId)
-                .set("access_token", customer_token)
+                .set("accesstoken", customer_token)
                 .send({name: "sandal", 
                     image_url: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//85/MTA-2825131/swallow_swallow-sandal-jepit-original_full03.jpg",
                     price: 10000,
@@ -316,7 +316,7 @@ describe('update PUT /products/:id', () => {
             test('minus price ', (done) => {
                 request(app)
                 .put("/products/" + editId)
-                .set("access_token", access_token)
+                .set("accesstoken", accesstoken)
                 .send({name: "sandal", 
                     image_url: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//85/MTA-2825131/swallow_swallow-sandal-jepit-original_full03.jpg",
                     price: -10000,
@@ -340,7 +340,7 @@ describe('update PUT /products/:id', () => {
             test('minus stock', (done) => {
                 request(app)
                 .put("/products/" + editId)
-                .set("access_token", access_token)
+                .set("accesstoken", accesstoken)
                 .send({name: "sandal", 
                     image_url: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//85/MTA-2825131/swallow_swallow-sandal-jepit-original_full03.jpg",
                     price: 10000,
@@ -364,7 +364,7 @@ describe('update PUT /products/:id', () => {
             test('wrong data type', (done) => {
                 request(app)
                 .put("/products/" + editId)
-                .set("access_token", access_token)
+                .set("accesstoken", accesstoken)
                 .send({name: "sandal", 
                     image_url: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//85/MTA-2825131/swallow_swallow-sandal-jepit-original_full03.jpg",
                     price: "sleketemb",
@@ -390,7 +390,7 @@ describe('update PUT /products/:id', () => {
 // // delete product
 
 
-// let access_token ;
+// let accesstoken ;
 // let deleteId;
 
 
@@ -400,7 +400,7 @@ describe('delete DELETE /products/:id', () => {
         test('response get deleted product', (done) => {
             request(app)
             .delete("/products/" + editId)
-            .set("access_token", access_token)
+            .set("accesstoken", accesstoken)
             .send({name: "swallow", 
                 image_url: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//85/MTA-2825131/swallow_swallow-sandal-jepit-original_full03.jpg",
                 price: 70000,
@@ -423,7 +423,7 @@ describe('delete DELETE /products/:id', () => {
         test('no access token', (done) => {
             request(app)
             .delete("/products/" + editId)
-            .set("access_token", '')
+            .set("accesstoken", '')
             .send({name: "sandal", 
                 image_url: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//85/MTA-2825131/swallow_swallow-sandal-jepit-original_full03.jpg",
                 price: 10000,
@@ -446,7 +446,7 @@ describe('delete DELETE /products/:id', () => {
         test('wrong access token (not admin)', (done) => {
             request(app)
             .delete("/products/" + editId)
-            .set("access_token", customer_token)
+            .set("accesstoken", customer_token)
             .send({name: "sandal", 
                 image_url: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//85/MTA-2825131/swallow_swallow-sandal-jepit-original_full03.jpg",
                 price: 10000,
