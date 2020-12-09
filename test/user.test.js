@@ -1,19 +1,51 @@
 const request = require("supertest")
 const app = require('../app')
+const { sequelize } = require("../models")
+const { queryInterface } = sequelize
+const { encryptPassword } = require('../helpers/bcrypt')
+
+beforeAll(done => {
+    queryInterface.bulkInsert("Users", [
+        {
+            email: "admin@mail.com",
+            password: encryptPassword("123456"),
+            role: "admin",
+            createdAt: new Date(),
+            updatedAt: new Date()
+        }
+    ],
+    { returning: true })
+    .then(_ => {
+        done()
+    })
+    .catch(err => {
+        done(err)
+    })
+})
+
+afterAll(done => {
+    queryInterface.bulkDelete("Users")
+    .then(_ => {
+        done()
+    })
+    .catch(err => {
+        done(err)
+    })
+})
 
 describe("Login User POST /login", () => {
     describe("Success Login", () => {
         test("response with access_token", done => {
             request(app)
             .post("/login")
-            .send({email: "user@mail.com", password: "asdasd"})
+            .send({email: "admin@mail.com", password: "123456"})
             .end((err, res) => {
                 const {body, status} = res
                 if (err) {
                     return done(err)
                 }
                 expect(status).toBe(200)
-                expect(body).toHaveProperty("access_token")
+                expect(body).toHaveProperty("access_token", expect.any(String))
                 done()
             })
         })
@@ -22,7 +54,7 @@ describe("Login User POST /login", () => {
         test("can't login because the password is wrong", done => {
             request(app)
             .post("/login")
-            .send({email: "user@mail.com", password: "123456"})
+            .send({email: "admin@mail.com", password: "dawdaw"})
             .end((err, res) => {
                 const {body, status} = res
                 if (err) {
