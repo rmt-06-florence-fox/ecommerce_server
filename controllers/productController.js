@@ -1,6 +1,5 @@
 const {Product} = require('../models/index')
 
-
 class ProductController{
    static async createProduct(req,res,next){
       const payload = {
@@ -9,9 +8,7 @@ class ProductController{
          price:req.body.price,
          stock:req.body.stock
       }
-
-      console.log('create')
-
+      
       try {
          console.log('masuk create')
          console.log(Product)
@@ -30,11 +27,6 @@ class ProductController{
          price:req.body.price,
          stock:req.body.stock
       }
-
-      console.log(req.body)
-
-      console.log(payload, '<<<<<<<< paylaod')
-
       const id = req.params.id
 
       try {
@@ -84,7 +76,6 @@ class ProductController{
 
    static async fetchProductsById(req,res,next){
       const id = +req.params.id
-
       try {
          const product = await Product.findOne({
             where: {
@@ -110,4 +101,3 @@ class ProductController{
 }
 
 module.exports = ProductController
-
