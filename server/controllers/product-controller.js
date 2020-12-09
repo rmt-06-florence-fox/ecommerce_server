@@ -1,6 +1,15 @@
 const { Product } = require("../models");
 
 class ProductController {
+  static fetchProduct(req, res, next) {
+    Product.findAll({ where: { UserId: req.userData.id } })
+      .then((data) => {
+        res.status(200).json(data);
+      })
+      .catch((err) => {
+        next(err);
+      });
+  }
   static createProduct(req, res, next) {
     Product.create({
       name: req.body.name,
