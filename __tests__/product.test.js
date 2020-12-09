@@ -15,6 +15,7 @@ const productStock = 999;
 let productId;
 
 let userIdDummy;
+let userRole;
 let access_token;
 let access_tokenSalah;
 
@@ -35,11 +36,14 @@ beforeAll((done) => {
       username = user[0].username;
       emailDummy = user[0].email;
       userIdDummy = user[0].id;
+      userRole = user[0].role;
+      //generate access_token admin
       access_token = generateToken({
         id: user[0].id,
         email: user[0].email,
         role: user[0].role,
       });
+      //generate access_token customer
       access_tokenSalah = generateToken({
         id: 1,
         email: "customer@mail.com",
@@ -81,7 +85,10 @@ describe("POST /products", () => {
   test("TEST CASE 1: CREATE PRODUCT SUCCESS", (done) => {
     request(app)
       .post("/products")
-      .set("access_token", access_token)
+      .set({
+        access_token: access_token,
+        role: "admin",
+      })
       .send({
         name: productName,
         image_url: productImage,
@@ -98,6 +105,163 @@ describe("POST /products", () => {
         expect(body).toHaveProperty("price", productPrice);
         expect(body).toHaveProperty("stock", productStock);
         expect(body).toHaveProperty("UserId", userIdDummy);
+        done();
+      });
+  });
+
+  test(`TEST CASE 2: WRONG ACCESS_TOKEN`, (done) => {
+    request(app)
+      .post("/products")
+      .set({
+        access_token: access_token,
+        role: "customer",
+      })
+      .send({
+        name: productName,
+        image_url: productImage,
+        price: productPrice,
+        stock: productStock,
+        UserId: userIdDummy,
+      })
+      .end((err, res) => {
+        if (err) return done(err);
+        const { body, status } = res;
+        expect(status).toBe(401);
+        expect(body).toHaveProperty("message", "Unauthorized");
+        done();
+      });
+  });
+
+  test(`TEST CASE 3: DONT HAVE ACCESS_TOKEN`, (done) => {
+    request(app)
+      .post("/products")
+      .send({
+        name: productName,
+        image_url: productImage,
+        price: productPrice,
+        stock: productStock,
+        UserId: userIdDummy,
+      })
+      .end((err, res) => {
+        if (err) return done(err);
+        const { body, status } = res;
+        expect(status).toBe(401);
+        expect(body).toHaveProperty("message", "login first");
+        done();
+      });
+  });
+
+  test("TEST CASE 4: REQUIRED FIELD ARE EMPTY", (done) => {
+    request(app)
+      .post("/products")
+      .set({
+        access_token: access_token,
+        role: "admin",
+      })
+      .send({
+        name: "",
+        image_url: "",
+        UserId: userIdDummy,
+      })
+      .end((err, res) => {
+        if (err) return done(err);
+        const { body, status } = res;
+        expect(status).toBe(400);
+        expect(body).toEqual(
+          expect.objectContaining({
+            message: [
+              "Price is required, cannot be blank",
+              "Stock is required, cannot be blank",
+              "Name is required, cannot be blank",
+              "ImageUrl is required, cannot be blank",
+            ],
+          })
+        );
+        done();
+      });
+  });
+  test("TEST CASE 5: PRICE SET TO MINUS", (done) => {
+    request(app)
+      .post("/products")
+      .set({
+        access_token: access_token,
+        role: "admin",
+      })
+      .send({
+        name: productName,
+        image_url: productImage,
+        price: -99,
+        stock: productStock,
+        UserId: userIdDummy,
+      })
+      .end((err, res) => {
+        if (err) return done(err);
+        const { body, status } = res;
+        expect(status).toBe(400);
+        expect(body).toEqual(
+          expect.objectContaining({
+            message: [
+              "Cannot set to minus",
+            ],
+          })
+        );
+        done();
+      });
+  });
+  test("TEST CASE 6: STOCK SET TO MINUS", (done) => {
+    request(app)
+      .post("/products")
+      .set({
+        access_token: access_token,
+        role: "admin",
+      })
+      .send({
+        name: productName,
+        image_url: productImage,
+        price: productPrice,
+        stock: -99,
+        UserId: userIdDummy,
+      })
+      .end((err, res) => {
+        if (err) return done(err);
+        const { body, status } = res;
+        expect(status).toBe(400);
+        expect(body).toEqual(
+          expect.objectContaining({
+            message: [
+              "Cannot set to minus",
+            ],
+          })
+        );
+        done();
+      });
+  });
+  test("TEST CASE 7: SET PRICE AND STOCK TO STRING", (done) => {
+    request(app)
+      .post("/products")
+      .set({
+        access_token: access_token,
+        role: "admin",
+      })
+      .send({
+        name: productName,
+        image_url: productImage,
+        price: '',
+        stock: '',
+        UserId: userIdDummy,
+      })
+      .end((err, res) => {
+        if (err) return done(err);
+        const { body, status } = res;
+        expect(status).toBe(400);
+        expect(body).toEqual(
+          expect.objectContaining({
+            message: [
+              "Price must be number",
+              "Stock must be number",
+            ],
+          })
+        );
         done();
       });
   });
