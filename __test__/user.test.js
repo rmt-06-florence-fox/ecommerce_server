@@ -95,4 +95,30 @@ describe(`POST /login/admin`, () => {
                 done()
             })
     })
+
+    test(`Email not in database`, (done) => {
+        request(app)
+            .post('/login/admin')
+            .send({
+                email: 'adminabalabal@mail.com',
+                password: 'admin'
+            })
+            .end((err, res) => {
+                if (err) return done(err)
+                expect(res.status).toBe(400)
+                expect(res.body).toHaveProperty('message', `Wrong Email or Password`)
+                done()
+            })
+    })
+
+    test(`No email and password input`, (done) => {
+        request(app)
+            .post('/login/admin')
+            .end((err, res) => {
+                if (err) return done(err)
+                expect(res.status).toBe(400)
+                expect(res.body).toHaveProperty('message', `Wrong Email or Password`)
+                done()
+            })
+    })
 })

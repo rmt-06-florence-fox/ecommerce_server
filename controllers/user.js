@@ -6,8 +6,8 @@ class UserController {
 
     static async loginAdmin(req, res, next) {
         const payload = {
-            email: req.body.email,
-            password: req.body.password
+            email: req.body.email || '',
+            password: req.body.password || ''
         }
 
         try {

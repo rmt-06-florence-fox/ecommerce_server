@@ -2,10 +2,11 @@ const request = require('supertest');
 const app = require('../index')
 const { sequelize } = require('../models')
 const { hashPassword } = require('../helpers/bcryptjs')
+const { generateAccessToken } = require('../helpers/jsonwebtoken')
 let id
-const customer_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJjb250b2hAbWFpbC5jb20iLCJyb2xlIjoiY3VzdG9tZXIiLCJpYXQiOjE2MDc0MDI0ODl9.k3diZSMBKkqBiL6Jpu3Kz7IsbNzzSqNfL0tbmbpX32c'
-const admin_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTYwNzM1ODM4MX0.W8wCKFzFjgebTtM5wz21ZE-77CFss5Jf5ddkGskoXPk'
-const wrong_token = 'this is wrong token'
+const customer_token = generateAccessToken({ id: 2, email: 'customer@nyasar.com', role: 'customer' })
+const admin_token = generateAccessToken({ id: 1, email: 'admin@mail.com', role: 'admin' })
+const wrong_token = 'this is wrong Access token'
 
 beforeAll(done => {
     sequelize.queryInterface.bulkInsert('Products', [
@@ -87,7 +88,7 @@ describe(`GET /products`, () => {
             })
     })
 
-    test(`Wrong Token`, (done) => {
+    test(`Wrong Access Token`, (done) => {
         request(app)
             .get('/products')
             .set('access_token', wrong_token)
@@ -119,10 +120,45 @@ describe(`POST /products`, () => {
             })
     })
 
-    test(`Wrong Token`, (done) => {
+    test(`Wrong Access Token`, (done) => {
         request(app)
             .post('/products')
             .set('access_token', wrong_token)
+            .send({
+                name: `Helm Mahal Lapis Emas`,
+                price: 300000,
+                stock: 3,
+                CategoryId: 3
+            })
+            .end((err, res) => {
+                if (err) return done(err)
+                expect(res.status).toBe(401)
+                expect(res.body).toHaveProperty('message', 'Please Login First')
+                done()
+            })
+    })
+
+    test(`Customer Access Token`, (done) => {
+        request(app)
+            .post('/products')
+            .set('access_token', customer_token)
+            .send({
+                name: `Helm Mahal Lapis Emas`,
+                price: 300000,
+                stock: 3,
+                CategoryId: 3
+            })
+            .end((err, res) => {
+                if (err) return done(err)
+                expect(res.status).toBe(401)
+                expect(res.body).toHaveProperty('message', "You're Unauthorized To Do This")
+                done()
+            })
+    })
+
+    test(`Not using Access Token`, (done) => {
+        request(app)
+            .post('/products')
             .send({
                 name: `Helm Mahal Lapis Emas`,
                 price: 300000,
@@ -153,6 +189,60 @@ describe(`POST /products`, () => {
                 done()
             })
     })
+
+    test(`Minus stock input`, (done) => {
+        request(app)
+            .post('/products')
+            .set('access_token', admin_token)
+            .send({
+                name: `Helm Mahal Lapis Emas`,
+                price: 300000,
+                stock: -1,
+                CategoryId: 3
+            })
+            .end((err, res) => {
+                if (err) return done(err)
+                expect(res.status).toBe(400)
+                expect(res.body).toHaveProperty('message', 'Stock Minimum 0')
+                done()
+            })
+    })
+
+    test(`Minus price input`, (done) => {
+        request(app)
+            .post('/products')
+            .set('access_token', admin_token)
+            .send({
+                name: `Helm Mahal Lapis Emas`,
+                price: -300000,
+                stock: 0,
+                CategoryId: 3
+            })
+            .end((err, res) => {
+                if (err) return done(err)
+                expect(res.status).toBe(400)
+                expect(res.body).toHaveProperty('message', 'Price Minimum Rp. 1,-')
+                done()
+            })
+    })
+
+    test(`Invalid type data input`, (done) => {
+        request(app)
+            .post('/products')
+            .set('access_token', admin_token)
+            .send({
+                name: `Helm Mahal Lapis Emas`,
+                price: `salah bos`,
+                stock: `salah juga`,
+                CategoryId: 3
+            })
+            .end((err, res) => {
+                if (err) return done(err)
+                expect(res.status).toBe(400)
+                expect(res.body).toHaveProperty('message', 'Price Must Be a Number, Stock Must Be a Number')
+                done()
+            })
+    })
 })
 
 describe(`PUT /products/:id`, () => {
@@ -171,6 +261,99 @@ describe(`PUT /products/:id`, () => {
                 done()
             })
     })
+
+    test(`Wrong Access Token`, (done) => {
+        request(app)
+            .put(`/products/${id}`)
+            .set('access_token', wrong_token)
+            .send({
+                name: `Helm Murahan Ternyata`,
+                price: 59900
+            })
+            .end((err, res) => {
+                if (err) return done(err)
+                expect(res.status).toBe(401)
+                expect(res.body).toHaveProperty('message', 'Please Login First')
+                done()
+            })
+    })
+
+    test(`Not using Access Token`, (done) => {
+        request(app)
+            .put(`/products/${id}`)
+            .send({
+                name: `Helm Murahan Ternyata`,
+                price: 59900
+            })
+            .end((err, res) => {
+                if (err) return done(err)
+                expect(res.status).toBe(401)
+                expect(res.body).toHaveProperty('message', 'Please Login First')
+                done()
+            })
+    })
+
+    test(`Customer Access Token`, (done) => {
+      request(app)
+          .put(`/products/${id}`)
+          .set('access_token', customer_token)
+          .send({
+                name: `Helm Murahan Ternyata`,
+                price: 59900
+            })
+          .end((err, res) => {
+              if (err) return done(err)
+              expect(res.status).toBe(401)
+              expect(res.body).toHaveProperty('message', "You're Unauthorized To Do This")
+              done()
+          })
+    })
+
+    test(`Minus stock input`, (done) => {
+        request(app)
+            .put(`/products/${id}`)
+            .set('access_token', admin_token)
+            .send({
+                stock: -1
+            })
+            .end((err, res) => {
+                if (err) return done(err)
+                expect(res.status).toBe(400)
+                expect(res.body).toHaveProperty('message', 'Stock Minimum 0')
+                done()
+            })
+    })
+
+    test(`Minus price input`, (done) => {
+        request(app)
+            .put(`/products/${id}`)
+            .set('access_token', admin_token)
+            .send({
+                price: -300000
+            })
+            .end((err, res) => {
+                if (err) return done(err)
+                expect(res.status).toBe(400)
+                expect(res.body).toHaveProperty('message', 'Price Minimum Rp. 1,-')
+                done()
+            })
+    })
+
+    test(`Invalid type data input`, (done) => {
+        request(app)
+            .put(`/products/${id}`)
+            .set('access_token', admin_token)
+            .send({
+                price: `salah bos`,
+                stock: `salah juga`
+            })
+            .end((err, res) => {
+                if (err) return done(err)
+                expect(res.status).toBe(400)
+                expect(res.body).toHaveProperty('message', 'Price Must Be a Number, Stock Must Be a Number')
+                done()
+            })
+    })
 })
 
 describe(`DELETE /products/:id`, () => {
@@ -185,7 +368,7 @@ describe(`DELETE /products/:id`, () => {
                 done()
             })
     })
-    test(`Wrong Token`, (done) => {
+    test(`Wrong Access Token`, (done) => {
         request(app)
             .delete(`/products/${id}`)
             .set('access_token', wrong_token)
@@ -196,14 +379,26 @@ describe(`DELETE /products/:id`, () => {
                 done()
             })
     })
+
     test(`Login Using Customer`, (done) => {
         request(app)
-            .delete(`/products/${id}`)
+            .delete(`/products/${Number(id) + 1}`)
             .set('access_token', customer_token)
             .end((err, res) => {
                 if (err) return done(err)
                 expect(res.status).toBe(401)
                 expect(res.body).toHaveProperty('message', "You're Unauthorized To Do This")
+                done()
+            })
+    })
+
+    test(`Not using Access Token`, (done) => {
+        request(app)
+            .delete(`/products/${Number(id) + 1}`)
+            .end((err, res) => {
+                if (err) return done(err)
+                expect(res.status).toBe(401)
+                expect(res.body).toHaveProperty('message', "Please Login First")
                 done()
             })
     })
