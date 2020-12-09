@@ -27,8 +27,12 @@ module.exports = function(err, req, res, next){
         msg = "please login first"
     }
     else if (msg === "NotFound"){
-        status = 400
+        status = 404
         msg = "sorry, no product was found"
+    }
+    else if (msg === "banner not found"){
+        status = 404
+        msg = "sorry, no banner was found"
     }
     res.status(status).json({message: msg})
 }

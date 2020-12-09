@@ -76,7 +76,7 @@ class ProductController {
                 return Product.destroy({where:{id: data.id}})
             }
             else {
-                throw {status: 400, name: "NotFound"}
+                throw {status: 404, name: "NotFound"}
             }
         })
         .then(() => {

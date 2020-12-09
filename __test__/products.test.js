@@ -284,7 +284,7 @@ describe("Deleting products", () =>{
           if(err){
             return done(err)
           }
-          expect(status).toBe(400)
+          expect(status).toBe(404)
           expect(body).toHaveProperty('message', 'sorry, no product was found')
           done() 
         })
