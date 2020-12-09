@@ -66,40 +66,6 @@ class ProductController {
             next(err)
         }
     }
-
-    static async alterStock(req, res, next){
-        try {
-            const {stock} = req.body
-            const id = req.params.id
-            const product = await Product.findByPk(id)
-
-            if (product) {
-                const array = await Product.update(
-                    { stock },
-                    { 
-                        where: { id }, 
-                        fields : ['stock'], 
-                        returning: true 
-                    }
-                )
-
-                const updatedProduct = array[1][0]
-                res.status(200).json(updatedProduct)
-
-            } else {
-                throw {
-                    status: 404,
-                    message: "Product is not found"
-                }
-            }
-        
-        } catch (err) {
-            next(err)
-        
-        }
-        
-    }
-
     static async delete(req, res, next){
         try {
             const id = req.params.id
