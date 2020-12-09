@@ -17,6 +17,7 @@ module.exports = (req, res, next) => {
                 }
             })
             .then(user =>{
+                console.log(user)
                 console.log('masuk then')
 
                 if(user) {

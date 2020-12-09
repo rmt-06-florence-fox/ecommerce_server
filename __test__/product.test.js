@@ -388,13 +388,6 @@ describe('update PUT /products/:id', () => {
 // // ======================================================================
 
 // // delete product
-
-
-// let accesstoken ;
-// let deleteId;
-
-
-
 describe('delete DELETE /products/:id', () => {
     describe('success delete', () => {
         test('response get deleted product', (done) => {
