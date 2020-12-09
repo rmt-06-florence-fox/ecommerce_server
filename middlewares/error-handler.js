@@ -17,6 +17,8 @@ module.exports = errorHandler = (err, req, res, next) => {
 
         let error = errors.join(', ')
         res.status(400).json({message: error})
+    } else if (err.name == `SequelizeForeignKeyConstraintError`) {
+        res.status(403).json({message: `Cannot Delete If The Category Still Used By Product(s)`})
     } else {
         res.status(500).json({message: `Internal Server Error`})
     }

@@ -29,5 +29,12 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Category',
   });
+
+  Category.beforeCreate((category, opt) => {
+    if (!category.image || category.image.trim == '') {
+      category.image = 'folder-open'
+    }
+  })
+
   return Category;
 };
