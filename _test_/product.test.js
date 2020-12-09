@@ -6,6 +6,7 @@ const { sequelize } = require('../models/index')
 const { queryInterface } = sequelize
 let adminToken
 let customerToken
+let idProduct
 
 beforeAll((done) => {
     queryInterface.bulkInsert('Users', [{
@@ -74,33 +75,8 @@ describe('Add Product POST /products', () => {
                     createdAt: expect.any(String),
                     updatedAt: expect.any(String)
                 })
-                return request(app)
-                .post('/products')
-                .set('access_token', adminToken)
-                .send({
-                    name: 'Converse Unisex Converse Chuck Taylor All Star Classic Colour High Top NavyBlue',
-                    image_url: 'https://www.converse.com.au/media/catalog/product/cache/83515b991e19eb33521df1bfc97686b7/c/h/chuck_taylor_all_star_classic_colour_high_top_navy_19622_0.jpg',
-                    price: 120,
-                    stock: 5,
-                },)
-                .end((err, res) => {
-                    const { body, status } = res
-                    if(err) {
-                        done(err)
-                    }
-                    expect(status).toBe(201)
-                    expect(body).toHaveProperty('data', {
-                        id: expect.any(Number),
-                        name: expect.any(String),
-                        image_url: expect.any(String),
-                        price: expect.any(Number),
-                        stock: expect.any(Number),
-                        UserId: expect.any(Number),
-                        createdAt: expect.any(String),
-                        updatedAt: expect.any(String)
-                    })
-                    done()
-                })
+                idProduct = body.data.id
+                done()
             })
         })
     })
@@ -217,7 +193,7 @@ describe('Edit Product PUT /products', () => {
     describe('Edit Successfull', () => {
         test('Returning updated data', done => {
             request(app)
-            .put('/products/1')
+            .put(`/products/${idProduct}`)
             .set('access_token', adminToken)
             .send({
                 name: 'Converse High Top NavyBlue',
@@ -249,7 +225,7 @@ describe('Edit Product PUT /products', () => {
     describe('Edit Failed', () => {
         test('Not authorized', done => {
             request(app)
-            .put('/products/1')
+            .put(`/products/${idProduct}`)
             .set('access_token', customerToken)
             .send({
                 name: 'Converse High Top Black',
@@ -270,7 +246,7 @@ describe('Edit Product PUT /products', () => {
 
         test('No access token', done => {
             request(app)
-            .put('/products/1')
+            .put(`/products/${idProduct}`)
             .set('access_token', '')
             .send({
                 name: 'NavyBlue',
@@ -291,7 +267,7 @@ describe('Edit Product PUT /products', () => {
 
         test('Negative number input', done => {
             request(app)
-            .put('/products/1')
+            .put(`/products/${idProduct}`)
             .set('access_token', adminToken)
             .send({
                 name: 'Unisex Converse Chuck Taylor All Star Classic Colour High Top White',
@@ -312,7 +288,7 @@ describe('Edit Product PUT /products', () => {
 
         test('Invalid type input', done => {
             request(app)
-            .put('/products/1')
+            .put(`/products/${idProduct}`)
             .set('access_token', adminToken)
             .send({
                 name: 'Unisex Converse Chuck Taylor All Star Classic Colour High Top White',
@@ -333,7 +309,7 @@ describe('Edit Product PUT /products', () => {
 
         test('Product not found', done => {
             request(app)
-            .put('/products/55')
+            .put('/products/999')
             .set('access_token', adminToken)
             .send({
                 name: 'Unisex Converse Chuck Taylor All Star Classic Colour High Top White',
@@ -358,7 +334,7 @@ describe('Delete Product Delete /products/:id', () => {
     describe('Delete Successfull', () => {
         test('Returning message successfull', done => {
             request(app)
-            .delete('/products/1')
+            .delete(`/products/${idProduct}`)
             .set('access_token', adminToken)
             .end((err, res) => {
                 const { body, status } = res
@@ -375,7 +351,7 @@ describe('Delete Product Delete /products/:id', () => {
     describe('Delete Failed', () => {
         test('Not authorized', done => {
             request(app)
-            .delete('/products/1')
+            .delete(`/products/${idProduct}`)
             .set('access_token', customerToken)
             .end((err, res) => {
                 const { status, body } = res
@@ -390,7 +366,7 @@ describe('Delete Product Delete /products/:id', () => {
 
         test('No access token', done => {
             request(app)
-            .delete('/products/1')
+            .delete(`/products/${idProduct}`)
             .set('access_token', '')
             .end((err, res) => {
                 const { status, body } = res
