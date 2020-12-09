@@ -301,4 +301,97 @@ describe("PUT /products/:id", () => {
         done();
       });
   });
+
+  test("TEST CASE 2: WRONG ACCESS_TOKEN", (done) => {
+    request(app)
+      .put(`/products/${productId}`)
+      .set({
+        access_token: access_token,
+        role: 'customer',
+      })
+      .send(updateDummy)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { body, status } = res;
+        expect(status).toBe(401);
+        expect(body).toHaveProperty("message", "Unauthorized");
+        done();
+      });
+  });
+
+  test("TEST CASE 3: STOCK SET TO MINUS", (done) => {
+    request(app)
+      .put(`/products/${productId}`)
+      .set({
+        access_token: access_token,
+        role: userRole,
+      })
+      .send({
+        name: updateDummy.name,
+        image_url: updateDummy.image_url,
+        price: updateDummy.price,
+        stock: -99,
+      })
+      .end((err, res) => {
+        if (err) return done(err);
+        const { body, status } = res;
+        expect(status).toBe(400);
+        expect(body).toEqual(
+          expect.objectContaining({
+            message: ["Cannot set to minus"],
+          })
+        );
+        done();
+      });
+  });
+  test("TEST CASE 4: PRICE SET TO MINUS", (done) => {
+    request(app)
+      .put(`/products/${productId}`)
+      .set({
+        access_token: access_token,
+        role: userRole,
+      })
+      .send({
+        name: updateDummy.name,
+        image_url: updateDummy.image_url,
+        price: -99,
+        stock: updateDummy.price,
+      })
+      .end((err, res) => {
+        if (err) return done(err);
+        const { body, status } = res;
+        expect(status).toBe(400);
+        expect(body).toEqual(
+          expect.objectContaining({
+            message: ["Cannot set to minus"],
+          })
+        );
+        done();
+      });
+  });
+  test("TEST CASE 5: PRICE & STOCK INPUTTED WITH STRING", (done) => {
+    request(app)
+      .put(`/products/${productId}`)
+      .set({
+        access_token: access_token,
+        role: userRole,
+      })
+      .send({
+        name: updateDummy.name,
+        image_url: updateDummy.image_url,
+        price: 'price',
+        stock: 'stock',
+      })
+      .end((err, res) => {
+        if (err) return done(err);
+        const { body, status } = res;
+        expect(status).toBe(400);
+        expect(body).toEqual(
+          expect.objectContaining({
+            message: ["Price must be number", "Stock must be number"],
+          })
+        );
+        done();
+      });
+  });
 });

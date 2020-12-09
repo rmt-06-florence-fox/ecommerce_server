@@ -27,6 +27,7 @@ class userController {
     User.findOne({
       where: {
         email: req.body.email,
+        role: "admin"
       },
     })
       .then((data) => {
