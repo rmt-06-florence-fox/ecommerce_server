@@ -78,8 +78,8 @@ module.exports = (sequelize, DataTypes) => {
           args: true,
           msg: "Please enter your stock"
         },
-        isMinus(price){
-          if(price < 0){
+        isMinus(stock){
+          if(stock < 0){
             throw "Stock cannot be minus number"
             
           }
