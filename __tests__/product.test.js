@@ -87,7 +87,7 @@ describe("POST /products", () => {
       .post("/products")
       .set({
         access_token: access_token,
-        role: "admin",
+        role: userRole,
       })
       .send({
         name: productName,
@@ -156,7 +156,7 @@ describe("POST /products", () => {
       .post("/products")
       .set({
         access_token: access_token,
-        role: "admin",
+        role: userRole,
       })
       .send({
         name: "",
@@ -185,7 +185,7 @@ describe("POST /products", () => {
       .post("/products")
       .set({
         access_token: access_token,
-        role: "admin",
+        role: userRole,
       })
       .send({
         name: productName,
@@ -211,7 +211,7 @@ describe("POST /products", () => {
       .post("/products")
       .set({
         access_token: access_token,
-        role: "admin",
+        role: userRole,
       })
       .send({
         name: productName,
@@ -237,7 +237,7 @@ describe("POST /products", () => {
       .post("/products")
       .set({
         access_token: access_token,
-        role: "admin",
+        role: userRole,
       })
       .send({
         name: productName,
@@ -269,6 +269,35 @@ describe("GET /products", () => {
         const { body, status } = res;
         expect(status).toBe(200);
         expect(body).toEqual(expect.arrayContaining([]));
+        done();
+      });
+  });
+});
+
+const updateDummy = {
+  name: "Juz Ama",
+  image_url: "bit.ly/juzAma",
+  price: 9999,
+  stock: 99,
+};
+
+describe("PUT /products/:id", () => {
+  test("TEST CASE 1: SUCCESS PUT", (done) => {
+    request(app)
+      .put(`/products/${productId}`)
+      .set({
+        access_token: access_token,
+        role: userRole,
+      })
+      .send(updateDummy)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { body, status } = res;
+        expect(status).toBe(200);
+        expect(body).toHaveProperty("name", updateDummy.name);
+        expect(body).toHaveProperty("image_url", updateDummy.image_url);
+        expect(body).toHaveProperty("price", updateDummy.price);
+        expect(body).toHaveProperty("stock", updateDummy.stock);
         done();
       });
   });

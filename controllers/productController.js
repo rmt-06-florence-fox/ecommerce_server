@@ -25,7 +25,24 @@ class productController {
     }
   }
   static async update(req, res, next) {
-
+    const id = +req.params.id
+    const payload = {
+      name: req.body.name,
+      image_url: req.body.image_url,
+      price: req.body.price,
+      stock: req.body.stock,
+    }
+    try {
+      const updateProduct = await Product.update(payload, {
+        where: {
+          id: id
+        }, 
+        returning: true
+      })
+      res.status(200).json(updateProduct[1][0])
+    } catch (error) {
+      next(error)
+    }
   }
   static async delete(req, res, next) {
     
