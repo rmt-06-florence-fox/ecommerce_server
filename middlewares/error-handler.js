@@ -9,8 +9,8 @@ function errorHandler(err, req, res, next) {
     for (let i = 0; i < err.errors.length; i++) {
       errors.push({ message: err.errors[i].message });
     }
-    res.status(400).json(errors);
-    console.log(errors);
+    res.status(400).json({ errors });
+    console.log(errors, "<<<<masuk?>>>>>");
   } else if (err.name == "SequelizeUniqueConstraintError") {
     res.status(400).json({
       message: "This email already registered, Please input another email",

@@ -5,8 +5,9 @@ const { generate, verify } = require("../helpers/jwt");
 const { sequelize } = require("../models");
 const { queryInterface } = sequelize;
 
-let access_token = "";
-let access_token_customer = "";
+let access_token;
+let access_token_customer;
+let idProduct;
 
 beforeAll(async (done) => {
   try {
@@ -53,6 +54,7 @@ beforeAll(async (done) => {
 
 afterAll(async (done) => {
   await queryInterface.bulkDelete("Users", null, {});
+  await queryInterface.bulkDelete("Products", null, {});
   done();
 });
 
@@ -84,6 +86,8 @@ describe("Create Product POST /products", () => {
           );
           expect(body).toHaveProperty("price", 18499000);
           expect(body).toHaveProperty("stock", 99);
+          expect(body).toHaveProperty("id");
+          idProduct = body.id;
           done();
         });
     });
@@ -138,141 +142,128 @@ describe("Create Product POST /products", () => {
     });
   });
 
-  // describe("Error Create Because Sequelize Validation", () => {
-  //   test("Fields Product Cannot be Empty", (done) => {
-  //     request(app)
-  //       .post("/products")
-  //       .set("access_token", access_token)
-  //       .send({
-  //         name: "",
-  //         image_url: "",
-  //         price: "",
-  //         stock: "",
-  //       })
-  //       .end((err, res) => {
-  //         const { body, status } = res;
-  //         if (err) {
-  //           return done(err);
-  //         }
-  //         expect(status).toBe(400);
-  //         expect(body).toHaveProperty("err.errors", [
-  //           { message: "Name of product must be filled!" },
-  //           { message: "Image URL of product must be filled!" },
-  //           { message: "Price of product must be filled!" },
-  //           { message: "Price of product must be an integer" },
-  //           { message: "Stock of product must be filled!" },
-  //           { message: "Stock of product must be an integer" },
-  //         ]);
-  //         done();
-  //       });
-  //   });
-  // });
+  describe("Error Create Because Sequelize Validation", () => {
+    test("Fields Product Cannot be Empty", (done) => {
+      request(app)
+        .post("/products")
+        .set("access_token", access_token)
+        .send({
+          name: "",
+          image_url: "",
+          price: "",
+          stock: "",
+        })
+        .end((err, res) => {
+          const { body, status } = res;
+          if (err) {
+            return done(err);
+          }
+          expect(status).toBe(400);
+          expect(body).toHaveProperty("errors", [
+            { message: "Name of product must be filled!" },
+            { message: "Image URL of product must be filled!" },
+            { message: "Price of product must be filled!" },
+            { message: "Price of product must be an integer" },
+            { message: "Stock of product must be filled!" },
+            { message: "Stock of product must be an integer" },
+          ]);
+          done();
+        });
+    });
+  });
 
-  //   describe("Error Create Because Bad request or wrong input", () => {
-  //     test("Error Because Stock Less than 0", (done) => {
-  //       request(app)
-  //         .post("/products")
-  //         .set("access_token", access_token)
-  //         .send({
-  //           name: "Iphone 12 Pro",
-  //           image_url:
-  //             "https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/iphone-12-pro-og-202009?wid=600&hei=315&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1601432262000",
-  //           price: 18499000,
-  //           stock: -99,
-  //         })
-  //         .end((err, res) => {
-  //           const { body, status } = res;
-  //           if (err) {
-  //             return done(err);
-  //           }
-  //           expect(status).toBe(400);
-  //           expect(body).toHaveProperty("message", [
-  //             { message: "Stock of product must be more than 0" },
-  //           ]);
-  //           done();
-  //         });
-  //     });
-  //     test("Error Because Price Less than 0", (done) => {
-  //       request(app)
-  //         .post("/products")
-  //         .set("access_token", access_token)
-  //         .send({
-  //           name: "Iphone 12 Pro",
-  //           image_url:
-  //             "https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/iphone-12-pro-og-202009?wid=600&hei=315&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1601432262000",
-  //           price: -18499000,
-  //           stock: 99,
-  //         })
-  //         .end((err, res) => {
-  //           const { body, status } = res;
-  //           if (err) {
-  //             return done(err);
-  //           }
-  //           expect(status).toBe(400);
-  //           expect(body).toHaveProperty("message", [
-  //             { message: "Price of product must be more than 0" },
-  //           ]);
-  //           done();
-  //         });
-  //     });
-  //     test("Error Because Stock Must be an Integer", (done) => {
-  //       request(app)
-  //         .post("/products")
-  //         .set("access_token", access_token)
-  //         .send({
-  //           name: "Iphone 12 Pro",
-  //           image_url:
-  //             "https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/iphone-12-pro-og-202009?wid=600&hei=315&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1601432262000",
-  //           price: "18499000",
-  //           stock: "sembilan puluh sembilan",
-  //         })
-  //         .end((err, res) => {
-  //           const { body, status } = res;
-  //           if (err) {
-  //             return done(err);
-  //           }
-  //           expect(status).toBe(400);
-  //           expect(body).toHaveProperty("message", [
-  //             { message: "Stock of product must be an integer" },
-  //           ]);
-  //           done();
-  //         });
-  //     });
-  //   });
+  describe("Error Create Because Bad request or wrong input", () => {
+    test("Error Because Stock Less than 0", (done) => {
+      request(app)
+        .post("/products")
+        .set("access_token", access_token)
+        .send({
+          name: "Iphone 12 Pro",
+          image_url:
+            "https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/iphone-12-pro-og-202009?wid=600&hei=315&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1601432262000",
+          price: 18499000,
+          stock: -99,
+        })
+        .end((err, res) => {
+          const { body, status } = res;
+          if (err) {
+            return done(err);
+          }
+          expect(status).toBe(400);
+          expect(body).toHaveProperty("errors", [
+            { message: "Stock of product must be more than 0" },
+          ]);
+          done();
+        });
+    });
+    test("Error Because Price Less than 0", (done) => {
+      request(app)
+        .post("/products")
+        .set("access_token", access_token)
+        .send({
+          name: "Iphone 12 Pro",
+          image_url:
+            "https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/iphone-12-pro-og-202009?wid=600&hei=315&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1601432262000",
+          price: -18499000,
+          stock: 99,
+        })
+        .end((err, res) => {
+          const { body, status } = res;
+          if (err) {
+            return done(err);
+          }
+          expect(status).toBe(400);
+          expect(body).toHaveProperty("errors", [
+            { message: "Price of product must be more than 0" },
+          ]);
+          done();
+        });
+    });
+    test("Error Because Stock Must be an Integer", (done) => {
+      request(app)
+        .post("/products")
+        .set("access_token", access_token)
+        .send({
+          name: "Iphone 12 Pro",
+          image_url:
+            "https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/iphone-12-pro-og-202009?wid=600&hei=315&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1601432262000",
+          price: "18499000",
+          stock: "sembilan puluh sembilan",
+        })
+        .end((err, res) => {
+          const { body, status } = res;
+          if (err) {
+            return done(err);
+          }
+          expect(status).toBe(400);
+          expect(body).toHaveProperty("errors", [
+            { message: "Stock of product must be an integer" },
+          ]);
+          done();
+        });
+    });
+  });
 });
 
 //READ
 //Success test cases
 describe("Read products GET /products", () => {
-  // describe("Success Read", () => {
-  //   test("Response with access token", (done) => {
-  //     request(app)
-  //       .get("/products")
-  //       .set("access_token", access_token)
-  //       .send({
-  //         name: "Iphone 12 Pro",
-  //         image_url:
-  //           "https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/iphone-12-pro-og-202009?wid=600&hei=315&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1601432262000",
-  //         price: 18499000,
-  //         stock: 99,
-  //       })
-  //       .end((err, res) => {
-  //         const { body, status } = res;
-  //         if (err) {
-  //           return done(err);
-  //         }
-  //         expect(status).toBe(200);
-  //         expect(body).toHaveProperty("name", "Iphone 12 Pro");
-  //         expect(body).toHaveProperty(
-  //           "image_url",
-  //           "https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/iphone-12-pro-og-202009?wid=600&hei=315&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1601432262000"
-  //         );
-  //         expect(body).toHaveProperty("price", 18499000);
-  //         expect(body).toHaveProperty("stock", 99);
-  //         done();
-  //       });
-  //   });
-  // });
+  describe("Success Read", () => {
+    test("Response with access token", (done) => {
+      request(app)
+        .get("/products")
+        .set("access_token", access_token)
+        .end((err, res) => {
+          const { body, status } = res;
+          if (err) {
+            return done(err);
+          }
+          expect(status).toBe(200);
+          expect(body).toHaveProperty("product");
+          done();
+        });
+    });
+  });
 
   //Failed test cases
   describe("Error Read Because it doesn't have an access token", () => {
@@ -300,14 +291,13 @@ describe("Read products GET /products", () => {
   });
 });
 
-// //UPDATE
-// //Success test cases
+//UPDATE
+//Success test cases
 describe("Update products PUT /prouducts/:id", () => {
   describe("Success Update", () => {
     test("Response with access token", (done) => {
-      const id = 1;
       request(app)
-        .put("/products/" + id)
+        .put(`/products/${idProduct}`)
         .set("access_token", access_token)
         .send({
           name: "Iphone 12 Pro Max",
@@ -331,15 +321,15 @@ describe("Update products PUT /prouducts/:id", () => {
           expect(body).toHaveProperty("stock", 98);
           done();
         });
+      console.log(idProduct, "<<<<<<<<<<<");
     });
   });
 
   //Failed test cases
   describe("Error Update Because it doesn't have an access token", () => {
     test("You Should login first to get access token", (done) => {
-      const id = 1;
       request(app)
-        .put("/products/" + id)
+        .put(`/products/${idProduct}`)
         .set("access_token", "")
         .send({
           name: "Iphone 12 Pro Max",
@@ -362,9 +352,8 @@ describe("Update products PUT /prouducts/:id", () => {
 
   describe("Error Update Because You're not an Admin", () => {
     test("You Should login first to get admin token", (done) => {
-      const id = 1;
       request(app)
-        .put("/products/" + id)
+        .put(`/products/${idProduct}`)
         .set("access_token", access_token_customer)
         .send({
           name: "Iphone 12 Pro Max",
@@ -387,9 +376,8 @@ describe("Update products PUT /prouducts/:id", () => {
 
   describe("Error Update Because Bad Request or Wrong Input", () => {
     test("Error Update Because Stock Less than 0", (done) => {
-      const id = 1;
       request(app)
-        .put("/products/" + id)
+        .put(`/products/${idProduct}`)
         .set("access_token", access_token)
         .send({
           name: "Iphone 12 Pro Max",
@@ -404,16 +392,15 @@ describe("Update products PUT /prouducts/:id", () => {
             return done(err);
           }
           expect(status).toBe(400);
-          expect(body).toHaveProperty("message", [
+          expect(body).toHaveProperty("errors", [
             { message: "Stock of product must be more than 0" },
           ]);
           done();
         });
     });
     test("Error Update Because Price Less than 0", (done) => {
-      const id = 1;
       request(app)
-        .put("/products/" + id)
+        .put(`/products/${idProduct}`)
         .set("access_token", access_token)
         .send({
           name: "Iphone 12 Pro Max",
@@ -428,16 +415,15 @@ describe("Update products PUT /prouducts/:id", () => {
             return done(err);
           }
           expect(status).toBe(400);
-          expect(body).toHaveProperty("message", [
+          expect(body).toHaveProperty("errors", [
             { message: "Price of product must be more than 0" },
           ]);
           done();
         });
     });
     test("Error Update Because Stock Must be an Integer", (done) => {
-      const id = 1;
       request(app)
-        .put("/products/" + id)
+        .put(`/products/${idProduct}`)
         .set("access_token", access_token)
         .send({
           name: "Iphone 12 Pro Max",
@@ -452,7 +438,7 @@ describe("Update products PUT /prouducts/:id", () => {
             return done(err);
           }
           expect(status).toBe(400);
-          expect(body).toHaveProperty("message", [
+          expect(body).toHaveProperty("errors", [
             { message: "Stock of product must be an integer" },
           ]);
           done();
@@ -463,12 +449,11 @@ describe("Update products PUT /prouducts/:id", () => {
 
 //DELETE
 //Success test cases
-describe("Delete products DELETE /prouducts/:id", () => {
+describe("Delete products DELETE /products/:id", () => {
   describe("Success Delete", () => {
     test("Response with access token", (done) => {
-      const id = 1;
       request(app)
-        .delete("/products/" + id)
+        .delete(`/products/${idProduct}`)
         .set("access_token", access_token)
         .end((err, res) => {
           const { body, status } = res;
@@ -487,9 +472,8 @@ describe("Delete products DELETE /prouducts/:id", () => {
   //Failed test cases
   describe("Error Delete Because it doesn't have an access token", () => {
     test("You Should login first to get access token", (done) => {
-      const id = 1;
       request(app)
-        .delete("/products/" + id)
+        .delete(`/products/${idProduct}`)
         .set("access_token", "")
         .end((err, res) => {
           const { body, status } = res;
@@ -505,9 +489,8 @@ describe("Delete products DELETE /prouducts/:id", () => {
 
   describe("Error Delete Because You're not an Admin", () => {
     test("You Should login first to get admin token", (done) => {
-      const id = 1;
       request(app)
-        .delete("/products/" + id)
+        .delete(`/products/${idProduct}`)
         .set("access_token", access_token_customer)
         .end((err, res) => {
           const { body, status } = res;

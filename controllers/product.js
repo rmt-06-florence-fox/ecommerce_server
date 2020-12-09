@@ -19,8 +19,9 @@ class ProductController {
   }
   static async show(req, res, next) {
     try {
-      product = await Product.findAll();
-      res.status(200).json(product);
+      const product = await Product.findAll();
+      res.status(200).json({ product });
+      // console.log(product);
     } catch (error) {
       next(error);
     }
