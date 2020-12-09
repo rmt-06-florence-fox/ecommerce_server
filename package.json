@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --runInBand --detectOpenHandles",
+    "test": "jest --runInBand --detectOpenHandles --verbose",
     "dev": "NODE_ENV=development nodemon server.js",
     "start": "node server.js"
   },
