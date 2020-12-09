@@ -14,8 +14,7 @@ module.exports = {
         model: 'Categories',
         key: 'id'
       },
-      onUpdate: 'cascade',
-      onDelete: 'cascade'
+      onUpdate: 'cascade'
     })
   },
 
