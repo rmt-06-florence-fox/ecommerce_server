@@ -18,6 +18,19 @@ class ControllerCategory {
             next(err)
         }
     }
+
+    static async bulkDelete (req, res, next) {
+        try {
+            const bulkDelete = await ProductCategory.destroy({
+                where: {
+                    ProductId: req.params.id
+                }
+            })
+            res.status(200).json(bulkDelete)
+        } catch (err) {
+            next(err)
+        }
+    }
 }
 
 module.exports = ControllerCategory
