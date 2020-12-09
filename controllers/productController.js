@@ -29,6 +29,14 @@ class ProductController{
       }else next(err)
     }
   }
+  static async findProduct(req, res, next){
+    try{
+      const product = await Product.findByPk(req.params.id)
+      res.status(200).json(product)
+    }catch(err){
+      next(err)
+    }
+  }
   static async replaceDataProduct(req, res, next){
     try{
       const payload = {
