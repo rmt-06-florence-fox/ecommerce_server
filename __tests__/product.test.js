@@ -307,7 +307,7 @@ describe("PUT /products/:id", () => {
       .put(`/products/${productId}`)
       .set({
         access_token: access_token,
-        role: 'customer',
+        role: "customer",
       })
       .send(updateDummy)
       .end((err, res) => {
@@ -379,8 +379,8 @@ describe("PUT /products/:id", () => {
       .send({
         name: updateDummy.name,
         image_url: updateDummy.image_url,
-        price: 'price',
-        stock: 'stock',
+        price: "price",
+        stock: "stock",
       })
       .end((err, res) => {
         if (err) return done(err);
@@ -394,4 +394,47 @@ describe("PUT /products/:id", () => {
         done();
       });
   });
+});
+
+describe("DELETE /products/:id", () => {
+  test("TEST CASE 1: SUCCESS DELETE", () => {
+    request(app)
+      .delete(`/products/${productId}`)
+      .set({
+        access_token: access_token,
+        role: userRole,
+      })
+      .end((err, res) => {
+        if (err) return done(err);
+        const { body, status } = res;
+        expect(status).toBe(200);
+        expect(body).toHaveProperty("message", "Successfully deleted");
+      });
+  });
+  test('TEST CASE 2: NO ACCESS_TOKEN', (done) => {
+    request(app)
+      .delete(`/products/${productId}`)
+      .end((err, res) => {
+        if (err) return done(err);
+        const { body, status } = res;
+        expect(status).toBe(401);
+        expect(body).toHaveProperty("message", "login first");
+        done();
+      });
+  })
+  test('TEST CASE 3: not admin', (done) => {
+    request(app)
+      .delete(`/products/${productId}`)
+      .set({
+        access_token: access_token,
+        role: 'customer'
+      })
+      .end((err, res) => {
+        if (err) return done(err);
+        const { body, status } = res;
+        expect(status).toBe(401);
+        expect(body).toHaveProperty("message", "Unauthorized");
+        done();
+      });
+  })
 });
