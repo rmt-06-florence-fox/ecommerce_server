@@ -25,7 +25,6 @@ beforeAll(async (done) => {
     const data = await queryInterface.bulkInsert("Users", admin, {
       returning: true,
     });
-    console.log(data)
     username = data[0].username;
     email = data[0].email;
     done()
@@ -94,7 +93,6 @@ describe("POST /admin/login", () => {
     request(app)
       .post("/admin/login")
       .end(function (err, res) {
-        console.log(res);
         if (err) return done(err);
         const { status, body } = res;
         expect(status).toBe(500);

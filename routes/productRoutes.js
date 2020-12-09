@@ -1,6 +1,7 @@
 const products = require('express').Router()
 const productController = require('../controllers/productController')
 const { authorize } = require('../middlewares/authorization')
+const authentication = require("../middlewares/authentication")
 
 //test
 products.get('/', (req, res) => {
@@ -8,8 +9,10 @@ products.get('/', (req, res) => {
 })
 
 //crud
-products.post('/', authorize, productController.create)
-products.get('/', authorize, productController.get)
+products.get('/', productController.get)
+
+products.use(authentication)
+products.post('/', productController.create)
 products.put('/:id', productController.update)
 products.delete('/:id', productController.delete)
 

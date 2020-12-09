@@ -11,13 +11,13 @@ class productController {
     }
     try {
       const data = await Product.create(payload)
-      res.status(200).json(data)
+      res.status(201).json(data)
     } catch (error) {
       next(error)
     }
   }
   static async get(req, res, next) {
-
+    
   }
   static async update(req, res, next) {
 

@@ -16,7 +16,6 @@ router.use("/admin", adminRoutes);
 // router.post('/login')
 
 // product(cms)
-router.use(authentication);
 router.use("/products", productRoutes);
 
 
