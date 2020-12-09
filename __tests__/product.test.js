@@ -200,9 +200,7 @@ describe("POST /products", () => {
         expect(status).toBe(400);
         expect(body).toEqual(
           expect.objectContaining({
-            message: [
-              "Cannot set to minus",
-            ],
+            message: ["Cannot set to minus"],
           })
         );
         done();
@@ -228,9 +226,7 @@ describe("POST /products", () => {
         expect(status).toBe(400);
         expect(body).toEqual(
           expect.objectContaining({
-            message: [
-              "Cannot set to minus",
-            ],
+            message: ["Cannot set to minus"],
           })
         );
         done();
@@ -246,8 +242,8 @@ describe("POST /products", () => {
       .send({
         name: productName,
         image_url: productImage,
-        price: '',
-        stock: '',
+        price: "",
+        stock: "",
         UserId: userIdDummy,
       })
       .end((err, res) => {
@@ -256,12 +252,23 @@ describe("POST /products", () => {
         expect(status).toBe(400);
         expect(body).toEqual(
           expect.objectContaining({
-            message: [
-              "Price must be number",
-              "Stock must be number",
-            ],
+            message: ["Price must be number", "Stock must be number"],
           })
         );
+        done();
+      });
+  });
+});
+
+describe("GET /products", () => {
+  test("TEST CASE 1: SUCCESS GET", (done) => {
+    request(app)
+      .get("/products")
+      .end((err, res) => {
+        if (err) return done(err);
+        const { body, status } = res;
+        expect(status).toBe(200);
+        expect(body).toEqual(expect.arrayContaining([]));
         done();
       });
   });
