@@ -5,10 +5,13 @@ function errorHandler(err, req, res, next) {
     } else if (err.name === "SequelizeValidationError" || err.name === "SequelizeUniqueConstraintError" ) {
             let errors = [];
             let tempMessage = [];
+            let tempMessageCategoryId = [];
             for (let i = 0; i < err.errors.length; i++) {
                 if (err.name === "SequelizeUniqueConstraintError") {
                     if(err.parent.table === "Users") {
                         errors.push("The email has been registered.")
+                    } else if(err.parent.table === "Categories") {
+                        errors.push("The category name has been taken.")
                     }
                 } else if(err.errors[i].message === "Password must contain at least 6 characters.") {
                     tempMessage.push(err.errors[i].message);
@@ -36,12 +39,17 @@ function errorHandler(err, req, res, next) {
                     if (!errors.includes("Stock is required.") ) {
                         errors.push(err.errors[i].message);
                     }
+                } else if (err.errors[i].message === "Category Id must be numeric.") {
+                    if (!errors.includes("Category is required.") ) {
+                        errors.push(err.errors[i].message);
+                    }
                 } else if (err.errors[i].message === "Price is required.") {
                     tempMessage.push(err.errors[i].message);
                 } else if (err.errors[i].message === "Stock is required.") {
                     tempMessage.push(err.errors[i].message);
-                }
-                else {
+                } else if (err.errors[i].message === "Category is required.") {
+                    tempMessageCategoryId.push(err.errors[i].message);
+                } else {
                     if(!errors.includes(err.errors[i].message)) {
                         errors.push(err.errors[i].message);
                     }
@@ -50,6 +58,14 @@ function errorHandler(err, req, res, next) {
             if (tempMessage.length) {
                 errors = errors.concat(tempMessage);
                 tempMessage.length = 0;
+            }
+            if (tempMessageCategoryId.length) {
+                if (errors.includes("Name is required.")) {
+                    errors.splice(1, 0, tempMessageCategoryId[0])
+                } else {
+                    errors.splice(0, 0, tempMessageCategoryId[0])
+                }
+                tempMessageCategoryId.length = 0;
             }
         res.status(400).json({ messages: errors });
     } else if (err.name === 'TokenExpiredError') {

@@ -1,6 +1,6 @@
 'use strict';
 
-const users = require("../data/user.json");
+const users = require("../data/users.json");
 const { hash } = require("../helpers/bcrypt");
 
 for (let i = 0; i < users.length; i++) {

@@ -4,8 +4,7 @@ class ProductController {
     static add(req, res, next) {
         const obj = {
             name: req.body.name,
-            category: req.body.category,
-            image_url: req.body.image_url
+            image_url: req.body.image_url,
         }
 
         if (req.body.price === "") {
@@ -20,6 +19,12 @@ class ProductController {
             obj.stock = req.body.stock;
         }
 
+        if (req.body.CategoryId === "") {
+            obj.CategoryId = null;
+        } else {
+            obj.CategoryId = req.body.CategoryId;
+        }
+
         Product.create(obj)
             .then((data) => {
                 res.status(201).json(data);
@@ -31,7 +36,7 @@ class ProductController {
 
     static read(req, res, next) {
         Product.findAll({
-            order: [["updatedAt", "DESC"]],
+            order: [["name", "ASC"]],
         })
             .then((data) => {
                 res.status(200).json(data);
@@ -57,8 +62,7 @@ class ProductController {
             const id = Number(req.params.id);
             const obj = {
                 name: req.body.name,
-                category: req.body.category,
-                image_url: req.body.image_url
+                image_url: req.body.image_url,
             }
     
             if (req.body.price === "") {
@@ -73,7 +77,36 @@ class ProductController {
                 obj.stock = req.body.stock;
             }
 
+            if (req.body.CategoryId === "") {
+                obj.CategoryId = null;
+            } else {
+                obj.CategoryId = req.body.CategoryId;
+            }
+    
             const result = await Product.update(obj, {
+                where: {
+                    id
+                },
+                returning: true
+            });
+            res.status(200).json(result[1][0]);
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    static async patch(req, res, next) {
+        try {
+            const id = Number(req.params.id);
+            const obj = {}
+    
+            if (req.body.CategoryId === "") {
+                obj.CategoryId = null;
+            } else {
+                obj.CategoryId = req.body.CategoryId;
+            }
+    
+            const result = await Product.put(obj, {
                 where: {
                     id
                 },

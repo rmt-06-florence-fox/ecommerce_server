@@ -5,6 +5,7 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Product extends Model {
     static associate(models) {
+      this.belongsTo(models.Category);
     }
   };
   Product.init({
@@ -22,17 +23,17 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    category: {
-      type: DataTypes.STRING,
+    CategoryId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notNull: {
           args: true,
           msg: "Category is required."
         },
-        notEmpty: {
+        isNumeric: {
           args: true,
-          msg: "Category is required."
+          msg: "Category Id must be numeric."
         }
       }
     },
