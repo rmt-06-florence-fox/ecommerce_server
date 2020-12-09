@@ -4,7 +4,7 @@
         <div class="circle"></div>
         <div class="content">
             <div class="textBox">
-                <h2>Koperasi <br>STM <span>Tadika Mesra</span></h2>
+                <h2>Koperasi <br>STM <span>{{ title }}</span></h2>
                 <p>Memudahkan siswa dalam memenuhi kebutuhan perlengkapan belajar dan atribut sekolahnya selama belajar dari rumah.</p>
                 <router-link to="/login">Login</router-link>
             </div>
@@ -30,12 +30,15 @@
 // import HelloWorld from '@/components/HelloWorld.vue'
 
 // import Navbar from '../components/Navbar'
-
+import { mapState } from 'vuex'
 export default {
   name: 'Home',
   components: {
     // HelloWorld
     // Navbar
+  },
+  computed: {
+    ...mapState(['title'])
   }
 }
 </script>

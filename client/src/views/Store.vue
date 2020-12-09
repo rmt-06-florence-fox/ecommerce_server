@@ -5,7 +5,7 @@
          <div class="row justify-content-center">
              <div class="col-lg-10">
                  <div class="cart_container">
-                     <div class="cart_title">Toko</div>
+                     <div class="cart_title">Etalase {{ title }}</div>
                      <!-- v-for -->
                      <div class="cart_items" v-for="(product, i) in allProducts" :key="i">
                        <!-- <router-link to="/detail/"> -->
@@ -62,10 +62,10 @@
 
 <script>
 import axios from '../config/axiosInstance'
+import { mapState } from 'vuex'
 export default {
   data () {
     return {
-      allProducts: [],
       addForm: false,
       name: '',
       image_url: '',
@@ -75,18 +75,7 @@ export default {
   },
   methods: {
     fetchData () {
-      axios({
-        method: 'GET',
-        url: '/products',
-        headers: {
-          access_token: localStorage.getItem('access_token')
-        }
-      })
-        .then(response => {
-          const data = response.data.data
-          this.allProducts = data
-          // console.log(this.allProducts)
-        })
+      this.$store.dispatch('fetchData')
     },
     goDetail (id) {
       console.log(id)
@@ -113,6 +102,10 @@ export default {
           console.log(response)
           this.fetchData()
           this.addForm = false
+          this.name = ''
+          this.stock = ''
+          this.price = ''
+          this.image_url = ''
           // console.log(this.allProducts)
         })
     }
@@ -120,6 +113,9 @@ export default {
   created () {
     this.fetchData()
     this.addForm = false
+  },
+  computed: {
+    ...mapState(['title', 'allProducts'])
   }
 }
 </script>
