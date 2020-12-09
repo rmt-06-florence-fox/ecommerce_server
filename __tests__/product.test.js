@@ -4,7 +4,6 @@ const { sequelize } = require("../models");
 const { queryInterface } = sequelize;
 const { hash } = require("../helpers/passwordHandler");
 const { generateToken } = require("../helpers/tokenHandler");
-const { Product } = require("../models");
 
 const passwordDummy = "adminganteng";
 
