@@ -1,6 +1,6 @@
 const request = require('supertest')
 const app = require('../app')
-const { User, Product, sequelize } = require('../models')
+const { User, sequelize } = require('../models')
 const { queryInterface } = sequelize
 const { generateToken } = require('../helpers')
 // const { TestScheduler } = require('jest')
@@ -130,22 +130,21 @@ describe('Test POST /products', () => {
   describe('Customer', () => {
     items.forEach(item => {
       test('Not Allowed', (done) => {
-        users.forEach(user => {
+        users.forEach(async user => {
           if (user.role == 'Customer') {
-            return request(app)
-              .post('/products')
-              .set('access_token', user.access_token)
-              .set('Accept', 'application/json')
-              .send(item)
-              .then((res) => {
-                const { status, body } = res
-                expect(status).toBe(401)
-                expect(body).toHaveProperty('message', "You're not allowed to do this action")
-                done()
-              })
-              .catch(err => {
-                done(err)
-              })
+            try {
+              const res = await request(app)
+                .post('/products')
+                .set('access_token', user.access_token)
+                .set('Accept', 'application/json')
+                .send(item)
+              const { status, body } = res
+              expect(status).toBe(401)
+              expect(body).toHaveProperty('message', "You're not allowed to do this action")
+              done()
+            } catch (err) {
+              done(err)
+            }
           }
           done()
         })
@@ -158,25 +157,24 @@ describe('Test POST /products', () => {
       if (i == 0) {
         describe('Success Add product', () => {
           test('Completed', (done) => {
-            users.forEach(user => {
+            users.forEach(async user => {
               if (user.role == 'Admin') {
-                return request(app)
-                  .post('/products')
-                  .set('access_token', user.access_token)
-                  .set('Accept', 'application/json')
-                  .send(items[i])
-                  .then((res) => {
-                    const { status, body } = res
-                    let id = body.newProduct.id
-                    expect(status).toBe(201)
-                    expect(body).toHaveProperty('message', 'Success add product')
-                    expect(body).toHaveProperty('newProduct', expect.any(Object))
-                    productId = id
-                    done()
-                  })
-                  .catch(err => {
-                    done(err)
-                  })
+                try {
+                  const res = await request(app)
+                    .post('/products')
+                    .set('access_token', user.access_token)
+                    .set('Accept', 'application/json')
+                    .send(items[i])
+                  const { status, body } = res
+                  let id = body.newProduct.id
+                  expect(status).toBe(201)
+                  expect(body).toHaveProperty('message', 'Success add product')
+                  expect(body).toHaveProperty('newProduct', expect.any(Object))
+                  productId = id
+                  done()
+                } catch (err) {
+                  done(err)
+                }
               }
             })
           })
@@ -187,88 +185,84 @@ describe('Test POST /products', () => {
             describe('Missing Information', () => {
               if (i == 1) {
                 test('Blank Data', (done) => {
-                  users.forEach(user => {
+                  users.forEach(async user => {
                     if (user.role == 'Admin') {
-                      return request(app)
-                        .post('/products')
-                        .set('access_token', user.access_token)
-                        .set('Accept', 'application/json')
-                        .send(items[i])
-                        .then((res) => {
-                          const { status, body } = res
-                          expect(status).toBe(400)
-                          expect(body).toContainEqual({ message: 'Name cannot be empty' })
-                          expect(body).toContainEqual({ message: 'Price cannot be empty' })
-                          expect(body).toContainEqual({ message: 'Stock cannot be empty' })
-                          done()
-                        })
-                        .catch(err => {
-                          done(err)
-                        })
+                      try {
+                        const res = await request(app)
+                          .post('/products')
+                          .set('access_token', user.access_token)
+                          .set('Accept', 'application/json')
+                          .send(items[i])
+                        const { status, body } = res
+                        expect(status).toBe(400)
+                        expect(body).toContainEqual({ message: 'Name cannot be empty' })
+                        expect(body).toContainEqual({ message: 'Price cannot be empty' })
+                        expect(body).toContainEqual({ message: 'Stock cannot be empty' })
+                        done()
+                      } catch (err) {
+                        done(err)
+                      }
                     }
                   })
                 })
               } else if (i == 2) {
                 test('Blank Name', (done) => {
-                  users.forEach(user => {
+                  users.forEach(async user => {
                     if (user.role == 'Admin') {
-                      return request(app)
-                        .post('/products')
-                        .set('access_token', user.access_token)
-                        .set('Accept', 'application/json')
-                        .send(items[i])
-                        .then((res) => {
-                          const { status, body } = res
-                          expect(status).toBe(400)
-                          expect(body).toContainEqual({ message: 'Name cannot be empty' })
-                          done()
-                        })
-                        .catch(err => {
-                          done(err)
-                        })
+                      try {
+                        const res = await request(app)
+                          .post('/products')
+                          .set('access_token', user.access_token)
+                          .set('Accept', 'application/json')
+                          .send(items[i])
+                        const { status, body } = res
+                        expect(status).toBe(400)
+                        expect(body).toContainEqual({ message: 'Name cannot be empty' })
+                        done()
+                      } catch (err) {
+                        done(err)
+                      }
                     }
                   })
                 })
               } else if (i == 2) {
                 test('Blank Price', (done) => {
-                  users.forEach(user => {
+                  users.forEach(async user => {
                     if (user.role == 'Admin') {
-                      return request(app)
-                        .post('/products')
-                        .set('access_token', user.access_token)
-                        .set('Accept', 'application/json')
-                        .send(items[i])
-                        .then((res) => {
-                          const { status, body } = res
-                          expect(status).toBe(400)
+                      try {
+                        const res = await request(app)
+                          .post('/products')
+                          .set('access_token', user.access_token)
+                          .set('Accept', 'application/json')
+                          .send(items[i])
+                        const { status, body } = res
+                        expect(status).toBe(400)
 
-                          expect(body).toContainEqual({ message: 'Price cannot be empty' })
-                          done()
-                        })
-                        .catch(err => {
-                          done(err)
-                        })
+                        expect(body).toContainEqual({ message: 'Price cannot be empty' })
+                        done()
+                      } catch (err) {
+                        done(err)
+                      }
                     }
                   })
                 })
               } else if (i == 2) {
                 test('Blank Stock', (done) => {
-                  users.forEach(user => {
+                  users.forEach(async user => {
                     if (user.role == 'Admin') {
-                      return request(app)
-                        .post('/products')
-                        .set('access_token', user.access_token)
-                        .set('Accept', 'application/json')
-                        .send(items[i])
-                        .then((res) => {
-                          const { status, body } = res
-                          expect(status).toBe(400)
-                          expect(body).toContainEqual({ message: 'Stock cannot be empty' })
-                          done()
-                        })
-                        .catch(err => {
-                          done(err)
-                        })
+                      try {
+                        const res = await request(app)
+                          .post('/products')
+                          .set('access_token', user.access_token)
+                          .set('Accept', 'application/json')
+                          .send(items[i])
+                        const { status, body } = res
+                        expect(status).toBe(400)
+                        expect(body).toContainEqual({ message: 'Stock cannot be empty' })
+                        done()
+                      } catch (err) {
+                        done(err)
+                      }
                     }
                   })
                 })
@@ -279,85 +273,81 @@ describe('Test POST /products', () => {
             describe('Invalid Value', () => {
               if (i == 5) {
                 test('Price cannot be negative', (done) => {
-                  users.forEach(user => {
+                  users.forEach(async user => {
                     if (user.role == 'Admin') {
-                      return request(app)
-                        .post('/products')
-                        .set('access_token', user.access_token)
-                        .set('Accept', 'application/json')
-                        .send(items[i])
-                        .then((res) => {
-                          const { status, body } = res
-                          expect(status).toBe(400)
-                          expect(body).toContainEqual({ message: 'Price cannot be negative' })
-                          done()
-                        })
-                        .catch(err => {
-                          done(err)
-                        })
+                      try {
+                        const res = await request(app)
+                          .post('/products')
+                          .set('access_token', user.access_token)
+                          .set('Accept', 'application/json')
+                          .send(items[i])
+                        const { status, body } = res
+                        expect(status).toBe(400)
+                        expect(body).toContainEqual({ message: 'Price cannot be negative' })
+                        done()
+                      } catch (err) {
+                        done(err)
+                      }
                     }
                   })
                 })
               } else if (i == 6) {
                 test('Stock cannot be negative', (done) => {
-                  users.forEach(user => {
+                  users.forEach(async user => {
                     if (user.role == 'Admin') {
-                      return request(app)
-                        .post('/products')
-                        .set('access_token', user.access_token)
-                        .set('Accept', 'application/json')
-                        .send(items[i])
-                        .then((res) => {
-                          const { status, body } = res
-                          expect(status).toBe(400)
-                          expect(body).toContainEqual({ message: 'Stock cannot be negative' })
-                          done()
-                        })
-                        .catch(err => {
-                          done(err)
-                        })
+                      try {
+                        const res = await request(app)
+                          .post('/products')
+                          .set('access_token', user.access_token)
+                          .set('Accept', 'application/json')
+                          .send(items[i])
+                        const { status, body } = res
+                        expect(status).toBe(400)
+                        expect(body).toContainEqual({ message: 'Stock cannot be negative' })
+                        done()
+                      } catch (err) {
+                        done(err)
+                      }
                     }
                   })
                 })
               } else if (i == 7) {
                 test('Price must be integer', (done) => {
-                  users.forEach(user => {
+                  users.forEach(async user => {
                     if (user.role == 'Admin') {
-                      return request(app)
-                        .post('/products')
-                        .set('access_token', user.access_token)
-                        .set('Accept', 'application/json')
-                        .send(items[i])
-                        .then((res) => {
-                          const { status, body } = res
-                          expect(status).toBe(400)
-                          expect(body).toContainEqual({ message: 'Price must be Number' })
-                          done()
-                        })
-                        .catch(err => {
-                          done(err)
-                        })
+                      try {
+                        const res = await request(app)
+                          .post('/products')
+                          .set('access_token', user.access_token)
+                          .set('Accept', 'application/json')
+                          .send(items[i])
+                        const { status, body } = res
+                        expect(status).toBe(400)
+                        expect(body).toContainEqual({ message: 'Price must be Number' })
+                        done()
+                      } catch (err) {
+                        done(err)
+                      }
                     }
                   })
                 })
               } else {
                 test('Stock must be integer', (done) => {
-                  users.forEach(user => {
+                  users.forEach(async user => {
                     if (user.role == 'Admin') {
-                      return request(app)
-                        .post('/products')
-                        .set('access_token', user.access_token)
-                        .set('Accept', 'application/json')
-                        .send(items[i])
-                        .then((res) => {
-                          const { status, body } = res
-                          expect(status).toBe(400)
-                          expect(body).toContainEqual({ message: 'Stock must be Number' })
-                          done()
-                        })
-                        .catch(err => {
-                          done(err)
-                        })
+                      try {
+                        const res = await request(app)
+                          .post('/products')
+                          .set('access_token', user.access_token)
+                          .set('Accept', 'application/json')
+                          .send(items[i])
+                        const { status, body } = res
+                        expect(status).toBe(400)
+                        expect(body).toContainEqual({ message: 'Stock must be Number' })
+                        done()
+                      } catch (err) {
+                        done(err)
+                      }
                     }
                   })
                 })
@@ -373,25 +363,24 @@ describe('Test POST /products', () => {
 
 // --- END OF CREATE PRODUCT TEST > POST /products --- //
 
-// --- SHOW PRODUCT TEST > POST / products--- //
+// --- SHOW PRODUCT TEST > GET / products--- //
 
 describe('Test GET /products', () => {
   describe('Customer', () => {
     test('Not Allowed', (done) => {
-      users.forEach(user => {
+      users.forEach(async user => {
         if (user.role == 'Customer') {
-          return request(app)
-            .get('/products')
-            .set('access_token', user.access_token)
-            .then(res => {
-              const { status, body } = res
-              expect(status).toBe(401)
-              expect(body).toHaveProperty('message', "You're not allowed access this page")
-              done()
-            })
-            .catch(err => {
-              done(err)
-            })
+          try {
+            const res = await request(app)
+              .get('/products')
+              .set('access_token', user.access_token)
+            const { status, body } = res
+            expect(status).toBe(401)
+            expect(body).toHaveProperty('message', "You're not allowed access this page")
+            done()
+          } catch (err) {
+            done(err)
+          }
         }
         done()
       })
@@ -401,20 +390,19 @@ describe('Test GET /products', () => {
 
   describe('Admin', () => {
     test('Succees show products', (done) => {
-      users.forEach(user => {
+      users.forEach(async user => {
         if (user.role == 'Admin') {
-          return request(app)
-            .get('/products')
-            .set('access_token', user.access_token)
-            .then(res => {
-              const { status, body } = res
-              expect(status).toBe(200)
-              expect(body).toEqual(expect.arrayContaining([]))
-              done()
-            })
-            .catch(err => {
-              done(err)
-            })
+          try {
+            const res = await request(app)
+              .get('/products')
+              .set('access_token', user.access_token)
+            const { status, body } = res
+            expect(status).toBe(200)
+            expect(body).toEqual(expect.arrayContaining([]))
+            done()
+          } catch (err) {
+            done(err)
+          }
         }
         done()
       })
@@ -423,9 +411,9 @@ describe('Test GET /products', () => {
   })
 })
 
-// --- END OF SHOW PRODUCT TEST > POST / products--- //
+// --- END OF SHOW PRODUCT TEST > GET / products--- //
 
-// --- UPDATE PRODUCT TEST > POST / products--- //
+// --- UPDATE PRODUCT TEST > PUT / products/:id--- //
 
 describe('Test PUT /products', () => {
   describe('Customer', () => {
@@ -483,68 +471,65 @@ describe('Test PUT /products', () => {
           describe('Invalid Value', () => {
             if (j == 1) {
               test('Price cannot be negative', (done) => {
-                users.forEach(user => {
+                users.forEach(async user => {
                   if (user.role == 'Admin') {
-                    return request(app)
-                      .put(`/products/${productId}`)
-                      .set('access_token', user.access_token)
-                      .set('Accept', 'application/json')
-                      .send(edits[j])
-                      .then((res) => {
-                        const { status, body } = res
-                        expect(status).toBe(400)
-                        expect(body).toContainEqual({ message: 'Price cannot be negative' })
-                        done()
-                      })
-                      .catch(err => {
-                        done(err)
-                      })
+                    try {
+                      const res = await request(app)
+                        .put(`/products/${productId}`)
+                        .set('access_token', user.access_token)
+                        .set('Accept', 'application/json')
+                        .send(edits[j])
+                      const { status, body } = res
+                      expect(status).toBe(400)
+                      expect(body).toContainEqual({ message: 'Price cannot be negative' })
+                      done()
+                    } catch (err) {
+                      done(err)
+                    }
                   }
                 })
               })
             } else if (j == 2) {
               test('Stock cannot be negative', (done) => {
-                users.forEach(user => {
+                users.forEach(async user => {
                   if (user.role == 'Admin') {
-                    return request(app)
-                      .put(`/products/${productId}`)
-                      .set('access_token', user.access_token)
-                      .set('Accept', 'application/json')
-                      .send(edits[j])
-                      .then((res) => {
-                        const { status, body } = res
-                        expect(status).toBe(400)
-                        expect(body).toContainEqual({ message: 'Stock cannot be negative' })
-                        done()
-                      })
-                      .catch(err => {
-                        done(err)
-                      })
+                    try {
+                      const res = await request(app)
+                        .put(`/products/${productId}`)
+                        .set('access_token', user.access_token)
+                        .set('Accept', 'application/json')
+                        .send(edits[j])
+                      const { status, body } = res
+                      expect(status).toBe(400)
+                      expect(body).toContainEqual({ message: 'Stock cannot be negative' })
+                      done()
+                    } catch (err) {
+                      done(err)
+                    }
                   }
                 })
               })
             } else if (j == 3) {
               test('Stock must be integer', (done) => {
-                users.forEach(user => {
+                users.forEach(async user => {
                   if (user.role == 'Admin') {
-                    return request(app)
-                      .put(`/products/${productId}`)
-                      .set('access_token', user.access_token)
-                      .set('Accept', 'application/json')
-                      .send(edits[j])
-                      .then((res) => {
-                        const { status, body } = res
-                        expect(status).toBe(400)
-                        expect(body).toContainEqual({ message: 'Stock must be Number' })
-                        done()
-                      })
-                      .catch(err => {
-                        done(err)
-                      })
+                    try {
+                      const res = await request(app)
+                        .put(`/products/${productId}`)
+                        .set('access_token', user.access_token)
+                        .set('Accept', 'application/json')
+                        .send(edits[j])
+                      const { status, body } = res
+                      expect(status).toBe(400)
+                      expect(body).toContainEqual({ message: 'Stock must be Number' })
+                      done()
+                    } catch (err) {
+                      done(err)
+                    }
                   }
                 })
               })
-            } 
+            }
           })
         })
       }
@@ -553,7 +538,83 @@ describe('Test PUT /products', () => {
 
 })
 
-// --- END OF UPDATE PRODUCT TEST > POST / products--- //
+// --- END OF UPDATE PRODUCT TEST > PUT / products/:id--- //
+
+// --- DELETE PRODUCT TEST > DELETE / productsproducts/:id--- //
+
+describe('Test DELETE /products', () => {
+  describe('Customer', () => {
+    items.forEach(item => {
+      test('Not Allowed', (done) => {
+        users.forEach(async user => {
+          if (user.role == 'Customer') {
+            try {
+              const res = await request(app)
+                .delete(`/products/${productId}`)
+                .set('access_token', user.access_token)
+              const { status, body } = res
+              expect(status).toBe(401)
+              expect(body).toHaveProperty('message', "You're not allowed access this page")
+              done()
+            } catch (err) {
+              done(err)
+            }
+          }
+        })
+      })
+    })
+  })
+
+  describe('Admin', () => {
+    describe('Failed delete product', () => {
+      items.forEach(item => {
+        test('Product not found', (done) => {
+          users.forEach(async user => {
+            if (user.role == 'Admin') {
+              try {
+                const res = await request(app)
+                  .delete('/products/00')
+                  .set('access_token', user.access_token)
+                const { status, body } = res
+                expect(status).toBe(404)
+                expect(body).toHaveProperty('message', "Product not found")
+                done()
+              } catch (err) {
+                done(err)
+              }
+            }
+          })
+        })
+      })
+    })
+
+    describe('Success delete product', () => {
+      test('Completed', (done) => {
+        users.forEach(async user => {
+          if (user.role == 'Admin') {
+            try {
+              const res = await request(app)
+                .delete(`/products/${productId}`)
+                .set('access_token', user.access_token)
+              const { status, body } = res
+              expect(status).toBe(200)
+              expect(body).toHaveProperty('message', "Delete Success")
+              expect(body).toHaveProperty('deleted', expect.any(Object))
+              done()
+            } catch (err) {
+              done(err)
+            }
+          }
+        })
+      })
+    })
+
+  })
+
+})
+
+// --- END OF DELETE PRODUCT TEST > DELETE / products/:id --- //
+
 
 afterAll(done => {
   queryInterface.bulkDelete('Products')

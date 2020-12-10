@@ -128,10 +128,11 @@ class ProductController {
             message: "Product not found"
           }
         }else{
-          await Product.destroy({
+          let deleted= await Product.destroy({
             where:{id},
+            returning:true
           })
-          res.status(200).json({ message: "Delete Success", product })
+          res.status(200).json({ message: "Delete Success", deleted: product })
         }
 
       }
