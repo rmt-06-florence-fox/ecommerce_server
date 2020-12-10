@@ -8,7 +8,7 @@ module.exports = {
         username: "admin",
         role: "admin",
         email: "admin@admin.com",
-        password: hash("adminganteng"),
+        password: hash(process.env.PASSWORD_ADMIN),
         createdAt: new Date(),
         updatedAt: new Date(),
       },
