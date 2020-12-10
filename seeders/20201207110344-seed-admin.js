@@ -1,4 +1,5 @@
 "use strict";
+require('dotenv').config()
 const { hash } = require("../helpers/passwordHandler");
 
 module.exports = {
