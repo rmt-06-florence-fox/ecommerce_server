@@ -19,7 +19,6 @@ class Controller {
                     let accesstoken = jwt.sign({id: user[0].dataValues.id, email: user[0].dataValues.email, role: user[0].dataValues.role}, 'process.env.SECRET')
                     res.status(200).json({accesstoken})
                 } else {
-                console.log('ZZZZZ')
 
                 res.status(401).json({message : "invalid account"})
                 }
@@ -81,7 +80,9 @@ class Controller {
         })
     }
     static fetchData (req, res) {
-        Product.findAll()
+        Product.findAll({
+            order:[['createdAt', 'DESC']]
+        })
         .then(result => {
             res.status(200).json(result)
         })
