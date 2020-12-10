@@ -1,4 +1,3 @@
-const e = require('express')
 const { Product } = require('../models')
 class ProductController {
   static getlist(req, res, next) {

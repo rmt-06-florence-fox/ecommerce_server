@@ -43,13 +43,13 @@ const items = [
     price: 15000,
     stock: ''
   },
-  { // Failed Add Product > Invalid Value > Price must be greater than 0 //
+  { // Failed Add Product > Invalid Value > Price mcannot be negative//
     name: 'Macaron 3',
     image_url: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?ixid=MXwxMjA3fDB8MHxzZWFyY2h8NHx8YmFrZXJ5fGVufDB8fDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60',
     price: -15000,
     stock: 100
   },
-  { // Failed Add Product > Invalid Value > Stock must be greater than 0 //
+  { // Failed Add Product > Invalid Value > Stock cannot be negative //
     name: 'Macaron 2',
     image_url: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?ixid=MXwxMjA3fDB8MHxzZWFyY2h8NHx8YmFrZXJ5fGVufDB8fDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60',
     price: 15000,
@@ -68,6 +68,33 @@ const items = [
     stock: 'Seratus buah'
   }
 
+]
+
+const edits = [
+  { // Success Edit Product //
+    name: 'Strawberry Pancake',
+    image_url: 'https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?ixid=MXwxMjA3fDB8MHxzZWFyY2h8N3x8Y3JvaXNzYW50fGVufDB8fDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60',
+    price: 50000,
+    stock: 20
+  },
+  { // Failed Edit product > Invalid Value > Price cannot be negative //
+    name: 'Strawberry Pancake',
+    image_url: 'https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?ixid=MXwxMjA3fDB8MHxzZWFyY2h8N3x8Y3JvaXNzYW50fGVufDB8fDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60',
+    price: -5000,
+    stock: 50
+  },
+  { // Failed Edit product > Invalid Value > Stock cannot be negative //
+    name: 'Strawberry Pancake',
+    image_url: 'https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?ixid=MXwxMjA3fDB8MHxzZWFyY2h8N3x8Y3JvaXNzYW50fGVufDB8fDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60',
+    price: 5000,
+    stock: -50
+  },
+  { // Failed Edit product > Invalid Value > Stock must be integer//
+    name: 'Strawberry Pancake',
+    image_url: 'https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?ixid=MXwxMjA3fDB8MHxzZWFyY2h8N3x8Y3JvaXNzYW50fGVufDB8fDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60',
+    price: 5000,
+    stock: 'lima puluh buah'
+  },
 ]
 
 const users = []
@@ -341,6 +368,7 @@ describe('Test POST /products', () => {
       }
     }
   })
+
 })
 
 // --- END OF CREATE PRODUCT TEST > POST /products --- //
@@ -400,9 +428,129 @@ describe('Test GET /products', () => {
 // --- UPDATE PRODUCT TEST > POST / products--- //
 
 describe('Test PUT /products', () => {
-  describe('Customer', ()=>{
-    
+  describe('Customer', () => {
+    edits.forEach(edit => {
+      test('Not Allowed', (done) => {
+        users.forEach(async user => {
+          if (user.role == 'Customer') {
+            try {
+              const res = await request(app)
+                .put(`/products/${productId}`)
+                .set('access_token', user.access_token)
+                .set('Accept', 'application/json')
+                .send(edit)
+              const { status, body } = res
+              expect(status).toBe(401)
+              expect(body).toHaveProperty('message', "You're not allowed access this page")
+              done()
+            } catch (err) {
+              done(err)
+            }
+          }
+          done()
+        })
+      })
+    })
   })
+
+  describe('Admin', () => {
+    for (let j = 0; j < edits.length; j++) {
+      if (j == 0) {
+        describe('Success Edit product', () => {
+          test('Completed', (done) => {
+            users.forEach(async user => {
+              if (user.role == 'Admin') {
+                try {
+                  const res = await request(app)
+                    .put(`/products/${productId}`)
+                    .set('access_token', user.access_token)
+                    .set('Accept', 'application/json')
+                    .send(edits[j])
+                  const { status, body } = res
+                  expect(status).toBe(200)
+                  expect(body).toHaveProperty('message', 'Update Success')
+                  expect(body).toHaveProperty('updated', expect.any(Object))
+                  done()
+                } catch (err) {
+                  done(err)
+                }
+              }
+            })
+          })
+        })
+      } else {
+        describe('Failed Edit product', () => {
+          describe('Invalid Value', () => {
+            if (j == 1) {
+              test('Price cannot be negative', (done) => {
+                users.forEach(user => {
+                  if (user.role == 'Admin') {
+                    return request(app)
+                      .put(`/products/${productId}`)
+                      .set('access_token', user.access_token)
+                      .set('Accept', 'application/json')
+                      .send(edits[j])
+                      .then((res) => {
+                        const { status, body } = res
+                        expect(status).toBe(400)
+                        expect(body).toContainEqual({ message: 'Price cannot be negative' })
+                        done()
+                      })
+                      .catch(err => {
+                        done(err)
+                      })
+                  }
+                })
+              })
+            } else if (j == 2) {
+              test('Stock cannot be negative', (done) => {
+                users.forEach(user => {
+                  if (user.role == 'Admin') {
+                    return request(app)
+                      .put(`/products/${productId}`)
+                      .set('access_token', user.access_token)
+                      .set('Accept', 'application/json')
+                      .send(edits[j])
+                      .then((res) => {
+                        const { status, body } = res
+                        expect(status).toBe(400)
+                        expect(body).toContainEqual({ message: 'Stock cannot be negative' })
+                        done()
+                      })
+                      .catch(err => {
+                        done(err)
+                      })
+                  }
+                })
+              })
+            } else if (j == 3) {
+              test('Stock must be integer', (done) => {
+                users.forEach(user => {
+                  if (user.role == 'Admin') {
+                    return request(app)
+                      .put(`/products/${productId}`)
+                      .set('access_token', user.access_token)
+                      .set('Accept', 'application/json')
+                      .send(edits[j])
+                      .then((res) => {
+                        const { status, body } = res
+                        expect(status).toBe(400)
+                        expect(body).toContainEqual({ message: 'Stock must be Number' })
+                        done()
+                      })
+                      .catch(err => {
+                        done(err)
+                      })
+                  }
+                })
+              })
+            } 
+          })
+        })
+      }
+    }
+  })
+
 })
 
 // --- END OF UPDATE PRODUCT TEST > POST / products--- //

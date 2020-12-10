@@ -11,11 +11,12 @@ const Authentication = async (req, res, next) => {
       }
     } else {
       const decoded = verifyToken(access_token)
-      const user = await User.findOne({
+      const user = User.findOne({
         where: {
           id: decoded.id
         }
       })
+
       req.loggedIn = decoded
 
       if (!user) {
