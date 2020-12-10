@@ -1,4 +1,3 @@
-# ecommerce_server
 # **ECOMMERCE APP**
 ___
 
@@ -153,6 +152,90 @@ ___
     "stock": 2,
     "updatedAt": "2020-12-10T03:44:37.690Z",
     "createdAt": "2020-12-10T03:44:37.690Z"
+}
+```
+* **Error Response**
+- * **code:401**
+- * **content:**
+```
+{
+    "msg": "please login"
+}
+```
+- * **code:401**
+- * **content:**
+```
+{
+    "msg": "Unauthorize access"
+}
+```
+- * **code:500**
+- * **content:**
+```
+{
+    "msg": "internal server eror"
+}
+```
+
+## **Delete Product**
+___
+* **URL**
+* > localhost:3000/product/:id
+* **Method:**
+* > delete
+* **URL Params**
+* > id = [integer]
+
+* **Success Response**
+- * **code:200**
+- * **content:**
+```
+{
+    "message": "succes delete product"
+}
+```
+* **Error Response**
+- * **code:401**
+- * **content:**
+```
+{
+    "msg": "please login"
+}
+```
+- * **code:401**
+- * **content:**
+```
+{
+    "msg": "Unauthorize access"
+}
+```
+- * **code:500**
+- * **content:**
+```
+{
+    "msg": "internal server eror"
+}
+```
+## **Replace product**
+___
+* **URL**
+> localhost:3000/product/:id
+* **Method:**
+* > put
+* **URL Params**
+* id = [integer]
+
+* **Data Params**
+* >name = [string]
+            image_url = [string],
+            price = [integer],
+            stock =  [integer]
+* **Success Response**
+- * **code:200**
+- * **content:**
+```
+{
+    "msg": "Succes modified"
 }
 ```
 * **Error Response**
