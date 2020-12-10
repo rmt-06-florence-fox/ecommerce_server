@@ -10,6 +10,41 @@ class ControllerCategory {
         }
     }
 
+    static async post (req, res, next) {
+        try {
+            const newCat = await Category.create(req.body)
+            res.status(201).json(newCat)
+        } catch (err) {
+            next (err)
+        }
+    }
+
+    static async put (req, res, next) {
+        try {
+            const newCat = await Category.update(req.body, {
+                where: {
+                    id: req.params.id
+                }
+            })
+            res.status(201).json(newCat)
+        } catch (err) {
+            next (err)
+        }
+    }
+
+    static async delete (req, res, next) {
+        try {
+            const newCat = await Category.destroy({
+                where: {
+                    id: req.params.id
+                }
+            })
+            res.status(201).json(newCat)
+        } catch (err) {
+            next (err)
+        }
+    }
+
     static async bulkPost (req, res, next) {
         try {
             const bulkCreate = await ProductCategory.bulkCreate(req.body)
