@@ -22,7 +22,7 @@ describe ("Login Admin POST /login", ()=> {
         test ("Response Error 404", done => {
             request (app)
             .post ("/login")
-            .send ({email: "bukanadmin@mail.com", password : "123456"})
+            .send ({email: "belumregistrasi@mail.com", password : "123456"})
             .end ((err, res) => {
                 const {body, status} = res
                 if (err){
@@ -33,7 +33,7 @@ describe ("Login Admin POST /login", ()=> {
                 done ()
             })
         })
-        test ("Response Error 401 Password", done => {
+        test ("Response Error 401 email dan Password", done => {
             request (app)
             .post ("/login")
             .send ({email: "admin@mail.com", password : "12345"})
@@ -43,21 +43,7 @@ describe ("Login Admin POST /login", ()=> {
                     return done (err)
                 }
                 expect(status).toBe(401)
-                expect(body).toHaveProperty("message", "Invalid Username/Password")
-                done ()
-            })
-        })
-        test ("Response Error 401 email", done => {
-            request (app)
-            .post ("/login")
-            .send ({email: "admi@mail.com", password : "123456"})
-            .end ((err, res) => {
-                const {body, status} = res
-                if (err){
-                    return done (err)
-                }
-                expect(status).toBe(401)
-                expect(body).toHaveProperty("message", "Invalid Username/Password")
+                expect(body).toHaveProperty("message", "Invalid Password")
                 done ()
             })
         })

@@ -1,12 +1,47 @@
 const request = require ("supertest")
 const app = require ("../app")
+const {sequelize} = require ('../models')
+const {queryInterface} = sequelize
+const { generateToken } = require ('../helpers/jwt.js')
+const {User} = require ("../models")
 
 let productId = 0
+let userId = 0
+let access_token_admin = ""
+let access_token_customer = ""
+let productAttributes = {
+    name : "laneige toner",
+    price : 200000,
+    image_url : "data:image/jpeg",
+    stock : 2,
+    UserId : userId
+}
 
 beforeAll (done => {
-    queryInterface
-})
-
+    User.findOne({where : {email: 'admin@mail.com'}})
+    .then(admin => {
+    userId = admin.id
+    access_token_admin = generateToken({
+        id : admin.id, 
+        email: admin.email, 
+        role: admin.role
+    })
+    return User.findOne({where : {email: "customer@mail.com"}})
+    })
+    .then(customer => {
+        //Karena tidak seed data customer
+        access_token_customer = generateToken({
+            id : customer.id, 
+            email: customer.email, 
+            role: customer.role
+        })
+        done()
+    })
+    .catch(err => {
+        done(err)
+    })
+}) 
+ 
 afterAll (done => {
     queryInterface
     .bulkDelete("Products")
@@ -18,91 +53,47 @@ afterAll (done => {
     })
 })
 
-describe ("Create Product By Id POST /products", ()=> {
-    var product = {
-        name : "",
-        price : 0,
-        image_Url: "",
-        stock : 0
-    }
+describe ("Create Product POST /products", ()=> {
     test ("Success Create Data", done => {
         request (app)
         .post (`/products`)
-        .set('access_token', access_token)
-        .send (product)
+        .set('access_token', access_token_admin)
+        .send (productAttributes)
         .end ((err, res) => {
             const {body, status} = res
-            //productId = body.id
+            productId = body.id
             if (err){
                 return done (err)
             }
-            expect(status).toBe(200)
-            expect(body).toHaveProperty("name", product.name)
-            expect(body).toHaveProperty("image_url", expect.any(String))
-            expect(body).toHaveProperty("price", expect.any(Number))
-            expect(body).toHaveProperty("stock", expect.any(String))
+            expect(status).toBe(201)
+            expect(body).toHaveProperty("id", productId)
+            expect(body).toHaveProperty("name", productAttributes.name)
+            expect(body).toHaveProperty("price", productAttributes.price)
+            expect(body).toHaveProperty("image_url", productAttributes.image_url)
+            expect(body).toHaveProperty("stock", productAttributes.stock)
+            expect(body).toHaveProperty("UserId", userId)
             done ()
         })
     })
-    test ("Error Create Data By Id", done => {
-        
-    })
-})
-
-
-describe ("Get All Product GET /products", ()=> {
-    test ("Success Get All Data", done => {
+    test ("Response Error Not Authorized ", done => {
         request (app)
-        .get ("/products")
-        .set('access_token', access_token)
+        .post (`/products`)
+        .set('access_token', access_token_customer)
+        .send (productAttributes)
         .end ((err, res) => {
             const {body, status} = res
             if (err){
                 return done (err)
             }
-            expect(status).toBe(200)
-            expect(body).toHaveProperty("name", expect.any(String))
-            expect(body).toHaveProperty("image_url", expect.any(String))
-            expect(body).toHaveProperty("price", expect.any(Number))
-            expect(body).toHaveProperty("stock", expect.any(String))
+            expect(status).toBe(401)
+            expect(body).toHaveProperty("message", "You are not authorize Edited the Product")
             done ()
         })
     })
 })
 
-describe ("Get Product By Id GET /products/:id", ()=> {
-    test ("Success Get Data By Id", done => {
-        request (app)
-        .get (`/products/${productId}`)
-        .set('access_token', access_token)
-        .end ((err, res) => {
-            const {body, status} = res
-            if (err){
-                return done (err)
-            }
-            expect(status).toBe(200)
-            expect(body).toHaveProperty("name", expect.any(String))
-            expect(body).toHaveProperty("image_url", expect.any(String))
-            expect(body).toHaveProperty("price", expect.any(Number))
-            expect(body).toHaveProperty("stock", expect.any(String))
-            done ()
-        })
-    })
-    test ("Error Get Data By Id Not Found", done => {
-        request (app)
-        .get (`/products/7`)
-        .set('access_token', access_token)
-        .end ((err, res) => {
-            const {body, status} = res
-            if (err){
-                return done (err)
-            }
-            expect(status).toBe(404)
-            expect(body).toHaveProperty("message", "Product Not Found")
-            done ()
-        })
-    })
-})
+
+     
 
 
 
