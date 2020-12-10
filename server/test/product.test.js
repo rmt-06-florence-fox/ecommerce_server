@@ -26,7 +26,7 @@ beforeAll(done => {
         { returning: true },
     )
     .then(user => {
-        // console.log(user);
+        console.log(user[0], '>>>>>>>>>>>>> yang ini');
         UserId = user[0].id
         token = jwt.sign({
             id: user[0].id,
@@ -171,9 +171,9 @@ describe('update Product PUT /products/:id', () => {
                 if (err) {
                     return done(err)
                 }
-                // console.log(body);
+                console.log(body);
                 expect(status).toBe(200)
-                expect(body.result).toHaveProperty('name', 'Green Cap')
+                expect(body).toHaveProperty('name', 'Green Cap')
                 done()
             })
         })
