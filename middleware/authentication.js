@@ -9,7 +9,7 @@ module.exports = async (req, res, next) => {
         } else {
             let decoded = verifyToken(access_token)
             req.loggedIn = decoded
-    
+          
             const data = await Admin.findOne({
                 where: {
                     id: decoded.id

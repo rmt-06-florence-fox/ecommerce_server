@@ -12,7 +12,7 @@ class ProductController {
             }
             
             const data =  await Product.create(newProduct)
-            res.status(201).json({data})
+            res.status(201).json(data)
             console.log(data);
         } catch (error) {
             res.status(500).json(error)
@@ -30,7 +30,7 @@ class ProductController {
     }
 
     
-    static async findData(req, res, next) {
+    static async findData(req, res) {
         try {
             let id = +req.params.id
             const data =  await Product.findByPk(id)

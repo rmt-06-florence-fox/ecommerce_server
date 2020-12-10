@@ -7,6 +7,7 @@ module.exports = async (req, res, next) => {
                 id: req.loggedIn.id
             }
         })
+        console.log(data, 'authorization<<<');
         if(data.role === 'admin') {
             next()
         } else {
