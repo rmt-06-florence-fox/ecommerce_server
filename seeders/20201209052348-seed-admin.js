@@ -12,13 +12,14 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-   await queryInterface.bulkInsert('Users', [{
+   const admin = {
      email: 'admin@mail.com',
-     password: Helper.createPassword('1234'),
+     password: Helper.createPassword('admin123'),
      role: 'admin',
      createdAt: new Date(),
      updatedAt: new Date()
-   }], {})
+   }
+   await queryInterface.bulkInsert('Users', admin, {})
   },
 
   down: async (queryInterface, Sequelize) => {
