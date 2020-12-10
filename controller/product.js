@@ -48,14 +48,20 @@ class ProductControl {
   static async deleteData(req, res, next) {
     try {
       let id = +req.params.id
-
-      await Product.destroy({
+      const deletedResult = await Product.destroy({
         where: { id }
       })
-      res.status(200).json({
-        msg: `Delete product success`
-      })
+      if (!deletedResult) {
+        throw {
+          name: 'Not Found'
+        }
+      } else {
+        res.status(200).json({
+          msg: `Delete product success`
+        })
+      }
     } catch (err) {
+      console.log(err);
       next(err)
     }
   }

@@ -10,10 +10,17 @@ module.exports = async (req, res, next) => {
       }
     } else {
       const data = verifyToken(access_token)
-      req.signedIn = {
-        id: data.id,
-        email: data.email,
-        role: data.role
+      // kasih kondisi cek data 
+      if (data) {
+        req.signedIn = {
+          id: data.id,
+          email: data.email,
+          role: data.role
+        }
+      } else {
+        throw {
+          name: 'Not Found'
+        }
       }
       const user = await User.findOne({ where: { email: data.email } })
       if (!user) {

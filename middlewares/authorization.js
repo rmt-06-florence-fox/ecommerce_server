@@ -7,7 +7,8 @@ module.exports = async (req, res, next) => {
         email: req.signedIn.email
       }
     })
-    // console.log(data.role)
+    console.log(data);
+    console.log(data.role)
     if (data.role !== 'admin') {
       throw {
         name: `Not Authorized`
