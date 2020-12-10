@@ -10,12 +10,12 @@ module.exports = {
       },
       email: {
         type: Sequelize.STRING,
-        unique: {
-          args: true,
-          message: "email must be unique"
-        }
+        unique: true
       },
       password: {
+        type: Sequelize.STRING
+      },
+      role: {
         type: Sequelize.STRING
       },
       createdAt: {

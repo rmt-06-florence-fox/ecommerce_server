@@ -5,11 +5,7 @@ const { getToken } = require("../helper/generateToken")
 class UserController {
     static register(req, res, next) {
         const { email, password, role } = req.body
-        User.create({
-            email,
-            password,
-            role
-        })
+        User.create({email, password})
             .then(data => {
                 res.status(201).json({id: data.id, email: data.email})
             })
@@ -28,7 +24,7 @@ class UserController {
                 if(data) {
                     const access_token = getToken({id: data.id, email: data.email})
                     if(comparePass(req.body.password, data.password)) {
-                        res.status(200).json(access_token)
+                        res.status(200).json({access_token})
                     } else {
                         next({
                             name: "Invalid Account"

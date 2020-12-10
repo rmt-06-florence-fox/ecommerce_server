@@ -41,11 +41,18 @@ module.exports = (sequelize, DataTypes) => {
           msg: "the password must be at least 6 characters long"
         }
       }
+    },
+    role: {
+      type: DataTypes.STRING
     }
   }, {
     hooks: {
       beforeCreate(user, opt) {
         user.password = hashed(user.password)
+        if(!user.role) {
+          user.role = "customer"
+        }
+        // console.log(user)
       }
     },
     sequelize,
