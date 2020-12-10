@@ -1,6 +1,7 @@
 module.exports = (req, res, next) => {
     try {
         let user = req.user
+        console.log(user);
         if(user.role == "admin"){
            next() 
         } else {

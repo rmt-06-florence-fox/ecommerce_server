@@ -19,6 +19,7 @@ module.exports = (req, res, next) => {
             } else {
                 req.user = user
                 const userData = User.findByPk(user.id)
+                console.log(user);
                 if(!userData){
                     throw {
                         status : 404,

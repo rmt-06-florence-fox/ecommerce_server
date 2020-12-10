@@ -66,6 +66,7 @@ class Controller{
     }
 
     static async getAll(req, res, next){
+        console.log('masuk sini');
         try {
             const data = await Product.findAll()
             res.status(200).json(data)
