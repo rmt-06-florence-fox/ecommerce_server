@@ -291,6 +291,52 @@ describe("Read products GET /products", () => {
   });
 });
 
+//READ BY ID
+//Success test cases
+describe("Read products by Id GET /products/:id", () => {
+  describe("Success Read by Id", () => {
+    test("Response with access token", (done) => {
+      request(app)
+        .get(`/products/${idProduct}`)
+        .set("access_token", access_token)
+        .end((err, res) => {
+          const { body, status } = res;
+          if (err) {
+            return done(err);
+          }
+          expect(status).toBe(200);
+          expect(body).toHaveProperty("product");
+          done();
+        });
+    });
+  });
+
+  //Failed test cases
+  describe("Error Read Because it doesn't have an access token", () => {
+    test("You Should login first to get access token", (done) => {
+      request(app)
+        .get(`/products/${idProduct}`)
+        .set("access_token", "")
+        .send({
+          name: "Iphone 12 Pro",
+          image_url:
+            "https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/iphone-12-pro-og-202009?wid=600&hei=315&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1601432262000",
+          price: 18499000,
+          stock: 99,
+        })
+        .end((err, res) => {
+          const { body, status } = res;
+          if (err) {
+            return done(err);
+          }
+          expect(status).toBe(401);
+          expect(body).toHaveProperty("message", "Please login first");
+          done();
+        });
+    });
+  });
+});
+
 //UPDATE
 //Success test cases
 describe("Update products PUT /prouducts/:id", () => {

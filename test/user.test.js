@@ -85,8 +85,8 @@ describe("Login User POST /login", () => {
           if (err) {
             return done(err);
           }
-          expect(status).toBe(404);
-          expect(body).toHaveProperty("message", "Invalid account");
+          expect(status).toBe(400);
+          expect(body).toHaveProperty("message", "Invalid username/password");
           done();
         });
     });
@@ -104,8 +104,8 @@ describe("Login User POST /login", () => {
           if (err) {
             return done(err);
           }
-          expect(status).toBe(404);
-          expect(body).toHaveProperty("message", "Invalid account");
+          expect(status).toBe(400);
+          expect(body).toHaveProperty("message", "Invalid username/password");
           done();
         });
     });

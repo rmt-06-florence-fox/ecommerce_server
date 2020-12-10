@@ -22,8 +22,8 @@ class UserController {
         }
       } else {
         throw {
-          status: 404,
-          message: "Invalid account",
+          status: 400,
+          message: "Invalid username/password",
         };
       }
     } catch (error) {

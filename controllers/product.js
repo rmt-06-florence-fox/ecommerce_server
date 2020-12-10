@@ -31,7 +31,7 @@ class ProductController {
     try {
       const product = await Product.findOne({ where: { id } });
       if (product) {
-        res.status(200).json(product);
+        res.status(200).json({ product });
       } else {
         throw {
           status: 404,
