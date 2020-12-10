@@ -5,9 +5,9 @@ const authorization = require('../middleware/authorization')
 
 
 
+routes.use(authentication)
 routes.get('/', ProductController.getAllProduct)
 
-routes.use(authentication)
 routes.use(authorization)
 
 routes.post('/', ProductController.addNewProduct)
