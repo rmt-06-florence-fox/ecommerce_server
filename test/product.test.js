@@ -80,14 +80,14 @@ beforeAll( (done) =>{
   
   // Get admin token 
   const payLoad = {
-    id  : 5,
+    id  : 8,
     email: "admin@mail.com"
   }
   token = getToken(payLoad)
 
   // get non admin token 
   const wrongPayload = {
-    id : 7,
+    id : 9,
     email : 'wrong@mail.com'
   }
   wrongToken = getToken(wrongPayload)
@@ -133,10 +133,13 @@ describe('Success CRUD product ', () =>{
         if(err){
           return done(err)
         }
-
-        const expectData = [data]
+        console.log(body)
         expect(status).toBe(200)
-        expect(body).toHaveProperty("data",expect.arrayContaining(expectData))
+        expect(body.data[0]).toHaveProperty("name",expect.any(String))
+        expect(body.data[0]).toHaveProperty("image_url",expect.any(String))
+        expect(body.data[0]).toHaveProperty("price",expect.any(Number))
+        expect(body.data[0]).toHaveProperty("stock",expect.any(Number))
+        done()
       })
     })
   })
