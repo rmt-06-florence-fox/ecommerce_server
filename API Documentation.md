@@ -209,6 +209,11 @@
 	error: 'Authentication failed'
 }
 
+- status 404
+{
+	error: 'Not Found'
+}
+
 - status 500
 {
 	error: 'Internal Server Error'
