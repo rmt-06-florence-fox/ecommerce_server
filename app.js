@@ -4,7 +4,10 @@ if(process.env.NODE_ENV !== "production"){
 const express = require("express")
 const app = express()
 const router = require("./routers/index.js")
+const cors = require('cors')
 const errorHandler = require("./middlewares/errorHandler");
+
+app.use(cors())
 
 
 app.use(express.json())
