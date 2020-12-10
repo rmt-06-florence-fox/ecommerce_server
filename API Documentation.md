@@ -106,7 +106,7 @@
 }
 ```
 
-##### success response
+##### failed response
 
 ```
 - status 401
