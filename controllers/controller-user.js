@@ -10,6 +10,15 @@ class ControllerUser {
         }
     }
 
+    static async getUser (req, res, next) {
+        try {
+            const data = await User.findByPk(req.loggedUser.id)
+            res.status(200).json(data)
+        } catch (err) {
+            next(err)
+        }
+    }
+
     static async login (req, res, next) {
         try {
             if(req.body) {
