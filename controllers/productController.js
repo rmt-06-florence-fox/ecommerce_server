@@ -25,6 +25,20 @@ class ProductController {
         }
     }
 
+    static async showById(req, res, next) {
+        try {
+            const data = await Product.findOne({
+                where: {
+                    id: req.params.id
+                }
+            })
+            console.log(data,'<<<<<<KONTOL')
+            res.status(200).json(data)
+        } catch (err) {
+            next(err)
+        }
+    }
+
     static async update(req, res, next) {
         try {
             const id = Number(req.params.id)
@@ -59,6 +73,7 @@ class ProductController {
             next(err)
         }
     }
+    
 }
 
 module.exports = ProductController
