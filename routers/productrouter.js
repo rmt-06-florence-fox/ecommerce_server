@@ -10,6 +10,6 @@ router.get('/category/', ProductController.categoryFilter)
 
 router.get('/:id', productAuthorization, ProductController.getProductById)
 router.put('/:id', productAuthorization, ProductController.editProductById)
-router.delete(':/id', productAuthorization, ProductController.deleteProduct)
+router.delete('/:id', productAuthorization, ProductController.deleteProduct)
 
 module.exports = router

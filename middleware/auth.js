@@ -2,10 +2,8 @@ const {User, Product, Banner} = require('../models');
 const {verifyToken} = require('../helpers/jwt');
 
 const authentication = async (req, res, next) => {
-
   try {
     const { access_token } = req.headers
-    console.log('di auth');
     if (!access_token) {
       throw {
         status: 401,
@@ -29,13 +27,13 @@ const authentication = async (req, res, next) => {
       }
     }
   } catch (err) {
-    console.log(err, 'di auth');
     next(err)
   }
 }
 
 const productAuthorization = async (req, res, next) => {
   const {id} = req.params
+  console.log(id);
   try {
     const product = await Product.findByPk(id)
 

@@ -89,7 +89,7 @@ let access_token = ''
         })
         .then((response) => {
           const {body, status} = response
-          expect(status).toBe(400);
+          expect(status).toBe(500);
           expect(body).toHaveProperty('err', expect.any(String))
           done();
         })
@@ -107,7 +107,7 @@ let access_token = ''
         })
         .then((response) => {
           const {body, status} = response
-          expect(status).toBe(401)
+          expect(status).toBe(500)
           expect(body).toHaveProperty('errors')
           done();
         })
