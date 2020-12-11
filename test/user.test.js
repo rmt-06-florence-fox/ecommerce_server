@@ -32,11 +32,11 @@ afterAll(async (done)=>{
   }
 })
 
-describe('Login User POST /login', () => {
+describe('Login User POST /admin/login', () => {
   describe('Success Login', () => {
     test(`response with access token `, (done)=>{
       request(app)
-        .post('/login')
+        .post('/admin/login')
         .send({
           email: `admin@mail.com`,
           password: `1234567`
@@ -56,7 +56,7 @@ describe('Login User POST /login', () => {
   describe('Error Login with Wrong Password', () => {
     test(`Invalid email / password `, (done)=>{
       request(app)
-        .post('/login')
+        .post('/admin/login')
         .send({
           email: `admin@mail.com`,
           password: `12345`
@@ -75,7 +75,7 @@ describe('Login User POST /login', () => {
   describe('Error Login with No Account', () => {
     test(`Invalid Account `, (done)=>{
       request(app)
-        .post('/login')
+        .post('/admin/login')
         .send({
           email: `ghost@mail.com`,
           password: `1234567`
@@ -94,7 +94,7 @@ describe('Login User POST /login', () => {
   describe('Error Login with empty input', () => {
     test(`empty input`, (done)=>{
       request(app)
-        .post('/login')
+        .post('/admin/login')
         .send({
           email: '',
           password: ''
