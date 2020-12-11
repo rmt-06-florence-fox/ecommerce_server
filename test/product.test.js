@@ -7,43 +7,36 @@ const { generateToken } = require('../helpers/jwthelper')
 const product = require('../routes/productroute')
 
 const passwordTester = 'adminku'
-const nameTester = 'Sayur Kangkung'
-const imageTester = 'cari di google'
-const priceTester = 20000
-const stockTester = 3
 let access_token
 let wrong_access_token
-let userIdTester
 let idProduct
+let userIdTester
+let productTester = {
+  name: 'Sayur Kangkung',
+  image_url: 'cari di google',
+  price: 20000,
+  stock: 3,
+  createdAt: new Date(),
+  updatedAt: new Date()
+}
+const adminTester = [
+  {
+    email: 'admin@mail.com',
+    password: hashPwd(passwordTester),
+    role: 'admin',
+    createdAt: new Date(),
+    updatedAt: new Date()
+  }
+]
 
 beforeAll(done => {
-  const adminTester = [
-    {
-      email: 'admin@mail.com',
-      password: hashPwd(passwordTester),
-      role: 'admin',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }
-  ]
   queryInterface.bulkInsert('Users', adminTester, { returning: true })
     .then(user => {
       emailTester = user[0].email
-      userIdTester = user[0].id
       access_token = generateToken({ id: user[0].id, email: user[0].email, role: user[0].role })
       wrong_access_token = generateToken({ id: 1, email: 'cust@mail.com', role: 'customer' })
-      const productTester = [
-        {
-          name: nameTester,
-          image_url: imageTester,
-          price: priceTester,
-          stock: stockTester,
-          UserId: userIdTester,
-          createdAt: new Date(),
-          updatedAt: new Date()
-        }
-      ]
-      return queryInterface.bulkInsert('Products', productTester, { returning: true })
+      
+      return queryInterface.bulkInsert('Products', [productTester], { returning: true })
     })
     .then(product => {
       idProduct = product[0].id
@@ -66,16 +59,15 @@ describe('POST /products', () => {
     request(app)
       .post('/products')
       .set('access_token', access_token)
-      .send({ name: nameTester, image_url: imageTester, price: priceTester, stock: stockTester, UserId: userIdTester })
+      .send(productTester)
       .end((err, res) => {
         if (err) return done(err)
         const { body, status } = res
         expect(status).toBe(201)
-        expect(body).toHaveProperty('name', nameTester)
-        expect(body).toHaveProperty('image_url', imageTester)
-        expect(body).toHaveProperty('price', priceTester)
-        expect(body).toHaveProperty('stock', stockTester)
-        expect(body).toHaveProperty('UserId', userIdTester)
+        expect(body).toHaveProperty('name', 'Sayur Kangkung')
+        expect(body).toHaveProperty('image_url', 'cari di google')
+        expect(body).toHaveProperty('price', 20000)
+        expect(body).toHaveProperty('stock', 3)
         done()
       })
   })
@@ -83,7 +75,7 @@ describe('POST /products', () => {
   test(`Case 2: Don't have access token`, done => {
     request(app)
       .post('/products')
-      .send({ name: nameTester, image_url: imageTester, price: priceTester, stock: stockTester, UserId: userIdTester })
+      .send(productTester)
       .end((err, res) => {
         if (err) return done(err)
         const { body, status } = res
@@ -97,7 +89,7 @@ describe('POST /products', () => {
     request(app)
       .post('/products')
       .set('access_token', wrong_access_token)
-      .send({ name: nameTester, image_url: imageTester, price: priceTester, stock: stockTester, UserId: userIdTester })
+      .send(productTester)
       .end((err, res) => {
         if (err) return done(err)
         const { body, status } = res
@@ -108,10 +100,12 @@ describe('POST /products', () => {
   })
 
   test('Case 4: Bad request; empty field', done => {
+    productTester.name = ''
+    productTester.price = ''
     request(app)
       .post('/products')
       .set('access_token', access_token)
-      .send({ name: '', image_url: imageTester, price: '', stock: stockTester, UserId: userIdTester })
+      .send(productTester)
       .end((err, res) => {
         if (err) return done(err)
         const { body, status } = res
@@ -125,10 +119,11 @@ describe('POST /products', () => {
   })
 
   test('Case 5: Bad request; stock with negative number', done => {
+    productTester.stock = -2
     request(app)
       .post('/products')
       .set('access_token', access_token)
-      .send({ name: nameTester, image_url: imageTester, price: priceTester, stock: -2, UserId: userIdTester })
+      .send(productTester)
       .end((err, res) => {
         if (err) return done(err)
         const { body, status } = res
@@ -139,10 +134,11 @@ describe('POST /products', () => {
   })
 
   test('Case 6: Bad request; price with negative number', done => {
+    productTester.price = -20000
     request(app)
       .post('/products')
       .set('access_token', access_token)
-      .send({ name: nameTester, image_url: imageTester, price: -20000, stock: stockTester, UserId: userIdTester })
+      .send(productTester)
       .end((err, res) => {
         if (err) return done(err)
         const { body, status } = res
@@ -153,10 +149,12 @@ describe('POST /products', () => {
   })
 
   test(`Case 7: Bad request; price and stock can't be filled with letter(string)`, done => {
+    productTester.price = 'wkwkwk'
+    productTester.stock = 'hihihi'
     request(app)
       .post('/products')
       .set('access_token', access_token)
-      .send({ name: nameTester, image_url: imageTester, price: 'wkwkwk', stock: 'hihihi', UserId: userIdTester })
+      .send(productTester)
       .end((err, res) => {
         if (err) return done(err)
         const { body, status } = res
@@ -198,7 +196,6 @@ describe('PUT /products/:id', () => {
         expect(body).toHaveProperty('image_url', 'Gambarnya gausah ditanya')
         expect(body).toHaveProperty('price', 30000)
         expect(body).toHaveProperty('stock', 10)
-        expect(body).toHaveProperty('UserId', userIdTester)
         done()
       })
   })
