@@ -6,7 +6,7 @@ http://localhost:3000/
 ```
 #
 ## ROUTE
-### POST /login
+### POST /admin/login
 - Request Body
 ```JS
 email =  `user email`
