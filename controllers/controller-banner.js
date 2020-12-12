@@ -1,5 +1,5 @@
 const { Banner, Sequelize } = require ('../models')
-const { all } = Sequelize.Op;
+const {gt, lte, ne, in: opIn} = Sequelize.Op;
 
 class ControllerBanner {
     static async get (req, res, next) {
@@ -67,21 +67,26 @@ class ControllerBanner {
         }
     }
 
-    // static async updateAll (req, res, next) {
-    //     try {
-    //         const data = await Banner.update(req.body, {
-    //             where: {
-    //                 id: {
-    //                     [all]: '*'
-    //                 }
-    //             },
-    //             returning: true
-    //         })
-    //         res.status(200).json(data)
-    //     } catch (err) {
-    //         next(err)
-    //     }
-    // }
+    static async updateAll (req, res, next) {
+        try {
+            const bannerList = await Banner.findAll()
+            const toUpdate = []
+            bannerList.forEach(el => {
+                toUpdate.push(el.id)
+            });
+            const data = await Banner.update(req.body, {
+                where: {
+                    id: {
+                        [opIn]: toUpdate
+                    }
+                },
+                returning: true
+            })
+            res.status(200).json(data)
+        } catch (err) {
+            next(err)
+        }
+    }
 }
 
 module.exports = ControllerBanner
