@@ -19,9 +19,6 @@ describe("Login user POST /login", () => {
                         if (err) {
                             done(err)
                         }
-                        const request = require('supertest')
-                        const app = require('../app')
-
                         expect(status).toBe(200)
                         expect(body).toHaveProperty("access_token", expect.any(String))
                         done()

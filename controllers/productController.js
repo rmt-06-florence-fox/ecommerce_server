@@ -32,7 +32,19 @@ class ProductController{
     }
 
     static getProducts(req, res, next){
-        Product.findAll()
+        Product.findAll({
+            order: [['id', 'ASC']]
+        })
+            .then(data => {
+                res.status(200).json(data)
+            })
+            .catch(err => {
+                next(err)
+            })
+    }
+
+    static getProductsById(req, res, next) {
+        Product.findByPk(+req.params.id)
             .then(data => {
                 res.status(200).json(data)
             })

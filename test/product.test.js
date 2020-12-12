@@ -193,7 +193,7 @@ describe("CRUD products", () => {
                     productId = res.body.id
                     if (err) return done(err);
                     expect(status).toBe(400)
-                    expect(body).toHaveProperty("message", "Minimum stock is 1")
+                    expect(body).toHaveProperty("message", "Stock should not be less than 0")
                     done();
                 })
         }),
@@ -207,7 +207,7 @@ describe("CRUD products", () => {
                     productId = res.body.id
                     if (err) return done(err);
                     expect(status).toBe(400)
-                    expect(body).toHaveProperty("message", "Minimum price is 1")
+                    expect(body).toHaveProperty("message", "Price should not be less than 0")
                     done();
                 })
         }),
@@ -259,7 +259,7 @@ describe("CRUD products", () => {
                     const { body, status } = res
                     if (err) return done(err);
                     expect(status).toBe(400)
-                    expect(body).toHaveProperty('message', 'Minimum stock is 1')
+                    expect(body).toHaveProperty('message', 'Stock should not be less than 0')
                     done();
                 })
         }),
@@ -285,7 +285,7 @@ describe("CRUD products", () => {
                     const { body, status } = res
                     if (err) return done(err);
                     expect(status).toBe(400)
-                    expect(body).toHaveProperty('message', 'Minimum price is 1')
+                    expect(body).toHaveProperty('message', 'Price should not be less than 0')
                     done();
                 })
         }),

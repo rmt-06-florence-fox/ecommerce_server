@@ -1,5 +1,5 @@
 'use strict';
-const { generatePw } = require('../middlewares/password')
+const { generatePw } = require('../helpers/password')
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {

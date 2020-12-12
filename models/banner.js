@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
+  class Banner extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,32 +13,34 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   };
-  User.init({
-    email: {
+  Banner.init({
+    title: {
       type: DataTypes.STRING,
       validate: {
         notEmpty: {
-          msg: 'Email is required'
+          msg: 'Title is required'
         }
       }
     },
-    password: {
+    status: {
       type: DataTypes.STRING,
       validate: {
         notEmpty: {
-          msg: 'Password is required'
+          msg: 'Status is required'
         }
       }
     },
-    role: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'User',
-    hooks: {
-      beforeCreate(user, opt){
-        user.role = 'customer'
+    imageUrl: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          msg: 'Image URL is required'
+        }
       }
     }
+  }, {
+    sequelize,
+    modelName: 'Banner',
   });
-  return User;
+  return Banner;
 };
