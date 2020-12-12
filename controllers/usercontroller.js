@@ -9,7 +9,8 @@ class UserController {
 
       const login = await User.findOne({
         where: {
-          email
+          email,
+          role: "Admin"
         }
       })
 

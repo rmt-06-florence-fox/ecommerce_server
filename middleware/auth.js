@@ -13,11 +13,15 @@ const authentication = async (req, res, next) => {
       const decoded = verifyToken (access_token)
       const user = await User.findOne ({
         where: {
-          id: decoded.id,
-          role: "Admin"
+          id: decoded.id
         }
       })
       if (!user) {
+        throw {
+          status: 401,
+          message: "authentication failed"
+        }
+      } else if (user.role !== 'Admin') {
         throw {
           status: 401,
           message: "authentication failed"
