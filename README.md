@@ -21,7 +21,7 @@ ___
 ## **login**
 ___
 * **URL:**
-* > localhost:3000/login
+* > https://e-commerce-server-p2.herokuapp.com/login
 * **Method:**
 * > POST
 * **Data Params:**
@@ -53,7 +53,7 @@ password : [string]
 ## **Get all product data**
 ___
 * **URL**
-* > localhost:3000/product
+* > https://e-commerce-server-p2.herokuapp.com/product
 * **Method: GET**
 * **Headers :**
 * > access_token = [string]
@@ -130,7 +130,7 @@ ___
 ## **ADD NEW PRODUCT**
 ___
 * **URL**
-* > localhost:3000/product
+* > https://e-commerce-server-p2.herokuapp.com/product
 * **Method:**
 * > POST
 * **Headers:**
@@ -180,7 +180,7 @@ ___
 ## **Delete Product**
 ___
 * **URL**
-* > localhost:3000/product/:id
+* > https://e-commerce-server-p2.herokuapp.com//product/:id
 * **Method:**
 * > delete
 * **URL Params**
@@ -219,7 +219,7 @@ ___
 ## **Replace product**
 ___
 * **URL**
-> localhost:3000/product/:id
+> https://e-commerce-server-p2.herokuapp.com//product/:id
 * **Method:**
 * > put
 * **URL Params**
