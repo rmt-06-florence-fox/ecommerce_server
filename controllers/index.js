@@ -140,6 +140,10 @@ class Controller{
         }
     }
 
+    static home(){
+        res.status(200).json({message : 'homePage'})
+    }
+
 }
 
 module.exports = Controller
