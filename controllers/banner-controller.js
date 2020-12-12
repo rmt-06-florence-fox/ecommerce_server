@@ -50,6 +50,7 @@ class BannerController {
       next(err)
     }
   }
+  
   static async delete(req, res, next) {
     try {
       const id = req.params.id
