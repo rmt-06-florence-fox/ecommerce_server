@@ -1,5 +1,4 @@
 "use strict";
-require('dotenv').config()
 const { hash } = require("../helpers/passwordHandler");
 
 module.exports = {
@@ -9,7 +8,7 @@ module.exports = {
         username: "admin",
         role: "admin",
         email: "admin@admin.com",
-        password: hash(process.env.PASSWORD_ADMIN),
+        password: hash('adminganteng'),
         createdAt: new Date(),
         updatedAt: new Date(),
       },
