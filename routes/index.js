@@ -5,6 +5,9 @@ const ProductRoute = require('./productRoute')
 const CategoryRoute = require('./categoryRoute')
 const BannerRoute = require('./bannerRoute')
 
+router.get('/', (req, res) => {
+    res.send('halo testing dunia')
+})
 
 router.post('/adminRegister', AdminController.register)
 router.post('/adminLogin', AdminController.login)
