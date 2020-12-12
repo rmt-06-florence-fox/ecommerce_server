@@ -13,22 +13,27 @@ class Controller {
         })
         .catch(err => {
             console.log(err);
-            res.status(500).json({err})
+            next(err)
         })
     }
 
     static login(req, res, next) {
         User.findOne({where: {email: req.body.email}})
         .then( data => {
-            const access_token = jwt.sign({ id: data.id, email: data.email, role: data.role }, 'hiha');
-            if(req.body.password, data.password) {
-                res.status(200).json({access_token})
-            } else {
+            if (!data) {
                 res.status(401).json('Can not find your account')
+            } else {
+                // console.log(data, '<<<<<<<<<<<<<<<<<<<<');
+                const access_token = jwt.sign({ id: data.id, email: data.email, role: data.role }, 'hiha');
+                if(req.body.password, data.password) {
+                    res.status(200).json({access_token})
+                } else {
+                    res.status(401).json('Can not find your account')
+                }
             }
         })
         .catch(err => {
-            res.status(401).json('Can not find your account')
+            next(err)
         })
     }
     
@@ -40,7 +45,7 @@ class Controller {
         })
         .catch(err => {
             console.log(err);
-            res.status(500).json('internal server error')
+            next(err)
         })
     }
 
@@ -59,7 +64,7 @@ class Controller {
         })
         .catch(err => {
             // console.log(err);
-            res.status(500).json('failed')
+            next(err)
         })
     }
 
@@ -107,7 +112,7 @@ class Controller {
             res.status(200).json(result)
         })
         .catch(err => {
-            res.status(401).json({msg: 'Data cant be found'})
+            next(err)
         })
     }
 

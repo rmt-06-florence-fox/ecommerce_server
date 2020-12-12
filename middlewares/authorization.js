@@ -7,11 +7,11 @@ module.exports = async (req, res, next) => {
             next()
         } else {
             // console.log('sinisinisinisinisini');
-            res.status(401).json({message: 'Unauthorized'})
+            res.status(401).json({msg: 'Unauthorized'})
         }
     }
     catch(err) {
         console.log(err);
-        res.status(500).json({message: 'Internal server error'})
+        res.status(500).json({msg: 'Internal server error'})
     }
 }

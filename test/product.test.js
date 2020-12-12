@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken')
 let token = ''
 let productId = ''
 let UserId
+let token2 = ''
+let UserId2
 
 const { sequelize } = require('../models')
 const { queryInterface } = sequelize
@@ -29,6 +31,33 @@ beforeAll(done => {
         console.log(user[0], '>>>>>>>>>>>>> yang ini');
         UserId = user[0].id
         token = jwt.sign({
+            id: user[0].id,
+            email: user[0].email,
+            role: user[0].role
+        }, 'hiha')
+        done()
+    })
+    .catch(err => {
+        done(err)
+    })
+
+    queryInterface.bulkInsert(
+        'Users',
+        [
+            { 
+            email: 'hahi@example.com',
+            password: hash,
+            role: 'customer',
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            }
+        ],
+        { returning: true },
+    )
+    .then(user => {
+        console.log(user[0], '>>>>>>>>>>>>> customer');
+        UserId2 = user[0].id
+        token2 = jwt.sign({
             id: user[0].id,
             email: user[0].email,
             role: user[0].role
@@ -82,7 +111,7 @@ describe('add Product POST /products', () => {
         })
     }),
     describe('Failed to add Product', () => {
-        test('return error message', done => {
+        test(`Product's name is required`, done => {
             request(app)
             .post('/products')
             .set('access_token', token)
@@ -98,8 +127,76 @@ describe('add Product POST /products', () => {
                 if (err) {
                     return done(err)
                 }
+                expect(status).toBe(400)
+                expect(body).toBe(`Product's name is required`)
+                done()
+            })
+        })
+    }),
+    describe('Failed to add Product', () => {
+        test('WRONG TOKEN', done => {
+            request(app)
+            .post('/products')
+            .set('access_token', 'abcd')
+            .send({
+                name: '',
+                image_url: 'https://i5.walmartimages.com/asr/c2da2491-a2e6-4605-9aa1-e4a770f284b9_1.76521323ac7aabcbb4bd668b0a45c2a2.jpeg?odnHeight=2000&odnWidth=2000&odnBg=ffffff',
+                price: 120000,
+                stock: 40
+        })
+            .end((err, res) => {
+                // err di sini adalah error dari test, BUKAN dari server. error dari server masuk res
+                const {body, status} = res
+                if (err) {
+                    return done(err)
+                }
                 expect(status).toBe(500)
-                expect(body).toBe('failed')
+                expect(body.msg).toBe(`Wrong token!`)
+                done()
+            })
+        })
+    }),
+    describe('Failed to add Product', () => {
+        test('TOKEN NEEDED, LOGIN FIRST', done => {
+            request(app)
+            .post('/products')
+            .send({
+                name: 'Sepatu',
+                image_url: 'https://i5.walmartimages.com/asr/c2da2491-a2e6-4605-9aa1-e4a770f284b9_1.76521323ac7aabcbb4bd668b0a45c2a2.jpeg?odnHeight=2000&odnWidth=2000&odnBg=ffffff',
+                price: 120000,
+                stock: 40
+        })
+            .end((err, res) => {
+                // err di sini adalah error dari test, BUKAN dari server. error dari server masuk res
+                const {body, status} = res
+                if (err) {
+                    return done(err)
+                }
+                expect(status).toBe(401)
+                expect(body.msg).toBe(`Login first`)
+                done()
+            })
+        })
+    }),
+    describe('Failed to add Product', () => {
+        test('ADMIN ONLY', done => {
+            request(app)
+            .post('/products')
+            .set('access_token', token2)
+            .send({
+                name: 'Sepatu',
+                image_url: 'https://i5.walmartimages.com/asr/c2da2491-a2e6-4605-9aa1-e4a770f284b9_1.76521323ac7aabcbb4bd668b0a45c2a2.jpeg?odnHeight=2000&odnWidth=2000&odnBg=ffffff',
+                price: 120000,
+                stock: 40
+        })
+            .end((err, res) => {
+                // err di sini adalah error dari test, BUKAN dari server. error dari server masuk res
+                const {body, status} = res
+                if (err) {
+                    return done(err)
+                }
+                expect(status).toBe(401)
+                expect(body.msg).toBe(`Unauthorized`)
                 done()
             })
         })
@@ -124,28 +221,8 @@ describe('get Product GET /products', () => {
                 }
                 // console.log(body);
                 expect(status).toBe(200)
-                expect(body).toBe(body)
-                done()
-            })
-        })
-    }),
-    describe('Failed to get Product', () => {
-        test('return error message', done => {
-            request(app)
-            .get(`/products`)
-            // .set('access_token', token)
-        //     .send({
-
-        //         stock: 40
-        // })
-            .end((err, res) => {
-                // err di sini adalah error dari test, BUKAN dari server. error dari server masuk res
-                const {body, status} = res
-                if (err) {
-                    return done(err)
-                }
-                expect(status).toBe(200)
-                expect(body).toBe(body)
+                console.log(body, '<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<');
+                expect(body.data[0]).toHaveProperty('name', 'White Cap')
                 done()
             })
         })
@@ -179,9 +256,9 @@ describe('update Product PUT /products/:id', () => {
         })
     }),
     describe('Failed to update Product', () => {
-        test('return error message', done => {
+        test(`Product's name is required`, done => {
             request(app)
-            .put(`/products/${productId + 10}`)
+            .put(`/products/${productId}`)
             .set('access_token', token)
             .send({
                 name: '',
@@ -195,14 +272,36 @@ describe('update Product PUT /products/:id', () => {
                 if (err) {
                     return done(err)
                 }
+                expect(status).toBe(400)
+                expect(body).toBe(`Product's name is required`)
+                done()
+            })
+        })
+    }),
+    describe('Failed to update Product', () => {
+        test('Data cant be found', done => {
+            request(app)
+            .put(`/products/${productId}` + 10)
+            .set('access_token', token)
+            .send({
+                name: 'Green Cap',
+                image_url: 'https://i5.walmartimages.com/asr/c2da2491-a2e6-4605-9aa1-e4a770f284b9_1.76521323ac7aabcbb4bd668b0a45c2a2.jpeg?odnHeight=2000&odnWidth=2000&odnBg=ffffff',
+                price: 120000,
+                stock: 40
+        })
+            .end((err, res) => {
+                // err di sini adalah error dari test, BUKAN dari server. error dari server masuk res
+                const {body, status} = res
+                if (err) {
+                    return done(err)
+                }
                 expect(status).toBe(401)
-                expect(body.msg).toBe('Data cant be found')
+                expect(body.msg).toBe(`Data cant be found`)
                 done()
             })
         })
     })
 })
-
 
 describe('patch Product PUT /products/:id', () => {
     describe('Success patch Product', () => {
@@ -227,7 +326,7 @@ describe('patch Product PUT /products/:id', () => {
         })
     }),
     describe('Failed to patch Product', () => {
-        test('return error message', done => {
+        test('DATA CANT BE FOUND', done => {
             request(app)
             .patch(`/products/${productId + 10}`)
             .set('access_token', token)
@@ -250,7 +349,7 @@ describe('patch Product PUT /products/:id', () => {
 })
 
 
-describe('delete Product PUT /products/:id', () => {
+describe('delete Product DELETE /products/:id', () => {
     describe('Success delete Product', () => {
         test('return succes message', done => {
             request(app)
@@ -273,7 +372,7 @@ describe('delete Product PUT /products/:id', () => {
         })
     }),
     describe('Failed to delete Product', () => {
-        test('return error message', done => {
+        test('PRODUCT CANT BE FOUND', done => {
             request(app)
             .delete(`/products/${productId + 10}`)
             .set('access_token', token)
