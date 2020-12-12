@@ -1,7 +1,7 @@
 <template>
   <center>
-    <div class="container">
-      <div class="z-depth-1 grey lighten-4 row">
+    <div class="container" id="loginBox">
+      <div class="z-depth-1 grey lighten-4 row" id="loginForm">
         <h3>Login</h3>
         <form @submit.prevent="login" class="col s12">
           <div class="row">
@@ -57,18 +57,18 @@ export default {
   data() {
     return {
       email: "",
-      password: ""
+      password: "",
     };
   },
   methods: {
     login() {
       const payload = {
         email: this.email,
-        password: this.password
+        password: this.password,
       };
       this.$store.dispatch("login", payload);
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -79,6 +79,15 @@ body {
   flex-direction: column;
   background: #fff;
 }
+
+#loginBox {
+  margin-top: 6rem;
+  width: 40%;
+}
+#loginForm {
+  padding: 4rem 8rem 4rem 8rem;
+}
+
 .input-field input[type="date"]:focus + label,
 .input-field input[type="text"]:focus + label,
 .input-field input[type="email"]:focus + label,
