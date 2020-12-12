@@ -140,7 +140,7 @@ class Controller{
         }
     }
 
-    static home(){
+    static home(req, res, next){
         res.status(200).json({message : 'homePage'})
     }
 
