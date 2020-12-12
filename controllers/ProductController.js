@@ -48,6 +48,22 @@ class ProductController {
             next(error)
         }
     }
+
+    static async getProductById(req, res, next) {
+        try {
+            const data = await Product.findByPk(req.params.id)
+            if (!data) {
+                throw {
+                    status: 404,
+                    message: 'Data not found'
+                }
+            } else {
+                res.status(200).json(data)
+            }
+        } catch (error) {
+            next(error)
+        }
+    }
 }
 
 module.exports = ProductController

@@ -9,6 +9,7 @@ route.get('/product', ProductController.getProduct)
 route.post('/product', AdminAuthentification, ProductController.addProduct)
 route.put('/product/:id', AdminAuthentification, authorization, ProductController.editProduct)
 route.delete('/product/:id', AdminAuthentification, authorization, ProductController.deleteProduct)
+route.get('/product/:id', AdminAuthentification, authorization, ProductController.getProductById)
 
 
 

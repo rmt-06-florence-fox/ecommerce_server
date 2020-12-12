@@ -467,3 +467,50 @@ describe("Get Product", () => {
         })
     })
 })
+
+describe("Get Product By ID", () => {
+    test("response with data product", (done) => {
+        request(app)
+        .get("/product/" + idFailDelete)
+        .set('access_token', access_token)
+        .end(function(err, res) {
+            const { status, body } = res
+            if (err) {
+                done(err)
+            }
+            expect(status).toBe(200)
+            expect(body).toHaveProperty("name", body.name)
+            expect(body).toHaveProperty("image_url", body.image_url)
+            expect(body).toHaveProperty("price", body.price)
+            expect(body).toHaveProperty("stock", body.stock)
+            done()
+        })
+    }),
+    test("response with please login first", (done) => {
+        request(app)
+        .get("/product/" + idFailDelete)
+        .end(function(err, res) {
+            const { status, body } = res
+            if (err) {
+                done(err)
+            }
+            expect(status).toBe(401)
+            expect(body).toHaveProperty("message", "Please login first")
+            done()
+        })
+    }),
+    test("response with data not found", (done) => {
+        request(app)
+        .get("/product/" + 100)
+        .set('access_token', access_token)
+        .end(function(err, res) {
+            const { status, body } = res
+            if (err) {
+                done(err)
+            }
+            expect(status).toBe(404)
+            expect(body).toHaveProperty("message", "Data not found")
+            done()
+        })
+    })
+})
