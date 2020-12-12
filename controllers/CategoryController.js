@@ -18,7 +18,7 @@ class CategoryController {
 
     static read(req, res, next) {
         Category.findAll({
-            order: [["name", "ASC"]]
+            order: [["updatedAt", "DESC"]]
         })
             .then((data) => {
                 res.status(200).json(data);
@@ -60,7 +60,7 @@ class CategoryController {
     static async delete(req, res, next) {
         try {
             const id = Number(req.params.id);
-            const resultTask = await Task.destroy({
+            const resultProduct = await Product.destroy({
                 where: {
                     CategoryId: id
                 }
