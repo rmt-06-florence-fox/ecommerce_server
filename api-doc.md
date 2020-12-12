@@ -133,64 +133,6 @@
 
 
 
-**Google Login User**
-----
-  Returns json data about a single user that has been created.
-
-* **URL**
-
-  /googleLogin
-
-* **Method:**
-
-  `POST`
-  
-*  **URL Params**
-
-   **Required:**
- 
-   
-
-* **Data Params**
-
-   `googleToken=[string]`
-
-* **Success Response:**
-
-  * **Code:** 200 <br />
-    **Content:**
-    ```json
-      {
-         "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImVtYWlsIjoidGVzdDEwMEBnbWFpbC5jb20iLCJpYXQiOjE2MDcwODg0ODd9.1lCnIyabNMOnkKxZhNWbL0E3L8wTUyx4ZZlYrDxPzEw",
-         "userId": 10
-      }
-    ```
- 
-* **Error Response:**
-
-  * **Code:** 400 <br />
-    **Content:** 
-      ```json 
-         {
-            "message": "Wrong email/password"
-         }
-      ```
-      OR
-      ```json
-         {
-            "message": "Password must be at least 6 characters"
-         }
-      ```
-
-  OR
-
-  * **Code:** 500 UNAUTHORIZED <br />
-    **Content:**
-      ```json
-         {
-            "message":"Server Error"
-         }
-      ```
 
 
 
