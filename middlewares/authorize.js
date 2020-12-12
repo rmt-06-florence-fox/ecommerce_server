@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
         }
     })
     .then(data => {
-        if (data.role === 'admin') {
+        if (data.role === 'administrator') {
             next()
         } else {
             next({

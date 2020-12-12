@@ -8,7 +8,7 @@ beforeAll((done) => {
     queryInterface.bulkInsert('Users', [{
         email: 'admin@mail.com',
         password: encrypt('123456'),
-        role: 'admin',
+        role: 'administrator',
         createdAt: new Date(),
         updatedAt: new Date()
     },{
