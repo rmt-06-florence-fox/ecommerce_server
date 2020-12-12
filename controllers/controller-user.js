@@ -61,9 +61,16 @@ class ControllerUser {
     }
 
 
-    static async register (req, res, next) {
+    static async register (req ,res, next) {
         try {
-            
+            const newUser = await User.create (req.body)
+            const access_token = genToken ({
+                id: newUser.id,
+                username: newUser.username,
+                email: newUser.email,
+                
+            })
+            res.status(200).json({access_token})
         } catch (err) {
             next(err)
         }
