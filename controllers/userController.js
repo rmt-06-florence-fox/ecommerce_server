@@ -1,5 +1,4 @@
 const { User } = require('../models')
-const { checkPassword } = require('../helpers/bcrypt')
 const {createToken} = require('../helpers/jwt')
 
 class UserController {
