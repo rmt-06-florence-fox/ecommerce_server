@@ -16,6 +16,7 @@ function errorHandler(err, req, res, next) {
       message: "This email already registered, Please input another email",
     });
   } else {
+    console.log('kesini kah?');
     res.status(500).json({ message: "Internal server error" });
   }
 }

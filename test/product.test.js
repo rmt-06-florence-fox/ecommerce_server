@@ -53,9 +53,13 @@ beforeAll(async (done) => {
 });
 
 afterAll(async (done) => {
-  await queryInterface.bulkDelete("Users", null, {});
-  await queryInterface.bulkDelete("Products", null, {});
-  done();
+  try {
+    await queryInterface.bulkDelete("Users", null, {});
+    await queryInterface.bulkDelete("Products", null, {});
+    done();
+  } catch (error) {
+    done(error);
+  }
 });
 
 //CREATE

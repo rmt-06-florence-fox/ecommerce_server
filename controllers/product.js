@@ -8,7 +8,6 @@ class ProductController {
       image_url: req.body.image_url,
       price: req.body.price,
       stock: req.body.stock,
-      // UserId: req.loggedInUser.id,
     };
     try {
       const product = await Product.create(data);

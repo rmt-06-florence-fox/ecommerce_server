@@ -11,7 +11,7 @@ class UserController {
           const token = generate({
             id: user.id,
             email: user.email,
-            role: user.role,
+            role: user.role
           });
           res.status(200).json({ access_token: token });
         } else {
