@@ -22,7 +22,9 @@ class ProductController {
 
     static async readData(req, res) {
         try {
-            const data = await Product.findAll()
+            const data = await Product.findAll({
+                order: [['id', 'ASC']]
+            })
             res.status(200).json(data)
         } catch (error) {
             res.status(500).json(error)
@@ -36,9 +38,10 @@ class ProductController {
             const data =  await Product.findByPk(id)
             
             if(!data) {
-                throw({status: 404,
-                        message: "Data not found!"        
-                })
+                // throw({status: 404,
+                //         message: "Data not found!"        
+                // })
+                res.status(404).json({message: "Data not Found!"})
             } else {
                 res.status(200).json(data)
             }

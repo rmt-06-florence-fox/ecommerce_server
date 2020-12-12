@@ -35,15 +35,15 @@ beforeAll (async (done) => {
     }
 })
 
-// afterAll (async (done) => {
-//     queryInterface.bulkDelete("Products")
-//     .then(response => {
-//         done()
-//     })
-//     .catch(err => {
-//         done(err)
-//     })
-// })
+afterAll (async (done) => {
+    queryInterface.bulkDelete("Products")
+    .then(response => {
+        done()
+    })
+    .catch(err => {
+        done(err)
+    })
+})
 
 describe('CRUD /product', ()=> {
     describe('Create product success POST /product', () => {
