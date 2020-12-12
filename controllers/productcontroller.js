@@ -10,6 +10,16 @@ class ProductController {
     }
   }
 
+  static async getProductById(req, res, next) {
+    try {
+      const { id } = req.params
+      const data = await Product.findByPk(id)
+      res.status(200).json(data)
+    } catch (error) {
+      next(error)
+    }
+  }
+
   static async createProduct(req, res, next) {
     try {
       const product = {

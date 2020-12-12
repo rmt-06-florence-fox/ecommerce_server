@@ -8,6 +8,7 @@ product.use(authentication)
 product.post('/', ProductController.createProduct)
 
 product.use('/:id', authorization)
+product.get('/:id', ProductController.getProductById)
 product.put('/:id', ProductController.updateProduct)
 product.delete('/:id', ProductController.deleteProduct)
 
