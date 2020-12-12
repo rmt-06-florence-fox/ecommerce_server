@@ -58,6 +58,7 @@ class BannerController {
         where: {
           id
         },
+        individualHooks: true,
         returning: true
       })
 

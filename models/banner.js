@@ -45,5 +45,14 @@ module.exports = (sequelize, DataTypes) => {
     }
   })
 
+  Banner.beforeUpdate((banner, opt) => {
+    if (!banner.title || banner.title.trim == '') {
+      banner.title = 'Untitled'
+    }
+    if (!banner.image_url || banner.image_url.trim == '') {
+      banner.image_url = 'https://source.unsplash.com/random'
+    }
+  })
+
   return Banner;
 };
