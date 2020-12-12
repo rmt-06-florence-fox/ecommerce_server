@@ -1,16 +1,12 @@
 
-async function authorization(req,res,next){
-    try {
-        if(req.loggedInUser.role != 'admin'){
-            throw {
-                status: 403,
-                message: 'Unauthorized access'
-            }
-        }else {
-            next()
-        }
-    } catch (err) {
-        next(err)
+function authorization(req,res,next){
+    if(req.loggedInUser.role !== 'admin'){
+        next({
+            status: 403,
+            message: 'Unauthorized access'
+        })
+    }else {
+        next()
     }
 }
 

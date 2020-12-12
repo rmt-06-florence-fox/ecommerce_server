@@ -36,8 +36,6 @@ class ProductController{
         }
         let id = req.params.id
         try {
-            console.log(req.params, '<-----params');
-            console.log(id , '<---- id');
             let targetProduct = await Product.findOne({
                 where:{
                     id:id
