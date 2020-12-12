@@ -87,7 +87,14 @@ class ProductController{
         const id = +req.params.id
         Product.findByPk(id)
         .then(value => {
-            res.status(201).json(value.data)
+            if (value) {
+                res.status(201).json(value)
+            }else{
+                throw {
+                    status: 404,
+                    message: `data not found`
+                } 
+            }
         })
         .catch(error => {
             next(error)

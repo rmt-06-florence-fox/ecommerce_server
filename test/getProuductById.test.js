@@ -40,4 +40,19 @@ describe(`get product By Id GET /product`, () => {
             }
         })
     })
+    test(`if data not found`, (done) => {
+        request(app)
+        .get('/product/1')
+        .end((err, res) => {
+            const {status, body} = res
+            if (err) {
+                console.log('masuk <<<<<');
+                return done(err)
+            }else{
+                expect(status).toBe(404)
+                expect(body).toBe(`data not found`)
+                done()
+            }
+        })
+    })
 })
