@@ -13,8 +13,8 @@ password : tiotio
 #
 # URL
 ```
-Client URL : http://localhost:3000/
-Server URL : http://localhost:8080/
+Client URL : http://localhost:8080/ || https://cms-admin-tio.web.app/
+Server URL : http://localhost:3000/ || https://cms-server-tio.herokuapp.com/
 ```
 
 ### GET/login
