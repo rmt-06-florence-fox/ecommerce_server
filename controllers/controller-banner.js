@@ -1,4 +1,5 @@
-const { Banner } = require ('../models')
+const { Banner, Sequelize } = require ('../models')
+const { all } = Sequelize.Op;
 
 class ControllerBanner {
     static async get (req, res, next) {
@@ -11,6 +12,7 @@ class ControllerBanner {
     }
     static async post (req, res, next) {
         try {
+            console.log(req.body)
             const data = await Banner.create(req.body)
             res.status(200).json(data)
         } catch (err) {
@@ -64,6 +66,22 @@ class ControllerBanner {
             next(err)
         }
     }
+
+    // static async updateAll (req, res, next) {
+    //     try {
+    //         const data = await Banner.update(req.body, {
+    //             where: {
+    //                 id: {
+    //                     [all]: '*'
+    //                 }
+    //             },
+    //             returning: true
+    //         })
+    //         res.status(200).json(data)
+    //     } catch (err) {
+    //         next(err)
+    //     }
+    // }
 }
 
 module.exports = ControllerBanner
