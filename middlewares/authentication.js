@@ -5,11 +5,10 @@ module.exports = async (req, res, next) => {
     try {
         console.log("masuk auten");
         const { access_token } = req.headers
-        
         if (!access_token) {
             throw {
                 status: 401,
-                message: "Please Login or Register First"
+                message: "Please Login or Register First 9"
             }
         } else {
             const decode = verifyToken(access_token)

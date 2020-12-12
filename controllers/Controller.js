@@ -27,7 +27,7 @@ class Controller {
                     role: user.role
                 }
                 const access_token = generateToken(payload)
-                res.status(200).json({ access_token })
+                res.status(200).json({ access_token, email })
             } else {
                 throw{
                     status: 401,
@@ -50,7 +50,9 @@ class Controller {
     }
     static async showProductAll(req, res, next) {
         try {
-            const product = await Product.findAll()
+            const product = await Product.findAll({
+                order: [["id", "ASC"]]
+            })
             res.status(200).json(product);
         } catch (err) {
             next(err)
@@ -79,6 +81,25 @@ class Controller {
                 }
             })
             res.status(200).json({message: `success delete product with id ${req.params.id}`})
+        } catch (err) {
+            next(err)
+        }
+    }
+    static async showProductById(req, res, next) {
+        try {
+            const product = await Product.findOne({
+                where: {
+                    id: req.params.id
+                }
+            })
+            if (product) {
+                res.status(200).json(product)
+            } else {
+                throw{
+                    status: 404,
+                    message: "not found"
+                }
+            }
         } catch (err) {
             next(err)
         }
