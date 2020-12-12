@@ -8,10 +8,10 @@ beforeAll((done) => {
     done()
 })
 
-describe(`Show All Product GET /product`, () => {
+describe(`get product By Id GET /product`, () => {
     test(`succes find all`, (done) => {
         request(app)
-        .get('/product')
+        .get('/product/1')
         .set('access_token', token)
         .end((err, res) => {
             const {status, body} = res
@@ -27,7 +27,7 @@ describe(`Show All Product GET /product`, () => {
     })
     test(`if not login`, (done) => {
         request(app)
-        .get('/product')
+        .get('/product/1')
         .end((err, res) => {
             const {status, body} = res
             if (err) {

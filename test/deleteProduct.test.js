@@ -9,7 +9,7 @@ beforeAll((done) => {
     done()
 })
 beforeAll((done) => {
-    notAdmin = Jwt.Sign({email : 'user@mail.com', password: 'user'})
+    notAdmin = Jwt.Sign({email : 'icih@mail.com', password: 'icih'})
     done()
 })
 

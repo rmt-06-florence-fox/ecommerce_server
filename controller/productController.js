@@ -83,5 +83,15 @@ class ProductController{
             next(error)
         })
     }
+    static getById(req, res, next) {
+        const id = +req.params.id
+        Product.findByPk(id)
+        .then(value => {
+            res.status(201).json(value.data)
+        })
+        .catch(error => {
+            next(error)
+        })
+    }
 }
 module.exports = ProductController

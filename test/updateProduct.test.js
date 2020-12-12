@@ -10,14 +10,14 @@ beforeAll((done) => {
     done()
 })
 beforeAll((done) => {
-    notAdmin = Jwt.Sign({email : 'user@mail.com', password: 'user'})
+    notAdmin = Jwt.Sign({email : 'icih@mail.com', password: 'icih'})
     done()
 })
 
 describe(`update product PUT /product`, () => {
     test(`success update product`, (done) => {
         request(app)
-        .put('/product')
+        .put('/product/1')
         .set('access_token', token)
         .send({
             name: `Gudang Garam Surya`,
@@ -42,7 +42,7 @@ describe(`update product PUT /product`, () => {
     })
     test(`update product not login`, (done) => {
         request(app)
-        .put('/product')
+        .put('/product/1')
         .send({
             name: `Gudang Garam Surya`,
             image_url: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%2Fpin%2F811492426587180574%2F&psig=AOvVaw26JPyZcy6wRWkLoj8RtxNf&ust=1607445241963000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCIDzl6imvO0CFQAAAAAdAAAAABAN',
@@ -63,7 +63,7 @@ describe(`update product PUT /product`, () => {
     })
     test(`validation v1`, (done) => {
         request(app)
-        .put('/product')
+        .put('/product/1')
         .set('access_token', token)
         .send({
             name: `Gudang Garam Surya`,
@@ -85,7 +85,7 @@ describe(`update product PUT /product`, () => {
     })
     test(`validation v2`, (done) => {
         request(app)
-        .put('/product')
+        .put('/product/1')
         .set('access_token', token)
         .send({
             name: `Gudang Garam Surya`,
@@ -107,7 +107,7 @@ describe(`update product PUT /product`, () => {
     })
     test(`validation v3`, (done) => {
         request(app)
-        .put('/product')
+        .put('/product/1')
         .set('access_token', token)
         .send({
             name: ``,
@@ -129,7 +129,7 @@ describe(`update product PUT /product`, () => {
     })
     test(`not Admin`, (done) => {
         request(app)
-        .put('/product')
+        .put('/product/1')
         .set('access_token', notAdmin)
         .send({
             name: `Gudang Garam Surya`,
@@ -151,7 +151,7 @@ describe(`update product PUT /product`, () => {
     })
     test(`id undifined`, (done) => {
         request(app)
-        .put('/product/' + idUndifined)
+        .put('/product/1' + idUndifined)
         .set('access_token', token)
         .send({
             name: `Gudang Garam Surya`,

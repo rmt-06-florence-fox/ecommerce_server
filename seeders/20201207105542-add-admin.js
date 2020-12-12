@@ -18,7 +18,7 @@ module.exports = {
     createdAt: new Date(),
     updatedAt: new Date()
   }, {
-    email: `icihn@mail.com`,
+    email: `icih@mail.com`,
     password: Bcrypt.hash('icih'),
     role: 'customer',
     createdAt: new Date(),
