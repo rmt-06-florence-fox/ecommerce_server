@@ -32,7 +32,6 @@ class ProductController {
                     id: req.params.id
                 }
             })
-            console.log(data,'<<<<<<KONTOL')
             res.status(200).json(data)
         } catch (err) {
             next(err)
