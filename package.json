@@ -1,7 +1,7 @@
 {
   "name": "ecommerce-cms-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "ecommerce buka-toko",
   "main": "index.js",
   "scripts": {
     "start": "node app.js",
