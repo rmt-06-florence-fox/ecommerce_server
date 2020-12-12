@@ -25,4 +25,19 @@ describe(`Show All Product GET /product`, () => {
             }
         })
     })
+    test(`if not login`, (done) => {
+        request(app)
+        .get('/product')
+        .end((err, res) => {
+            const {status, body} = res
+            if (err) {
+                console.log('masuk <<<<<');
+                return done(err)
+            }else{
+                expect(status).toBe(401)
+                expect.toBe("you must login first")
+                done()
+            }
+        })
+    })
 })

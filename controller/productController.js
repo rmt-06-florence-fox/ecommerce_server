@@ -17,6 +17,7 @@ class ProductController{
             price: req.body.price,
             stock: req.body.stock
         }
+        console.log(obj);
         Product.create(obj)
         .then(value => {
            res.status(201).json(value)
@@ -44,16 +45,16 @@ class ProductController{
                    message: `data not found`
                }
             }else{
-               return Product.update(obj, {
-                   where: {id : id},
-                   returning: true
-                 })
+                return Product.update(obj, {
+                    where: {id : id},
+                    returning: true
+                })
             }
         })
-       .then(value => {
-           res.status(201).json(value)
-       })
-       .catch(error => {
+        .then(value => {
+            res.status(201).json(value)
+        })
+        .catch(error => {
            next(error)
        })
     }

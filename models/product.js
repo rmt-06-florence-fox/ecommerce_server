@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         msg: `Fill the name`
       }
     }},
-    image_url: {type: DataTypes.STRING,
+    image_url: {type: DataTypes.TEXT,
     validate: {
       notEmpty:{
         msg: `Fill the image url`
