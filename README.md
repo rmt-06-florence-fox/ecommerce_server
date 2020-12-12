@@ -2,7 +2,7 @@
 
 ## URL
 ``` JS
-Server: hhttps://ecommerce-by-litha.herokuapp.com/
+Server: https://ecommerce-by-litha.herokuapp.com/
 Client:
   - Admin: https://e-commerce-admin-by-litha.web.app/ 
 ```
