@@ -13,7 +13,6 @@ module.exports = {
     */
     await queryInterface.bulkInsert('Products', [
       {
-          "id": 1,
           "name": "Keyboard Logitech K380",
           "image_url": "https://www.mombasacomputers.com/wp-content/uploads/2020/07/Logitech-K380-Wireless-Multi-Device-Keyboard-1.png",
           "price": 100000,
@@ -23,7 +22,6 @@ module.exports = {
           "updatedAt": new Date()
       },
       {
-          "id": 2,
           "name": "Mouse Logitech B100",
           "image_url": "https://www.jakartanotebook.com/images/products/40/67/7435/2/logitech-wired-mouse-b100-black-3.jpg",
           "price": 70000,
@@ -33,7 +31,6 @@ module.exports = {
           "updatedAt": new Date()
       },
       {
-          "id": 3,
           "name": "Printer Epson L3110",
           "image_url": "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//106/MTA-2669479/epson_epson-l3110-ecotank-multifungsi-printer--print--scan--copy-_full05.jpg",
           "price": 2500000,
@@ -43,7 +40,6 @@ module.exports = {
           "updatedAt": new Date()
       },
       {
-          "id": 4,
           "name": "Aspire 3 A314-32",
           "image_url": "https://d2pa5gi5n2e1an.cloudfront.net/global/images/product/laptops/Acer_Aspire_3_A314_32_ID/Acer_Aspire_3_A314_32_ID_L_1.jpg",
           "price": 4999999,
