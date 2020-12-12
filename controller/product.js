@@ -26,6 +26,16 @@ class ProductControl {
     }
   }
 
+  static async getDataById(req, res, next) {
+    try {
+      let id = +req.params.id
+      const product = await Product.findByPk(id)
+      res.status(200).json(product)
+    } catch (error) {
+      res.status(404).json(error)
+    }
+  }
+
   static async edit(req, res, next) {
     try {
       let id = +req.params.id
@@ -37,9 +47,8 @@ class ProductControl {
       }
       const product = await Product.update(value, {
         where: { id },
-        returning: true
       })
-      res.status(200).json(product[1][0])
+      res.status(200).json(product)
     } catch (err) {
       next(err)
     }

@@ -8,6 +8,7 @@ router.post('/signin', UserControl.signin)
 router.use(authentication)
 router.get('/products', ProductControl.showData)
 router.post('/products', authorization, ProductControl.create)
+router.get('/products/:id', authorization, ProductControl.getDataById)
 router.put('/products/:id', authorization, ProductControl.edit)
 router.delete('/products/:id', authorization, ProductControl.deleteData)
 
