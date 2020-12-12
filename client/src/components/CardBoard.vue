@@ -1,8 +1,18 @@
 <template>
   <div class="container">
     <div class="row">
-      <Card v-for="(card, index) in product" :key="index" :card="card"></Card>
+      <div class="input-field col s12">
+        <i class="material-icons prefix">search</i>
+        <input v-model="search" type="text" class="autocomplete" />
+        <label for="autocomplete-input">Search Product</label>
+      </div>
+      <Card
+        v-for="(card, index) in $store.state.productData"
+        :key="index"
+        :card="card"
+      ></Card>
     </div>
+    <!-- <p>{{ productFilter }}</p> -->
   </div>
 </template>
 
@@ -10,6 +20,11 @@
 import Card from "../components/Card";
 
 export default {
+  data() {
+    return {
+      search: "",
+    };
+  },
   methods: {
     fetchProduct() {
       this.$store.dispatch("fetchProduct");
@@ -22,8 +37,8 @@ export default {
     this.fetchProduct();
   },
   computed: {
-    product() {
-      return this.$store.state.productData;
+    filterSearch() {
+      return this.$store.getters.filterProduct(this.search);
     },
   },
 };

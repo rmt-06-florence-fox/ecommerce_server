@@ -1,36 +1,87 @@
 const request = require("supertest");
 const app = require("../app");
+const { sequelize } = require("../models");
+const { queryInterface } = sequelize;
+const { hash } = require("../helpers/bcrypt-helper");
+const { encode } = require("../helpers/jwt-helper");
 
 let admin_access_token = "";
 let cust_access_token = "";
-let id = 1;
+let id;
 
 beforeAll((done) => {
-  request(app)
-    .post("/users/login")
-    .send({ email: "admin@user.com", password: "admin" })
-    .end((err, res) => {
-      const { body } = res;
-      admin_access_token = body;
+  queryInterface
+    .bulkInsert(
+      "Products",
+      [
+        {
+          name: "Iphone 12",
+          image_url:
+            "https://www.citypng.com/public/uploads/small/21602681980nyvpfanmd9fycm48ugtwzaiejtxxvsjzc8uaf0yglia3ijghfcd343eq3cdqvl6sgxs8gl05dh7ttkigntwkvme8x1uxazefw9rb.png",
+          price: 14999000,
+          stock: 100,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ],
+      { returning: true }
+    )
+    .then((response) => {
+      console.log(response[0].id);
+      id = response[0].id;
+      return queryInterface.bulkInsert(
+        "Users",
+        [
+          {
+            email: "admin@user.com",
+            password: hash("admin"),
+            role: "admin",
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          },
+          {
+            email: "johncena@wwe.com",
+            password: hash("johncena"),
+            role: "customer",
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          },
+        ],
+        { returning: true }
+      );
+    })
+    .then((response) => {
+      admin_access_token = encode(response[0]);
+      cust_access_token = encode(response[1]);
+      console.log(admin_access_token);
+      console.log(cust_access_token);
       done();
+    })
+    .catch((err) => {
+      console.log(err);
+      done(err);
     });
-  request(app)
-    .post("/users/login")
-    .send({ email: "johncena@wwe.com", password: "johncena" })
-    .end((err, res) => {
-      const { body } = res;
-      cust_access_token = body;
+});
+
+afterAll((done) => {
+  queryInterface
+    .bulkDelete("Users")
+    .then((response) => {
       done();
+    })
+    .catch((err) => {
+      console.log(err);
+      done(err);
     });
-  // request(app).post("/products/").send({
-  //   name: "Iphone 12",
-  //   image_url:
-  //     "https://www.citypng.com/public/uploads/small/21602681980nyvpfanmd9fycm48ugtwzaiejtxxvsjzc8uaf0yglia3ijghfcd343eq3cdqvl6sgxs8gl05dh7ttkigntwkvme8x1uxazefw9rb.png",
-  //   price: 14999000,
-  //   stock: 100,
-  //   UserId: 1,
-  // });
-  // done();
+  queryInterface
+    .bulkDelete("Products")
+    .then((response) => {
+      done();
+    })
+    .catch((err) => {
+      console.log(err);
+      done(err);
+    });
 });
 
 describe("Edit Product PUT /products/", () => {
@@ -45,7 +96,7 @@ describe("Edit Product PUT /products/", () => {
           price: 16499000,
           stock: 20,
         })
-        .set("access_token", admin_access_token.access_token)
+        .set("access_token", admin_access_token)
         .end((err, res) => {
           const { body, status } = res;
           if (err) {
@@ -95,7 +146,7 @@ describe("Edit Product PUT /products/", () => {
           price: 16499000,
           stock: 20,
         })
-        .set("access_token", cust_access_token.access_token)
+        .set("access_token", cust_access_token)
         .end((err, res) => {
           const { body, status } = res;
           if (err) {
@@ -116,7 +167,7 @@ describe("Edit Product PUT /products/", () => {
           price: 16499000,
           stock: -20,
         })
-        .set("access_token", admin_access_token.access_token)
+        .set("access_token", admin_access_token)
         .end((err, res) => {
           const { body, status } = res;
           if (err) {
@@ -141,7 +192,7 @@ describe("Edit Product PUT /products/", () => {
           price: -16499000,
           stock: 20,
         })
-        .set("access_token", admin_access_token.access_token)
+        .set("access_token", admin_access_token)
         .end((err, res) => {
           const { body, status } = res;
           if (err) {
@@ -166,7 +217,7 @@ describe("Edit Product PUT /products/", () => {
           price: 16499000,
           stock: "duapuluh",
         })
-        .set("access_token", admin_access_token.access_token)
+        .set("access_token", admin_access_token)
         .end((err, res) => {
           const { body, status } = res;
           if (err) {

@@ -9,16 +9,9 @@ module.exports = (req, res, next) => {
       });
     } else {
       const decoded = decode(access_token);
+      req.userData = decoded;
+      next();
       // console.log(decoded);
-      if (decoded.role == "admin") {
-        req.userData = decoded;
-        console.log(req.userData);
-        next();
-      } else {
-        res.status(401).json({
-          message: "Only Admin",
-        });
-      }
     }
   } catch (err) {
     res.status(401).json({

@@ -7,9 +7,9 @@ module.exports = (req, res, next) => {
         res.status(404).json({
           message: "Not Found",
         });
-      } else if (data.UserId != req.userData.id) {
-        res.status(404).json({
-          message: "No Authorization",
+      } else if (req.userData.role != "admin") {
+        res.status(401).json({
+          message: "Only Admin",
         });
       } else {
         next();
@@ -17,5 +17,6 @@ module.exports = (req, res, next) => {
     })
     .catch((err) => {
       res.status(500).json(err);
+      console.log(err);
     });
 };

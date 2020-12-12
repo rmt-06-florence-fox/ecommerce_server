@@ -3,10 +3,13 @@ import VueRouter from "vue-router";
 import Login from "../views/Login.vue";
 import LandingPage from "../views/LandingPage.vue";
 import PageNotFound from "../components/PageNotFound.vue";
+import EditPage from "../views/EditPage.vue";
+import CreatePage from "../views/CreatePage.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
+  { path: "/", redirect: "/login" },
   {
     path: "/login",
     name: "Login",
@@ -16,6 +19,16 @@ const routes = [
     path: "/landing-page",
     name: "Landing Page",
     component: LandingPage,
+  },
+  {
+    path: "/update/:id",
+    name: "Edit Page",
+    component: EditPage,
+  },
+  {
+    path: "/create",
+    name: "Create Page",
+    component: CreatePage,
   },
   {
     path: "*",

@@ -2,12 +2,28 @@ const { Product } = require("../models");
 
 class ProductController {
   static fetchProduct(req, res, next) {
-    Product.findAll({ where: { UserId: req.userData.id } })
+    Product.findAll({})
       .then((data) => {
         res.status(200).json(data);
       })
       .catch((err) => {
         next(err);
+      });
+  }
+  static fetchProductById(req, res, next) {
+    Product.findByPk(req.params.id)
+      .then((data) => {
+        if (!data) {
+          throw {
+            status: 400,
+            message: "Error Not Found",
+          };
+        } else {
+          res.status(200).json(data);
+        }
+      })
+      .catch((err) => {
+        res.status(500).json(err);
       });
   }
   static createProduct(req, res, next) {
@@ -16,7 +32,6 @@ class ProductController {
       image_url: req.body.image_url,
       price: req.body.price,
       stock: req.body.stock,
-      UserId: req.userData.id,
     })
       .then((data) => {
         if (!data) {

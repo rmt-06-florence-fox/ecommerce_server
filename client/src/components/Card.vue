@@ -1,5 +1,5 @@
 <template>
-  <div class="col s12 m4">
+  <div class="col s12 m6 l4 xl3">
     <div class="card">
       <div class="card-image">
         <img id="phone-image" :src="card.image_url" />
@@ -12,11 +12,10 @@
       </div>
       <div class="card-action">
         <div>
-          <a href="" data-target="modal-edit" class="modal-trigger"
+          <a href="" @click.prevent="showEdit"
             ><i class="material-icons">edit</i></a
           >
         </div>
-
         <div>
           <a @click="deleteProduct" href="">
             <i class="material-icons">delete</i></a
@@ -43,16 +42,9 @@ export default {
       const id = this.card.id;
       this.$store.dispatch("deleteProduct", id);
     },
-    // editProduct() {
-    //   const id = this.card.id;
-    //   const payload = {
-    //     name: this.name,
-    //     image_url: this.image_url,
-    //     price: this.price,
-    //     stock: this.stock,
-    //   };
-    //   this.$store.dispatch("editProduct", id, payload);
-    // },
+    showEdit() {
+      this.$router.push(`/update/${this.card.id}`);
+    },
   },
 };
 </script>
