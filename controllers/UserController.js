@@ -25,7 +25,7 @@ class UserController {
                     message: "Password is required"
                 }
             } else {
-                const data = await User.findOne({where: {email: obj.email}})
+                const data = await User.findOne({where: {email: obj.email, role: 'admin'}})
                 if (data) {
                     if(compare(obj.password, data.password)) {
                         const access_token = getToken(data)

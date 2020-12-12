@@ -5,11 +5,12 @@ const AdminAuthentification = require('../middlewares/AdminAuthentification')
 const authorization = require('../middlewares/authorization')
 
 route.post('/login', UserController.login)
-route.get('/product', ProductController.getProduct)
-route.post('/product', AdminAuthentification, ProductController.addProduct)
-route.put('/product/:id', AdminAuthentification, authorization, ProductController.editProduct)
-route.delete('/product/:id', AdminAuthentification, authorization, ProductController.deleteProduct)
-route.get('/product/:id', AdminAuthentification, authorization, ProductController.getProductById)
+route.use(AdminAuthentification)
+route.get('/product', authorization, ProductController.getProduct)
+route.post('/product', authorization, ProductController.addProduct)
+route.put('/product/:id', authorization, ProductController.editProduct)
+route.delete('/product/:id', authorization, ProductController.deleteProduct)
+route.get('/product/:id', authorization, ProductController.getProductById)
 
 
 

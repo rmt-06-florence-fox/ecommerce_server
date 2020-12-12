@@ -31,12 +31,17 @@
 * **Error Response:**
 
   * **Code:** 401 UNAUTHORIZED <br />
-    **Content:** `{"message": "Invalid Account"}`
+    **Content:** `{"message": "Email / Password is incorrect"}`
+
+  OR
+
+  * **Code:** 404 NOT FOUND <br />
+    **Content:** `{"message": "Invalid account"}`
 
   OR
 
   * **Code:** 400 BAD REQUEST <br />
-    **Content:** `{"message": ["Email and Password are required!!"]}`
+    **Content:** `{"message": "Email & Password is required"}`
 
   OR
 
@@ -45,135 +50,13 @@
 ---
 <br>
 
-**Google Login**
+**Get Products**
 ----
-  Login to app using a Google Account.
+  Get all products.
 
 * **URL**
 
-  /googleLogin
-
-* **Method:**
-
-  `POST`
-  
-*  **URL Params**
-
-   **Required:**
-
-   `username=[string] -- format email (email akun google)`
-
-   `password=[string] -- password akun google`
-
-* **Data Params**
-
-  None
-
-* **Success Response:**
-
-  * **Code:** 200 <br />
-    **Content:** `{"message": "access_token", "name"}`
- 
-* **Error Response:**
-
-  * **Code:** 500 INTERNAL SERVER ERROR <br />
-    **Content:** `{"message": "Intenal Server Error"}`
----
-<br>
-
-**Add Category**
-----
-  Add a category with a account user.
-
-* **URL**
-
-  /category
-
-* **Method:**
-
-  `POST`
-  
-*  **URL Params**
-
-   **Required:**
-
-   `name=[string]`
-
-* **Data Params**
-
-  None
-
-* **Success Response:**
-
-  * **Code:** 201 <br />
-    **Content:** `{"message": "Category successfully created!!"}`
- 
-* **Error Response:**
-
-  * **Code:** 400 BAD REQUEST <br />
-    **Content:** `{"message": "Name is required!!"}`
-
-  OR
-
-  * **Code:** 500 INTERNAL SERVER ERROR <br />
-    **Content:** `{"message": "Internal Server Error"}`
-
----
-<br>
-
-**Add Task**
-----
-  Add a task with a account user.
-
-* **URL**
-
-  /task
-
-* **Method:**
-
-  `POST`
-  
-*  **URL Params**
-
-   **Required:**
-
-   `title=[string]`
-
-   `due_date=[text]`
-
-   `CategoryId=[integer]`
-
-   `UserId=[integer]`
-
-* **Data Params**
-
-  None
-
-* **Success Response:**
-
-  * **Code:** 200 <br />
-    **Content:** `{message: 'Create Task Successful!!'}`
- 
-* **Error Response:**
-
-  * **Code:** 400 BAD REQUEST <br />
-    **Content:** `{"message": "Please enter your title!!"}`
-
-  OR
-
-  * **Code:** 500 INTERNAL SERVER ERROR <br />
-    **Content:** `{"message": "Internal Server Error"}`
-
----
-<br>
-
-**Get Task**
-----
-  Fetch task data.
-
-* **URL**
-
-  /task
+  /product
 
 * **Method:**
 
@@ -190,39 +73,84 @@
 * **Success Response:**
 
   * **Code:** 200 <br />
-    **Content:** `[
-    {
-        "id": 10,
-        "title": "mengerjakan vue js",
-        "due_date": "2020-12-21",
-        "status": "pending",
-        "UserId": 1, ...`
+    **Content:** `{"name": ..., "image_url": ..., "price": ..., "stock": ...}, ...`
  
 * **Error Response:**
 
-  * **Code:** 401 UNAUTHORIZED <br />
-    **Content:** `{"message": ["Please login first!!"]}`
-
-  OR
-
-  * **Code:** 404 DATA NOT FOUND <br />
-    **Content:** `{"message": ["Data not found"]}`
-
-OR
-
   * **Code:** 500 INTERNAL SERVER ERROR <br />
-    **Content:** `{"message": ["Intenal Server Error"]}`
+    **Content:** `{"message": "Internal Server Error"}`
 
 ---
 <br>
 
-**Update Data Task**
+**Add Product**
 ----
-  Update data task.
+  Add a product with a account user.
 
 * **URL**
 
-  /task/:id
+  /product
+
+* **Method:**
+
+  `POST`
+  
+*  **URL Params**
+
+   **Required:**
+
+   `name=[string]`
+
+   `image_url=[text]`
+
+   `price=[integer]`
+
+   `stock=[integer]`
+
+* **Data Params**
+
+  None
+
+* **Success Response:**
+
+  * **Code:** 201 <br />
+    **Content:** `{"name": ..., "image_url": ..., "price": ..., "stock": ...}`
+ 
+* **Error Response:**
+
+  * **Code:** 401 UNAUTHORIZED <br />
+    **Content:** `{"message": "Please login first"}`
+
+  OR
+
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{"message": "<field> is required"}`
+
+  OR
+
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{"message": "Stock / price must greater than or equal to 0"}`
+
+  OR
+
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{"message": "Stock / price must in integer"}`
+
+  OR
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** `{"message": "Internal Server Error"}`
+
+---
+<br>
+
+**Edit Product**
+----
+  Edit data product.
+
+* **URL**
+
+  /product/:id
 
 * **Method:**
 
@@ -232,43 +160,46 @@ OR
 
    **Required:**
 
-   `title=[string]`
-
-   `due_date=[date]`
-
-   `CategoryId=[integer]`
-
 * **Data Params**
 
-  `access_token=[string]`
+   `name=[string]`
 
-  `ID=[integer]`
+   `image_url=[text]`
+
+   `price=[integer]`
+
+   `stock=[integer]`
 
 * **Success Response:**
 
   * **Code:** 200 <br />
-    **Content:** `{"message": ["Data updated successful!!"]}`
+    **Content:** `{"name": ..., "image_url": ..., "price": ..., "stock": ...}`
  
 * **Error Response:**
 
   * **Code:** 401 UNAUTHORIZED <br />
-    **Content:** `{"message": ["Please login first!!"]}`
+    **Content:** `{"message": "Please login first"}`
 
   OR
 
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{"message": Stock/Price must greater than or equal to 0}`
+
+OR
+
   * **Code:** 500 INTERNAL SERVER ERROR <br />
-    **Content:** `{"message": ["Intenal Server Error"]}`
+    **Content:** `{"message": "Intenal Server Error"}`
 
 ---
 <br>
 
-**Delete Task**
+**Delete Product**
 ----
-  Delete a data task.
+  Delete a data product.
 
 * **URL**
 
-  /task/:id
+  /product/:id
 
 * **Method:**
 
@@ -287,12 +218,12 @@ OR
 * **Success Response:**
 
   * **Code:** 200 <br />
-    **Content:** `{"message": ["Data deleted successful!!"]}`
+    **Content:** `{"message": "Data deleted successful"}`
  
 * **Error Response:**
 
   * **Code:** 401 UNAUTHORIZED <br />
-    **Content:** `{"message": ["Please login first!!"]}`
+    **Content:** `{"message": "Please login first"}`
 
   OR
 
@@ -303,13 +234,13 @@ OR
 ---
 <br>
 
-**Get Category**
+**Get Product By ID**
 ----
-  Get data category.
+  Get a data product by ID.
 
 * **URL**
 
-  /category
+  /product/:id
 
 * **Method:**
 
@@ -326,23 +257,15 @@ OR
 * **Success Response:**
 
   * **Code:** 200 <br />
-    **Content:** `[
-    {
-        "id": 13,
-        "name": "done",
-        "createdAt": "2020-12-02T14:08:37.690Z",
-        "updatedAt": "2020-12-02T14:08:37.690Z"
-    }, ...`
+    **Content:** `{"name": ..., "image_url": ..., "price": ..., "stock": ...}`
  
 * **Error Response:**
 
   * **Code:** 401 UNAUTHORIZED <br />
-    **Content:** `{"message": ["Please login first!!"]}`
+    **Content:** `{"message": "Please login first"}`
 
   OR
 
   * **Code:** 500 INTERNAL SERVER ERROR <br />
-    **Content:** `{"message": ["Intenal Server Error"]}`
+    **Content:** `{"message": "Intenal Server Error"}`
 
-link firebase:
-https://kanbanit-app.web.app/

@@ -96,21 +96,6 @@ describe("Create Product", () => {
             done()
         })
     }),
-    test("response with invalid account", function(done) {
-        request(app)
-        .post("/product")
-        .set('access_token', access_token_cust)
-        .send({name: 'Kereta Diesel (Gatotkaca)', image_url: 'https://rachmahreirra.files.wordpress.com/2015/03/14b6a-kereta-api-diesel.jpg', price: 4000000 , stock: 5})
-        .end(function(err, res) {
-            const { status, body } = res
-            if(err) {
-                done(err)
-            }
-            expect(status).toBe(401)
-            expect(body).toHaveProperty("message", "Invalid account")
-            done()
-        })
-    }),
     test("response with name is required", function(done) {
         request(app)
         .post("/product")
@@ -266,21 +251,6 @@ describe("Update Product", () => {
             done()
         })
     }),
-    test("response with invalid account", function(done) {
-        request(app)
-        .put("/product/" + idTrial)
-        .set('access_token', access_token_cust)
-        .send({name: 'Wiro Sableng', image_url: 'https://rachmahreirra.files.wordpress.com/2015/03/14b6a-kereta-api-diesel.jpg', price: 10000000 , stock: 10})
-        .end(function(err, res) {
-            const { status, body } = res
-            if(err) {
-                done(err)
-            }
-            expect(status).toBe(401)
-            expect(body).toHaveProperty("message", "Invalid account")
-            done()
-        })
-    }),
     test("response with stock can not minus", function(done) {
         request(app)
         .put("/product/" + idTrial)
@@ -430,20 +400,6 @@ describe("Delete Product", () => {
             expect(body).toHaveProperty("message", "Please login first")
             done()
         })
-    }),
-    test("response with invalid account", function(done) {
-        request(app)
-        .delete("/product/" + idFailDelete)
-        .set('access_token', access_token_cust)
-        .end(function(err, res) {
-            const { status, body } = res
-            if(err) {
-                done(err)
-            }
-            expect(status).toBe(401)
-            expect(body).toHaveProperty("message", "Invalid account")
-            done()
-        })
     })
 })
 
@@ -451,6 +407,7 @@ describe("Get Product", () => {
     test("response with data products", (done) => {
         request(app)
         .get("/product")
+        .set('access_token', access_token)
         .end(function(err, res) {
             const { status, body } = res
             if (err) {

@@ -11,18 +11,18 @@ module.exports = async(req, res, next) => {
             }
         } else {
             const decoded = verifyToken(access_token)
-            const data = await User.findOne({where: {id: decoded.id}})
-            if (data) {
-                if (data.role === 'admin') {
-                    req.loggedInUser = decoded
-                    next()
-                } else {
-                    throw {
-                        status: 401,
-                        message: "Invalid account"
-                    }
-                }
-            }
+            req.loggedInUser = decoded
+            next()
+            // const data = await User.findOne({where: {id: decoded.id}})
+            // if (data) {
+            //     if (data.role === 'admin') {
+            //     } else {
+            //         throw {
+            //             status: 401,
+            //             message: "Invalid account"
+            //         }
+            //     }
+            // }
         }
     } catch(error) {
         next(error)
