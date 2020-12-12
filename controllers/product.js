@@ -42,7 +42,7 @@ class ProductController{
       if(findProduct){
         const deleteProduct = await Product.destroy({ where : { id : req.params.id}})
         res.status(200).json({message : "succesfully delete a product"})
-      } throw{status : 404 , message : "product not found"}
+      } else throw{status : 404 , message : "product not found"}
       
     } catch (error) {
       next(error)
@@ -52,7 +52,10 @@ class ProductController{
   static async findProduct (req, res, next) {
     try {
       const product = await Product.findByPk(req.params.id)
-      res.status(200).json({product})
+      console.log(product);
+      if(product !== null){
+        res.status(200).json({product})
+      }else throw{status : 404 , message : "product not found"}
     } catch (error) {
       next(error)
     }
