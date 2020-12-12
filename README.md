@@ -3,7 +3,12 @@
 Server side of E-Commerce CMS App built with Express, Sequelize
 
 ### DEPLOY SITE: 
-* to be released
+
+Client: 
+https://ecomm-cms-sidsoeharto.web.app/
+
+Server:
+https://bukatoko-server.herokuapp.com/
 
 #
 
