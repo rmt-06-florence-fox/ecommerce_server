@@ -8,7 +8,9 @@ class UserController {
       const {email, password} = req.body
 
       const login = await User.findOne({
-        where: {email}
+        where: {
+          email
+        }
       })
 
       if (!login) {

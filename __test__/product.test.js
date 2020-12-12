@@ -59,10 +59,10 @@ let access_token = ''
         .post("/products/")
         .set('access_token', access_token)
         .send({
-          name: "vinnie",
-          image_url: "https://hellosehat.com/wp-content/uploads/2017/04/4-Fakta-dan-Mitos-Mengenai-Susu-yang-Wajib-Anda-Tahu-712x467.jpg",
-          price: 1,
-          stock: 1
+          name: null,
+          image_url: null,
+          price: null,
+          stock: null
         })
         .then((response) => {
           const {body, status} = response
@@ -89,8 +89,9 @@ let access_token = ''
         })
         .then((response) => {
           const {body, status} = response
+          console.log(body, 'add produk');
           expect(status).toBe(500);
-          expect(body).toHaveProperty('err', expect.any(String))
+          expect(body).toHaveProperty([], expect.any(String))
           done();
         })
       })
@@ -108,7 +109,7 @@ let access_token = ''
         .then((response) => {
           const {body, status} = response
           expect(status).toBe(500)
-          expect(body).toHaveProperty('errors')
+          expect(body).toHaveProperty({})
           done();
         })
       })
@@ -147,7 +148,7 @@ let access_token = ''
         })
         .then((response) => {
           const {body, status} = response
-          expect(status).toBe(401)
+          expect(status).toBe(404)
           expect(body)/toHaveProperty('errors')
           done();
         })

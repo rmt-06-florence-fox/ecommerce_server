@@ -14,8 +14,8 @@ app.use(express.urlencoded({ extended: true }))
 app.use(errorhandler)
 
 app.use('/', router)
-app.listen(port, ()=>{
-  console.log(`listening on http://localhost:${port}`);
-})
+// app.listen(port, ()=>{
+//   console.log(`listening on http://localhost:${port}`);
+// })
 
 module.exports = app

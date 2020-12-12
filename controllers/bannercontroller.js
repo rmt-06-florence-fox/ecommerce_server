@@ -1,8 +1,6 @@
 const {Banner} = require('../models/')
 
 class BannerController {
-
-
   static async getAllBanners (req, res, next) {
     const UserId = req.userLoggedIn.id
 
@@ -38,7 +36,7 @@ class BannerController {
   static async getBannerById (req, res, next) {
     try {
       const id = +req.params.id
-      const banner = await Banner.findByPK(id)
+      const banner = await Banner.findByPk(id)
 
       if(!banner) {
         throw {

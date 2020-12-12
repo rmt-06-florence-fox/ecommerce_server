@@ -13,7 +13,8 @@ const authentication = async (req, res, next) => {
       const decoded = verifyToken (access_token)
       const user = await User.findOne ({
         where: {
-          id: decoded.id
+          id: decoded.id,
+          role: "Admin"
         }
       })
       if (!user) {
