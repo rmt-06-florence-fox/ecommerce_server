@@ -2,7 +2,7 @@ const { User } = require('../models')
 const Helper = require('../helpers/helper')
 
 class UserController{
-  static async loginAdmin(req, res, next){   //ganti nama loginadmin
+  static async loginAdmin(req, res, next){
     try{
       const findData = await User.findOne({
         where: { email: req.body.email, role: 'admin' }
