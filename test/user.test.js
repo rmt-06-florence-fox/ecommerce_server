@@ -31,7 +31,6 @@ describe("POST User /register", () => {
         })
     })
 
-    // // Masih belum
     describe("Error register", () => {
         test("response with email validation unique", (done) => {
             request(app)

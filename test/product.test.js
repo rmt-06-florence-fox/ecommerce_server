@@ -232,6 +232,40 @@ describe("GET Product", () => {
             })
         })
     })
+
+    describe("Success Get Data By Id", () => {
+        test("Get Data", (done) => {
+            request(app)
+            .get("/product/"+productId)
+            .set("access_token", tokenAdmin)
+            .end((err, res) => {
+                const { body, status } = res
+                if (err) {
+                    return done(err)
+                }
+                expect(status).toBe(200)
+                expect(body).toEqual(body)
+                done()
+            })
+        })
+    })
+
+    describe("Error Get Data By Id", () => {
+        test("Error Data", (done) => {
+            request(app)
+            .get("/product/0")
+            .set("access_token", tokenAdmin)
+            .end((err, res) => {
+                const { body, status } = res
+                if (err) {
+                    return done(err)
+                }
+                expect(status).toBe(404)
+                expect(body).toHaveProperty("msg", "DataNotFound")
+                done()
+            })
+        })
+    })
 })
 
 const payloadUpdate = {
@@ -264,23 +298,94 @@ describe("PUT Product", () => {
                 done()
             })
         })
+    })
 
-        describe("Error", () => {
-            test("error update product when customer", (done) => {
-                request(app)
-                .put(`/product/${productId}`)
-                .set("access_token", tokenCustomer)
-                .send(payloadUpdate)
-                .end((err, res) => {
-                    const { body, status } = res
-                    if(err) {
-                        return done(err)
-                    }
-                    // console.log(body, productId, "<<<<<< hello world")
-                    expect(status).toBe(401)
-                    expect(body).toHaveProperty("msg", "You Are Not Authorized")
-                    done()
-                })
+    describe("Error", () => {
+        test("Error update product when data not found", (done) => {
+            request(app)
+            .put(`/product/0`)
+            .set("access_token", tokenAdmin)
+            .send(payloadUpdate)
+            .end((err, res) => {
+                const { body, status } = res
+                if(err) {
+                    return done(err)
+                }
+                console.log(payloadUpdate)
+                console.log(body, productId, "<<<<<< hello world")
+                expect(status).toBe(404)
+                // expect(body).toEqual(payloadUpdate)
+                expect(body).toHaveProperty("msg", 'DataNotFound')
+                done()
+            })
+        })
+    })
+    describe("Error", () => {
+        test("error update product when customer", (done) => {
+            request(app)
+            .delete(`/product/${productId}`)
+            .set("access_token", tokenCustomer)
+            .send(payloadUpdate)
+            .end((err, res) => {
+                const { body, status } = res
+                if(err) {
+                    return done(err)
+                }
+                expect(status).toBe(401)
+                expect(body).toHaveProperty("msg", "You Are Not Authorized")
+                done()
+            })
+        })
+    })
+})
+
+describe("DELETE Product", () => {
+    describe("Success", () => {
+        test("succes delete product", (done) => {
+            request(app)
+            .delete(`/product/${productId}`)
+            .set("access_token", tokenAdmin)
+            .end((err, res) => {
+                const { body, status } = res
+                if(err) {
+                    return done(err)
+                }
+                expect(status).toBe(200)
+                expect(body).toHaveProperty("msg", "Success Delete")
+                done()
+            })
+        })
+    })
+
+    describe("Error", () => {
+        test("Error update product when data not found", (done) => {
+            request(app)
+            .delete(`/product/0`)
+            .set("access_token", tokenAdmin)
+            .end((err, res) => {
+                const { body, status } = res
+                if(err) {
+                    return done(err)
+                }
+                expect(status).toBe(404)
+                expect(body).toHaveProperty("msg", 'DataNotFound')
+                done()
+            })
+        })
+    })
+    describe("Error", () => {
+        test("error update product when customer", (done) => {
+            request(app)
+            .delete(`/product/${productId}`)
+            .set("access_token", tokenCustomer)
+            .end((err, res) => {
+                const { body, status } = res
+                if(err) {
+                    return done(err)
+                }
+                expect(status).toBe(401)
+                expect(body).toHaveProperty("msg", "You Are Not Authorized")
+                done()
             })
         })
     })

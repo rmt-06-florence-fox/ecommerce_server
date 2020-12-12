@@ -10,12 +10,14 @@ module.exports = (req, res, next) => {
     } else {
         const decoded = compareToken(access_token)
         req.LoginUser = decoded
+        // console.log(decoded)
         User.findOne({
             where: {
                 id: decoded.id
             }
         })
             .then(data => {
+                // console.log(data)
                 if (data) {
                     next()
                 } else {
