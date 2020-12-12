@@ -267,7 +267,7 @@ describe("POST/products", () => {
 
 describe("POST/products", () => {
     describe("Error add product", () => {
-        test("image url input must be a valid URL", done => {
+        test("image URL input must be a valid URL", done => {
             request(app)
             .post('/products')
             .set('access_token', access_token)
@@ -283,7 +283,7 @@ describe("POST/products", () => {
                 }
                 else {
                     expect(status).toBe(400)
-                    expect(body).toHaveProperty('message', `input must be a valid url`)
+                    expect(body).toHaveProperty('message', `image URL input must be a valid url`)
                     done()
                 }
             })
@@ -309,7 +309,7 @@ describe("POST/products", () => {
                 }
                 else {
                     expect(status).toBe(400)
-                    expect(body).toHaveProperty('message', `input must be a valid number`)
+                    expect(body).toHaveProperty('message', `price input must be a valid number`)
                     done()
                 }
             })
@@ -335,7 +335,7 @@ describe("POST/products", () => {
                 }
                 else {
                     expect(status).toBe(400)
-                    expect(body).toHaveProperty('message', `input must be a valid number`)
+                    expect(body).toHaveProperty('message', `stock input must be a valid number`)
                     done()
                 }
             })
@@ -493,7 +493,7 @@ describe("PUT/products", () => {
                 }
                 else {
                     expect(status).toBe(400)
-                    expect(body).toHaveProperty('message', `input must be a valid url`)
+                    expect(body).toHaveProperty('message', `image URL input must be a valid url`)
                     done()
                 }
             })
@@ -519,7 +519,7 @@ describe("PUT/products", () => {
                 }
                 else {
                     expect(status).toBe(400)
-                    expect(body).toHaveProperty('message', `input must be a valid number`)
+                    expect(body).toHaveProperty('message', `price input must be a valid number`)
                     done()
                 }
             })
@@ -545,7 +545,7 @@ describe("PUT/products", () => {
                 }
                 else {
                     expect(status).toBe(400)
-                    expect(body).toHaveProperty('message', `input must be a valid number`)
+                    expect(body).toHaveProperty('message', `stock input must be a valid number`)
                     done()
                 }
             })

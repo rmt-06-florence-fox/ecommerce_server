@@ -6,8 +6,8 @@ class ProductController {
         const UserId = req.loggedInUser.id
         const payload = { name, image_url, price, stock, UserId}
         try {
-            const product = await Product.create(payload);
-            res.status(201).json(product);   
+            const products = await Product.create(payload);
+            res.status(201).json(products);   
         }
         catch (error) {
             next(error)
@@ -38,8 +38,8 @@ class ProductController {
 
     static async getAll (req, res, next) {
         try {
-            const product = await Product.findAll()
-            res.status(200).json({product})
+            const products = await Product.findAll({ order: [['id', 'ASC']] })
+            res.status(200).json({products})
         } catch (error) {
             next(error)
         }
@@ -54,7 +54,6 @@ class ProductController {
             next(error)
         }
     }
-
 }
 
 module.exports = ProductController

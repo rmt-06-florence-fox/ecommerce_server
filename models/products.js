@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
           msg: "image is required"
         },
         isUrl : {
-          msg: "input must be a valid url"
+          msg: "image URL input must be a valid url"
         }
       }
     },
@@ -49,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         isDecimal: {
           args: true,
-          msg: "input must be a valid number"
+          msg: "price input must be a valid number"
         }
       }
     },
@@ -66,7 +66,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         isDecimal: {
           args: true,
-          msg: "input must be a valid number"
+          msg: "stock input must be a valid number"
         }
       }
     },
