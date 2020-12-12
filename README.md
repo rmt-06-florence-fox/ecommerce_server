@@ -1,8 +1,8 @@
 # ecommerce_server
 # LINK
-server: 
+server: https://jejualan.herokuapp.com
 
-client:
+client: https://jejualan-kw.web.app
 
 More Docs: https://documenter.getpostman.com/view/13590085/TVmTcF8K
 
