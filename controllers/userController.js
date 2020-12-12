@@ -10,7 +10,7 @@ class UserController {
             if(!data){
                 res.status(401).json({message: "Invalid Account!"})
             } else {
-                if(req.body.password, data.password){
+                if(req.body.password == data.password){
                     const obj = {
                         id: data.id,
                         email: data.email,
