@@ -4,18 +4,30 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Banner extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
       // define association here
     }
   };
   Banner.init({
-    title: DataTypes.STRING,
-    imageUrl: DataTypes.STRING
+    title: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          msg: 'Please fill the title field'
+        }
+      }
+    },
+    imageUrl: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          msg: 'Please fill the image URL'
+        },
+        isUrl: {
+          msg: 'Make sure that image URL is in URL format (http:// or https://)'
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Banner',
