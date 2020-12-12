@@ -25,6 +25,16 @@ class ProductController {
         }
     }
 
+    static async getItemById(req, res, next) {
+        const idItem = req.params.id
+        try {
+            const data = await Product.findByPk(idItem)
+            res.status(200).json(data)
+        } catch (err) {
+            next(err)
+        }
+    }
+
     static async updateItem(req, res, next) {
         const idItem = req.params.id
         const data = {
