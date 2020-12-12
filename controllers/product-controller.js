@@ -2,7 +2,7 @@ const {Product} = require('../models')
 
 class ProductController {
 
-    static async addProduct(req, res, next){
+    static async addProduct (req, res, next){
 
         try {
             const {name, imageUrl, stock, price} = req.body
@@ -24,23 +24,22 @@ class ProductController {
                 }
             }
 
-        } catch(err){
+        } catch (err) {
             next(err)
         }
     }
 
-    static async fetchAll(req, res, next){
+    static async fetchAll (req, res, next){
         try{
-            const products = await Product.findAll()
-            
-            res.status(200).json({products})
+            const products = await Product.findAll()         
+            res.status(200).json(products)
 
         } catch(err){
             next(err)
         }
     }
 
-    static async update(req, res, next){
+    static async update (req, res, next){
         try {
             const { name, imageUrl, stock, price } = req.body
             const id = req.params.id
@@ -66,7 +65,7 @@ class ProductController {
             next(err)
         }
     }
-    static async delete(req, res, next){
+    static async delete (req, res, next){
         try {
             const id = req.params.id
             const product = await Product.findByPk(id)

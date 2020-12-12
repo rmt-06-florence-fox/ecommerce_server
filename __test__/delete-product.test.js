@@ -18,7 +18,6 @@ afterAll(async (done) => {
         //console.log(err)
         done(err)
     }
-
 })
 
 beforeAll(async (done) => {
@@ -40,7 +39,7 @@ beforeAll(async (done) => {
     try {
         await queryInterface.bulkInsert("Users", users, {}, {})
 
-        const product = await Product.create(seedProduct, { returning: true })
+        const product = await Product.create(seedProduct)
         id = product.id
         request(app)
             .post('/login')

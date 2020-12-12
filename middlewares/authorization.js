@@ -10,7 +10,7 @@ module.exports = async (req, res, next) => {
             email : payload.email
         }})
         
-        if (user && user.role === 'admin'){
+        if (user && user.role === 'admin') {
             next()
         
         } else {

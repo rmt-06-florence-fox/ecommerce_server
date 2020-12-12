@@ -7,12 +7,17 @@
         "password" : "rahasia"
     },
     {
+        "fullName": "Super Admin",
+        "userName": "admin",
+        "role" : "admin",
+        "email" : "admin@gmail.com",
+        "password" : "rahasia"
+    },
+    {
         "fullName": "Hendri Budi S",
         "userName": "hndrbs",
         "role": "customer",
-        "email": "hendribs153@gmail.com",
+        "email": "hndrbs153@gmail.com",
         "password": "rahasia"
     }
-
-
 ]

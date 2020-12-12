@@ -51,7 +51,8 @@ beforeAll(async (done) => {
                 "password": "rahasia"
             })
             .end((err, res) => {
-                if (err) done(err)
+                console.log(err, '<<<< ini errrrr', res.body, '<<<<<<< ini err dan res')
+                if (err)  done(err)
 
                 const { body } = res
                 adminToken = body.access_token
