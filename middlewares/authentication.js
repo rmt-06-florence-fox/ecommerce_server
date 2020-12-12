@@ -8,7 +8,7 @@ module.exports = async (req, res, next) => {
         if (!access_token) {
             throw {
                 status: 401,
-                message: "Please Login or Register First 9"
+                message: "Please Login or Register First"
             }
         } else {
             const decode = verifyToken(access_token)
