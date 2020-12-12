@@ -63,6 +63,7 @@ describe("test product's CRUD section", () => {
           stock : 20
         })
         .end((err, res) => {
+          // console.log(res.body);
           if (err) {
             return done(err)
           }
@@ -84,6 +85,7 @@ describe("test product's CRUD section", () => {
           stock : 30
         })
         .end((err, res) => {
+          // console.log(res.body);
           if (err) {
             return done(err)
           }
@@ -109,6 +111,7 @@ describe("test product's CRUD section", () => {
           if (err) {
             return done(err)
           }
+          // console.log(res.body);
           expect(res.status).toBe(400)
           expect(res.body).toHaveProperty('message', expect.arrayContaining([
             `name musn't be empty`,
@@ -159,8 +162,8 @@ describe("test product's CRUD section", () => {
           // console.log(res.body, 'ini yg angka');
           expect(res.status).toBe(400)
           expect(res.body).toHaveProperty('message', expect.arrayContaining([
-            `price must filled by number`,
-            `stock must filled by number`
+            `price musn't be empty`,
+            `stock musn't be empty`
           ]))
           done()
         })
@@ -182,7 +185,7 @@ describe("test product's CRUD section", () => {
           }
           expect(res.status).toBe(400)
           expect(res.body).toHaveProperty('message', expect.arrayContaining([
-            `stock must filled by number`
+            `stock musn't be empty`
           ]))
           done()
         })
@@ -200,6 +203,7 @@ describe("test product's CRUD section", () => {
           if (err) {
             return done(err)
           }
+          // console.log(res.body);
           expect(res.status).toBe(200)
           expect(res.body[0]).toHaveProperty("id", res.body[0].id)
           expect(res.body[0]).toHaveProperty("name" , 'Playstation 5')
@@ -238,6 +242,7 @@ describe("test product's CRUD section", () => {
           if (err) {
             return done(err)
           }
+          // console.log(res.body);
           expect(res.status).toBe(200)
           expect(res.body).toHaveProperty("id", res.body.id)
           expect(res.body).toHaveProperty("name" , 'Playstation 5')
@@ -253,6 +258,7 @@ describe("test product's CRUD section", () => {
           if (err) {
             return done(err)
           }
+          // console.log(res.body);
           expect(res.status).toBe(401)
           expect(res.body).toHaveProperty("message", 'you must login first as admin')
           done()
@@ -268,6 +274,7 @@ describe("test product's CRUD section", () => {
           if (err) {
             return done(err)
           }
+          // console.log(res.body);
           expect(res.status).toBe(404)
           expect(res.body).toHaveProperty("message", `error not found`)
           done()
@@ -292,6 +299,7 @@ describe("test product's CRUD section", () => {
           if (err) {
             return done(err)
           }
+          // console.log(res.body);
           expect(res.status).toBe(200)
           expect(res.body).toHaveProperty("id", res.body.id)
           expect(res.body).toHaveProperty("name" , 'Playstation millenium')
@@ -314,6 +322,7 @@ describe("test product's CRUD section", () => {
           if (err) {
             return done(err)
           }
+          // console.log(res.body);
           expect(res.status).toBe(401)
           expect(res.body).toHaveProperty("message", `you must login first as admin`)
           done()
@@ -335,6 +344,7 @@ describe("test product's CRUD section", () => {
           if (err) {
             return done(err)
           }
+          // console.log(res.body);
           expect(res.status).toBe(400)
           expect(res.body).toHaveProperty('message', expect.arrayContaining([
             `name musn't be empty`,
@@ -363,9 +373,7 @@ describe("test product's CRUD section", () => {
             expect(res.status).toBe(400)
             expect(res.body).toHaveProperty('message', expect.arrayContaining([
               `price musn't be empty`,
-              `stock musn't be empty`,
-              `price must filled by number`,
-              `stock must filled by number`
+              `stock musn't be empty`
             ]))
             done()
           })
@@ -384,6 +392,7 @@ describe("test product's CRUD section", () => {
           if (err) {
             return done(err)
           }
+          // console.log(res.body);
           expect(res.status).toBe(200)
           expect(res.body).toHaveProperty("message", `your list's deleted`)
           done()
@@ -399,6 +408,7 @@ describe("test product's CRUD section", () => {
           if (err) {
             return done(err)
           }
+          // console.log(res.body);
           expect(res.status).toBe(404)
           expect(res.body).toHaveProperty("message", `error not found`)
           done()

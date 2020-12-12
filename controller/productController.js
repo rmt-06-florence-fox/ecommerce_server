@@ -10,16 +10,18 @@ class ProductController {
         stock: req.body.stock,
         UserId: req.UserLogin.id
       }
+      // console.log(obj);
       const data = await Product.create(obj)
       res.status(201).json(data)
     } catch (error) {
+      console.log(error);
       next(error)
     }
   }
 
   static async read(req,res,next) {
     try {
-      const lists = await Product.findAll({include : User})
+      const lists = await Product.findAll()
       if (lists) {
         res.status(200).json(lists)
       } else {
@@ -38,6 +40,7 @@ class ProductController {
       let id = req.params.id
       const list = await Product.findOne({where: {id}})
       if (list) {
+        // console.log(list);
         res.status(200).json(list)
       } else {
         throw {

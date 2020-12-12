@@ -48,9 +48,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         notNull: {
           msg: `price url musn't be null`
-        },
-        isNumeric:{
-          msg : `price must filled by number`
         }
       }
     },
@@ -63,9 +60,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         notNull: {
           msg: `stock url musn't be null`
-        },
-        isNumeric:{
-          msg : `stock must filled by number`
         }
       }
     },
