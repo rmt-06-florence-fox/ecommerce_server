@@ -325,6 +325,11 @@
 
     OR
 
+    * **Code:** 400 Bad Request <br />
+    **Content:** `{"message": "Product Category Required"}`
+
+    OR
+
     * **Code:** 500 Internal Server Error <br />
     **Content:** `{"message": "Internal Server Error"}`
 
@@ -407,6 +412,11 @@
     * **Code:** 400 Bad Request <br />
     **Content:** `{"message": "Stock Must Be a Number"}`
 
+    OR
+
+    * **Code:** 400 Bad Request <br />
+    **Content:** `{"message": "Product Category Required"}`
+    
     OR
 
     * **Code:** 500 Internal Server Error <br />
