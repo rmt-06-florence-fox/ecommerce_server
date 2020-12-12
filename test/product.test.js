@@ -2,7 +2,7 @@ const app = require('../app');
 const request = require('supertest');
 const { getToken } = require('../helper/jwt')
 
-const { sequelize } = require("../models")
+const { User,sequelize } = require("../models")
 const { queryInterface } = sequelize
 
 const data = {
@@ -76,19 +76,29 @@ let token
 let wrongToken
 let id
 
-beforeAll( (done) =>{
+beforeAll( async (done) =>{
   
   // Get admin token 
+  const admin = await User.findOne({
+    where: {
+      email: 'admin@mail.com'
+    }
+  })
+
   const payLoad = {
-    id  : 8,
-    email: "admin@mail.com"
+    id : admin.dataValues.id,
+    email: admin.dataValues.email
   }
   token = getToken(payLoad)
-
   // get non admin token 
+  const nonadmin = await User.findOne( {
+    where: {
+      email: 'wrong@mail.com'
+    }
+  })
   const wrongPayload = {
-    id : 9,
-    email : 'wrong@mail.com'
+    id: nonadmin.dataValues.id,
+    email: nonadmin.dataValues.email
   }
   wrongToken = getToken(wrongPayload)
   done()
