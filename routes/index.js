@@ -1,11 +1,13 @@
 const express = require('express')
 const router = express.Router()
 const userRouter = require('./userRouter')
-// const UserController = require('../controllers/userController')
+const productRouter = require('./productRouter')
+const authentication = require('../middlewares/authentication')
 
-router.use('/admin', userRouter)
-// router.post('/register', (req, res) => {
-//     console.log(201).json('register success')
-// })
+router.use('/', userRouter)
+
+router.use(authentication)
+router.use('/admin', productRouter)
+
 
 module.exports = router

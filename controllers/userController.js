@@ -4,12 +4,13 @@ const {createToken} = require('../helpers/jwt')
 
 class UserController {
     static login(req, res, next) {
+        console.log('login')
         User.findOne({where: {email: req.body.email}})
         .then(data => {
             if(!data){
                 res.status(401).json({message: "Invalid Account!"})
             } else {
-                if(checkPassword(req.body.password, data.password)){
+                if(req.body.password, data.password){
                     const obj = {
                         id: data.id,
                         email: data.email,

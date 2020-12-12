@@ -12,11 +12,9 @@ let newDataProduct = {}
 afterAll((done) =>{
     queryInterface.bulkDelete("Products")
     .then(res=>{
-        console.log('===Test Telah Selesai===')
         done()
     })
     .catch(err=>{
-        console.log('===Error Akhir Test===')
         done(err)
     })
 })
@@ -28,7 +26,7 @@ beforeAll((done) =>{
         price: 5000000,
         stock: 6,
         createdAt: new Date(),
-        updatedAt: new Date(),
+        updatedAt: new Date()
     }
     Product.create(dataProduct)
     .then( res=>{
