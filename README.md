@@ -10,6 +10,11 @@ E-commerce is the activity of electronically buying or selling of products on on
 - `POST /products`
 - `PUT /products/:id`
 - `DELETE /products/:id`
+- `GET /banners/`
+- `GET /banners/:id`
+- `POST /banners`
+- `PUT /banners/:id`
+- `DELETE /banners/:id`
 
 **Login Account**
 ---
@@ -432,6 +437,325 @@ E-commerce is the activity of electronically buying or selling of products on on
     ```json
     {
         "message": "Product deleted successfuly"
+    }
+    ```
+
+* **Error Response:**
+
+  * **Code:** 401 Unauthorized <br />
+    **Content:**
+    ```json
+    {
+        "message": "Please Login First"
+    }
+    ```
+
+    OR
+
+  * **Code:** 401 Unauthorized <br />
+    **Content:**
+    ```json
+    {
+        "message": "You are not authorized"
+    }
+    ```
+
+**Create Banner**
+---
+    Add Banner data to database.
+
+* **URL**
+
+    `/banners/:id/`
+
+* **Method:**
+
+    `POST`
+
+* **Header:**
+
+    `access_token:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsImlhdCI6MTYwNzQ4Nzk5OX0.lv-MkL9Fr8E74bgvvmtGkIUFzuyNa4jBtWAQ-UBKoJY`
+
+* **URL Params**
+
+    None
+
+* **Data Params**
+
+  **Required:**
+
+    `title=[string]` <br />
+    `status=[string]` <br />
+    `image_url=[string]` <br />
+
+* **Success Response:**
+
+  * **Code:** 201 <br />
+    **Content:**
+    ```json
+    {
+        "id": 1,
+        "title": "Tokoku",
+        "status": "active",
+        "image_url": "https://d26bwjyd9l0e3m.cloudfront.net/wp-content/uploads/2019/10/ecommerce.jpg",
+        "updatedAt": "2020-12-12T09:29:29.519Z",
+        "createdAt": "2020-12-12T09:29:29.519Z"
+    }
+    ```
+
+* **Error Response:**
+
+  * **Code:** 401 Unauthorized <br />
+    **Content:**
+    ```json
+    {
+        "message": "Please Login First"
+    }
+    ```
+
+    OR
+
+  * **Code:** 401 Unauthorized <br />
+    **Content:**
+    ```json
+    {
+        "message": "You are not authorized"
+    }
+    ```
+
+    OR 
+
+  * **Code:** 400 Bad Request <br />
+    **Content:**
+    ```json
+    {
+        "message": "Title is required"
+    }
+    ```
+
+**Show Banner**
+---
+    Return json data about Banner.
+
+* **URL**
+
+    `/banners/`
+
+* **Method:**
+
+    `GET`
+
+* **Header:**
+
+    `access_token:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsImlhdCI6MTYwNzQ4Nzk5OX0.lv-MkL9Fr8E74bgvvmtGkIUFzuyNa4jBtWAQ-UBKoJY`
+
+* **URL Params**
+
+    None
+
+* **Data Params**
+
+    None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+    ```json
+    {
+        "banners": 
+        [
+            {
+                "id": 1,
+                "title": "Tokoku",
+                "status": "active",
+                "image_url": "https://d26bwjyd9l0e3m.cloudfront.net/wp-content/uploads/2019/10/ecommerce.jpg",
+                "createdAt": "2020-12-12T09:29:29.519Z",
+                "updatedAt": "2020-12-12T09:29:29.519Z"
+            },
+            {
+                "id": 2,
+                "title": "TokoSaja",
+                "status": "active",
+                "image_url": "https://d26bwjyd9l0e3m.cloudfront.net/wp-content/uploads/2019/10/ecommerce.jpg",
+                "createdAt": "2020-12-12T09:30:29.318Z",
+                "updatedAt": "2020-12-12T09:30:29.318Z"
+            }
+        ]
+    }
+    ```
+
+* **Error Response:**
+
+  * **Code:** 401 Unauthorized <br />
+    **Content:**
+    ```json
+    {
+        "message": "Please Login First"
+    }
+    ```
+
+**Find by Id Banner**
+---
+    Show banner by selected id.
+
+* **URL**
+
+    `/banners/:id`
+
+* **Method:**
+
+    `GET`
+
+* **Header:**
+
+    `access_token:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsImlhdCI6MTYwNzQ4Nzk5OX0.lv-MkL9Fr8E74bgvvmtGkIUFzuyNa4jBtWAQ-UBKoJY`
+
+* **URL Params**
+
+    **Required:**
+
+    `id=[integer]`
+
+* **Data Params**
+
+    None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+    ```json
+    {
+        "banner": {
+            "id": 2,
+            "title": "TokoSaja",
+            "status": "active",
+            "image_url": "https://d26bwjyd9l0e3m.cloudfront.net/wp-content/uploads/2019/10/ecommerce.jpg",
+            "createdAt": "2020-12-12T09:30:29.318Z",
+            "updatedAt": "2020-12-12T09:30:29.318Z"
+        }
+    }
+    ```
+
+* **Error Response:**
+
+  * **Code:** 401 Unauthorized <br />
+    **Content:**
+    ```json
+    {
+        "message": "Please Login First"
+    }
+    ```
+
+
+**Update Banner**
+---
+    Update banner.
+
+* **URL**
+
+    `/banners/:id`
+
+* **Method:**
+
+    `PUT`
+
+* **Header:**
+
+    `access_token:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsImlhdCI6MTYwNzQ4Nzk5OX0.lv-MkL9Fr8E74bgvvmtGkIUFzuyNa4jBtWAQ-UBKoJY`
+
+* **URL Params**
+
+    **Required:**
+
+    `id=[integer]`
+
+* **Data Params**
+
+    **Required:**
+
+    `title=[string]` <br />
+    `status=[string]` <br />
+    `image_url=[string]` <br />
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+    ```json
+    {
+        "id": 2,
+        "title": "TokoX",
+        "status": "active",
+        "image_url": "https://d26bwjyd9l0e3m.cloudfront.net/wp-content/uploads/2019/10/ecommerce.jpg",
+        "createdAt": "2020-12-12T09:30:29.318Z",
+        "updatedAt": "2020-12-12T09:32:45.962Z"
+    }
+    ```
+
+* **Error Response:**
+
+  * **Code:** 401 Unauthorized <br />
+    **Content:**
+    ```json
+    {
+        "message": "Please Login First"
+    }
+    ```
+
+    OR
+
+  * **Code:** 401 Unauthorized <br />
+    **Content:**
+    ```json
+    {
+        "message": "You are not authorized"
+    }
+    ```
+    OR
+
+  * **Code:** 400 Bad Request <br />
+    **Content:**
+    ```json
+    {
+        "message": "Title is required"
+    }
+    ```
+
+**Delete Banner**
+---
+    Delete banner.
+
+* **URL**
+
+    `/banners/:id`
+
+* **Method:**
+
+    `DELETE`
+
+* **Header:**
+
+    `access_token:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsImlhdCI6MTYwNzQ4Nzk5OX0.lv-MkL9Fr8E74bgvvmtGkIUFzuyNa4jBtWAQ-UBKoJY`
+
+* **URL Params**
+
+    **Required:**
+
+    `id=[integer]`
+
+* **Data Params**
+
+    None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+    ```json
+    {
+        "message": "Banner deleted successfuly"
     }
     ```
 
