@@ -9,7 +9,7 @@ route.use('/', authentication);
 
 route.use('/:id', authorization);
 route.get('/', Controller.getProducts);
-route.post('/', Controller.add);
+route.post('/', authorization, Controller.add);
 route.put('/:id', Controller.editProduct);
 route.delete('/:id', Controller.remove);
 module.exports = route;

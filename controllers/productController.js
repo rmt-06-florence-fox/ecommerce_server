@@ -47,7 +47,6 @@ class Controller {
 
     static async editProduct(req, res, next){
         const editId = req.params.id
-        console.log(editId);
         const editProduct = {
             name: req.body.name,
             image_url: req.body.image_url,
@@ -64,7 +63,7 @@ class Controller {
                 res.status(200).json(editedProduct[1][0]);
             }
         } catch(error) {
-            console.log(error);
+            console.log(error.status);
             let err;
             if (error.status === 404){
                 err = {
@@ -74,7 +73,7 @@ class Controller {
                 }
             } else if(error.errors.length){
                 err = {
-                    status: error.status,
+                    status: 400,
                     message: 'Validation Error',
                     errorValidation: error.errors,
                     errorFrom: '>>>>PUT Product<<<<'
@@ -92,6 +91,7 @@ class Controller {
 
     static async remove(req, res, next){
         const deleteId = req.params.id;
+        console.log(deleteId, 'KESINI GAK SIH!!')
         try {
             const deletedProduct = await Product.destroy({where: {id: deleteId}});
             if(deletedProduct){

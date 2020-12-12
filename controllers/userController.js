@@ -2,12 +2,11 @@ const {User} = require('../models');
 const {checkPassword} = require('../helpers/bcrypt');
 const {generateToken} = require('../helpers/jswebtoken');
 class Controller{
-    static async login(req, res, next){
+    static async login(req, res, next){1
         const userLogin = {
             email: req.body.email,
             password: req.body.password
         }
-        console.log(userLogin);
         try {
             const userLoggedIn = await User.findOne({where: {email: userLogin.email}});
             if(userLoggedIn && checkPassword(userLogin.password, userLoggedIn.password)){

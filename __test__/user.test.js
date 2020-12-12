@@ -7,14 +7,16 @@ const {
 
 const loginUrl = '/login'
 
-const adminSampleDB = {
+let adminSampleDB = {
     email: "adminSample@mail.com",
     password: '1234',
     role: 'admin'
 }
-let adminSampleInput;
+
+let adminSampleInput = {};
 
 beforeAll((done)=>{
+  console.log('Lalala');
     User.create(adminSampleDB)
     .then((data)=>{
         adminSampleInput = {
