@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         notNull: {
           args: true,
-          msg: "banner title is required "
+          msg: "banner title is required"
         }
       }
     },
