@@ -30,37 +30,50 @@ class ProductController {
 
     static addStock(req, res, next) {
         const newStock = +req.body.stock
-        Product.findOne({
-            where: {
-                id: req.params.id
-            }
-        })
-        .then(data => {
-            if (data) {
-                const updatedStock = {
-                    stock : data.stock + newStock
-                }
-                return Product.update(updatedStock, {
-                    where: {
-                        id: req.params.id
-                    },
-                    returning: true
-                })
-            } else {
-                next({
-                    status: 404,
-                    message: 'Product not found!'
-                })
-            }
-        })
-        .then(data => {
-            res.status(200).json({
-                data: data[1][0]
+        
+        if (!newStock) {
+            next({
+                status: 400,
+                message: 'Stock cannot be empty!'
             })
-        })
-        .catch(err => {
-            next(err)
-        })
+        } else if (newStock < 0) {
+            next({
+                status: 400,
+                message: 'Stock cannot be negative!'
+            })
+        } else {
+            Product.findOne({
+                where: {
+                    id: req.params.id
+                }
+            })
+            .then(data => {
+                if (data) {
+                    const updatedStock = {
+                        stock : data.stock + newStock
+                    }
+                    return Product.update(updatedStock, {
+                        where: {
+                            id: req.params.id
+                        },
+                        returning: true
+                    })
+                } else {
+                    next({
+                        status: 404,
+                        message: 'Product not found!'
+                    })
+                }
+            })
+            .then(data => {
+                res.status(200).json({
+                    data: data[1][0]
+                })
+            })
+            .catch(err => {
+                next(err)
+            })
+        }
     }
 
     static getProductById(req, res, next) {
@@ -128,15 +141,14 @@ class ProductController {
             }
         })
         .then(data => {
-            console.log(data);
             if (data) {
                 return Product.destroy({
                     where: {
-                        id: data.id
+                        id: req.params.id
                     }
                 })
             } else {
-                next({
+                throw next({
                     status: 404,
                     message: 'Product not found!'
                 })
