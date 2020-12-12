@@ -10,7 +10,6 @@ module.exports = async (req, res, next) => {
       }
     } else {
       const data = verifyToken(access_token)
-      // kasih kondisi cek data 
       if (data) {
         req.signedIn = {
           id: data.id,
