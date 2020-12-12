@@ -16,6 +16,16 @@ class productController {
       next(error)
     }
   }
+  static async getById(req, res, next) {
+    const id = +req.params.id
+    try {
+      const data = await Product.findByPk(id)
+      res.status(200).json(data)
+    } catch (error) {
+      next(error)
+    }
+  }
+
   static async get(req, res, next) {
     try {
       const data = await Product.findAll()
