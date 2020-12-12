@@ -26,12 +26,21 @@ class ProductController {
             .catch(err => {
                 next(err)
             })
-
-
-
-        
   }
 
+ static async getDatabyId (req,res,next){
+   const id = +req.params.id
+
+    try{
+      const product = await Product.findAll({ where: {id:id} })
+      console.log(product)
+      res.status(200).json(product)
+    }
+    catch(error) {
+      console.log(error)
+      next(error)
+    }
+  }
   static update(req,res,next){
     const {name,image_url,price,stock,category} = req.body
      
@@ -40,6 +49,7 @@ class ProductController {
             res.status(200).json(data)
         })
         .catch(err => {
+          console.log(err)
             return next(err)
         })
   }

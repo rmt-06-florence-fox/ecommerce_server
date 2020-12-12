@@ -9,6 +9,7 @@ router.get('/products', ProductController.showAll)
 router.use(authentication)
 router.use(authorisation)
 router.post('/products', ProductController.add)
+router.get('/products/:id', ProductController.getDatabyId)
 router.put('/products/:id', ProductController.update)
 router.delete('/products/:id', ProductController.delete)
 
