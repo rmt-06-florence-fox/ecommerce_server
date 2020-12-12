@@ -1,8 +1,10 @@
-const { Product } = require('../models/index')
+const { Product, Category } = require('../models/index')
 
 class ProductController{
     static listProducts(req, res, next){
-        Product.findAll()
+        Product.findAll({
+            include: Category
+        })
         .then(data=>{
             res.status(200).json({data: data})
         })
@@ -55,7 +57,9 @@ class ProductController{
     }
     static filterId(req, res, next){
         const id = req.params.id
-        Product.findByPk(id)
+        Product.findByPk(id, {
+            include: Category
+        })
         .then(data=>{
             if(!data){
                 throw{
