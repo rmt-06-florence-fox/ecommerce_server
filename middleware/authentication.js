@@ -13,11 +13,10 @@ module.exports = async (req, res, next) => {
             req.userLoggedIn = decode
             let data = await User.findOne({
                 where: {
-                    id: decode.id
+                    email: req.userLoggedIn.email
                 }
             })
-            if(data){   
-                req.userOrganization = data.OrganizationId
+            if(data){
                 next()
             } else {
                 throw({

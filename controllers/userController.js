@@ -29,10 +29,8 @@ class UserController {
                     message: `Invalid Account`
                 })
             } else if(compare(req.body.password, data.password)){
-                    const access_token = generateToken({id: data.id, email: data.email})
+                    const access_token = generateToken({id: data.id, email: data.email, role: data.role})
                     res.status(200).json({
-                        id: data.id,
-                        email: data.email,
                         access_token
                     })
             } else {

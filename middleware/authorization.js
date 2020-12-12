@@ -1,29 +1,24 @@
-const {Task} = require('../models/index')
-
 module.exports = async (req, res, next) => {
     try {
-        const data = await Task.findOne({
-            where: {
-                id: req.params.id
-            }
-        })
-        if(!data){
-            throw({
-                status: 404,
-                message: `error not found`
-            })
-        }
-        if(data.UserId == req.userLoggedIn.id){
-            next()
-        } else {
-            console.log(`masuk sini kah?`)
+        console.log(req.userLoggedIn)
+        // console.log('disini kan?')
+        let role = req.userLoggedIn.role
+        if(!role){
             throw({
                 status: 403,
-                message: 'you are not authorized'
+                message: `you are not authorized`
             })
+        } else {
+            if(role == 'admin'){
+                next()
+            } else {
+                throw({
+                    status: 403,
+                    message: `you are not authorized`
+                })
+            }
         }
     } catch (err) {
         next(err)
-    }
-   
+    }  
 }
