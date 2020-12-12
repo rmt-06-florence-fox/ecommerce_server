@@ -7,12 +7,10 @@ module.exports = async (req, res, next) => {
         } else {
             throw {
                 status : 401,
-                msg : "You are not authorize Edited the Product"
+                message : "You are not authorize Edited the Product"
             }
         }
-    } catch (err) {
-        res.status(err.status).json ({
-            message : err.message
-        })
+    } catch (error) {
+        next (error)
     }
 }

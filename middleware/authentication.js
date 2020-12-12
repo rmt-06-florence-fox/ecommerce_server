@@ -7,7 +7,7 @@ module.exports = async (req, res, next) => {
         if (!access_token) {
             throw {
                 status : 401,
-                msg : "Please Login First"
+                message : "Please Login First"
             }
         } else {
             const decoded = verifyToken(access_token)
@@ -22,14 +22,12 @@ module.exports = async (req, res, next) => {
             } else {
                 throw {
                     status : 404,
-                        msg : "Please Register First"
+                        message : "Please Register First"
                     }
                 }
             }
     } catch (error) {
-        res.status(err.status).json ({
-            message : err.message
-        })
+        next (error)
     }
     
 }

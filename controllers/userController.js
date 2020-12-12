@@ -27,10 +27,8 @@ class UserController {
                     }
                 }
             }
-        } catch (err) {
-            res.status(err.status).json ({
-                message : err.message
-            })
+        } catch (error) {
+            next (error)
         }
     } 
 }

@@ -1,32 +1,28 @@
 const { Product } = require ("../models")
 
 class ProductController {
-    static async createProduct (req, res) {
+    static async createProduct (req, res, next) {
         try {
             let productAttributes = {
                 name : req.body.name,
-                price : req.body.price,
                 image_url : req.body.image_url,
+                price : req.body.price,
                 stock : req.body.stock,
-                UserId : req.dataUser
+                UserId : req.dataUser.id
             }
             const newProduct = await Product.create(productAttributes)
             res.status(201).json(newProduct)
-        } catch (err) {
-            res.status(err.status).json ({
-                message : err.message
-            })
+        } catch (error) {
+                next (error)
         }
     } 
 
-    static async readProduct (req, res) {
+    static async readProduct (req, res, next) {
         try {
             const productList = await Product.findAll()
             res.status(200).json(productList)
-        } catch (err) {
-            res.status(err.status).json ({
-                message : err.message
-            })
+        } catch (error) {
+            next (error)
         }
     }
 
@@ -42,9 +38,9 @@ class ProductController {
     //     }
     // }
 
-    static async updateProduct (req, res) {
+    static async updateProduct (req, res, next) {
         try {
-            let id = +req.params.id
+            let id = req.params.id
             let productAttributes = {
                 name : req.body.name,
                 price : req.body.price,
@@ -56,22 +52,21 @@ class ProductController {
                 where : {id},
                 returning: true
             })
-            if (!updateProduct) {
+            console.log (updateProduct, "UPDATE PRODUCT ===========")
+            if (!updateProduct[1][0]) {
                 throw {
                     status : 404,
-                    msg : "Product Not Found on your list"
+                    message : "Product Not Found on your list"
                 }
             } else {
                 res.status(200).json(updateProduct[1][0])
             }
-        } catch (err) {
-            res.status(err.status).json ({
-                message : err.message
-            })
+        } catch (error) {
+            next (error)
         }
     }
 
-    static async deleteProduct (req, res) {
+    static async deleteProduct (req, res, next) {
         try {
             let id = req.params.id
             const result = await Product.destroy({
@@ -87,13 +82,10 @@ class ProductController {
                     message : `Product with id ${id} Success to Delete`
                 })
             }
-        } catch (err) {
-            res.status(err.status).json ({
-                message : err.message
-            })
+        } catch (error) {
+            next (error)
         }
     }
-
 }
 
 module.exports = ProductController
