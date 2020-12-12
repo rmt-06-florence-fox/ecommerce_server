@@ -15,8 +15,8 @@ app.use(express.urlencoded({extended: true}));
 app.use('/', routers)
 app.use(errorHandler)
 
-// app.listen(port, () => {
-//     console.log(`connected http://localhost:${port}`)
-// })
+app.listen(port, () => {
+    console.log(`connected http://localhost:${port}`)
+})
 
 module.exports = app
