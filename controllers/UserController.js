@@ -37,7 +37,38 @@ class UserController {
 
       let registered = await User.findOne({
         where: {
-          email: payload.email
+          email: payload.email,
+          role: 'Admin'
+        }
+      })
+      if (!registered) {
+        next({name: 'INVALID_EMAIL_PASS'})
+      } else {
+        let checkPassword = await bcrypt.compareSync(payload.password, registered.password);
+        if (!checkPassword) {
+          next({name: 'INVALID_EMAIL_PASS'})
+        } else {
+          let payloadToken = {id: registered.id, email: registered.email}
+          const access_token = generateToken(payloadToken);
+          res.status(200).json({access_token})
+        }
+      }
+    }
+    catch(err) {
+      next(err)
+    }
+  }
+
+  static async userLogin(req, res, next){
+    try {
+      const payload = {
+        email: req.body.email,
+        password: req.body.password,
+      }
+
+      let registered = await User.findOne({
+        where: {
+          email: payload.email,
         }
       })
       if (!registered) {

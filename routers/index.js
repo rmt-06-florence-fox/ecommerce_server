@@ -5,11 +5,12 @@ const UserController = require('../controllers/UserController');
 const ProductController = require('../controllers/ProductController');
 
 router.post('/register', UserController.register);
-router.post('/login', UserController.login);
-
-router.use(authentication);
+router.post('/admin/login', UserController.login);
+router.post('/user/login', UserController.userLogin)
 
 router.get('/products', ProductController.getAll);
+
+router.use(authentication);
 
 router.use(authorization);
 router.post('/products', ProductController.add);

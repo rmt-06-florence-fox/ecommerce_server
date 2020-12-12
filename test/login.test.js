@@ -10,7 +10,7 @@ describe('Login test for User', () => {
         password: '123456'
       }
       request(app)
-        .post('/login')
+        .post('/admin/login')
         .send(input)
         .then(response => {
           let { body, status } = response;
@@ -31,14 +31,12 @@ describe('Login test for User', () => {
         password: 'admin'
       }
       request(app)
-        .post('/login')
+        .post('/admin/login')
         .send(input)
         .then(response => {
           let { body,status } = response;
           expect(status).toBe(400);
-          expect(body).toEqual(
-            expect.stringContaining('Email or password is incorrect')
-            );
+          expect(body).toBe('Email or password is incorrect')
           done();
         })
         .catch(err => {
@@ -53,14 +51,32 @@ describe('Login test for User', () => {
         password: 'admin'
       }
       request(app)
-        .post('/login')
+        .post('/admin/login')
         .send(input)
         .then(response => {
           let { body,status } = response;
           expect(status).toBe(400);
-          expect(body).toEqual(
-            expect.stringContaining('Email or password is incorrect')
-            );
+          expect(body).toBe('Email or password is incorrect')
+          done();
+        })
+        .catch(err => {
+          done(err);
+        })
+    })
+  });
+  describe('Error to login using an account with user role in database', () => {
+    it('Should return 400 and message error', (done) => {
+      let input = {
+        email: 'coba@mail.com',
+        password: 'admin'
+      }
+      request(app)
+        .post('/admin/login')
+        .send(input)
+        .then(response => {
+          let { body,status } = response;
+          expect(status).toBe(400);
+          expect(body).toBe('Email or password is incorrect')
           done();
         })
         .catch(err => {

@@ -160,8 +160,8 @@ describe('Create product test for E-Commerce CMS', () => {
   })
 })
 
-describe('Read product test for E-Commerce CMS', () => {
-  describe('Success updating product', () => {
+describe('Read products test for E-Commerce CMS', () => {
+  describe('Success read all products', () => {
     it('Should return 200 and JSON: name, image_url, price, stock', (done) => {
       request(app)
         .get('/products')
