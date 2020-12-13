@@ -33,10 +33,6 @@ module.exports = (sequelize, DataTypes) => {
       notEmpty: {
         args: true,
         msg: "Image cannot empty"
-      },
-      isAlpha: {
-        args: true,
-        msg: "You must input with alphabet"
       }
     }
     },

@@ -2,6 +2,31 @@ const { Product } = require("../models/index")
 
 class ControllerProduct {
 
+    static showAllData(req, res, next) {
+        Product.findAll()
+            .then(data => {
+                res.status(200).json({data: data})
+            })
+            .catch(err => {
+                next(err)
+            })
+    }
+
+    static getDataById(req, res, next) {
+        let id = req.params.id
+        Product.findOne({
+            where: {
+                id
+            }
+        })
+            .then(data => {
+                res.status(200).json(data)
+            })
+            .catch(err => {
+                next(err)
+            })
+    }
+
     static createDataProduct(req, res, next) {  
         let objProduct = {
             name: req.body.name,

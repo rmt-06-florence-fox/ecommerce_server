@@ -5,18 +5,19 @@ function authentication(req, res, next) {
     let acces_token = req.headers.acces_token
 
     try {
+        // console.log("masuk ga sih?")
         let decoded = verifyToken(acces_token)
-   
+        
         if(!decoded) {
             throw {
                 status: 401,
                 message: { error: "You must have account" }
             }
         }else {
-            let email = decoded.data.email
-            let id = decoded.data.id
-            let role = decoded.data.role
-            console.log(email)
+            let email = decoded.email
+            let id = decoded.id
+            let role = decoded.role
+            // console.log(email)
    
             User.findOne({
                 where: {
@@ -25,7 +26,7 @@ function authentication(req, res, next) {
                 }
             })
                 .then(data => {
-                    
+                    // console.log("ceeeeeek")
                     if(data.role === "admin") {
                         next()
                     }else {
@@ -41,6 +42,7 @@ function authentication(req, res, next) {
         }
     } 
     catch(err) {
+        console.log('masuk catch')
         next(err)
     }
 }
