@@ -1,5 +1,4 @@
 var jwt = require('jsonwebtoken');
-require('dotenv').config() // jangan lupa nanti dihapus
 
 function createToken (value) {
     return jwt.sign(value, process.env.SECRET)
