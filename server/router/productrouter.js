@@ -16,6 +16,8 @@ router.get('/products/:id', ProductController.getDatabyId)
 router.put('/products/:id', ProductController.update)
 router.delete('/products/:id', ProductController.delete)
 router.delete('/banners/:id', BannerController.deleteBanner)
+router.get('/banners/:id', BannerController.getDatabyId)
+router.put('/banners/:id', BannerController.update)
 
 
 module.exports = router

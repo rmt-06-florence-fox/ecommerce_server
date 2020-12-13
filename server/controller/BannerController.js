@@ -44,6 +44,31 @@ class BannerController {
       next(err)
     }
   }
+  static async getDatabyId (req,res,next){
+    const id = +req.params.id
+ 
+     try{
+       const banner = await Banner.findAll({ where: {id:id} })
+       console.log(banner)
+       res.status(200).json(banner)
+     }
+     catch(error) {
+       console.log(error)
+       next(error)
+     }
+   }
+   static update(req,res,next){
+     const {title,status,image_url} = req.body
+      
+      const data = Banner.update({title,status,image_url}, {where: {id: req.params.id},returning: true})
+         .then(() => {
+             res.status(200).json(data)
+         })
+         .catch(err => {
+           console.log(err)
+             return next(err)
+         })
+   }
 
 } 
 
