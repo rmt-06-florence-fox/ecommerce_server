@@ -2,7 +2,18 @@ const { Product } = require("../models")
 const { User } = require("../models")
 
 class ProductController {
+    static showProduct(req,res,next){
+        Product.findAll()
+        .then(data => {
+            res.status(200).json(data)
+        })
+        .catch(error => {
+            next(error)
+        })
+    }
+
     static create(req,res,next){
+        console.log('masuk create')
         const obj = {
             name: req.body.name,
             imageUrl: req.body.imageUrl,
@@ -21,7 +32,7 @@ class ProductController {
                     return Product.create(obj)
                     .then(data => {
                         res.status(201).json({
-                            // id: data.id,
+                            id: data.id,
                             name: data.name,
                             imageUrl: data.imageUrl,
                             price: data.price,
@@ -37,7 +48,6 @@ class ProductController {
             }
         })
         .catch (error => {
-            console.log(error)
             next(error)
         })
     }
@@ -98,6 +108,7 @@ class ProductController {
                         message: "you aren't an admin"
                     }
                 } else {
+                    console.log(req.params.id , '<<<<<<< dari delete controller')
                     return Product.destroy({where: {id: req.params.id}})
                     .then(data2 => {
                         res.status(200).json({message: "Product deleted"})
@@ -111,7 +122,7 @@ class ProductController {
             }
         })
         .catch (error => {
-            console.log(error)
+            console.log(req, '<<<<<<<< masuk error langsung')
             next(error)
         })
     }

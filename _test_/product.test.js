@@ -42,7 +42,7 @@ describe("Create Product POST /product", () => {
                     return done(err)
                 }
                 expect(status).toBe(201)
-                // expect(body).toHaveProperty("id", 12)
+                expect(body).toHaveProperty("id", expect.any(Number))
                 expect(body).toHaveProperty("name", "sepatu")             
                 expect(body).toHaveProperty("price", 200000)
                 expect(body).toHaveProperty("stock", 50)
@@ -119,12 +119,13 @@ describe("error when Create Product", () => {
             stock: 0
         })
         .end((err,res) => {
+            const expected = ["name cannot be empty","image url cannot be empty"];
             const { body,status } = res
             if(err){
                 return done(err)
             }
             expect(status).toBe(400)
-            expect(body).toHaveProperty("message", ["name cannot be empty","image url cannot be empty"])             
+            expect(body.message).toEqual(expect.arrayContaining(expected))            
             done()
         })
     }) 

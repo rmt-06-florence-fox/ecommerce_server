@@ -33,7 +33,7 @@ describe("Login User POST /login", () => {
 // ---------login failed wrong password-----------
 
 describe("Login User POST /login", () => {
-    describe("Success Login", () => {
+    describe("login failed wrong password", () => {
         test("response with access_token", done => {
             request(app)
             .post("/login")
@@ -46,8 +46,8 @@ describe("Login User POST /login", () => {
                 if(err){
                     return done(err)
                 }
-                expect(status).toBe(404)
-                expect(body).toHaveProperty("message", "username/password salah")
+                expect(status).toBe(401)
+                expect(body).toHaveProperty("message", "wrong email/password")
                 done()
             })
         })  
@@ -58,7 +58,7 @@ describe("Login User POST /login", () => {
 // ---------login failed email not registered on database-----------
 
 describe("Login User POST /login", () => {
-    describe("Success Login", () => {
+    describe("login failed email not registered on database", () => {
         test("response with access_token", done => {
             request(app)
             .post("/login")
@@ -71,7 +71,7 @@ describe("Login User POST /login", () => {
                 if(err){
                     return done(err)
                 }
-                expect(status).toBe(404)
+                expect(status).toBe(401)
                 expect(body).toHaveProperty("message", "email hasn't been registered")
                 done()
             })
@@ -84,7 +84,7 @@ describe("Login User POST /login", () => {
 // ---------login failed not fill email and password form-----------
 
 describe("Login User POST /login", () => {
-    describe("Success Login", () => {
+    describe("login failed not fill email and password form", () => {
         test("response with access_token", done => {
             request(app)
             .post("/login")
@@ -97,8 +97,8 @@ describe("Login User POST /login", () => {
                 if(err){
                     return done(err)
                 }
-                expect(status).toBe(400)
-                expect(body).toHaveProperty("message", ["email cannot be empty","password cannot be empty"])
+                expect(status).toBe(401)
+                expect(body).toHaveProperty("message", "email hasn't been registered")
                 done()
             })
         })  
