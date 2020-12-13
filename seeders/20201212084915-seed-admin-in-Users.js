@@ -1,7 +1,8 @@
 'use strict';
-var bcrypt = require('bcryptjs');
+const bcryptjs = require('bcryptjs')
+const { hashSync } = bcryptjs 
 module.exports = {
-  up: (queryInterface, Sequelize) => {
+  up: async (queryInterface, Sequelize) => {
     /**
      * Add seed commands here.
      *
@@ -12,16 +13,22 @@ module.exports = {
      * }], {});
     */
     
-    var hash = bcrypt.hashSync("qwerty", 10);
-    let data = {
-     email: "admin@mail.com",
-     password: hash,
-     role: "admin",
-     createdAt: new Date(),
-     updatedAt: new Date()
-    }
+    
+    // let data = {
+    //  email: "admin@mail.com",
+    //  password: hashSync("qwerty", 10),
+    //  role: "admin",
+    //  createdAt: new Date(),
+    //  updatedAt: new Date()
+    // }
 
-    return queryInterface.bulkInsert('Users', data, {})
+    await queryInterface.bulkInsert('Users', [{
+      "email": 'admin@mail.com',
+      "role": 'admin',
+      "password": hashSync('qwertyuiop', 10),
+      "createdAt": new Date(),
+      "updatedAt": new Date()
+    }], {})
   },
 
   down: (queryInterface, Sequelize) => {
