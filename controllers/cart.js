@@ -32,7 +32,14 @@ class CartController{
           },
           returning: true
         })
-        res.status(200).json(updateCart)
+        // console.log(updateCart[1][0].quantity, theCart.id, 'ini');
+        if(updateCart[1][0].quantity <= 0){
+          const deleteCart = await Cart.destroy({ where: { id: theCart.id }})
+          console.log('masuk');
+          res.status(200).json({message: 'successfully delete a cart'})
+        }else{
+          res.status(200).json(updateCart)
+        }
       }
     } catch (error) {
       next(error)
