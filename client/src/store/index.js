@@ -8,7 +8,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     productData: [],
-    productById: [],
+    productById: {},
   },
   mutations: {
     setProductData(state, payload) {
@@ -51,8 +51,7 @@ export default new Vuex.Store({
           console.log(err);
         });
     },
-    fetchProductById(context, id) {
-      console.log(id, "from store");
+    fetchProductId(context, id) {
       axios({
         method: "GET",
         url: `/products/${id}`,
@@ -86,21 +85,18 @@ export default new Vuex.Store({
         });
     },
     editProduct(context, payload) {
+      console.log(payload);
       axios({
         method: "PUT",
         url: `/products/${payload.id}`,
-        data: {
-          name: payload.name,
-          image_url: payload.image_url,
-          price: payload.price,
-          stock: payload.stock,
-        },
+        data: payload,
         headers: {
           access_token: localStorage.getItem("access_token"),
         },
       })
         .then((response) => {
           console.log(response);
+          router.push("/landing-page");
         })
         .catch((err) => {
           console.log(err);
@@ -115,19 +111,14 @@ export default new Vuex.Store({
         },
       })
         .then((response) => {
-          console.log(response.data);
+          // context.dispatch("fetchProduct");
+          console.log(response);
         })
         .catch((err) => {
           console.log(err);
         });
     },
   },
-  getters: {
-    filterProduct: (state) => (search) => {
-      return state.productData.filter((element) => {
-        return element.name.match(search);
-      });
-    },
-  },
+  getters: {},
   modules: {},
 });

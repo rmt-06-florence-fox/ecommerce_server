@@ -8,7 +8,7 @@
         <div class="row">
           <div class="input-field col s12">
             <input
-              v-model="name"
+              v-model="productId.name"
               value=""
               id="create-name"
               type="text"
@@ -18,7 +18,7 @@
           </div>
           <div class="input-field col s12">
             <input
-              v-model="image_url"
+              v-model="productId.image_url"
               value=""
               id="create-image-url"
               type="text"
@@ -28,7 +28,7 @@
           </div>
           <div class="input-field col s12">
             <input
-              v-model="price"
+              v-model="productId.price"
               value=""
               id="create-price"
               type="number"
@@ -38,7 +38,7 @@
           </div>
           <div class="input-field col s12">
             <input
-              v-model="stock"
+              v-model="productId.stock"
               value=""
               id="create-stock"
               type="number"
@@ -63,25 +63,23 @@
 export default {
   props: ["id"],
   data() {
-    return {
-      name: this.$store.state.productById.name,
-      image_url: this.$store.state.productById.image_url,
-      price: this.$store.state.productById.price,
-      stock: this.$store.state.productById.stock,
-    };
+    return {};
   },
   methods: {
     edit() {
-      const payload = {
-        id: this.id,
-        name: this.name,
-        image_url: this.image_url,
-        price: this.price,
-        stock: this.stock,
-      };
-      console.log(payload);
-      this.$store.dispatch("editProduct", payload);
-      this.$router.push("/landing-page");
+      this.$store.dispatch("editProduct", this.productId);
+    },
+    fetchProductId() {
+      this.$store.dispatch("fetchProductId", this.id);
+    },
+  },
+
+  created() {
+    this.fetchProductId();
+  },
+  computed: {
+    productId() {
+      return this.$store.state.productById;
     },
   },
 };
