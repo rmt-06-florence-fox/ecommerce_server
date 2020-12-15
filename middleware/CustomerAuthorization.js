@@ -1,13 +1,14 @@
+const {Cart} = require('../models/index')
 module.exports = async (req, res, next) => {
     try {
         let role = req.userLoggedIn.role
-        if(!role){
-            throw({
-                status: 403,
-                message: `you are not authorized`
+        if(role == 'customer'){
+            let data = Cart.findOne({
+                where:{
+                    UserId: req.userLoggedIn.id
+                }
             })
-        } else {
-            if(role == 'admin'){
+            if(data){
                 next()
             } else {
                 throw({
@@ -15,6 +16,11 @@ module.exports = async (req, res, next) => {
                     message: `you are not authorized`
                 })
             }
+        } else {
+            throw({
+                status: 403,
+                message: `you are not authorized`
+            })
         }
     } catch (err) {
         next(err)
