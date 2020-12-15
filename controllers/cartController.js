@@ -60,6 +60,23 @@ class CartController {
     }
   }
   
+  static async checkout (req, res, next) {
+    try{
+      const findData = await Cart.findAll({ where: { UserId: req.loginUser.id }, include: [Product]})
+      const arrPromises = []
+      findData.forEach(e => {
+        let payloadCart = { status: true }
+        let payloadProduct = { stock: e.Product.stock - e.quantity }
+        arrPromises.push(Cart.update(payloadCart, { where: { id: e.id }, returning: true }))
+        arrPromises.push(Product.update(payloadProduct, { where: { id: e.ProductId } }))
+      })
+      const result = await Promise.all(arrPromises)
+      res.status(200).json(result)
+    } catch(err) {
+      next(err)
+    }
+  }
+
   static async deleteCart (req, res, next) {
     try {
       const result = await Cart.destroy({ where: { id: req.params.id }})
