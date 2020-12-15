@@ -18,8 +18,7 @@ module.exports = (sequelize, DataTypes) => {
   Cart.init({
     UserId: DataTypes.INTEGER,
     ProductId: DataTypes.INTEGER,
-    quantity: DataTypes.INTEGER,
-    totalPrice: DataTypes.INTEGER
+    quantity: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Cart',

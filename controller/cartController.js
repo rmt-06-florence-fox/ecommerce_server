@@ -19,8 +19,7 @@ class CartController{
                 const obj = {
                     UserId: +req.loginUser.id,
                     ProductId: +req.body.ProductId,
-                    quantity: quantity,
-                    totalPrice: quantity * product.price
+                    quantity: quantity
                 }
                 const newCart = await Cart.update(obj, {
                     where: {
@@ -42,8 +41,7 @@ class CartController{
                 const obj = {
                     UserId: +req.loginUser.id,
                     ProductId: +req.body.ProductId,
-                    quantity: 1,
-                    totalPrice: 1 * product.price
+                    quantity: 1
                 }
                 const newCart = await Cart.create(obj)
                 res.status(201).json(newCart)

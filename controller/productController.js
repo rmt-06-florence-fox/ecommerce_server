@@ -51,7 +51,7 @@ class ProductController{
                 })
             }
         })
-        .then(value => {
+        .then(value => { 
             res.status(201).json(value)
         })
         .catch(error => {
