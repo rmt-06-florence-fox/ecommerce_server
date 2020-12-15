@@ -52,7 +52,8 @@ class CartController{
       let totalPrice = 0
       const carts = await Cart.findAll({ 
         where: {
-          UserId: req.loggedInUser.id
+          UserId: req.loggedInUser.id,
+          status: false
         }, 
         include: [ Product ]
       })
