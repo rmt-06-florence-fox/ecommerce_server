@@ -50,9 +50,9 @@ function authenticateAdmin(req, res, next){
           next(err)
         })
     }
-  } catch (error) {
+  } catch (err) {
       console.log(err.message + " << ini dari authentication ")
-      next(error)
+      next(err)
   }
 }
 

@@ -111,7 +111,12 @@ class CustomerController {
         }
       })
       .then(cart => {
-        res.status(200).json({message: "Item succesfully added to cart"})
+        if (cart.id) {
+          res.status(200).json(cart)
+        }
+        else {
+          res.status(200).json(cart[0][0][0])
+        }
       })
       .catch(err => {
         console.log(err + " <<< ini dari cart add")
@@ -141,7 +146,8 @@ class CustomerController {
               where: {
                 ProductId: req.params.ProductId,
                 UserId: req.loggedIn.id
-              }
+              },
+              returning: true
             })
           }
         }
@@ -152,11 +158,36 @@ class CustomerController {
           }
         }
       })
-      .then(() => {
-        res.status(200).json({message: "Successfully remove item from cart"})
+      .then(cart => {
+        if (typeof (cart) !== "number") {
+          if (cart.id){
+            res.status(200).json(cart)
+          }
+          else { 
+            res.status(200).json(cart[0][0][0])
+          }
+        }
+        else {
+          res.status(200).json({message: "Successfully delete cart"})
+        }
       })
       .catch(err => {
         console.log(err.message)
+        next(err)
+      })
+  }
+
+  static getCart (req, res, next) {
+    Cart.findAll({
+      where: {
+        UserId: req.loggedIn.id
+      }
+    })
+      .then(carts => {
+        res.status(200).json(carts)
+      })
+      .catch(err => {
+        console.log(err + " <<< ini dari get cart")
         next(err)
       })
   }

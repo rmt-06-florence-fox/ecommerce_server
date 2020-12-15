@@ -8,7 +8,7 @@ router.post('/register', UserController.register)
 router.post('/login', UserController.login)
 router.use(authentication)
 router.use(authorization)
-// router.get('/carts') // ini route melihat shopping cart
+router.get('/carts', UserController.getCart) // ini route melihat shopping cart
 router.post('/carts/:ProductId', UserController.addItemtoCart) // ini route menambah item ke shopping cart / menambah quantity item
 router.patch('/carts/:ProductId', UserController.decreaseItemfromCart) // ini route mengurangi item pada shopping cart
 module.exports = router
