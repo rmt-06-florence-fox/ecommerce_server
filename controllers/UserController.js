@@ -69,6 +69,7 @@ class UserController {
       let registered = await User.findOne({
         where: {
           email: payload.email,
+          role: 'User'
         }
       })
       if (!registered) {

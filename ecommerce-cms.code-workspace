@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "..\\ecommerce_client_cms"
+		},
+		{
+			"path": "..\\ecommerce_client_customer"
 		}
 	],
 	"settings": {}
