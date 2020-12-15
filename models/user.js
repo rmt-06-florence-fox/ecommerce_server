@@ -12,10 +12,22 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.hasMany(models.Product, {foreignKey: "UserId", sourceKey: "id"})
+      this.hasMany(models.Cart, {foreignKey: "UserId", sourceKey: "id"})
     }
   };
   User.init({
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: `name musn't be empty`
+        },
+        notNull: {
+          msg: `name musn't be null`
+        }
+      }
+    },
     email: {
       type: DataTypes.STRING,
       unique: true,

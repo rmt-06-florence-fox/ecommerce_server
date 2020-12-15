@@ -83,6 +83,7 @@ Response:
     "id": 74,
     "name": "Playstation 5",
     "image_url": "https://cdn-2.tstatic.net/jogja/foto/bank/images/playstation-5-ps5-dipasarkan-secara-online-saat-rilis-perdana.jpg",
+    "category": "game console",
     "price": 8000000,
     "stock": 20,
     "UserId": 231,
@@ -93,6 +94,7 @@ Response:
     "id": 75,
     "name": "Xbox Series x",
     "image_url": "https://www.techinn.com/f/13777/137776929/microsoft-xbox-series-x-1tb.jpg",
+    "category": "game console",
     "price": 10000000,
     "stock": 30,
     "UserId": 231,
@@ -145,6 +147,7 @@ Request:
 {
     "name": "string",
     "image_url": "string",
+    "category": "string",
     "price": "integer",
     "stock": "integer"
 }
@@ -160,6 +163,7 @@ Response:
     "id": 74,
     "name": "Playstation 5",
     "image_url": "https://cdn-2.tstatic.net/jogja/foto/bank/images/playstation-5-ps5-dipasarkan-secara-online-saat-rilis-perdana.jpg",
+    "category": "game console",
     "price": 8000000,
     "stock": 20,
     "UserId": 231,
@@ -186,6 +190,7 @@ Response:
   "message": [
     "name musn't be empty",
     "image url musn't be empty",
+    "category musn't be empty",
     "price musn't be empty",
     "stock musn't be empty"
   ]
@@ -222,6 +227,7 @@ Response:
     "id": 74,
     "name": "Playstation 5",
     "image_url": "https://cdn-2.tstatic.net/jogja/foto/bank/images/playstation-5-ps5-dipasarkan-secara-online-saat-rilis-perdana.jpg",
+    "category": "game console",
     "price": 8000000,
     "stock": 20,
     "UserId": 231,
@@ -272,6 +278,7 @@ Request:
 {
    "name": "string",
    "image_url": "string",
+   "category": "string",
    "price": "integer",
    "stock": "integer"
 }
@@ -287,6 +294,7 @@ Response:
     "id": 74,
     "name": "Playstation millenium",
     "image_url": "https://cdn-2.tstatic.net/jogja/foto/bank/images/playstation-5-ps5-dipasarkan-secara-online-saat-rilis-perdana.jpg",
+    "category": "book",
     "price": 10000000,
     "stock": 20,
     "UserId": 231,

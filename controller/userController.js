@@ -4,7 +4,27 @@ const { makeToken } = require('../helper/jsonwebtoken')
 
 
 class UserController {
-  static async adminLogin(req,res,next){
+  static async register(req,res,next){
+    try {
+      const obj = {
+        name: req.body.name,
+        email : req.body.email,
+        role : 'customer',
+        password : req.body.password
+      }
+      let data = await User.create(obj)
+      const  objData = {
+        name: data.name,
+        email : data.email,
+        role : data.role
+      }
+      res.status(201).json(objData)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static async login(req,res,next){
     try {
       const obj = {
         email : req.body.email,

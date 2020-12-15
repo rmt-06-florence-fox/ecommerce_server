@@ -9,6 +9,7 @@ let idProduct
 
 beforeAll((done) => {
   queryInterface.bulkInsert('Users', [{
+    name: 'Admin1',
     email: 'adminAsique@mail.com',
     password: hash('admin132089'),
     role: 'admin',
@@ -16,6 +17,7 @@ beforeAll((done) => {
     updatedAt: new Date()
   },
   {
+    name: 'Admin1',
     email: 'adminTampan@mail.com',
     password: hash('admin24680'),
     role: 'admin',
@@ -59,6 +61,7 @@ describe("test product's CRUD section", () => {
         .send({
           name : 'Playstation 5',
           image_url : 'https://cdn-2.tstatic.net/jogja/foto/bank/images/playstation-5-ps5-dipasarkan-secara-online-saat-rilis-perdana.jpg',
+          category: 'game console',
           price : 8000000,
           stock : 20
         })
@@ -81,6 +84,7 @@ describe("test product's CRUD section", () => {
         .send({
           name : 'Xbox Series x',
           image_url : 'https://www.techinn.com/f/13777/137776929/microsoft-xbox-series-x-1tb.jpg',
+          category: 'game console',
           price : 10000000,
           stock : 30
         })
@@ -104,6 +108,7 @@ describe("test product's CRUD section", () => {
         .send({
           name : '',
           image_url : '',
+          category: '',
           price : '',
           stock : ''
         })
@@ -116,6 +121,7 @@ describe("test product's CRUD section", () => {
           expect(res.body).toHaveProperty('message', expect.arrayContaining([
             `name musn't be empty`,
             `image url musn't be empty`,
+            `category musn't be empty`,
             `price musn't be empty`,
             `stock musn't be empty`
           ]))
@@ -129,6 +135,7 @@ describe("test product's CRUD section", () => {
         .send({
           name : '',
           image_url : 'https://www.techinn.com/f/13777/137776929/microsoft-xbox-series-x-1tb.jpg',
+          category: 'game console',
           price : 10000000,
           stock : ''
         })
@@ -152,6 +159,7 @@ describe("test product's CRUD section", () => {
         .send({
           name : 'Playstation 5',
           image_url : 'https://cdn-2.tstatic.net/jogja/foto/bank/images/playstation-5-ps5-dipasarkan-secara-online-saat-rilis-perdana.jpg',
+          category: '',
           price : '',
           stock : ''
         })
@@ -176,6 +184,7 @@ describe("test product's CRUD section", () => {
         .send({
           name : 'Playstation 5',
           image_url : 'https://cdn-2.tstatic.net/jogja/foto/bank/images/playstation-5-ps5-dipasarkan-secara-online-saat-rilis-perdana.jpg',
+          category: 'game console',
           price : 8000000,
           stock : ''
         })
@@ -204,23 +213,6 @@ describe("test product's CRUD section", () => {
             return done(err)
           }
           // console.log(res.body);
-          expect(res.status).toBe(200)
-          expect(res.body[0]).toHaveProperty("id", res.body[0].id)
-          expect(res.body[0]).toHaveProperty("name" , 'Playstation 5')
-          expect(res.body[1]).toHaveProperty("id", res.body[1].id)
-          expect(res.body[1]).toHaveProperty("stock", 30)
-          done()
-        })
-      })
-    })
-    describe("test for read lists in products without access token", ()=> {
-      test("success read products test", (done) => {
-        request(app)
-        .get('/products')
-        .end((err, res) => {
-          if (err) {
-            return done(err)
-          }
           expect(res.status).toBe(200)
           expect(res.body[0]).toHaveProperty("id", res.body[0].id)
           expect(res.body[0]).toHaveProperty("name" , 'Playstation 5')
@@ -292,6 +284,7 @@ describe("test product's CRUD section", () => {
         .send({
           name : 'Playstation millenium',
           image_url : 'https://cdn-2.tstatic.net/jogja/foto/bank/images/playstation-5-ps5-dipasarkan-secara-online-saat-rilis-perdana.jpg',
+          category: 'book',
           price : 10000000,
           stock : 20
         })
@@ -303,6 +296,7 @@ describe("test product's CRUD section", () => {
           expect(res.status).toBe(200)
           expect(res.body).toHaveProperty("id", res.body.id)
           expect(res.body).toHaveProperty("name" , 'Playstation millenium')
+          expect(res.body).toHaveProperty("category" , 'book')
           expect(res.body).toHaveProperty("price", 10000000)
           done()
         })
@@ -315,6 +309,7 @@ describe("test product's CRUD section", () => {
         .send({
           name : 'Playstation millenium',
           image_url : 'https://cdn-2.tstatic.net/jogja/foto/bank/images/playstation-5-ps5-dipasarkan-secara-online-saat-rilis-perdana.jpg',
+          category: 'game console',
           price : 10000000,
           stock : 20
         })
@@ -337,6 +332,7 @@ describe("test product's CRUD section", () => {
         .send({
           name : '',
           image_url : '',
+          category: '',
           price : '',
           stock : ''
         })
@@ -349,6 +345,7 @@ describe("test product's CRUD section", () => {
           expect(res.body).toHaveProperty('message', expect.arrayContaining([
             `name musn't be empty`,
             `image url musn't be empty`,
+            `category musn't be empty`,
             `price musn't be empty`,
             `stock musn't be empty`
           ]))
@@ -363,6 +360,7 @@ describe("test product's CRUD section", () => {
           .send({
             name : 'Playstation millenium',
             image_url : 'https://cdn-2.tstatic.net/jogja/foto/bank/images/playstation-5-ps5-dipasarkan-secara-online-saat-rilis-perdana.jpg',
+            category: 'game console',
             price : '',
             stock : ''
           })

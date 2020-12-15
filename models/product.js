@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.belongsTo(models.User, {foreignKey: "UserId", targetKey: "id"})
+      this.hasMany(models.Cart, {foreignKey: "ProductId", sourceKey: "id"})
     }
   };
   Product.init({
@@ -36,6 +36,18 @@ module.exports = (sequelize, DataTypes) => {
         },
         notNull: {
           msg: `image url musn't be null`
+        }
+      }
+    },
+    category: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: `category musn't be empty`
+        },
+        notNull: {
+          msg: `category musn't be null`
         }
       }
     },

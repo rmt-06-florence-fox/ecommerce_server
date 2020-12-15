@@ -12,6 +12,7 @@ module.exports = {
      * }], {});
     */
    await queryInterface.bulkInsert('Users', [{
+      name: 'Admin1',
       email: 'adminAsique@mail.com',
       password: hash('admin132089'),
       role: 'admin',
@@ -19,6 +20,7 @@ module.exports = {
       updatedAt: new Date()
     },
     {
+      name: 'Admin2',
       email: 'adminTampan@mail.com',
       password: hash('admin24680'),
       role: 'admin',

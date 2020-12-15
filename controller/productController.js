@@ -6,6 +6,7 @@ class ProductController {
       let obj = {
         name: req.body.name,
         image_url: req.body.image_url,
+        category: req.body.category,
         price: req.body.price,
         stock: req.body.stock,
         UserId: req.UserLogin.id
@@ -14,7 +15,7 @@ class ProductController {
       const data = await Product.create(obj)
       res.status(201).json(data)
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       next(error)
     }
   }
@@ -58,6 +59,7 @@ class ProductController {
       let obj = {
         name: req.body.name,
         image_url: req.body.image_url,
+        category: req.body.category,
         price: req.body.price,
         stock: req.body.stock,
         UserId: req.UserLogin.id
