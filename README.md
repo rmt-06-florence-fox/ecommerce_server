@@ -7,6 +7,10 @@ weird admin cms
 admin login
 email : tio@mail.com
 password : tiotio
+
+env
+SALT= 8
+SECRET=grootnyasiapa
 ```
 
 ## Restful endpoints

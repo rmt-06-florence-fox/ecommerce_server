@@ -45,6 +45,28 @@ class CartController{
       next(error)
     }
   }
+
+  static async fetch (req, res, next){
+    try {
+      // console.log(req.loggedInUser.id, 'mashook');
+      let totalPrice = 0
+      const carts = await Cart.findAll({ 
+        where: {
+          UserId: req.loggedInUser.id
+        }, 
+        include: [ Product ]
+      })
+
+      carts.forEach(e => {
+        totalPrice += e.quantity * e.Product.price 
+      })
+      // console.log(totalPrice);
+      // carts.totalPrice = totalPrice
+      res.status(200).json({totalPrice, carts})
+    } catch (error) {
+      next(error)
+    }
+  }
 }
 
 module.exports = CartController
