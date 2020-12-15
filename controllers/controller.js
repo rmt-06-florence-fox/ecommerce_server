@@ -1,7 +1,7 @@
 const { User, Product } = require('../models')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const axios = require('axios')
+// const axios = require('axios')
 
 class Controller {
 
@@ -25,7 +25,7 @@ class Controller {
             } else {
                 // console.log(data, '<<<<<<<<<<<<<<<<<<<<');
                 const access_token = jwt.sign({ id: data.id, email: data.email, role: data.role }, 'hiha');
-                if(req.body.password, data.password) {
+                if(bcrypt.compareSync(req.body.password, data.password)) {
                     res.status(200).json({access_token})
                 } else {
                     res.status(401).json('Can not find your account')
