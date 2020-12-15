@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const Helper = require('../helpers/helper')
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -45,6 +46,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     role: DataTypes.STRING
   }, {
+    hooks: {
+      beforeCreate(instance, options) {
+        instance.password = Helper.generatePassword(instance.password)
+        if(!instance.role) instance.role = 'customer'
+      }
+    },
     sequelize,
     modelName: 'User',
   });

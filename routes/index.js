@@ -1,9 +1,10 @@
 const router = require('express').Router()
 const UserController = require('../controllers/userController')
 const productRouter = require('./productRouter')
+const customerRouter = require('./customerRouter')
 
 router.post('/admin/login', UserController.loginAdmin)  
-//--- ditambah login cust, regist cust
+router.use('/customer', customerRouter)
 router.use('/products', productRouter)
 
 module.exports = router
