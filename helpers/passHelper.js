@@ -3,8 +3,9 @@ const bcrypt = require('bcryptjs')
 class PassHelper{
 
   static passGenerate(plain){
-    const salt = bcrypt.genSaltSync(process.env.SALT)
-
+    console.log('sampe passgen', process.env.SALT);
+    const salt = bcrypt.genSaltSync(+process.env.SALT)
+    console.log(salt);
     return bcrypt.hashSync(plain,salt)
   }
 

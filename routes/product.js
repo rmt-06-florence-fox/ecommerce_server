@@ -4,9 +4,9 @@ const { ProductController } = require('../controllers')
 const Authentication = require('../middlewares/authentication')
 const Authorization = require('../middlewares/authorization')
 
-router.use(Authentication)
-
 router.get('/', ProductController.read)
+
+router.use(Authentication)
 
 router.use(Authorization)
 router.post('/', ProductController.create)

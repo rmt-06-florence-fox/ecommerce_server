@@ -280,3 +280,82 @@ _Response(401)_
   "message": "you are not an admin"
 }
 ```
+### GET/register
+>register
+
+_Request Header_
+```
+none
+```
+_Request Body_
+```
+email : tio@mail.com
+password : tiotio
+```
+_Response(200)_
+```
+{
+  {
+    "id": 3,
+    "email": "tio2@mail.com",
+    "password": "$2a$08$OXugZS7CtcODtT5Nd8/lbe1e5dJbQr4aBkykkJ0JdCDbofyIym.Yi",
+    "role": "user",
+    "updatedAt": "2020-12-15T03:43:40.823Z",
+    "createdAt": "2020-12-15T03:43:40.823Z"
+    }
+}
+```
+_Response(400)_
+```
+{
+  {
+    "messages": [
+        "email must be unique",
+        "must be between 6 to 20 characters"
+    ]
+  }
+}
+```
+
+### GET/logincustomer
+>login for customer
+
+_Request Header_
+```
+none
+```
+_Request Body_
+```
+email : tio2@mail.com
+password : tiotio
+```
+_Response(200)_
+```
+{
+  access_token : "token string"
+}
+```
+_Response(404)_
+```
+{
+  message : 'email is not registered'
+}
+```
+_Response(400)_
+```
+{
+  message : "invalid"
+}
+```
+_Response(400)_
+```
+{
+  message : "field can not be empty"
+}
+```
+_Response(500)_
+```
+{
+  message : "internal server error"
+}
+```
