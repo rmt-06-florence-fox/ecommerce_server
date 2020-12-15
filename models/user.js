@@ -12,16 +12,40 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasMany(models.Cart)
     }
   };
   User.init({
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
+    email: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'Email must not be empty'
+        },
+        isEmail: {
+          args: true,
+          msg: 'Email field input must be an email formatted'
+        }
+      }
+    },
+    password: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'Password must not be empty'
+        }
+      }
+    },
     role: DataTypes.STRING
   }, {
     hooks: {
       beforeCreate(user, opt) {
         user.password = encryptPassword(user.password)
+        if (!user.role) {
+          user.role = 'customer'
+        }
       }
     },
     sequelize,
