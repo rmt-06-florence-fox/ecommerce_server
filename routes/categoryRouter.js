@@ -3,7 +3,7 @@ const route = require('express').Router()
 const authenctication = require('../middleware/authentication')
 const authorization = require('../middleware/authorization')
 
-route.use(authenctication, authorization)
 route.get('/', CategoryController.getCategory )
+route.use(authenctication, authorization)
 route.post('/', CategoryController.createCategory)
 module.exports = route

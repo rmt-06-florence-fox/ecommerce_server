@@ -5,7 +5,7 @@ class CartRouter {
         try {
             let data = await Cart.findAll({
                 where: {
-                    UserId = req.userLoggedIn.id
+                    UserId: req.userLoggedIn.id
                 }
             })
             res.status(200).json(data)
@@ -17,10 +17,14 @@ class CartRouter {
         try {
             let obj = {
                 UserId: req.userLoggedIn.id,
-                ProductId :req.body.ProductId,
-                quantity: req.body.quantity
+                ProductId : +req.body.ProductId,
+                quantity: 1
             }
-            
+            let productData = await Product.findOne({
+                where: {
+                    id: obj.ProductId
+                }
+            })
             let data = await Cart.findOne({
                 include:{
                     model: Product
@@ -28,14 +32,16 @@ class CartRouter {
                 where: {
                     UserId: obj.UserId,
                     ProductId : obj.ProductId
-                }
+                },
+                attributes: ['id', 'UserId', 'ProductId', 'quantity']
             })
             //kalau belum ada
             if(!data) {
                 //cek stocknya masih ada atau tidak
-                if(data.quantity <= data.Product.stock) {
+    
+                if(productData.stock > 0) {
                     let cart = await Cart.create(obj)
-                    res.status(201).json(data)
+                    res.status(201).json(cart)
                 } else {
                     throw({
                         status: 400,
@@ -45,12 +51,15 @@ class CartRouter {
             } 
             //kalau sudah ada
             else {
-                if(data.quantity <= data.Product.stock) {
-                    let cart = await Cart.update({
-                        quantity: data.quantity += 1,
+                if((data.quantity + 1) <= productData.stock) {
+                    let cart = await Cart.update({quantity: +data.quantity + 1}, {
+                        where: {
+                            id: data.id
+                        },
                         returning: true
                     })
-                    res.status(200).json(data[1][0])
+                    console.log(cart, 'tessssssss')
+                    res.status(200).json(cart[1][0])
                 } else {
                     throw({
                         status: 400,
