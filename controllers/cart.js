@@ -92,13 +92,19 @@ class CartController{
           status: false
         }
       })
+      let errors = []
       checkoutCarts.forEach( async (e) => {
         const checkProduct = await Product.findByPk(e.ProductId)
         if(checkProduct.stock > e.quantity){
           await Product.update({ stock: checkProduct.stock - e.quantity }, {where: {id: checkProduct.id}})
           await Cart.update({status: true},{where: { id: e.id}})
+        }else{
+          errors.push(`failed to buy ${checkProduct.name}`)
         }
       })
+      if(errors.length > 0){
+        throw { status: 400, message: errors }
+      }
       res.status(200).json({ message: 'sukses'})
     } catch (error) {
       next(error)
