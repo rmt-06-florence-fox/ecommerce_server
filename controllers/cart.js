@@ -8,7 +8,7 @@ class CartController{
       quantity: +req.body.quantity,
       status: false
     }
-
+    console.log(payload);
     try {
       const theCart = await Cart.findOne({
         where: {
@@ -18,10 +18,14 @@ class CartController{
       })
       const theProduct = await Product.findByPk(payload.ProductId)
       const theUser = await User.findByPk(payload.UserId)
-      if(theProduct.quantity === 0 || theProduct.stock <= theCart.quantity){
-        throw { status: 401, message: 'out of range'}
+      // console.log(theProduct.stock)
+      
+      if(theProduct.quantity === 0){
+        throw { status: 401, message: 'out of stock'}
       }
-
+      if(theCart && theProduct.stock <= theCart.quantity){
+        throw { status: 401, message: 'out of stock'}
+      }
       if(!theCart){
         const newCart = await Cart.create(payload)
         res.status(201).json(newCart)
@@ -88,12 +92,12 @@ class CartController{
           status: false
         }
       })
-      checkoutCarts.forEach((e) => {
-        // const checkProduct = await Product.findByPk(e.ProductId)
-        // if(checkProduct.stock > e.quantity){
-        //   await Product.update({ quantity: checkProduct.status - e.quantity }, {where: {id: checkProduct.id}})
-        //   await Cart.update({status: true},{where: { id: e.id}})
-        // }
+      checkoutCarts.forEach( async (e) => {
+        const checkProduct = await Product.findByPk(e.ProductId)
+        if(checkProduct.stock > e.quantity){
+          await Product.update({ stock: checkProduct.stock - e.quantity }, {where: {id: checkProduct.id}})
+          await Cart.update({status: true},{where: { id: e.id}})
+        }
       })
       res.status(200).json({ message: 'sukses'})
     } catch (error) {
