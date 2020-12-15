@@ -19,10 +19,18 @@ module.exports = (sequelize, DataTypes) => {
     UserId: DataTypes.INTEGER,
     ProductId: DataTypes.INTEGER,
     status: DataTypes.BOOLEAN,
-    quantity: DataTypes.INTEGER
+    quantity: {
+      type: DataTypes.INTEGER
+    }
   }, {
     sequelize,
     modelName: 'Cart',
+    hooks: {
+      beforeCreate: (cart, options) => {
+        cart.status = false
+        cart.quantity = 1
+      }
+    }
   });
   return Cart;
 };
