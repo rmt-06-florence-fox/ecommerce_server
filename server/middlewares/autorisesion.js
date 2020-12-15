@@ -1,6 +1,6 @@
 
 const { verifyToken } = require("../helper/jwt")
-const {User,Product} = require('../models')
+const {User,Product,Cart} = require('../models')
 
 module.exports = async (req,res,next) => {
   try {
