@@ -16,6 +16,7 @@ function authentication(req, res, next) {
             let email = decoded.email
             let id = decoded.id
             let role = decoded.role
+            req.dataUser = decoded
             
             User.findOne({
                 where: {

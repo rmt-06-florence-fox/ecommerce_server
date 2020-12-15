@@ -1,6 +1,6 @@
 'use strict';
 const {
-  Model
+  Model, UniqueConstraintError
 } = require('sequelize');
 var bcrypt = require('bcryptjs');
 module.exports = (sequelize, DataTypes) => {
@@ -12,6 +12,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.belongsToMany(models.Product, {
+        through: 'UserProducts',
+        foreignKey: 'UserId'
+      })
+      User.belongsToMany(models.Product, {
+        through: 'Wishlists',
+        foreignKey: 'UserId'
+      })
     }
   };
   User.init({
