@@ -1,11 +1,7 @@
 const routes = require('express').Router()
 const roleAuthorization = require('../middlewares/role-authorization')
-const checkid = require('../middlewares/check-bannerid')
 const { BannerController } = require('../controllers')
-const { editBanner } = require('../controllers/banner')
-
-routes.get('/banners', BannerController.getBanner)
-routes.get('/banners/:id', checkid, BannerController.getBannerById)
+const checkid = require('../middlewares/check-bannerid')
 
 // ! authorization
 routes.use(roleAuthorization)
