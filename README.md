@@ -4,6 +4,7 @@ E-commerce is the activity of electronically buying or selling of products on on
 
 **RESTful Endpoints**
 ---
+- `POST /register/`
 - `POST /login/`
 - `GET /products/`
 - `GET /products/:id`
@@ -15,6 +16,89 @@ E-commerce is the activity of electronically buying or selling of products on on
 - `POST /banners`
 - `PUT /banners/:id`
 - `DELETE /banners/:id`
+- `GET /cart/`
+- `POST /cart/:idProduct`
+- `PATCH /cart/:idProduct`
+- `DELETE /cart/:idProduct`
+
+
+**Register Account**
+---
+    Return access_token.
+
+* **URL**
+
+    `/register/`
+
+* **Method:**
+
+    `POST`
+
+* **Header:**
+
+    None
+
+* **URL Params**
+
+    None
+
+* **Data Params**
+
+  **Required:**
+
+    `email=[string]` <br />
+    `password=[string]`
+
+* **Success Response:**
+
+  * **Code:** 201 <br />
+    **Content:**
+    ```json
+    {
+        "id": 5,
+        "email": "taufiq@mail.com"
+    }
+    ```
+
+* **Error Response:**
+
+  * **Code:** 400 Bad Request <br />
+    **Content:**
+    ```json
+    {
+        "message": "email must be unique"
+    }
+    ```
+
+    OR
+
+  * **Code:** 400 Bad Request <br />
+    **Content:**
+    ```json
+    {
+        "message": "Email is required"
+    }
+    ```
+
+    OR
+
+  * **Code:** 400 Bad Request <br />
+    **Content:**
+    ```json
+    {
+        "message": "Password must be 6-32 characters"
+    }
+    ```
+
+    OR
+
+  * **Code:** 400 Bad Request <br />
+    **Content:**
+    ```json
+    {
+        "message": "Password is required"
+    }
+    ```
 
 **Login Account**
 ---
@@ -192,7 +276,7 @@ E-commerce is the activity of electronically buying or selling of products on on
 
 * **Header:**
 
-    `access_token:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsImlhdCI6MTYwNzQ4Nzk5OX0.lv-MkL9Fr8E74bgvvmtGkIUFzuyNa4jBtWAQ-UBKoJY`
+    None
 
 * **URL Params**
 
@@ -229,16 +313,6 @@ E-commerce is the activity of electronically buying or selling of products on on
                 "updatedAt": "2020-12-09T04:37:55.659Z"
             }
         ]
-    }
-    ```
-
-* **Error Response:**
-
-  * **Code:** 401 Unauthorized <br />
-    **Content:**
-    ```json
-    {
-        "message": "Please Login First"
     }
     ```
 
@@ -776,5 +850,304 @@ E-commerce is the activity of electronically buying or selling of products on on
     ```json
     {
         "message": "You are not authorized"
+    }
+    ```
+
+**Add To Cart Product**
+---
+    Add Product to Cart.
+
+* **URL**
+
+    `/cart/:idProduct/`
+
+* **Method:**
+
+    `POST`
+
+* **Header:**
+
+    `access_token:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJ0YXVmaWsxQG1haWwuY29tIiwiaWF0IjoxNjA4MDEwOTM4fQ.CYq2hbqgOgnioY5BrIzGbDUcT3YJq0em59cHil0NSn8`
+
+* **URL Params**
+
+    **Required:**
+
+    `id=[integer]`
+
+* **Data Params**
+
+  **Required:**
+
+    `quantity=[integer]` <br />
+
+* **Success Response:**
+
+  * **Code:** 201 <br />
+    **Content:**
+    ```json
+    {
+        "id": 9,
+        "UserId": 4,
+        "ProductId": 2,
+        "quantity": 2,
+        "status": "Unpaid",
+        "updatedAt": "2020-12-15T06:49:28.060Z",
+        "createdAt": "2020-12-15T06:49:28.060Z"
+    }
+    ```
+
+* **Error Response:**
+
+  * **Code:** 401 Unauthorized <br />
+    **Content:**
+    ```json
+    {
+        "message": "Please Login First"
+    }
+    ```
+
+    OR
+
+  * **Code:** 401 Unauthorized <br />
+    **Content:**
+    ```json
+    {
+        "message": "invalid token"
+    }
+    ```
+
+    OR 
+
+  * **Code:** 400 Bad Request <br />
+    **Content:**
+    ```json
+    {
+        "message": "Only Number is Allowed"
+    }
+    ```
+
+    OR 
+
+  * **Code:** 400 Bad Request <br />
+    **Content:**
+    ```json
+    {
+        "message": "Min quantity is 0"
+    }
+    ```
+
+**Show All Cart Product**
+---
+    Show All Product in Cart.
+
+* **URL**
+
+    `/cart/`
+
+* **Method:**
+
+    `GET`
+
+* **Header:**
+
+    `access_token:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJ0YXVmaWsxQG1haWwuY29tIiwiaWF0IjoxNjA4MDEwOTM4fQ.CYq2hbqgOgnioY5BrIzGbDUcT3YJq0em59cHil0NSn8`
+
+* **URL Params**
+
+    **Required:**
+
+    None
+
+* **Data Params**
+
+    None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+    ```json
+    [
+        {
+            "id": 8,
+            "UserId": 4,
+            "ProductId": 1,
+            "quantity": 2,
+            "status": "unpaid",
+            "createdAt": "2020-12-15T06:12:13.568Z",
+            "updatedAt": "2020-12-15T06:20:20.016Z"
+        },
+        {
+            "id": 9,
+            "UserId": 4,
+            "ProductId": 2,
+            "quantity": 1,
+            "status": "Unpaid",
+            "createdAt": "2020-12-15T06:49:28.060Z",
+            "updatedAt": "2020-12-15T07:05:53.906Z"
+        }
+    ]
+    ```
+
+* **Error Response:**
+
+  * **Code:** 401 Unauthorized <br />
+    **Content:**
+    ```json
+    {
+        "message": "Please Login First"
+    }
+    ```
+
+    OR
+
+  * **Code:** 401 Unauthorized <br />
+    **Content:**
+    ```json
+    {
+        "message": "invalid token"
+    }
+    ```
+
+**Update Quantity Cart Product**
+---
+    Update Quantity Product in Cart.
+
+* **URL**
+
+    `/cart/:idProduct/`
+
+* **Method:**
+
+    `PATCH`
+
+* **Header:**
+
+    `access_token:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJ0YXVmaWsxQG1haWwuY29tIiwiaWF0IjoxNjA4MDEwOTM4fQ.CYq2hbqgOgnioY5BrIzGbDUcT3YJq0em59cHil0NSn8`
+
+* **URL Params**
+
+    **Required:**
+
+    `id=[integer]`
+
+* **Data Params**
+
+  **Required:**
+
+    `quantity=[integer]` <br />
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+    ```json
+    {
+        "id": 9,
+        "UserId": 4,
+        "ProductId": 2,
+        "quantity": 3,
+        "status": "Unpaid",
+        "createdAt": "2020-12-15T06:49:28.060Z",
+        "updatedAt": "2020-12-15T07:10:24.751Z"
+    }
+    ```
+
+* **Error Response:**
+
+  * **Code:** 401 Unauthorized <br />
+    **Content:**
+    ```json
+    {
+        "message": "Please Login First"
+    }
+    ```
+
+    OR
+
+  * **Code:** 401 Unauthorized <br />
+    **Content:**
+    ```json
+    {
+        "message": "invalid token"
+    }
+    ```
+
+    OR 
+
+  * **Code:** 400 Bad Request <br />
+    **Content:**
+    ```json
+    {
+        "message": "Only Number is Allowed"
+    }
+    ```
+
+    OR 
+
+  * **Code:** 400 Bad Request <br />
+    **Content:**
+    ```json
+    {
+        "message": "Min quantity is 0"
+    }
+    ```
+
+**Remove Cart Product**
+---
+    Remove Product in Cart.
+
+* **URL**
+
+    `/cart/:idProduct/`
+
+* **Method:**
+
+    `PATCH`
+
+* **Header:**
+
+    `access_token:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJ0YXVmaWsxQG1haWwuY29tIiwiaWF0IjoxNjA4MDEwOTM4fQ.CYq2hbqgOgnioY5BrIzGbDUcT3YJq0em59cHil0NSn8`
+
+* **URL Params**
+
+    **Required:**
+
+    `id=[integer]`
+
+* **Data Params**
+
+  **Required:**
+
+    `quantity=[integer]` <br />
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+    ```json
+    {
+        "message": "Product Deleted Successfuly"
+    }
+    ```
+
+* **Error Response:**
+
+  * **Code:** 401 Unauthorized <br />
+    **Content:**
+    ```json
+    {
+        "message": "Please Login First"
+    }
+    ```
+
+    OR
+
+  * **Code:** 401 Unauthorized <br />
+    **Content:**
+    ```json
+    {
+        "message": "invalid token"
     }
     ```
