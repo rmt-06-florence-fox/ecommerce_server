@@ -1,6 +1,5 @@
 if (process.env.NODE_ENV !== "production") {require('dotenv').config()}
 const express = require('express')
-const PORT = process.env.PORT || 3000
 const app = express()
 const router = require('./routes')
 const errorHandler = require('./middlewares/errorHandler')
