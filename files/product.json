@@ -1,0 +1,9 @@
+[
+    {
+        "name": "Macbook Pro",
+        "image_url": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mbp-silver-select-202011?wid=892&hei=820&&qlt=80&.v=1603406899000",
+        "price": 20000000,
+        "stock": 5,
+        "CategoryId": 1
+    }
+]
