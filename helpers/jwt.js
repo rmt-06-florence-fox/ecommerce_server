@@ -5,7 +5,7 @@ function generateJwt(payload){
 }
 
 function decodeJwt(token){
-    return jwt.decode(token)
+    return jwt.verify(token,process.env.SECRET)
 }
 
 module.exports = {
