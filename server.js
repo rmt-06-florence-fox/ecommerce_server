@@ -1,4 +1,3 @@
-const { create } = require('domain');
 const http = require('http');
 const app = require('./app')
 const PORT = 3000
