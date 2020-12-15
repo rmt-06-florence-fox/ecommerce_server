@@ -64,13 +64,29 @@ class CartController {
     try{
       const findData = await Cart.findAll({ where: { UserId: req.loginUser.id }, include: [Product]})
       const arrPromises = []
+      let errors = []
       findData.forEach(e => {
-        let payloadCart = { status: true }
-        let payloadProduct = { stock: e.Product.stock - e.quantity }
-        arrPromises.push(Cart.update(payloadCart, { where: { id: e.id }, returning: true }))
-        arrPromises.push(Product.update(payloadProduct, { where: { id: e.ProductId } }))
+        if (e.quantity < e.Product.stock && e.status === false){
+          let payloadCart = { status: true }
+          let payloadProduct = { stock: e.Product.stock - e.quantity }
+          arrPromises.push(Cart.update(payloadCart, { where: { id: e.id }, returning: true }))
+          arrPromises.push(Product.update(payloadProduct, { where: { id: e.ProductId }, returning: true }))
+        }else {
+          errors.push(`failed to buy ${e.Product.name}`)
+        }
       })
-      const result = await Promise.all(arrPromises)
+      if(errors.length) {
+        throw {
+          status: 400,
+          messages: errors
+        }
+      }
+      const data = await Promise.all(arrPromises)
+      const result = data.map((e, index) => {
+        if(index % 2 === 0) {
+          return e[1][0]
+        }
+      })
       res.status(200).json(result)
     } catch(err) {
       next(err)
