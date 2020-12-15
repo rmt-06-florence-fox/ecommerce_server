@@ -4,7 +4,7 @@ const { Product, Banner } = require('../models')
 class Authorization {
     static async productAuthorization (req, res, next) {
         try {
-            const product = await Product.findOne({ where: { id: req.params.id }})
+            const product = await Product.findOne({ where: { id: req.params.productId }})
             if (!product) {
                 throw {status: 404, message: `Error, Data Not Found`}
             }
@@ -21,7 +21,7 @@ class Authorization {
     
     static async bannerAuthorization (req, res, next) {
         try {
-            const banner = await Banner.findOne({ where: { id: req.params.id }})
+            const banner = await Banner.findOne({ where: { id: req.params.bannerId }})
             if (!banner) {
                 throw {status: 404, message: `Error, Data Not Found`}
             }
