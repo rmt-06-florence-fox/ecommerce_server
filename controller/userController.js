@@ -22,6 +22,7 @@ class UserController{
     static login(req, res, next){
         const email = req.body.email
         const password = req.body.password
+        const role = req.body.role
         User.findOne({where:{
             email: email
         }})
@@ -32,8 +33,15 @@ class UserController{
                     message: `invalid account`
                 }
             }else if(Bcrypt.compare(password, value.password)){
-                const token = Jwt.Sign({id: value.id, email: value.email, id: value.id})
-                res.status(201).json(token)
+                if (role === value.role) {
+                    const token = Jwt.Sign({id: value.id, email: value.email, id: value.id})
+                    res.status(201).json(token)
+                }else{
+                    throw {
+                        status: 401,
+                        message: `You not Authorize`
+                    }
+                }
             }else{
                 throw {
                     status: 401,

@@ -1,4 +1,4 @@
-const {User, Product} = require('../models/index')
+const {User, Product, Cart} = require('../models/index')
 
 class ProductController{
     static getAll(req, res, next){
