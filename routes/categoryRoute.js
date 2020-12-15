@@ -4,7 +4,7 @@ const authentication = require('../middlewares/authentication')
 const authorization = require('../middlewares/authorization')
 
 route.use(authentication)
-route.get('/', authorization, CategoryController.listCategories)
+route.get('/', CategoryController.listCategories)
 route.post('/', authorization, CategoryController.addCategory)
 
 module.exports = route

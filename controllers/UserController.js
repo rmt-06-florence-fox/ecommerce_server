@@ -3,6 +3,17 @@ const Helper = require("../helper/Helper")
 const bcrypt = require('bcryptjs')
 
 class UserController{
+    static register(req, res, next){
+        const obj = {
+            email: req.body.email,
+            password: req.body.password
+        }
+        User.create(obj)
+        .then(data => {
+            res.status(201).json({id: data.id, email: data.email})
+        })
+        .catch(e => next(e))
+    }
     static login(req, res, next){
         User.findOne({
             where:{
