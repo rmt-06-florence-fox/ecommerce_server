@@ -1,8 +1,8 @@
 'use strict';
-const { hashPassword } = require('../helpers/bcrypt')
 const {
   Model
 } = require('sequelize');
+const { hashPassword } = require('../helpers/bcrypt.js')
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      // User.hasMany(models.Cart)
     }
   };
   User.init({
@@ -31,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: { msg: 'password cannot be empty'},
         notNull: { msg: 'password cannot be empty'},
-        morethan6(value,option){
+        morethan6(value){
           if(value.length < 6){
             throw new Error('password must be longer than 6 characters')
           }
@@ -39,23 +40,14 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     role: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notNull: { msg: 'role cannot be empty' },
-        notEmpty: { msg: 'role cannot be empty' },
-        isIn: {
-          args: [['admin' , 'customer']],
-          msg: 'input role correctly'
-        }
-      }
+      type: DataTypes.STRING
     }
   }, {
     sequelize,
     modelName: 'User',
     hooks: {
       beforeCreate (user,opt){
-        user.password = hashPassword( user.password )
+        user.password = hashPassword(user.password);
         user.role = 'customer'
       }
     }

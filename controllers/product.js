@@ -1,4 +1,4 @@
-const { Product } = require('../models')
+const { Product, Cart } = require('../models')
 
 class ProductController{
     static async getProduct(req,res,next){
@@ -47,6 +47,14 @@ class ProductController{
                         id:id
                     },
                     returning: true
+                })
+                await Cart.update({
+                    price: obj.price
+                },{
+                    where:{
+                        ProductId: id
+                    },
+                    fields: ['price']
                 })
                 res.status(200).json({ products : editProduct[1][0]})
             }else{
