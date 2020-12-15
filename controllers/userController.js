@@ -64,7 +64,7 @@ class UserController{
   static async loginCust (req, res, next) {
     try {
       const findUser = await User.findOne({
-        where: { email: req.body.email }
+        where: { email: req.body.email , role: 'customer' }
       })
       if (findUser) {
         if (Helper.verifyPassword(req.body.password, findUser.password)) {
