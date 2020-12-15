@@ -67,6 +67,17 @@ class CartController{
       next(error)
     }
   }
+
+  static async delete (req, res, next){
+    try {
+      const CartId = req.body.cardId
+
+      const deleteCart = await Cart.destroy({ where : {id: CartId, UserId: req.loggedInUser.id}})
+      res.status(200).json({message: 'succesfully deleted an item'})
+    } catch (error) {
+      next(error)
+    }
+  }
 }
 
 module.exports = CartController
