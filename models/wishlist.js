@@ -11,9 +11,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Wishlist.belongsTo(models.Product)
     }
   };
   Wishlist.init({
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
     UserId: DataTypes.INTEGER,
     ProductId: DataTypes.INTEGER
   }, {

@@ -5,6 +5,7 @@ const authentication = require('../middlewares/authentication')
 const categoryRoutes = require('./category')
 const bannerRoutes = require('./banner')
 const cartRoutes = require('./cart')
+const wishlistRoutes = require('./wishlist')
 const transactionRoutes = require('./transaction')
 const customerLanding = require('./landing')
 
@@ -19,6 +20,7 @@ routes.use(authentication) // ! authentication
 // ? Customer routes
 routes.use(transactionRoutes)
 routes.use(cartRoutes)
+routes.use(wishlistRoutes)
 
 // ? Admin routes
 routes.use(productRoutes)
