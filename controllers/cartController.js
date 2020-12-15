@@ -43,6 +43,31 @@ class CartController {
     }
   }
 
+  static async getCart (req, res, next) {
+    try {
+      const data = await Cart.findAll({
+        where: {
+          UserId: req.loginUser.id
+        },
+        include: [ Product ]
+      })
+      let totalPrice = 0
+      data.forEach(e => totalPrice += (e.quantity * e.Product.price))
+      data.push({ totalPrice })
+      res.status(200).json(data)
+    }catch(err) {
+      next(err)
+    }
+  }
+  
+  static async deleteCart (req, res, next) {
+    try {
+      const result = await Cart.destroy({ where: { id: req.params.id }})
+      res.status(200).json({ message: `Successfully deleted this cart !!!`})
+    }catch(err) {
+      next(err)
+    }
+  }
 }
 
 module.exports = CartController
