@@ -1,10 +1,10 @@
 const express = require('express')
 const route = express.Router()
 const {ProductController} = require('../controller')
-const authentication = require('../middleware/authentication')
+const authenticationAdmin = require('../middleware/authenticationAdmin')
 const authorization = require('../middleware/authorization')
 
-route.use(authentication)
+route.use(authenticationAdmin)
 route.get('/', ProductController.read)
 route.post('/', ProductController.create)
 // route.use('/:id', authorization)

@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.hasMany(models.Cart, {foreignKey: "UserId", sourceKey: "id"})
+      this.hasMany(models.Wishlist, {foreignKey: "UserId", sourceKey: "id"})
     }
   };
   User.init({

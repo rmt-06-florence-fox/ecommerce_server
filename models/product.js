@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.hasMany(models.Cart, {foreignKey: "ProductId", sourceKey: "id"})
+      this.hasMany(models.Wishlist, {foreignKey: "ProductId", sourceKey: "id"})
     }
   };
   Product.init({
@@ -74,8 +75,7 @@ module.exports = (sequelize, DataTypes) => {
           msg: `stock url musn't be null`
         }
       }
-    },
-    UserId: DataTypes.INTEGER
+    }
   }, {
     sequelize,
     modelName: 'Product',

@@ -8,8 +8,7 @@ class ProductController {
         image_url: req.body.image_url,
         category: req.body.category,
         price: req.body.price,
-        stock: req.body.stock,
-        UserId: req.UserLogin.id
+        stock: req.body.stock
       }
       // console.log(obj);
       const data = await Product.create(obj)
@@ -61,8 +60,7 @@ class ProductController {
         image_url: req.body.image_url,
         category: req.body.category,
         price: req.body.price,
-        stock: req.body.stock,
-        UserId: req.UserLogin.id
+        stock: req.body.stock
       }
       let id = req.params.id
       const data = await Product.update(obj, {where: {id}, returning : true})
