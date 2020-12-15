@@ -32,6 +32,82 @@ password = `user password`
 }
 ```
 #
+### POST /customer/register
+- Request Body
+```JS
+email =  `user email`
+password = `user password`
+```
+##### SUCCESS
+- Response *`(201)`*
+``` JS
+{
+  "id": 12,
+  "email": "user@mail.com"
+}
+```
+#
+##### ERROR *`'Validation Error'`*
+- Response *`(400)`*
+```JS
+{
+  "messages": [
+    {
+      "message": "Email can't be empty"
+    },
+    {
+      "message": "Email must be formatted in example@mail.com"
+    },
+    {
+      "message": "Password can't be empty"
+    },
+    {
+      "message": "Password must be contain minimum 6 characters"
+    }
+  ]
+}
+```
+#
+##### ERROR *`'Sequelize Unique Constraint Error'`*
+- Response *`(400)`*
+```JS
+{
+  "message": "Email has been already exists"
+}
+```
+#
+##### ERROR *`'Internal Server Error'`*
+- Response *`(500)`*
+```JS
+{
+  "message" : "Internal Server Error"
+}
+```
+#
+### POST /customer/login
+- Request Body
+```JS
+email =  `user email`
+password = `user password`
+```
+##### SUCCESS
+- Response *`(200)`*
+``` JS
+{
+    "id": 12,
+    "email": "user@mail.com",
+    "access_token": "eyJhb..."
+}
+```
+#
+##### ERROR *`'Internal Server Error'`*
+- Response *`(500)`*
+```JS
+{
+  "message" : "Internal Server Error"
+}
+```
+#
 ### POST /products
 - Request Body
 ```JS
