@@ -1,6 +1,4 @@
-if(process.env.NODE_ENV === "development") {
-    require("dotenv").config();
-}
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,10 +12,8 @@ app.use(express.json());
 app.use(routes);
 app.use(errorHandler);
 
-if (process.env.NODE_ENV != 'test') {
-    app.listen(PORT, () => {
-        console.log("Application is listening at http://localhost:" + PORT);
-    })
-}
+app.listen(PORT, () => {
+    console.log("Application is listening at http://localhost:" + PORT);
+})
 
 module.exports = app;
