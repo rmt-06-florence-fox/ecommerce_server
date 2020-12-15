@@ -15,7 +15,7 @@ class BannerController {
     }
 
     static async update (req, res, next) {
-        const id = +req.params.id
+        const id = +req.params.bannerId
         const { title, status, image_url } = req.body
         const payload = { title, status, image_url }
         try {
@@ -27,7 +27,7 @@ class BannerController {
     }
 
     static async delete (req, res, next) {
-        const id = +req.params.id
+        const id = +req.params.bannerId
         try {
             await Banner.destroy({ where: { id } });
             res.status(200).json({message: 'banner succes to delete'})
@@ -46,7 +46,7 @@ class BannerController {
     }
 
     static async getOne (req, res, next) {
-        const id = +req.params.id
+        const id = +req.params.bannerId
         try {
             const banner = await Banner.findByPk(id)
             res.status(200).json({banner})

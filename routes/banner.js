@@ -7,9 +7,9 @@ router.use(authentication)
 router.post('/', BannerController.create)
 router.get('/', BannerController.getAll)
 
-router.use('/:id', Authorization.bannerAuthorization)
-router.get('/:id', BannerController.getOne)
-router.put('/:id', BannerController.update)
-router.delete('/:id', BannerController.delete)
+router.use('/:bannerId', Authorization.bannerAuthorization)
+router.get('/:bannerId', BannerController.getOne)
+router.put('/:bannerId', BannerController.update)
+router.delete('/:bannerId', BannerController.delete)
 
 module.exports = router

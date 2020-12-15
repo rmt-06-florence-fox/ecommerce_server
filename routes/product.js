@@ -7,9 +7,9 @@ router.use(authentication)
 router.post('/', ProductController.create)
 router.get('/', ProductController.getAll)
 
-router.use('/:id', Authorization.productAuthorization)
-router.get('/:id', ProductController.getOne)
-router.put('/:id', ProductController.update)
-router.delete('/:id', ProductController.delete)
+router.use('/:productId', Authorization.productAuthorization)
+router.get('/:productId', ProductController.getOne)
+router.put('/:productId', ProductController.update)
+router.delete('/:productId', ProductController.delete)
 
 module.exports = router

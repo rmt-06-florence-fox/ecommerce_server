@@ -15,7 +15,7 @@ class ProductController {
     }
 
     static async update (req, res, next) {
-        const id = +req.params.id
+        const id = +req.params.productId
         const { name, image_url, price, stock } = req.body
         const payload = { name, image_url, price, stock }
         try {
@@ -27,7 +27,7 @@ class ProductController {
     }
 
     static async delete (req, res, next) {
-        const id = +req.params.id
+        const id = +req.params.productId
         try {
             await Product.destroy({ where: { id } });
             res.status(200).json({message: 'product succes to delete'})
@@ -46,7 +46,7 @@ class ProductController {
     }
 
     static async getOne (req, res, next) {
-        const id = +req.params.id
+        const id = +req.params.productId
         try {
             const product = await Product.findByPk(id)
             res.status(200).json({product})
