@@ -86,7 +86,6 @@ Response:
     "category": "game console",
     "price": 8000000,
     "stock": 20,
-    "UserId": 231,
     "createdAt": "2020-12-09T04:36:32.891Z",
     "updatedAt": "2020-12-09T04:36:32.891Z"
   },
@@ -97,7 +96,6 @@ Response:
     "category": "game console",
     "price": 10000000,
     "stock": 30,
-    "UserId": 231,
     "createdAt": "2020-12-09T04:36:32.925Z",
     "updatedAt": "2020-12-09T04:36:32.925Z"
   }
@@ -166,7 +164,6 @@ Response:
     "category": "game console",
     "price": 8000000,
     "stock": 20,
-    "UserId": 231,
     "createdAt": "2020-12-09T04:36:32.891Z",
     "updatedAt": "2020-12-09T04:36:32.891Z"
 }
@@ -230,7 +227,6 @@ Response:
     "category": "game console",
     "price": 8000000,
     "stock": 20,
-    "UserId": 231,
     "createdAt": "2020-12-09T04:36:32.891Z",
     "updatedAt": "2020-12-09T04:36:32.891Z"
 }
@@ -297,7 +293,6 @@ Response:
     "category": "book",
     "price": 10000000,
     "stock": 20,
-    "UserId": 231,
     "createdAt": "2020-12-09T04:36:32.891Z",
     "updatedAt": "2020-12-09T04:36:33.102Z"
 }
