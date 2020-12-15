@@ -1,7 +1,70 @@
-const { Wishlist } = require('../models')
+const { Wishlist, Product } = require('../models')
 
 class WishlistController {
+  static async getWishlists (req, res, next) {
+    const UserId = req.loggedIn.id
 
+    try {
+      const wishlists = await Wishlist.findAll({
+         where: {
+           UserId
+         },
+         include: [{
+           model: Product
+         }]
+      })
+
+      res.status(200).json({wishlists})
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static async postWishlist (req, res, next) {
+    const ProductId = req.params.id
+    const UserId = req.loggedIn.id
+
+    try {
+      const find = await Wishlist.findOne({
+        where: {
+          ProductId
+        }
+      })
+
+      if (find) {
+        throw {
+          status: 400,
+          message: `Already on the wishlist`
+        }
+      } else {
+        const wishlist = await Wishlist.create({
+          UserId,
+          ProductId
+        })
+  
+        res.status(200).json({wishlist})
+      }
+      
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static async deleteWishlist (req, res, next) {
+    const id = req.params.id
+
+    try {
+      const wishlist = await Wishlist.destroy({
+        where: {
+          id
+        }
+      })
+
+      res.status(200).json({message: 'Successfully Deleted Wishlist'})
+    } catch (error) {
+      next(error)
+    }
+  }
 }
 
 module.exports = WishlistController

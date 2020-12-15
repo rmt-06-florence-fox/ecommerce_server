@@ -4,6 +4,7 @@ const custAuth = require('../middlewares/cust-authorization')
 const cekId = require('../middlewares/check-transactionid')
 
 routes.get('/transaction', TransactionController.getTransaction)
+routes.get('/history', TransactionController.history)
 
 routes.use(custAuth)
 routes.use('/transaction/:id', cekId)
