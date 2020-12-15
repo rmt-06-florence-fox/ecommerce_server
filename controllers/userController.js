@@ -4,35 +4,36 @@ let { createToken } = require("../helpers/accesToken")
 
 class ControllerUser {
 
-    // static registerUser(req, res, next) {
-    //     let objUser = {
-    //         email : req.body.email,
-    //         password : req.body.password
-    //     }
-    //     User.create(objUser)
-    //        .then(data => {
-    //             res.status(201).status({ data: data })
-    //        }) 
-    //        .catch(err => {
-    //             next(err)
-    //        })
-    // }
+    static registerUser(req, res, next) {
+        let objUser = {
+            email : req.body.email,
+            password : req.body.password,
+            role: "customer"
+        }
+        User.create(objUser)
+           .then(data => {
+                res.status(201).json({message: 'Success to register'})
+           }) 
+           .catch(err => {
+                next(err)
+           })
+    }
 
     static loginUser(req, res) {
         let email = req.body.email
         let password = req.body.password
-
         User.findOne({
             where: {
                 email
             }
         })
-            .then(data => {
-                // the power of TDD
-                if(data) {
-                    let passwordInDataBase = data.password
-                    if ((bcrypt.compareSync(password, passwordInDataBase))) {
-                        let acces_token = createToken({ id: data.id, email: data.email, role: data.role })
+        .then(data => {
+            // the power of TDD
+            if(data) {
+                let passwordInDataBase = data.password
+                if ((bcrypt.compareSync(password, passwordInDataBase))) {
+                    let acces_token = createToken({ id: data.id, email: data.email, role: data.role })
+                    console.log("------------------")
                         res.status(200).json({acces_token})
                     }else {
                         res.status(400).json({ message: "wrong Password/Email"})

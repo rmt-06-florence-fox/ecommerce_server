@@ -3,7 +3,6 @@ const { verifyToken } = require("../helpers/accesToken")
 
 function authentication(req, res, next) {
     let acces_token = req.headers.acces_token
-
     try {
         // console.log("masuk ga sih?")
         let decoded = verifyToken(acces_token)
@@ -17,19 +16,18 @@ function authentication(req, res, next) {
             let email = decoded.email
             let id = decoded.id
             let role = decoded.role
-            // console.log(email)
-   
+            
             User.findOne({
                 where: {
                     email,
                     id
                 }
             })
-                .then(data => {
-                    // console.log("ceeeeeek")
-                    if(data.role === "admin") {
-                        next()
-                    }else {
+            .then(data => {
+                console.log(data)
+                if(data.role === "admin") {
+                    next()
+                }else {
                         throw {
                             status: 400,
                             message: "Forbiden Acces"
@@ -42,7 +40,6 @@ function authentication(req, res, next) {
         }
     } 
     catch(err) {
-        console.log('masuk catch')
         next(err)
     }
 }
