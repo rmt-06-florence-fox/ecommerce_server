@@ -1,5 +1,5 @@
 function errorHandlers(err, req, res, next){
-  if (err.name === "SequelizeValidationError"){
+  if (err.name === "SequelizeValidationError" || err.name === "SequelizeUniqueConstraintError"){
     let errorMessages = []
     for (let i = 0; i < err.errors.length; i++){
       errorMessages.push(err.errors[i].message)

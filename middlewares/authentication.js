@@ -35,6 +35,7 @@ function authenticateAdmin(req, res, next){
         .then(user => {
           if (user) {
             req.loggedIn = decoded
+            console.log(req.loggedIn)
             next()
           }
           else {
@@ -45,10 +46,12 @@ function authenticateAdmin(req, res, next){
           }
         })
         .catch(err => {
+          console.log(err.message + " << ini dari authentication ")
           next(err)
         })
     }
   } catch (error) {
+      console.log(err.message + " << ini dari authentication ")
       next(error)
   }
 }
