@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
         isNumeric: { msg: 'please insert stock correctly'},
         notNegative(value){
           if( value < 0 ) {
-            throw new Error('stock cannot be negative')
+            throw new Error('stock cannot be negative' + this.name)
           }
         }
       }

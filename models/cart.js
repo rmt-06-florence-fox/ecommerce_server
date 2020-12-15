@@ -35,6 +35,16 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
       }
+    },
+    price: DataTypes.INTEGER,
+    total: {
+      type: DataTypes.VIRTUAL,
+      get(){
+        return this.quantity * this.price
+      },
+      set(val){
+        throw new Error('cannot change total')
+      }
     }
   }, {
     sequelize,

@@ -20,23 +20,24 @@ class CartController{
     static async postCart(req,res,next){
         let productId = req.params.productId
         try {
+            const product = await Product.findOne({
+                where:{
+                    id: productId
+                }
+            })
             const [cart,created] = await Cart.findOrCreate({
                 where:{
                     UserId : req.loggedInUser.id,
                     ProductId : productId
                 },
                 defaults:{
-                    quantity: 1
+                    quantity: 1,
+                    price: product.price
                 }
             })
             if (created) {
                 res.status(201).json({cart})
             }else{
-                const product = await Product.findOne({
-                    where:{
-                        id: productId
-                    }
-                })
                 if(product.stock > cart.quantity){
                     const updated = await Cart.increment(['quantity'],{
                         by:1,
