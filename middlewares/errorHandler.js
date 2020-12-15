@@ -40,6 +40,25 @@ module.exports = (err, req, res, next) => {
 	} else if (err.name === 'PriceCannotLessThanZero') {
 		status = 400;
 		message = 'Price cannot Less Than Zero';
+	} else if (err.name === 'ThisForCustomer') {
+		status = 401;
+		message = 'This Site is For Customer Only';
+	} else if (err.name === 'StockNotEnough') {
+		status = 400;
+		message = 'This Products Stocks is Not Enough';
+	} else if (err.name === 'ThisCartQuantityAlreadyOne') {
+		status = 400;
+		message =
+			'This Cart Quantity is Already One, Please use Remove Cart to Delete It';
+	} else if (err.name === 'CartNotFound') {
+		status = 404;
+		message = 'Cart Not Found';
+	} else if (err.name === 'YouAlreadyAddThisWishlist') {
+		status = 400;
+		message = 'You are Already Add This Product to Your Wishlist';
+	} else if (err.name === 'WishListNotFound') {
+		status = 404;
+		message = 'This Wishlist Not Found';
 	}
 	res.status(status).json({
 		message: message,

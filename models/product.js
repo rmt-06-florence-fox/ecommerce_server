@@ -9,6 +9,8 @@ module.exports = (sequelize, DataTypes) => {
 		 */
 		static associate(models) {
 			// define association here
+			Product.hasMany(models.Cart);
+			Product.hasMany(models.Wishlist);
 		}
 	}
 	Product.init(
@@ -57,6 +59,7 @@ module.exports = (sequelize, DataTypes) => {
 		{
 			sequelize,
 			modelName: 'Product',
+			// timestamps: false,
 		}
 	);
 	return Product;

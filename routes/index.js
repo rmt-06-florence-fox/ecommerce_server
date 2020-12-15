@@ -1,5 +1,10 @@
 const router = require('express').Router();
-const { UserController, ProductController } = require('../controller');
+const {
+	UserController,
+	ProductController,
+	CartController,
+	WishlistController,
+} = require('../controller');
 const authentication = require('../middlewares/authentication');
 const authorization = require('../middlewares/authorization');
 
@@ -7,20 +12,36 @@ router.post('/register', UserController.register);
 
 router.post('/login', UserController.login);
 
-router.use(authentication);
+router.post('/loginUser', UserController.loginUser);
 
 router.get('/products', ProductController.getProducts);
 
 router.get('/products/:id', ProductController.getProductById);
 
-router.use(authorization);
+router.use(authentication);
 
-router.post('/products', ProductController.createProduct);
+router.post('/carts/:productId', CartController.addCart);
 
-router.put('/products/:id', ProductController.editProduct);
+router.patch('/minusCart/:cartId', CartController.minusCart);
 
-router.patch('/products/:id', ProductController.updateProduct);
+router.delete('/deleteCart/:cartId', CartController.removeCart);
 
-router.delete('/products/:id', ProductController.deleteProduct);
+router.get('/carts', CartController.getCart);
+
+router.post('/wishlists/:productId', WishlistController.addWishlist);
+
+router.delete('/wishlists/:wishlistId', WishlistController.deleteWishlist);
+
+router.get('/wishlists', WishlistController.getWishlists);
+
+// router.use(authorization);
+
+router.post('/products', authorization, ProductController.createProduct);
+
+router.put('/products/:id', authorization, ProductController.editProduct);
+
+router.patch('/products/:id', authorization, ProductController.updateProduct);
+
+router.delete('/products/:id', authorization, ProductController.deleteProduct);
 
 module.exports = router;
