@@ -18,8 +18,8 @@ class CartController{
       })
       const theProduct = await Product.findByPk(payload.ProductId)
       const theUser = await User.findByPk(payload.UserId)
-      if(theProduct.quantity === 0){
-        throw { status: 401, message: 'not enough stock'}
+      if(theProduct.quantity === 0 || theProduct.stock <= theCart.quantity){
+        throw { status: 401, message: 'out of range'}
       }
 
       if(!theCart){
@@ -75,6 +75,27 @@ class CartController{
 
       const deleteCart = await Cart.destroy({ where : {id: CartId, UserId: req.loggedInUser.id}})
       res.status(200).json({message: 'succesfully deleted an item'})
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  static async checkout (req, res, next){
+    try {
+      const checkoutCarts = await Cart.findAll({
+        where: {
+          UserId: req.loggedInUser.id,
+          status: false
+        }
+      })
+      checkoutCarts.forEach((e) => {
+        // const checkProduct = await Product.findByPk(e.ProductId)
+        // if(checkProduct.stock > e.quantity){
+        //   await Product.update({ quantity: checkProduct.status - e.quantity }, {where: {id: checkProduct.id}})
+        //   await Cart.update({status: true},{where: { id: e.id}})
+        // }
+      })
+      res.status(200).json({ message: 'sukses'})
     } catch (error) {
       next(error)
     }

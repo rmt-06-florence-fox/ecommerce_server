@@ -7,5 +7,6 @@ router.use(authentication)
 router.post('/', CartController.addOrEditCart)
 router.get('/', CartController.fetch)
 router.delete('/', CartController.delete)
+router.put('/', CartController.checkout)
 
 module.exports = router
