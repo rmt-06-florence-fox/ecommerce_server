@@ -4,7 +4,7 @@ class BannerController {
     static async create (req, res, next) {
         const { title, status, image_url } = req.body
         const UserId = req.loggedInUser.id
-        const payload = { title, status, image_url }
+        const payload = { title, status, image_url, UserId }
         try {
             const banners = await Banner.create(payload);
             res.status(201).json(banners);   
