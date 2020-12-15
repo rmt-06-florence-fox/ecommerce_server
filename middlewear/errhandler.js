@@ -1,9 +1,12 @@
 module.exports = (err, req, res, next) => {
     
-    console.log(err);
+    console.log(err, '<<err');
 
     if(err.name == 'SequelizeValidationError'){
         let message = err.errors[0].message
+        res.status(400).json({message})
+    } else if (err.name == 'JsonWebTokenError'){
+        let message = 'Fail to get access'
         res.status(400).json({message})
     } else if (err.name == 'SequelizeDatabaseError'){
         let message = 'Data can not be null'
