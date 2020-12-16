@@ -23,7 +23,7 @@ class ControllerCart {
                 Qty: req.body.Qty,
                 status: 'unpaid'
             }
-            const find = await Cart.findOne({where: {ProductId: data.ProductId}})
+            const find = await Cart.findOne({where: {ProductId: data.ProductId, status: 'unpaid'}})
             if(find){
                 data.Qty = +data.Qty + find.Qty
                 console.log(data.Qty);
