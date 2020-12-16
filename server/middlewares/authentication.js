@@ -31,11 +31,7 @@ module.exports = async (req,res,next) => {
 
   }
   catch(error){
-    // console.log(error)
-    // if (!error) {
-    //   res.status(401).json({message: `Authentication Failed,You need to Log In first`})
 
-    // }
     
     // else {
       next(error)
