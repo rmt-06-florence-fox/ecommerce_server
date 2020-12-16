@@ -1,20 +1,30 @@
 [
   {
-    "name" : "Hoodie Casual",
-    "imageUrl" : "https://images.unsplash.com/photo-1564557287817-3785e38ec1f5?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80",
+    "name" : "Red Hair Shank",
+    "imageUrl" : "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//102/MTA-3874755/mega-house_one-piece-shanks-pop-dx-figure_full02.jpg",
     "price" : 1e5,
-    "stock" : 200
+    "stock" : 200,
+    "category": "One Piece"
   },
   {
-    "name": "Goddess Shirt",
-    "imageUrl": "https://i.pinimg.com/originals/b1/6b/4a/b16b4add5e810ad22bed4b159634bce7.jpg",
-    "price": 50e5,
-    "stock": 200
+    "name": "Luffy",
+    "imageUrl": "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//101/MTA-7678613/fast_tech_luffy_action_figure_one_piece_grandista_full01_bk83y0qh.jpg",
+    "price": 1e5,
+    "stock": 50,
+    "category": "One Piece"
   },
   {
-    "name": "Milk and Honey",
-    "imageUrl": "https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixid=MXwxMjA3fDB8MHxzZWFyY2h8N3x8Ym9va3xlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
-    "price": 2e6,
-    "stock": 50
+    "name": "Nezuko",
+    "imageUrl": "https://cf.shopee.co.id/file/8bfd1ca2821af34a87dcd0829ad7f668",
+    "price": 1e6,
+    "stock": 50,
+    "category": "Kimetsu No Yaiba"
+  },
+  {
+    "name": "Batman Model AF221",
+    "imageUrl": "https://apollo-singapore.akamaized.net/v1/files/wycjnkdt4l6l3-ID/image",
+    "price": 5e4,
+    "stock": 100,
+    "category": "The Batman"
   }
 ]

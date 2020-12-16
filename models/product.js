@@ -6,7 +6,9 @@ module.exports = (sequelize, DataTypes) => {
   class Product extends Model {
     
     static associate(models) {
-      // define association here
+      this.belongsToMany(models.User, {
+        through: models.Cart
+      })
     }
   };
   Product.init({

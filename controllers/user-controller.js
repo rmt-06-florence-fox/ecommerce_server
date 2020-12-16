@@ -11,7 +11,7 @@ class UserController {
                 { fullName, userName, email, password 
             }, {returning : true})
 
-            console.log(newUser)
+            // console.log(newUser)
             res.status(201).json({
                 fullName : newUser.fullName,
                 userName : newUser.userName,
@@ -45,8 +45,8 @@ class UserController {
                     fullName : user.fullName,
                     id : user.id
                 })
-
-                res.status(200).json({access_token})
+                const role = user.role
+                res.status(200).json({access_token, role})
             
             } else {
                 throw {

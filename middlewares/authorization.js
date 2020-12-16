@@ -1,14 +1,9 @@
-const Helper = require('../helpers')
 const { User } = require('../models') 
 
 module.exports = async (req, res, next) => {
     try {
-        const {access_token} = req.headers
-        const payload = Helper.decodeToken(access_token)
-        
-        const user = await User.findOne({where : {
-            email : payload.email
-        }})
+        const id = +req.currentUserId
+        const user = await User.findByPk(id)
         
         if (user && user.role === 'admin') {
             next()
