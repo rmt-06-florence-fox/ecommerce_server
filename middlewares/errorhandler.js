@@ -1,4 +1,5 @@
 module.exports = (err, req, res, next) => {
+  console.log(err)
   if (err.status) res.status(err.status).json({ message: err.message })
   else if (err.name === 'SequelizeValidationError') {
     const errors = err.errors.map(e => {

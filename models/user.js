@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       User.hasMany(models.Product)
+      User.hasMany(models.Cart)
     }
   };
   User.init({
@@ -36,8 +37,12 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'User',
   });
 
-  User.addHook('beforeCreate', (user) => {
+  User.addHook('beforeCreate', user => {
     user.password = hashPwd(user.password)
+  })
+
+  User.addHook('beforeCreate', user => {
+    if (!user.role) user.role = 'customer'
   })
 
   return User;
