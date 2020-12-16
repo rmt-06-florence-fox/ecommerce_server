@@ -4,8 +4,15 @@ class CartController {
   
   static async addCart (req, res, next) {
     try {
-      const ProductId = +req.params.ProductId
-      const UserId = +req.params.UserId
+      const ProductId = +req.body.ProductId
+      const product = await Product.findByPk(ProductId)
+      if (!product) {
+        throw {
+          status: 404,
+          message: "Product doesn't exist"
+        }
+      }
+      const UserId = +req.currentUserId
       // console.log(ProductId, UserId, 'lewat controller')
       const payload = await Cart.findOne({
         where: { ProductId, UserId },
@@ -36,7 +43,7 @@ class CartController {
 
   static async getMyCart (req, res, next) {
     try {
-      const UserId = +req.params.UserId
+      const UserId = +req.currentUserId
       const carts = await Cart.findAll({
         where: { UserId },
         include: [Product],
@@ -50,13 +57,23 @@ class CartController {
 
   static async alterQuantity (req, res, next) {
     try {
-      const ProductId = +req.params.ProductId
-      const UserId = +req.params.UserId
+      const id = +req.params.id
+      const UserId = +req.currentUserId
       const quantity = +req.body.quantity
+      const cart = await Cart.findOne({
+        where: { id },
+        include: [Product]
+      })
 
-      const product = await Product.findByPk(ProductId)
-      
-      if (+product.stock >= quantity) {
+      if (!cart) {
+        throw {
+          status: 404,
+          message: "Seems cart doesn't exist"
+        }
+      }
+
+      if (+cart.Product.stock >= quantity) {
+        const ProductId = +cart.Product.id
         const payload = await Cart.update({ quantity }, {
           where: { ProductId, UserId },
           fields: ['quantity'],
@@ -68,9 +85,11 @@ class CartController {
             status: 400,
             message: "Fail to change cart's quantity"
           }
+
         } else {
           res.status(200).json(payload[1][0])
         }
+
       } else {
         throw {
           status: 400,
@@ -87,7 +106,7 @@ class CartController {
     try {
       const id = +req.params.id
       const payload = await Cart.findOne({ where: { id } })
-      // console.log('dari delete >>>>> ', payload)
+
       if (payload) {
         await Cart.destroy({ where: { id }})
         res.status(200).json({ message: 'cart has been deleted' })
