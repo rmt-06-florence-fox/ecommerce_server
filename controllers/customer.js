@@ -1,6 +1,7 @@
-const { User, Product, Cart } = require('../models')
+const { User, Product, Cart, Wishlist } = require('../models')
 const generateToken = require('../helpers/generateToken')
 const verifyPassword = require("../helpers/verifyPassword")
+const wishlist = require('../models/wishlist')
 
 
 class CustomerController {
@@ -192,6 +193,102 @@ class CustomerController {
       })
       .catch(err => {
         console.log(err + " <<< ini dari get cart")
+        next(err)
+      })
+  }
+
+  static getWishlist (req, res, next) {
+    Wishlist.findAll({
+      where: {
+        UserId: req.loggedIn.id
+      },
+      order: [
+        ['createdAt', 'ASC']
+      ],
+      include: Product
+    })
+      .then(wishlists => {
+        res.status(200).json(wishlists)
+      })
+      .catch(err => {
+        console.log(err + " <<< ini dari get wishlist")
+        next(err)
+      })
+  }
+
+  static addWishlist (req, res, next) {
+    Product.findOne({
+      where: {
+        id: req.params.ProductId
+      }
+    })
+    .then(product => {
+      if (product) {
+        return Wishlist.findOne({
+          where: {
+            UserId: req.loggedIn.id,
+            ProductId: req.params.ProductId
+          }
+        })
+      }
+      else {
+        throw {
+          status: 404,
+          message: "Error! Data not found"
+        }
+      }
+    })
+      .then(wishlist => {
+        if (wishlist) {
+          throw {
+            status: 400,
+            message: "You have added this item to your wishlist"
+          }
+        }
+        else {
+          return Wishlist.create({
+            UserId: req.loggedIn.id,
+            ProductId: req.params.ProductId
+          })
+        }
+      })
+      .then(wishlist => {
+        res.status(200).json(wishlist)
+      })
+      .catch(err => {
+        console.log(err + " <<< ini dari add wishlist")
+        next(err)
+      })
+  }
+
+  static deleteWishlist (req, res, next) {
+    Wishlist.findOne({
+      where: {
+        ProductId: req.params.ProductId,
+        UserId: req.loggedIn.id
+      }
+    })
+      .then(wishlist => {
+        if (wishlist){
+          Wishlist.destroy({
+            where: {
+              ProductId: req.params.ProductId,
+              UserId: req.loggedIn.id
+            }
+          })
+        }
+        else {
+          throw {
+            status: 404,
+            message: 'Error! Data not found'
+          }
+        }
+      })
+      .then(() => {
+        res.status(200).json({message: 'Successfully remove item from your wishlist'})
+      })
+      .catch(err => {
+        console.log(err + " <<< ini dari delete wishlist")
         next(err)
       })
   }
