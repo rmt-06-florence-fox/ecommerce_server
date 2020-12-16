@@ -31,16 +31,45 @@ class CartController {
         try {
             const findCart = await Cart.findOne({
                 where: {
-                    ProductId: productId
-                }
+                    [Op.and] : [
+                        {ProductId: productId},
+                        {UserId: userId}
+                    ]
+                },
+                include: ['Product']
             })
 
             if(findCart) {
                 console.log('======== Sudah ada =====')
-                console.log(findCart.dataValues.quantity)
+                console.log(findCart.dataValues)
+                console.log(findCart.dataValues.Product.stock)
                 const newQuantity = findCart.dataValues.quantity + 1
                 console.log(newQuantity)
-
+                if(newQuantity > findCart.dataValues.Product.stock ) {
+                    throw {
+                        status: 400,
+                        msg: 'wrong ammount of quantity'
+                    }
+                }
+                else {
+                    const updatedQuantity = {
+                        quantity: newQuantity
+                    }
+                    console.log(updatedQuantity)
+    
+                    const updateQuantity = await Cart.update(updatedQuantity, {
+                        where: {
+                            [Op.and] :[
+                                {UserId: userId},
+                                {ProductId: productId}
+                            ]
+                        },
+                        returning: true
+                    })
+                    console.log(updateQuantity)
+    
+                    res.status(200).json(updateQuantity[1][0])
+                }
                 const updatedQuantity = {
                     quantity: newQuantity
                 }
@@ -57,7 +86,7 @@ class CartController {
                 })
                 console.log(updateQuantity)
 
-                res.status(200).json(updateQuantity[1])
+                res.status(200).json(updateQuantity[1][0])
             }else {
                 console.log('======= Data Baru========')
                 const createCart = await Cart.create(newCart)
@@ -99,7 +128,7 @@ class CartController {
                         returning: true
                     })
                     console.log(updateQuantity,'add')
-                    res.status(200).json(updateQuantity)
+                    res.status(200).json(updateQuantity[1][0])
                 }
             } else {
                 res.status(404).json({
