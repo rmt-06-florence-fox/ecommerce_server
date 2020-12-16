@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasMany(models.Chart, {
+        foreignKey: "UserId",
+        sourceKey: "id"
+      })
     }
   };
   User.init({
@@ -52,7 +56,6 @@ module.exports = (sequelize, DataTypes) => {
         if(!user.role) {
           user.role = "customer"
         }
-        // console.log(user)
       }
     },
     sequelize,
