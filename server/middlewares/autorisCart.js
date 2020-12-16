@@ -2,7 +2,7 @@
 const {User,Product,Cart} = require('../models')
 
 module.exports = async (req, res, next) => {
-  const UserId = req.user.id;
+  const UserId = +req.user.id;
   const ProductId = +req.params.id;
   try {
     const cart = await Cart.findOne({

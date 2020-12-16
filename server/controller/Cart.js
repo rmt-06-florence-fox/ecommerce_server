@@ -1,8 +1,8 @@
-const { cart, Product, User, sequelize } = require('../models')
+const { Cart, Product, User, sequelize } = require('../models')
 
 class CartController {
   static async find (req, res, next) {
-    const UserId = req.user.id 
+    const UserId = +req.loginUser.id
     console.log(UserId)
     try {
       const cart = await User.findByPk(UserId, {
@@ -20,9 +20,9 @@ class CartController {
   }
 
   static async add (req, res, next) {
-    const UserId = req.user.id
+    const UserId = +req.loginUser.id
     const { ProductId } = req.body
-    console.log(ProductId)
+    console.log(UserId)
     try {
       const check = await Product.findByPk(ProductId)
       if (check.stock > 0) {
@@ -45,7 +45,7 @@ class CartController {
   }
 
   static async patch (req, res, next) {
-    const UserId = req.user.id
+    const UserId = +req.loginUser.id
     const ProductId = +req.params.id
     const { amount } = req.body
     try {
@@ -81,10 +81,10 @@ class CartController {
   }
 
   static async delete (req, res, next) {
-    const UserId = req.user.id
+    const UserId = +req.loginUser.id
     const ProductId = +req.params.id
     try {
-      const cart = await cart.destroy({
+      const cart = await Cart.destroy({
         where: {
           UserId,
           ProductId
@@ -107,9 +107,9 @@ class CartController {
   }
 
   static async checkout (req, res, next) {
-    const UserId = req.user.id
+    const UserId = +req.loginUser.id
     try {
-      const carts = await cart.update({
+      const carts = await Cart.update({
         status: true
       }, {
         where: {

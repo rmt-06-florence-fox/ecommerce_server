@@ -13,7 +13,7 @@ module.exports = (err, req, res, next) => {
    
     }
     else {
-      res.status(err.status).json({message: err.message})
+      console.log(err)
       new Error(err.message)
     }
   }
