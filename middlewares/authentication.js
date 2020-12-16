@@ -5,6 +5,7 @@ module.exports = async (req, res, next) => {
     try {
         const { access_token } = req.headers
         if (!access_token) {
+            console.log('hiha');
             res.status(401).json({msg: 'Login first'})
         } else {
             const decoded = verifyToken(access_token)

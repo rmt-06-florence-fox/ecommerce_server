@@ -11,7 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.belongsTo(models.User)
+      // this.belongsTo(models.Cart, {foreignKey: 'id'})
+      this.belongsToMany(models.User, { through: 'Carts', foreignKey: 'ProductId' })
+      // this.hasMany(models.Cart, {foreignKey: 'UserId'})
     }
   };
   Product.init({
@@ -25,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     image_url: DataTypes.STRING,
+    category: DataTypes.STRING,
     price: {
       type: DataTypes.INTEGER,
       validate: {
