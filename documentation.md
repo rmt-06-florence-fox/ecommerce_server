@@ -4,7 +4,7 @@
 
 * **URL**
 
-  http://localhost:3000/login
+  /login
 
 * **Method:**
 
@@ -19,21 +19,24 @@
 
 * **Success Response:**
 
-  * **Code:** 201 
+  * **Code:** 201 <br />
+  **Content:** 
 {
     "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQG1haWwuY29tIiwiaWQiOjEsInJvbGUiOiJhZG1pbiIsImlhdCI6MTYwNzc0ODExMX0.q_tZtmy4lK0Ou-pfy5CZhrXi405wRspqLj9DYtPvZmw"
 }
+
  
 * **Error Response:**
 
-  * **Code:** 400
+  * **Code:** 400 <br />
+  **Content:** 
 {
     "message": "wrong email/password"
 }
 
 * **URL**
 
-  http://localhost:3000/products
+  /products
 
 * **Method:**
 
@@ -48,7 +51,8 @@
 
 * **Success Response:**
 
-  * **Code:** 200 
+  * **Code:** 200  <br />
+  **Content:** 
 {
     "data": [
         {
@@ -74,14 +78,15 @@
  
 * **Error Response:**
 
-  * **Code:** 500
+  * **Code:** 500  <br />
+  **Content:** 
 {
     "message": "internal server error"
 }
 
 * **URL**
 
-  http://localhost:3000/products
+  /products
 
 * **Method:**
 
@@ -103,7 +108,8 @@
 
 * **Success Response:**
 
-  * **Code:** 201 
+  * **Code:** 201  <br />
+  **Content:** 
 {
     "id": 6,
     "name": "Harry Potter and The Cursed Child",
@@ -116,20 +122,27 @@
  
 * **Error Response:**
 
-  * **Code:** 400
+  * **Code:** 400 <br />
+  **Content:** 
 {
     "message": "name is required,image is required,price is required,price must be number,stock is required,stock must be number"
 }
 
-  * **Code:** 401
-
-{
+  * **Code:** 401 <br />
+  **Content:** 
+  {
     "message": "please login first"
+}
+
+* **Code:** 401 <br />
+  **Content:** 
+  {
+    "message": "you aren't authorized to access this product"
 }
 
 * **URL**
 
-  http://localhost:3000/products/:id
+  /products/:id
 
 * **Method:**
 
@@ -153,7 +166,8 @@
 
 * **Success Response:**
 
-  * **Code:** 200 
+  * **Code:** 200  <br />
+  **Content:** 
 {
     "id": 6,
     "name": "Harry Potter and The Cursed Child-edit",
@@ -166,24 +180,31 @@
  
 * **Error Response:**
 
-  * **Code:** 400
+  * **Code:** 400<br />
+  **Content:** 
 {
     "message": "name is required,price is required,price must be number,stock is required,stock must be number"
 }
 
-  * **Code:** 401
-
+  * **Code:** 401<br />
+  **Content:** 
 {
     "message": "please login first"
 }
 
+* **Code:** 401 <br />
+  **Content:** 
+  {
+    "message": "you aren't authorized to access this product"
+}
+
 * **URL**
 
-  http://localhost:3000/products/:id
+  /products/:id
 
 * **Method:**
 
-  `PUT`
+  `DELETE`
   
 *  **URL Params**
 
@@ -197,27 +218,36 @@
 
 * **Success Response:**
 
-  * **Code:** 200 
+  * **Code:** 200  <br />
+  **Content:** 
 {
     "message": "Product success to delete"
 }
  
 * **Error Response:**
 
-  * **Code:** 404
+  * **Code:** 404 <br />
+  **Content:** 
 {
     "message": "data not found"
 }
 
-  * **Code:** 401
-
+  * **Code:** 401 <br />
+  **Content:** 
 {
     "message": "please login first"
 }
 
+  * **Code:** 401 <br />
+  **Content:** 
+  {
+    "message": "you aren't authorized to access this product"
+}
+
+
 * **URL**
 
-  http://localhost:3000/categories/
+  /categories/
 
 * **Method:**
 
@@ -236,7 +266,8 @@
 
 * **Success Response:**
 
-  * **Code:** 201 
+  * **Code:** 201  <br />
+  **Content:** 
 {
     "id": 13,
     "category": "Entertainment",
@@ -246,20 +277,28 @@
  
 * **Error Response:**
 
-  * **Code:** 400
+  * **Code:** 400 <br />
+  **Content:** 
 {
     "message": "category is required"
 }
 
-  * **Code:** 401
-
+  * **Code:** 401 <br />
+  **Content:** 
 {
     "message": "please login first"
 }
 
+  * **Code:** 401 <br />
+  **Content:** 
+  {
+    "message": "you aren't authorized to access this product"
+}
+
+
 * **URL**
 
-  http://localhost:3000/categories
+  /categories
 
 * **Method:**
 
@@ -274,7 +313,8 @@
 
 * **Success Response:**
 
-  * **Code:** 200 
+  * **Code:** 200  <br />
+  **Content:** 
 {
     "data": [
         {
@@ -399,6 +439,9 @@
     ]
 }
  
+* **URL**
+
+  /productCategory
 
 * **Method:**
 
@@ -418,7 +461,8 @@
 
 * **Success Response:**
 
-  * **Code:** 201 
+  * **Code:** 201  <br />
+  **Content:** 
 {
     "ProductId": 1,
     "CategoryId": 3,
@@ -428,10 +472,22 @@
  
  * **Error Response:**
 
-  * **Code:** 500
+  * **Code:** 500 <br />
+  **Content:** 
 {
     "message": "internal server error"
 }
+
+  * **Code:** 401 <br />
+  **Content:** 
+  {
+    "message": "you aren't authorized to access this product"
+}
+
+
+* **URL**
+
+  /editProductCategory/:id
 
 * **Method:**
 
@@ -453,7 +509,8 @@
 
 * **Success Response:**
 
-  * **Code:** 200 
+  * **Code:** 200  <br />
+  **Content:** 
 {
     "ProductId": 1,
     "CategoryId": 2,
@@ -463,7 +520,315 @@
  
  * **Error Response:**
 
-  * **Code:** 500
+  * **Code:** 500<br />
+  **Content:** 
 {
     "message": "internal server error"
+}
+
+  * **Code:** 401 <br />
+  **Content:** 
+  {
+    "message": "you aren't authorized to access this product"
+}
+
+
+* **URL**
+
+  /transactions
+
+* **Method:**
+
+  `GET`
+  
+*  **URL Params**
+
+   **Required:**
+   Headers:
+
+   access_token: string
+
+* **Success Response:**
+
+  * **Code:** 200  <br />
+  **Content:** 
+[
+    {
+        "id": 3,
+        "UserId": 2,
+        "ProductId": 1,
+        "quantity": 1,
+        "createdAt": "2020-12-16T16:07:12.959Z",
+        "updatedAt": "2020-12-16T16:07:12.959Z",
+        "Product": {
+            "id": 1,
+            "name": "Harry Potter and The Cursed Child-edit",
+            "image_url": "https://cdn.gramedia.com/uploads/items/9786020386201_Harry-Potter-.jpg",
+            "price": 127000,
+            "stock": 8,
+            "createdAt": "2020-12-12T08:49:51.458Z",
+            "updatedAt": "2020-12-16T16:11:50.186Z"
+        }
+    },
+    {
+        "id": 4,
+        "UserId": 2,
+        "ProductId": 2,
+        "quantity": 1,
+        "createdAt": "2020-12-16T16:07:12.960Z",
+        "updatedAt": "2020-12-16T16:07:12.960Z",
+        "Product": {
+            "id": 2,
+            "name": "Harry Potter And The Goblet Of Fire - Hufflepuff Edition",
+            "image_url": "https://cdn.gramedia.com/uploads/items/9781526610300.jpg",
+            "price": 205000,
+            "stock": 0,
+            "createdAt": "2020-12-12T08:50:40.907Z",
+            "updatedAt": "2020-12-16T17:48:47.587Z"
+        }
+    },
+    {
+        "id": 5,
+        "UserId": 2,
+        "ProductId": 1,
+        "quantity": 1,
+        "createdAt": "2020-12-16T16:11:50.185Z",
+        "updatedAt": "2020-12-16T16:11:50.185Z",
+        "Product": {
+            "id": 1,
+            "name": "Harry Potter and The Cursed Child-edit",
+            "image_url": "https://cdn.gramedia.com/uploads/items/9786020386201_Harry-Potter-.jpg",
+            "price": 127000,
+            "stock": 8,
+            "createdAt": "2020-12-12T08:49:51.458Z",
+            "updatedAt": "2020-12-16T16:11:50.186Z"
+        }
+    },
+    {
+        "id": 6,
+        "UserId": 2,
+        "ProductId": 2,
+        "quantity": 1,
+        "createdAt": "2020-12-16T16:11:50.187Z",
+        "updatedAt": "2020-12-16T16:11:50.187Z",
+        "Product": {
+            "id": 2,
+            "name": "Harry Potter And The Goblet Of Fire - Hufflepuff Edition",
+            "image_url": "https://cdn.gramedia.com/uploads/items/9781526610300.jpg",
+            "price": 205000,
+            "stock": 0,
+            "createdAt": "2020-12-12T08:50:40.907Z",
+            "updatedAt": "2020-12-16T17:48:47.587Z"
+        }
+    },
+    {
+        "id": 7,
+        "UserId": 2,
+        "ProductId": 2,
+        "quantity": 2,
+        "createdAt": "2020-12-16T17:48:47.587Z",
+        "updatedAt": "2020-12-16T17:48:47.587Z",
+        "Product": {
+            "id": 2,
+            "name": "Harry Potter And The Goblet Of Fire - Hufflepuff Edition",
+            "image_url": "https://cdn.gramedia.com/uploads/items/9781526610300.jpg",
+            "price": 205000,
+            "stock": 0,
+            "createdAt": "2020-12-12T08:50:40.907Z",
+            "updatedAt": "2020-12-16T17:48:47.587Z"
+        }
+    }
+]
+
+ * **Error Response:**
+
+  * **Code:** 500<br />
+  **Content:** 
+{
+    "message": "internal server error"
+}
+
+  * **Code:** 401 <br />
+  **Content:** 
+  {
+    "message": "you aren't authorized to access this product"
+}
+
+* **URL**
+
+  /carts
+
+* **Method:**
+
+  `GET`
+  
+*  **URL Params**
+
+   **Required:**
+   Headers:
+
+   access_token: string
+
+* **Success Response:**
+
+  * **Code:** 200  <br />
+  **Content:** 
+[
+    {
+        "id": 47,
+        "UserId": 2,
+        "ProductId": 8,
+        "quantity": 1,
+        "createdAt": "2020-12-16T19:17:11.032Z",
+        "updatedAt": "2020-12-16T19:17:11.032Z",
+        "Product": {
+            "id": 8,
+            "name": "Harry Potter And The Goblet Of Fire - Hufflepuff Edition",
+            "image_url": "https://cdn.gramedia.com/uploads/items/9781526610300.jpg",
+            "price": 180000,
+            "stock": 4,
+            "createdAt": "2020-12-12T12:03:49.613Z",
+            "updatedAt": "2020-12-12T12:48:38.444Z"
+        }
+    }
+]
+
+ * **Error Response:**
+
+  * **Code:** 500<br />
+  **Content:** 
+{
+    "message": "internal server error"
+}
+
+  * **Code:** 401 <br />
+  **Content:** 
+  {
+    "message": "you aren't authorized to access this product"
+}
+
+* **URL**
+
+  /carts
+
+* **Method:**
+
+  `POST`
+  
+*  **URL Params**
+
+   **Required:**
+   Headers:
+
+   access_token: string
+
+* **Success Response:**
+
+  * **Code:** 201  <br />
+  **Content:** 
+{
+    "id": 48,
+    "UserId": 2,
+    "ProductId": 3,
+    "quantity": 1,
+    "updatedAt": "2020-12-16T22:49:12.156Z",
+    "createdAt": "2020-12-16T22:49:12.156Z"
+}
+
+ * **Error Response:**
+
+  * **Code:** 500<br />
+  **Content:** 
+{
+    "message": "internal server error"
+}
+
+  * **Code:** 401 <br />
+  **Content:** 
+  {
+    "message": "you aren't authorized to access this product"
+}
+
+ * **Code:** 401 <br />
+  **Content:** 
+  {
+    "message": "you can not order more than available stock"
+}
+
+* **URL**
+
+  /carts/:productId
+
+* **Method:**
+
+  `PATCH`
+  
+*  **URL Params**
+
+  productId: Integer
+
+   **Required:**
+   Headers:
+
+   access_token: string
+
+* **Success Response:**
+
+  * **Code:** 200  <br />
+  **Content:** 
+{
+    "id": 48,
+    "UserId": 2,
+    "ProductId": 3,
+    "quantity": 2,
+    "updatedAt": "2020-12-16T22:49:12.156Z",
+    "createdAt": "2020-12-16T22:49:12.156Z"
+}
+
+ * **Error Response:**
+
+  * **Code:** 500<br />
+  **Content:** 
+{
+    "message": "internal server error"
+}
+
+  * **Code:** 401 <br />
+  **Content:** 
+  {
+    "message": "you aren't authorized to access this product"
+}
+
+ * **URL**
+
+  /carts/:id
+
+* **Method:**
+
+  `DELETE`
+  
+*  **URL Params**
+
+   id: integer
+
+   **Required:**
+   Headers:
+
+   access_token: string
+
+
+* **Success Response:**
+
+  * **Code:** 200  <br />
+  **Content:** 
+{
+    "message": "Product success to delete"
+}
+ 
+* **Error Response:**
+
+  * **Code:** 404 <br />
+  **Content:** 
+{
+    "message": "data not found"
 }

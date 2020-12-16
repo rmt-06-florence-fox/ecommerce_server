@@ -95,42 +95,6 @@ class ProductController{
             next(e)
         })
     }
-    static patchProduct(req, res, next){
-        const id = req.params.id
-        const obj = {
-            stock: req.body.stock
-        }
-        Product.update(obj, {
-            where: {
-                id
-            },
-            returning: true
-        })
-        .then(data=>{
-            if(!data || data[0]==0){
-                throw {
-                    status: 404,
-                    message: `data not found`
-                }
-            } else {
-                res.status(200).json(data[1][0])
-            }
-        })
-        .catch(e=>{
-            next(e)
-        })
-    }
-    static deleteStock(req, res, next){
-        Product.destroy({
-            where: {
-                stock: 0
-            }
-        })
-        .then(data => {
-            res.status(200).json({message: `Product success to delete`})
-        })
-        .catch(e => next(e))
-    }
 }
 
 module.exports = ProductController
