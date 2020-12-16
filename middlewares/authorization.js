@@ -1,7 +1,7 @@
 module.exports = (req,res,next) =>{
    const role = req.loggedIn.role
    console.log(req.loggedIn,'req logged in')
-   if(role ==='admin'){
+   if(role ==='admin' || role ==='user'){
       next()
    } else {
       next({
