@@ -1,6 +1,7 @@
 **Title**
 
-    SERVER CMS
+    Heroku Server : https://robby-cms.herokuapp.com/
+    Firabase Client : https://humble-bookstore.web.app/
 
 * **URL**
 
