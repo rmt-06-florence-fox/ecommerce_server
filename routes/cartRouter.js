@@ -7,6 +7,7 @@ router.use(authentication)
 router.post('/:productId', CartController.addOrUpdateCart)
 router.get('/', CartController.getCart)
 router.patch('/checkout', CartController.checkout)
+router.get('/histories', CartController.getHistories)
 router.use('/:id', authorizationCust)
 router.delete('/:id', CartController.deleteCart)
 

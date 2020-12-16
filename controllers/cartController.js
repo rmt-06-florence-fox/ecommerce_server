@@ -6,7 +6,8 @@ class CartController {
       const checkCart = await Cart.findOne({
         where:{
           UserId: req.loginUser.id,
-          ProductId: req.params.productId
+          ProductId: req.params.productId,
+          status: false
         }
       })
       if(checkCart){
@@ -50,6 +51,7 @@ class CartController {
           UserId: req.loginUser.id,
           status: false
         },
+        order: [['id', 'DESC']],
         include: [ Product ]
       })
       let totalPrice = 0
@@ -68,7 +70,7 @@ class CartController {
       let errors = []
       const arrPromises = []
       findData.forEach(e => {
-        if (e.quantity < e.Product.stock && e.status === false){
+        if (e.quantity <= e.Product.stock && e.status === false){
           let payloadCart = { status: true }
           let payloadProduct = { stock: e.Product.stock - e.quantity }
           arrPromises.push(Cart.update(payloadCart, { where: { id: e.id }, returning: true, transaction: t }))
@@ -96,6 +98,20 @@ class CartController {
     }
   }
 
+  static async getHistories (req, res, next) {
+    try {
+      const data = await Cart.findAll({
+        where: {
+          UserId: req.loginUser.id,
+          status: true
+        },
+        include: [ Product ]
+      })
+      res.status(200).json(data)
+    }catch(err) {
+      next(err)
+    }
+  }
   static async deleteCart (req, res, next) {
     try {
       const result = await Cart.destroy({ where: { id: req.params.id }})
