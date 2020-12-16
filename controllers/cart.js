@@ -17,35 +17,41 @@ class CartController{
           status: false
         }
       })
-
+      console.log(theCart, payload);
       const theProduct = await Product.findByPk(payload.ProductId)
-      const theUser = await User.findByPk(payload.UserId)
+      // const theUser = await User.findByPk(payload.UserId)
       // console.log(theProduct.stock)
       
       //tambah kondisi kalau udah ada quantity sebelom nya
       if(theProduct.quantity === 0){
         throw { status: 401, message: 'out of stock'}
       }
-      if(!(theCart && theProduct.stock >= theCart.quantity + payload.quantity && theCart.quantity + payload.quantity >= 0) ){ 
-        throw { status: 401, message: 'out of stock1'}
-      }
+      
+      
       if(!theCart){
+        console.log('masuk if');
         const newCart = await Cart.create(payload)
         res.status(201).json(newCart)
       }else {
-        const updateCart = await Cart.update({quantity: theCart.quantity + payload.quantity},{
-          where: {
-            id: theCart.id
-          },
-          returning: true
-        })
-        // console.log(updateCart[1][0].quantity, theCart.id, 'ini');
-        if(updateCart[1][0].quantity <= 0){
-          const deleteCart = await Cart.destroy({ where: { id: theCart.id }})
-          console.log('masuk');
-          res.status(200).json({message: 'successfully delete a cart'})
-        }else{
-          res.status(200).json(updateCart)
+        console.log('masuk else');
+        if((theProduct.stock - theCart.quantity - payload.quantity) < 0){ 
+          throw { status: 401, message: 'out of stock'}
+        }else {
+          const updateCart = await Cart.update({quantity: theCart.quantity + payload.quantity},{
+            where: {
+              id: theCart.id,
+              status: false
+            },
+            returning: true
+          })
+          // console.log(updateCart[1][0].quantity, theCart.id, 'ini');
+          if(updateCart[1][0].quantity <= 0){
+            const deleteCart = await Cart.destroy({ where: { id: theCart.id }})
+            console.log('masuk');
+            res.status(200).json({message: 'successfully delete a cart'})
+          }else{
+            res.status(200).json(updateCart)
+          }
         }
       }
     } catch (error) {
@@ -63,7 +69,7 @@ class CartController{
           status: false
         }, 
         include: [ Product ],
-        order: [['id', 'DESC']]
+        order: [['createdAt', 'ASC']]
       })
 
       carts.forEach(e => {
@@ -79,7 +85,7 @@ class CartController{
 
   static async delete (req, res, next){
     try {
-      const CartId = req.body.cardId
+      const CartId = req.body.cartId
 
       const deleteCart = await Cart.destroy({ where : {id: CartId, UserId: req.loggedInUser.id}})
       res.status(200).json({message: 'succesfully deleted an item'})
@@ -102,7 +108,7 @@ class CartController{
       const toBeExecute = []
       // res.status(200).json(checkoutCarts)
       checkoutCarts.forEach( e => {
-        if (e.quantity < e.Product.stock) {
+        if (e.quantity <= e.Product.stock) {
           toBeExecute.push(Product.update({ stock: e.Product.stock - e.quantity}, { where: { id: e.Product.id}, returning: true , transaction: t}))
           toBeExecute.push(Cart.update({status: true},{where: { id: e.id}, returning: true, transaction: t}))
         }else {
