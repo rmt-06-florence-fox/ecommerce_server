@@ -81,7 +81,10 @@ class UserController {
         } else {
           let payloadToken = {id: registered.id, email: registered.email}
           const access_token = generateToken(payloadToken);
-          res.status(200).json({access_token})
+          res.status(200).json({
+            user: payloadToken,
+            access_token
+          })
         }
       }
     }

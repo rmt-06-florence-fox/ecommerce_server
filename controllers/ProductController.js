@@ -1,4 +1,4 @@
-const { Product } = require('../models');
+const { Product,Category } = require('../models');
 
 class ProductController {
   static async add(req, res, next) {
@@ -20,7 +20,11 @@ class ProductController {
 
   static async getAll(req, res, next) {
     try {
-      let products = await Product.findAll();
+      let products = await Product.findAll({
+        include: [{
+          model: Category
+        }]
+      });
       res.status(200).json(products);
     } catch (err) {
       next(err);
