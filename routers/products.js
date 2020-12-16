@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const ProductsController = require('../controllers/productsController')
 const authentication = require('../middlewares/authentication')
-const authorization = require('../middlewares/authorization')
+const {authorization} = require('../middlewares/authorization')
 
 router.use(authentication)
 router.get('/', authorization, ProductsController.listProducts)

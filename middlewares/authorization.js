@@ -17,4 +17,23 @@ async function authorization(req, res, next) {
     }
 }
 
-module.exports = authorization
+async function authorizationCustomer(req, res, next) {
+    try {
+        const user = await User.findByPk(UserId)
+        if (user.role !== 'customer') {
+            return next({
+                name: 'NotAuthorized',
+                msg: 'Not Authorized!'
+            })
+        } else {
+            next()
+        }
+    } catch (err) {
+        next(err)
+    }
+}
+
+module.exports = {
+    authorization,
+    authorizationCustomer
+}

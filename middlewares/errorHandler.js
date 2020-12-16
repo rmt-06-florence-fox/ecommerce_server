@@ -15,9 +15,13 @@ function errorHandler(err, req, res, next) {
             status = 400;
             msg = 'Wrong Email/Password!';
             break;
-        case 'Invalid':
+        case 'OutOfProduct':
             status = 400;
-            msg = 'Invalid Email/Password!';
+            msg = 'Out Of Product!';
+            break;
+        case 'addedwishlist':
+            status = 400;
+            msg = 'Product has been added to wishlist!';
             break;
         case 'AuthenticationFailed':
             status = 401;
