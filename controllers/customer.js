@@ -181,7 +181,11 @@ class CustomerController {
     Cart.findAll({
       where: {
         UserId: req.loggedIn.id
-      }
+      },
+      order: [
+        ['createdAt', 'ASC']
+      ],
+      include: Product
     })
       .then(carts => {
         res.status(200).json(carts)
