@@ -39,8 +39,8 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'Quantity cannot be null'
         },
         min: {
-          args: [0],
-          msg: 'Min quantity is 0'
+          args: [1],
+          msg: 'Min quantity is 1'
         },
         isNumeric:{
           msg: "Only Number is Allowed"

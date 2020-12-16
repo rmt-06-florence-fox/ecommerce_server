@@ -124,23 +124,6 @@ describe('Find All Banner GET /banners', () => {
                 })
         })
     })
-    
-    describe('Get Banner Error No Token', () => {
-        test('Response Unauthorized Error Message', done => {
-            request(app)
-                .get('/banners')
-                .set('access_token', '')
-                .end((err, res) => {
-                    const { body, status } = res
-                    if(err) {
-                        return done(err)
-                    }
-                    expect(status).toBe(401)
-                    expect(body).toHaveProperty('message', 'Please Login First')
-                    done()
-                })
-        })
-    })
 })
 
 describe('Find By Id Banner GET /banners/:id', () => {

@@ -621,7 +621,7 @@ E-commerce is the activity of electronically buying or selling of products on on
 
 * **Header:**
 
-    `access_token:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsImlhdCI6MTYwNzQ4Nzk5OX0.lv-MkL9Fr8E74bgvvmtGkIUFzuyNa4jBtWAQ-UBKoJY`
+    None
 
 * **URL Params**
 
@@ -656,16 +656,6 @@ E-commerce is the activity of electronically buying or selling of products on on
                 "updatedAt": "2020-12-12T09:30:29.318Z"
             }
         ]
-    }
-    ```
-
-* **Error Response:**
-
-  * **Code:** 401 Unauthorized <br />
-    **Content:**
-    ```json
-    {
-        "message": "Please Login First"
     }
     ```
 
@@ -853,9 +843,9 @@ E-commerce is the activity of electronically buying or selling of products on on
     }
     ```
 
-**Add To Cart Product**
+**Update Or Create Cart Product**
 ---
-    Add Product to Cart.
+    Update or Add Product to Cart.
 
 * **URL**
 
@@ -863,7 +853,7 @@ E-commerce is the activity of electronically buying or selling of products on on
 
 * **Method:**
 
-    `POST`
+    `PUT`
 
 * **Header:**
 
@@ -878,7 +868,6 @@ E-commerce is the activity of electronically buying or selling of products on on
 * **Data Params**
 
   **Required:**
-
     `quantity=[integer]` <br />
 
 * **Success Response:**
@@ -887,13 +876,13 @@ E-commerce is the activity of electronically buying or selling of products on on
     **Content:**
     ```json
     {
-        "id": 9,
+        "id": 7,
         "UserId": 4,
-        "ProductId": 2,
-        "quantity": 2,
-        "status": "Unpaid",
-        "updatedAt": "2020-12-15T06:49:28.060Z",
-        "createdAt": "2020-12-15T06:49:28.060Z"
+        "ProductId": 4,
+        "quantity": 4,
+        "status": false,
+        "updatedAt": "2020-12-16T03:41:06.585Z",
+        "createdAt": "2020-12-16T03:41:06.585Z"
     }
     ```
 
@@ -923,7 +912,7 @@ E-commerce is the activity of electronically buying or selling of products on on
     **Content:**
     ```json
     {
-        "message": "Only Number is Allowed"
+        "message": "Product Quantity is min 1 and max 11"
     }
     ```
 
@@ -933,7 +922,7 @@ E-commerce is the activity of electronically buying or selling of products on on
     **Content:**
     ```json
     {
-        "message": "Min quantity is 0"
+        "message": "Sold Out"
     }
     ```
 
@@ -968,89 +957,46 @@ E-commerce is the activity of electronically buying or selling of products on on
   * **Code:** 200 <br />
     **Content:**
     ```json
-    [
-        {
-            "id": 8,
-            "UserId": 4,
-            "ProductId": 1,
-            "quantity": 2,
-            "status": "unpaid",
-            "createdAt": "2020-12-15T06:12:13.568Z",
-            "updatedAt": "2020-12-15T06:20:20.016Z"
-        },
-        {
-            "id": 9,
-            "UserId": 4,
-            "ProductId": 2,
-            "quantity": 1,
-            "status": "Unpaid",
-            "createdAt": "2020-12-15T06:49:28.060Z",
-            "updatedAt": "2020-12-15T07:05:53.906Z"
-        }
-    ]
-    ```
-
-* **Error Response:**
-
-  * **Code:** 401 Unauthorized <br />
-    **Content:**
-    ```json
     {
-        "message": "Please Login First"
-    }
-    ```
-
-    OR
-
-  * **Code:** 401 Unauthorized <br />
-    **Content:**
-    ```json
-    {
-        "message": "invalid token"
-    }
-    ```
-
-**Update Quantity Cart Product**
----
-    Update Quantity Product in Cart.
-
-* **URL**
-
-    `/cart/:idProduct/`
-
-* **Method:**
-
-    `PATCH`
-
-* **Header:**
-
-    `access_token:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJ0YXVmaWsxQG1haWwuY29tIiwiaWF0IjoxNjA4MDEwOTM4fQ.CYq2hbqgOgnioY5BrIzGbDUcT3YJq0em59cHil0NSn8`
-
-* **URL Params**
-
-    **Required:**
-
-    `id=[integer]`
-
-* **Data Params**
-
-  **Required:**
-
-    `quantity=[integer]` <br />
-
-* **Success Response:**
-
-  * **Code:** 200 <br />
-    **Content:**
-    ```json
-    {
-        "id": 9,
-        "UserId": 4,
-        "ProductId": 2,
-        "quantity": 3,
-        "status": "Unpaid",
-        "createdAt": "2020-12-15T06:49:28.060Z",
-        "updatedAt": "2020-12-15T07:10:24.751Z"
+        "products": [
+            {
+                "id": 5,
+                "UserId": 4,
+                "ProductId": 2,
+                "quantity": 4,
+                "status": false,
+                "createdAt": "2020-12-16T03:38:54.718Z",
+                "updatedAt": "2020-12-16T03:38:54.718Z",
+                "Product": {
+                    "id": 2,
+                    "name": "Adidas NMD R1",
+                    "image_url": "https://assets.adidas.com/images/w_600,f_auto,q_auto/73101ab9d9ee445db281ab57011a0229_9366/NMD_R1_Shoes_Blue_FV1734_01_standard.jpg",
+                    "price": 2600000,
+                    "stock": 5,
+                    "createdAt": "2020-12-15T06:38:57.464Z",
+                    "updatedAt": "2020-12-15T06:38:57.464Z"
+                }
+            },
+            {
+                "id": 6,
+                "UserId": 4,
+                "ProductId": 4,
+                "quantity": 4,
+                "status": false,
+                "createdAt": "2020-12-16T03:38:57.108Z",
+                "updatedAt": "2020-12-16T03:38:57.108Z",
+                "Product": {
+                    "id": 4,
+                    "name": "Star Wars Mandalorian",
+                    "image_url": "https://assets.adidas.com/images/h_840,f_auto,q_auto:sensitive,fl_lossy/a28ebb0ea741481d8ca7ac4d00f09a31_9366/Star_Wars_Mandalorian_NMD_R1_Shoes_Brown_GZ2745_01_standard.jpg",
+                    "price": 2300000,
+                    "stock": 11,
+                    "createdAt": "2020-12-15T09:49:41.732Z",
+                    "updatedAt": "2020-12-15T09:49:41.732Z"
+                }
+            }
+        ],
+        "totalPrice": 19600000
     }
     ```
 
@@ -1071,26 +1017,6 @@ E-commerce is the activity of electronically buying or selling of products on on
     ```json
     {
         "message": "invalid token"
-    }
-    ```
-
-    OR 
-
-  * **Code:** 400 Bad Request <br />
-    **Content:**
-    ```json
-    {
-        "message": "Only Number is Allowed"
-    }
-    ```
-
-    OR 
-
-  * **Code:** 400 Bad Request <br />
-    **Content:**
-    ```json
-    {
-        "message": "Min quantity is 0"
     }
     ```
 
@@ -1100,11 +1026,11 @@ E-commerce is the activity of electronically buying or selling of products on on
 
 * **URL**
 
-    `/cart/:idProduct/`
+    `/cart/:idCart/`
 
 * **Method:**
 
-    `PATCH`
+    `DELETE`
 
 * **Header:**
 
@@ -1120,7 +1046,7 @@ E-commerce is the activity of electronically buying or selling of products on on
 
   **Required:**
 
-    `quantity=[integer]` <br />
+    None
 
 * **Success Response:**
 
@@ -1128,7 +1054,7 @@ E-commerce is the activity of electronically buying or selling of products on on
     **Content:**
     ```json
     {
-        "message": "Product Deleted Successfuly"
+        "message": "Cart Deleted Successfuly"
     }
     ```
 
@@ -1149,5 +1075,15 @@ E-commerce is the activity of electronically buying or selling of products on on
     ```json
     {
         "message": "invalid token"
+    }
+    ```
+
+    OR
+
+  * **Code:** 404 Not Found <br />
+    **Content:**
+    ```json
+    {
+        "message": "Error Not Found"
     }
     ```

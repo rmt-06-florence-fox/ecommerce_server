@@ -1,15 +1,25 @@
+const { verifyToken } = require('../helpers/jwt')
 const { User } = require('../models')
 
 module.exports = async (req, res, next) => {
     try {
-        let id = req.loggedInUser.id
-        const user = await User.findByPk(id)
-        if (user.role == 'customer') {
-            next()
-        } else {
+        const { access_token } = req.headers
+        if (!access_token) {
             throw {
                 status: 401,
-                message: 'You are not authorized'
+                message: "Please Login First"
+            }
+        } else {
+            let decoded = verifyToken(access_token)
+            req.loggedInUser = decoded
+            const user = await User.findOne({ where: { id: decoded.id } })
+            if (user.role == 'customer') {
+                next()
+            } else {
+                throw {
+                    status: 401,
+                    message: 'You are not authorized'
+                }
             }
         }
     } catch (error) {
