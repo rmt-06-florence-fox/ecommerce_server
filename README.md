@@ -19,6 +19,7 @@ SECRET=grootnyasiapa
 ```
 Client URL : http://localhost:8080/ || https://cms-admin-tio.web.app/
 Server URL : http://localhost:3000/ || https://cms-server-tio.herokuapp.com/
+Customer URL : https://e-commerce-tio.web.app/
 ```
 
 ### GET/login
@@ -362,4 +363,227 @@ _Response(500)_
 {
   message : "internal server error"
 }
+```
+
+### POST/carts
+>creat or edit a cart for customer
+
+_Request Header_
+```
+access_token: 'string'
+```
+_Request Body_
+```
+productId: number
+```
+_Response(201)_
+```
+{
+  {
+    "id": 28,
+    "UserId": 3,
+    "ProductId": 3,
+    "quantity": 1,
+    "status": false,
+    "updatedAt": "2020-12-16T14:14:42.460Z",
+    "createdAt": "2020-12-16T14:14:42.460Z"
+  }
+}
+```
+_Response(200)_
+```
+[
+    1,
+    [
+        {
+            "id": 28,
+            "UserId": 3,
+            "ProductId": 3,
+            "status": false,
+            "quantity": 2,
+            "createdAt": "2020-12-16T14:14:42.460Z",
+            "updatedAt": "2020-12-16T14:15:25.494Z"
+        }
+    ]
+]
+
+or
+
+{
+  message: 'successfully delete a cart'
+}
+```
+_Response(401)_
+```
+{
+  message: 'out of stock'
+}
+```
+_Response(500)_
+```
+{
+  message: 'internal server error'
+}
+```
+### GET/carts
+>fetch all unpaid carts for customer
+
+_Request Header_
+```
+access_token: 'string'
+```
+_Request Body_
+```
+none
+```
+_Response(200)_
+```
+{
+    "totalPrice": 600000,
+    "carts": [
+        {
+            "id": 28,
+            "UserId": 3,
+            "ProductId": 3,
+            "status": false,
+            "quantity": 2,
+            "createdAt": "2020-12-16T14:14:42.460Z",
+            "updatedAt": "2020-12-16T14:15:25.494Z",
+            "Product": {
+                "id": 3,
+                "name": "groot2",
+                "image_url": "https://ae01.alicdn.com/kf/H21b16fc89a5b4e6c87e9d80ef495b4f1k/Lucu-Marvel-Avangers-Baby-Groot-Action-Figure-Mainan-PVC-Pahlawan-Model-Bayi-Manusia-Pohon-Lucu-Model.jpg",
+                "price": 300000,
+                "stock": 9,
+                "createdAt": "2020-12-09T09:24:14.712Z",
+                "updatedAt": "2020-12-16T13:22:40.078Z"
+            }
+        }
+    ]
+}
+```
+_Response(500)_
+```
+{
+  message: 'internal server error'
+}
+```
+### GET/carts/histories
+>fetch histories for customer
+
+_Request Header_
+```
+access_token: 'string'
+```
+_Request Body_
+```
+none
+```
+_Response(200)_
+```
+"carts": [
+        {
+            "id": 28,
+            "UserId": 3,
+            "ProductId": 3,
+            "status": true,
+            "quantity": 2,
+            "createdAt": "2020-12-16T14:14:42.460Z",
+            "updatedAt": "2020-12-16T14:15:25.494Z",
+            "Product": {
+                "id": 3,
+                "name": "groot2",
+                "image_url": "https://ae01.alicdn.com/kf/H21b16fc89a5b4e6c87e9d80ef495b4f1k/Lucu-Marvel-Avangers-Baby-Groot-Action-Figure-Mainan-PVC-Pahlawan-Model-Bayi-Manusia-Pohon-Lucu-Model.jpg",
+                "price": 300000,
+                "stock": 9,
+                "createdAt": "2020-12-09T09:24:14.712Z",
+                "updatedAt": "2020-12-16T13:22:40.078Z"
+            }
+        }
+    ]
+```
+_Response(500)_
+```
+{
+  message: 'internal server error'
+}
+```
+### DELETE/carts/
+>delete a cart for customer
+
+_Request Header_
+```
+access_token: 'string'
+```
+_Request Body_
+```
+cartId
+```
+_Response(200)_
+```
+{
+  message: 'succesfully deleted an item'
+}
+```
+_Response(500)_
+```
+{
+  message: 'internal server error'
+}
+```
+### DELETE/carts/
+>checkout all active cart for customer
+
+_Request Header_
+```
+access_token: 'string'
+```
+_Request Body_
+```
+none
+```
+_Response(200)_
+```
+{
+  {
+    "success": [
+        [
+            1,
+            [
+                {
+                    "id": 3,
+                    "name": "groot2",
+                    "image_url": "https://ae01.alicdn.com/kf/H21b16fc89a5b4e6c87e9d80ef495b4f1k/Lucu-Marvel-Avangers-Baby-Groot-Action-Figure-Mainan-PVC-Pahlawan-Model-Bayi-Manusia-Pohon-Lucu-Model.jpg",
+                    "price": 300000,
+                    "stock": 7,
+                    "createdAt": "2020-12-09T09:24:14.712Z",
+                    "updatedAt": "2020-12-16T14:26:22.830Z"
+                }
+            ]
+        ],
+        [
+            1,
+            [
+                {
+                    "id": 28,
+                    "UserId": 3,
+                    "ProductId": 3,
+                    "status": true,
+                    "quantity": 2,
+                    "createdAt": "2020-12-16T14:14:42.460Z",
+                    "updatedAt": "2020-12-16T14:26:22.830Z"
+                }
+            ]
+        ]
+    ]
+}
+}
+```
+_Response(400)_
+```
+  {
+    message: [
+      'failed to buy {product-name}',
+      ...
+  { ]
 ```
