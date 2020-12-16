@@ -9,6 +9,7 @@ class CartController {
 			where: {
 				UserId,
 			},
+			order: [['id', 'ASC']],
 			include: [Product],
 		})
 			.then((data) => {
