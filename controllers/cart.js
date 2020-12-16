@@ -35,6 +35,13 @@ class CartController{
       }else {
         console.log('masuk else');
         if((theProduct.stock - theCart.quantity - payload.quantity) < 0){ 
+          const fixQuantity = await Cart.update({quantity: theProduct.stock},{
+            where: {
+              id: theCart.id,
+              status: false
+            }
+          })
+          // console.log(fixQuantity);
           throw { status: 401, message: 'out of stock'}
         }else {
           const updateCart = await Cart.update({quantity: theCart.quantity + payload.quantity},{
@@ -106,6 +113,7 @@ class CartController{
       })
       const errors = []
       const toBeExecute = []
+      const fixQuantity = []
       // res.status(200).json(checkoutCarts)
       checkoutCarts.forEach( e => {
         if (e.quantity <= e.Product.stock) {
@@ -114,11 +122,18 @@ class CartController{
         }else {
           errors.push(`failed to buy ${e.Product.name}`)
           // throw { status: 400, message: 'transaction failed'}
+          fixQuantity.push(Cart.update({quantity: e.Product.stock},{
+            where: {
+              id: e.id,
+              status: false
+            }
+          }))
         }
       })
       // console.log(toBeExecute);
       const result = await Promise.all(toBeExecute)
       if(errors.length > 0){
+        const fox = await Promise.all(fixQuantity)
         throw { status: 400, message: errors}
       }
       await t.commit();
