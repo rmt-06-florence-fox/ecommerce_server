@@ -1,6 +1,7 @@
 async function authorize(req, res, next) {
   try {
-    const { role } = req.headers
+    const role = req.loggedin.role
+    // console.log(role)
     if (role === 'admin') {
       next()
     } else {

@@ -31,6 +31,7 @@ class userController {
       },
     })
       .then((data) => {
+        // console.log(data)
         if (!data) {
           throw {
             status: 404,
@@ -40,6 +41,7 @@ class userController {
           const access_token = generateToken({
             id: data.id,
             email: data.email,
+            role: data.role
           });
           res.status(200).json({
             id: data.id,

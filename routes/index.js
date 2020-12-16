@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const adminRoutes = require("./adminRoutes");
 const productRoutes = require("./productRoutes");
+const cartRoutes = require('./cartRoutes');
+const userController = require("../controllers/userController");
 
 // homepage, fetch data bagian produk
 router.get("/", (req, res) => {
@@ -11,8 +13,9 @@ router.get("/", (req, res) => {
 router.use("/admin", adminRoutes);
 
 // customer
-router.post('/register')
-router.post('/login')
+router.post('/register', userController.register)
+// router.post('/login', userController.loginUser)
+
 router.use('/cart', cartRoutes)
 
 // product(cms)

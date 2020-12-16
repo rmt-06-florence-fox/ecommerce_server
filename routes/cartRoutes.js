@@ -1,8 +1,7 @@
 const cart = require('express').Router()
 const cartController = require('../controllers/cartController')
 
-cart.get('/', (req, res, next) => {
-  res.send('dari route cart')
-})
+cart.get('/', cartController.get)
+cart.post('/', cartController.create)
 
 module.exports = cart

@@ -6,8 +6,7 @@ admin.get('/', (req, res) => {
   res.send('ok')
 })
 
-// routes register/login
-admin.post('/register', userController.register)
+// routes login
 admin.post('/login', userController.login)
 
 module.exports = admin
