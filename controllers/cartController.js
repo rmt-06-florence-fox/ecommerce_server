@@ -1,4 +1,4 @@
-const { User, Product, Cart } = require('../models')
+const { User, Product, Cart, sequelize } = require('../models')
 
 class CartController {
   static async addOrUpdateCart (req, res, next) {
@@ -47,7 +47,8 @@ class CartController {
     try {
       const data = await Cart.findAll({
         where: {
-          UserId: req.loginUser.id
+          UserId: req.loginUser.id,
+          status: false
         },
         include: [ Product ]
       })
@@ -61,27 +62,28 @@ class CartController {
   }
   
   static async checkout (req, res, next) {
+    const t = await sequelize.transaction()
     try{
       const findData = await Cart.findAll({ where: { UserId: req.loginUser.id }, include: [Product]})
-      const arrPromises = []
       let errors = []
+      const arrPromises = []
       findData.forEach(e => {
         if (e.quantity < e.Product.stock && e.status === false){
           let payloadCart = { status: true }
           let payloadProduct = { stock: e.Product.stock - e.quantity }
-          arrPromises.push(Cart.update(payloadCart, { where: { id: e.id }, returning: true }))
-          arrPromises.push(Product.update(payloadProduct, { where: { id: e.ProductId }, returning: true }))
-        }else {
-          errors.push(`failed to buy ${e.Product.name}`)
+          arrPromises.push(Cart.update(payloadCart, { where: { id: e.id }, returning: true, transaction: t }))
+          arrPromises.push(Product.update(payloadProduct, { where: { id: e.ProductId }, returning: true, transaction: t }))
         }
+        else if(e.quantity > e.Product.stock && e.status ===  false) errors.push(`failed to buy ${e.Product.name}`) 
       })
+      const data = await Promise.all(arrPromises)
       if(errors.length) {
         throw {
           status: 400,
           messages: errors
         }
       }
-      const data = await Promise.all(arrPromises)
+      await t.commit()
       const result = data.map((e, index) => {
         if(index % 2 === 0) {
           return e[1][0]
@@ -89,6 +91,7 @@ class CartController {
       })
       res.status(200).json(result)
     } catch(err) {
+      await t.rollback()
       next(err)
     }
   }
