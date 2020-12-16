@@ -9,12 +9,12 @@ const {User} = require('../models/index')
 let access_token
 beforeAll(async done => {
   try {
-    let data = await User.findOne({
-      where: {
-        email: 'admin@mail.com'
-      }
+    let data = await User.create({
+      email: 'admin@mail.com',
+      password: 1234,
+      role: 'admin'
     })
-    access_token = generateToken({id: data.id, email: data.email, role: data.role})
+    // access_token = generateToken({id: data.id, email: data.email, role: data.role})
     done()
   } catch (error) {
     done()
@@ -96,7 +96,7 @@ describe('Login User POST /login', () => {
           return done(err)
         }
         expect(status).toBe(200)
-        expect(body).toHaveProperty('access_token', access_token)
+        expect(body).toHaveProperty('access_token', expect.any(String))
         done()
       })
     })

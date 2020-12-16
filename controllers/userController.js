@@ -18,6 +18,7 @@ class UserController {
     }
     static async login(req, res, next){
         try {
+            console.log('masuk sini kan???')
             let data = await User.findOne({
                 where: {
                     email: req.body.email    
@@ -28,16 +29,20 @@ class UserController {
                     status: 400,
                     message: `Invalid Account`
                 })
-            } else if(compare(req.body.password, data.password)){
-                    const access_token = generateToken({id: data.id, email: data.email, role: data.role})
-                    res.status(200).json({
-                        access_token
-                    })
             } else {
-                throw({
-                    status: 400,
-                    message: `invalid email or password`
-                })
+                if(data.role == 'admin'){
+                    if(compare(req.body.password, data.password)){
+                        const access_token = generateToken({id: data.id, email: data.email, role: data.role})
+                        res.status(200).json({
+                            access_token
+                        })
+                } else {
+                    throw({
+                        status: 400,
+                        message: `invalid email or password`
+                    })
+                }
+                }
             }
         } catch (error) {
             next(error)

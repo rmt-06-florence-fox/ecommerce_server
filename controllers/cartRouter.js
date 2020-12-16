@@ -6,7 +6,11 @@ class CartRouter {
             let data = await Cart.findAll({
                 where: {
                     UserId: req.userLoggedIn.id
-                }
+                },
+                include: {
+                    model: Product
+                },
+                attributes: ['id', 'UserId', 'ProductId', 'quantity']
             })
             res.status(200).json(data)
         } catch (error) {
@@ -73,14 +77,33 @@ class CartRouter {
     }
     static async editQuantity (req, res, next) {
         try {
+            
             let id = req.params.id
-            let data = await Cart.update({stock: req.body.stock}, {
+            //cari datanya dulu
+            let newQuantity = req.body.quantity
+            let cartData = await Cart.findOne({
                 where: {
                     id
                 },
-                returning: true
+                include: {
+                    model: Product
+                }
             })
-            res.status(200).json(data[1][0])
+            console.log(cartData)
+            if(newQuantity <= cartData.Product.stock){
+                let data = await Cart.update({quantity: req.body.quantity}, {
+                    where: {
+                        id
+                    },
+                    returning: true
+                })
+                res.status(200).json(data[1][0])
+            } else {
+                throw({
+                    status: 400,
+                    message: 'Stock not available'
+                })
+            }
         } catch (error) {
             next(error)
         }
