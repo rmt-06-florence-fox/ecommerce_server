@@ -13,9 +13,11 @@ class CartController{
       const theCart = await Cart.findOne({
         where: {
           UserId: payload.UserId,
-          ProductId: payload.ProductId
+          ProductId: payload.ProductId,
+          status: false
         }
       })
+
       const theProduct = await Product.findByPk(payload.ProductId)
       const theUser = await User.findByPk(payload.UserId)
       // console.log(theProduct.stock)
@@ -24,8 +26,8 @@ class CartController{
       if(theProduct.quantity === 0){
         throw { status: 401, message: 'out of stock'}
       }
-      if(theCart && theProduct.stock <= theCart.quantity){ 
-        throw { status: 401, message: 'out of stock'}
+      if(!(theCart && theProduct.stock >= theCart.quantity + payload.quantity && theCart.quantity + payload.quantity >= 0) ){ 
+        throw { status: 401, message: 'out of stock1'}
       }
       if(!theCart){
         const newCart = await Cart.create(payload)
@@ -60,7 +62,8 @@ class CartController{
           UserId: req.loggedInUser.id,
           status: false
         }, 
-        include: [ Product ]
+        include: [ Product ],
+        order: [['id', 'DESC']]
       })
 
       carts.forEach(e => {
@@ -114,7 +117,7 @@ class CartController{
       }
       await t.commit();
       console.log(result);
-      res.status(200).json({ success: result , failed: errors})
+      res.status(200).json({ success: result })
 
     } catch (error) {
       await t.rollback();
