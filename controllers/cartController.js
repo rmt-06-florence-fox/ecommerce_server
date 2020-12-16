@@ -16,15 +16,26 @@ class CartController {
           const payload = { quantity: checkCart.quantity + Number(req.body.quantity) }
           const result = await Cart.update(payload, {
             where: {
+              id: checkCart.id,
               UserId: req.loginUser.id,
-              ProductId: req.params.productId
+              ProductId: req.params.productId,
+              status: false
             },
             returning: true
           })
-          if(result[1][0].quantity === 0) {
-            const deleteCart = await Cart.destroy({ where: { id: result[1][0].id }})
-            res.status(200).json({ message: `Successfully deleted this cart !`}) 
-          }else res.status(200).json(result[1][0])
+          if (result.length) {
+            if (result[1][0].quantity === 0) {
+              const deleteCart = await Cart.destroy({ 
+                where: { 
+                  id: result[1][0].id,
+                  UserId: req.loginUser.id,
+                  ProductId: req.params.productId,
+                  status: false 
+                }
+              })
+              res.status(200).json({ message: `Successfully deleted this cart !`}) 
+            } else res.status(200).json(result[1][0])
+          }
        }else {
           throw {
             status: 400,
@@ -51,7 +62,7 @@ class CartController {
           UserId: req.loginUser.id,
           status: false
         },
-        order: [['id', 'DESC']],
+        order: [['createdAt', 'DESC']],
         include: [ Product ]
       })
       let totalPrice = 0
@@ -105,7 +116,8 @@ class CartController {
           UserId: req.loginUser.id,
           status: true
         },
-        include: [ Product ]
+        include: [ Product ],
+        order: [['updatedAt', 'ASC']]
       })
       res.status(200).json(data)
     }catch(err) {
