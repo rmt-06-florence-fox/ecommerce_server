@@ -1,8 +1,14 @@
-const { Wishlist } = require('../models/wishlist')
+const { Wishlist, Product } = require('../models/wishlist')
 
 class ControllerWishList {
     static showAllDataWishlist (req, res, next) {
-        Wishlist.findAll()
+        const UserId = req.dataUser.id
+        Wishlist.findAll({
+            where: {
+                UserId
+            },
+            include: Product
+        })
             .then(data => {
                 res.status(200).json(data)
             })
@@ -13,7 +19,7 @@ class ControllerWishList {
 
     static addDataWishlist (req, res, next) {
         let UserId = req.dataUser.id
-        let ProductId = req.params.id
+        let ProductId = req.body.id
         let objWishlist = {
             ProductId,
             UserId
@@ -28,10 +34,12 @@ class ControllerWishList {
     }
 
     static deleteDataWishlist (req, res, next) {
-        let id = req.params.id
+        let UserId = req.dataUser.id
+        let ProductId = req.params.id
         Wishlist.destroy({
             where: {
-                id
+                UserId,
+                ProductId
             }
         })
         .then(data => {
