@@ -12,7 +12,7 @@ const authorization = require("../middlewares/authorization")
 route.post("/registeradmin", ControllerUser.registerAdmin)
 route.post("/registercustomer", ControllerUser.registerCustomer)
 route.post("/login", ControllerUser.loginUser)
-route.get('/categorie', ControllerCategorie.fetAllCategories)
+route.get('/categorie', ControllerCategorie.fetchAllCategories)
 route.get("/products", ControllerProduct.showAllData)
 
 route.use(authentication)
@@ -40,21 +40,3 @@ route.delete("/wishlist/:id", ControllerWishlist.deleteDataWishlist)
 route.patch("/checkout", ControllerUserProduct.checkout)
 
 module.exports = route
-
-// buat fetchCategories
-
-// login admin
-// 1. buat category
-// 2. buat product
-// 3. fetch data
-// 4. edit data
-// 6. delete data
-
-// customer
-// 1. register
-// 2 loginUser
-// 3. fetchProduct data dan category
-// 4. add toChart
-// 5. increment decrement quantity
-// 6. delete
-// 7. addtowishlist

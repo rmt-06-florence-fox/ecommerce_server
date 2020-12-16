@@ -1,7 +1,7 @@
 const { Categorie } = require('../models')
 
 class ControllerCategorie {
-    static fetAllCategories(req, res, next) {
+    static fetchAllCategories(req, res, next) {
         Categorie.findAll()
             .then(data => {
                 res.status(200).json(data)
