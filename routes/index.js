@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const adminRoutes = require("./adminRoutes");
 const productRoutes = require("./productRoutes");
-const authentication = require("../middlewares/authentication");
 
 // homepage, fetch data bagian produk
 router.get("/", (req, res) => {
@@ -12,8 +11,9 @@ router.get("/", (req, res) => {
 router.use("/admin", adminRoutes);
 
 // customer
-// router.post('/register')
-// router.post('/login')
+router.post('/register')
+router.post('/login')
+router.use('/cart', cartRoutes)
 
 // product(cms)
 router.use("/products", productRoutes);

@@ -25,7 +25,6 @@ class productController {
       next(error)
     }
   }
-
   static async get(req, res, next) {
     try {
       const data = await Product.findAll()
@@ -46,7 +45,7 @@ class productController {
       const updateProduct = await Product.update(payload, {
         where: {
           id: id
-        }, 
+        },
         returning: true
       })
       res.status(200).json(updateProduct[1][0])
