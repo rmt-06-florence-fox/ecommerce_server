@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "title": "Nike",
+        "status": "Active",
+        "image_url": "https://i.pinimg.com/originals/bd/60/ab/bd60ab553206e3b5e785de47b458ad06.png" 
+    },
+    {
+        "id": 2,
+        "title": "Apple",
+        "status": "Active",
+        "image_url": "https://img10.jd.id/Indonesia/nHBfsgAAdwAAABgAAUEw_AAF4gQ.png" 
+    },
+    {
+        "id": 3,
+        "title": "Denim",
+        "status": "Active",
+        "image_url": "https://i.pinimg.com/originals/46/12/e6/4612e6f2ac6ab30f489dc43eb9d7ba4f.jpg" 
+    }
+]

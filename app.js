@@ -18,6 +18,6 @@ app.use(urlencoded({ extended: true}))
 app.use('/', routes)
 app.use(errorHandler.handle)
 
-// app.listen(port, () => console.log(port))
+app.listen(port, () => console.log(port))
 
 module.exports = app
