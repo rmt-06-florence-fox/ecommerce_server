@@ -5,7 +5,9 @@ class CartController {
         try {
             const exist = await Cart.findOne({
                 where: {
-                    ProductId: req.params.id
+                    UserId: req.loggedInUser.id,
+                    ProductId: req.params.id,
+                    status: false
                 }
             })
             const dataProduct = await Product.findByPk(req.params.id)
@@ -48,6 +50,7 @@ class CartController {
                 }
             }
         } catch (err) {
+            console.log(err);
             next(err)
         }
     }
@@ -98,28 +101,64 @@ class CartController {
 
     static async putCart(req, res, next) {
         try {
-            const dataCart = await Cart.findByPk(req.params.id)
-            const dataProduct = await Product.findByPk(dataCart.ProductId)
-            let updatedQuantity = Number(dataCart.quantity)+Number(req.body.quantity)
-            const updatedData = await Cart.update({
-                quantity: updatedQuantity,
-                price: Number(dataProduct.price)*updatedQuantity
-                }, {
+            console.log(req.body.quantity);
+            const dataCart = await Cart.findOne({
                 where: {
-                id: dataCart.id
-                },
-                returning: true
+                    ProductId: req.params.id
+                }
             })
-            if (updatedData[1][0].quantity < 1) {
+            const dataProduct = await Product.findByPk(req.params.id)
+            if (req.body.info === 'increase' || req.body.info === 'decrease') {
+                let updatedQuantity = Number(dataCart.quantity)+Number(req.body.quantity)
+                if (dataProduct.stock < updatedQuantity) {
+                    throw {
+                        status: 400,
+                        message: `You can only increase the amount of order up to ${dataProduct.stock}`
+                    }
+                }
+                const updatedData = await Cart.update({
+                    quantity: updatedQuantity,
+                    price: Number(dataProduct.price)*updatedQuantity
+                    }, {
+                    where: {
+                        id: dataCart.id
+                    },
+                    returning: true
+                })
+                if (updatedData[1][0].quantity < 1) {
+                    Cart.destroy({
+                        where: {
+                            id: updatedData[1][0].id
+                        }
+                    })
+                    res.status(200).json({message: `Product ${dataProduct.name} Has Been Successfully Removed From Your Cart!`})
+                } else {
+                    if (dataCart.quantity > updatedQuantity) {
+                        res.status(200).json({message: `The Amount of Product ${dataProduct.name} Orders Has Been Successfully Decreased!`})
+                    } else {
+                        res.status(200).json({message: `The Amount of Product ${dataProduct.name} Orders Has Been Successfully Increased!`})
+                    }
+                }
+            } else if (Number(req.body.quantity) > 0) {
+                console.log('masuk');
+                const updateCart = await Cart.update({
+                    quantity: Number(req.body.quantity),
+                    price: Number(dataProduct.price)*Number(req.body.quantity)
+                    }, {
+                    where: {
+                        id: dataCart.id
+                    }
+                })
+                res.status(200).json({message: `The Amount of Product ${dataProduct.name} Orders Has Been Successfully Updated!`})
+            } else if (Number(req.body.quantity) === 0) {
                 Cart.destroy({
                     where: {
-                        id: updatedData[1][0].id
+                        id: dataCart.id
                     }
                 })
                 res.status(200).json({message: `Product ${dataProduct.name} Has Been Successfully Removed From Your Cart!`})
-            } else {
-                res.status(200).json({message: `The Amount of Product ${dataProduct.name} Orders Has Been Successfully Increased!`})
             }
+            
         } catch (err) {
             next(err)
         }
@@ -129,14 +168,29 @@ class CartController {
         try {
             const dataCart = await Cart.findByPk(req.params.id)
             const dataProduct = await Product.findByPk(dataCart.ProductId)
-            const data = await Cart.destroy({
+            await Cart.destroy({
                 where: {
                     id: req.params.id
                 }
             })
             res.status(200).json({message: `Product ${dataProduct.name} Has Been Successfully Removed From Your Cart`})
         } catch (err) {
-            
+            next(err)
+        }
+    }
+
+    static async history(req, res, next) {
+        try {
+            const data = await Cart.findAll({
+                where: {
+                    UserId: req.loggedInUser.id,
+                    status: true
+                },
+                include: [Product]
+            })
+            res.status(200).json(data)
+        } catch (err) {
+            next(err)
         }
     }
 }

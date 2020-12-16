@@ -16,6 +16,7 @@ Ecommerce CMS apps.
 - `PATCH /carts/:id`
 - `PUT /carts/:id`
 - `DELETE /carts/:id`
+- `GET /history`
 
 ** Login User **
 ----
@@ -741,4 +742,62 @@ Content:
 {
     "status": 401,
     "message": "Please Login First"
+}
+
+===========================================================================
+
+** GET History **
+----
+    Return json data about all history transaction
+
+** URL **
+----
+`http://localhost:3000/history`
+
+** Method: **
+----
+`GET`
+
+** Header: **
+----
+`access_token`: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJjdXN0b21lckBtYWlsLmNvbSIsImlhdCI6MTYwODA0ODQ5MX0.Onj_iCH2xHux7-rYwrajv54BQrREqpFGlbLtvm-s4V4"
+
+** Required Data Body: **
+----
+none
+
+
+**  Success Response:  ** 
+----
+Code: 200
+Content:
+[
+    {
+        "id": 26,
+        "UserId": 3,
+        "ProductId": 2,
+        "quantity": 2,
+        "price": 200,
+        "status": true,
+        "createdAt": "2020-12-16T20:15:32.208Z",
+        "updatedAt": "2020-12-16T20:30:28.288Z",
+        "Product": {
+            "id": 2,
+            "name": "Pajar",
+            "image_url": "https://i.imgur.com/vKEmjlK.png",
+            "price": 100,
+            "stock": 11,
+            "createdAt": "2020-12-15T12:07:58.455Z",
+            "updatedAt": "2020-12-15T12:07:58.455Z"
+        }
+    }
+]
+
+** Error Response: **
+----
+Code: 500 Internal Server Error
+Content: 
+{
+    "status": 500,
+    "message": "Internal Server Error"
 }
