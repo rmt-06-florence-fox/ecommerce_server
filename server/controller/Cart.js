@@ -4,15 +4,31 @@ class CartController {
   static async find (req, res, next) {
     const UserId = +req.loginUser.id
     console.log(UserId)
+    
     try {
-      const cart = await User.findByPk(UserId, {
+      const data = await Cart.findAll ({
         include: Product,
         attributes: {
           exclude: ['password']
         }
       })
-
-      res.status(200).json(cart)
+      console.log(data.id)
+      const carts = data.map((cart,index) => {
+        const total = cart.amount * cart.Product.price
+        console.log(data.id)
+        return {
+          UserId: cart.UserId,
+          ProductId: cart.ProductId,
+          amount: cart.amount,
+          status: cart.status,
+          total: total,
+          createdAt: cart.createdAt,
+          updatedAt: cart.updatedAt,
+          Product: cart.Product
+        }
+      })
+      // console.log(carts)
+      res.status(200).json(carts)
     } catch (err) {
       console.log(err)
       next(err)
@@ -22,19 +38,33 @@ class CartController {
   static async add (req, res, next) {
     const UserId = +req.loginUser.id
     const { ProductId } = req.body
+    console.log(req.body)
     console.log(UserId)
+    const payload = {
+      UserId,
+      ProductId,
+      amount: 1,
+      status: false
+    }
     try {
       const check = await Product.findByPk(ProductId)
       if (check.stock > 0) {
-        const [ cart, created ] = await Cart.findOrCreate({
+        let cart = await Cart.findOne({
           where: {
             UserId,
-            ProductId,
-            status: false
+            ProductId
           }
         })
-        if (created) res.status(201).json(cart)
-        else res.status(200).json(cart)
+          if (!cart) {
+            cart = await Cart.create (payload)
+            res.status(201).json(cart)
+          }
+          else {
+            cart = await Cart.increment('amount', 
+                                    {where: {UserId, ProductId }})
+            res.status(200).json(cart)
+          }
+        
       } else {
         throw new Error ('Product stock is empty')
       }

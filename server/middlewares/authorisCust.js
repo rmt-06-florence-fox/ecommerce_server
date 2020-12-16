@@ -3,7 +3,7 @@ const {User,Product,Cart} = require('../models')
 
 module.exports = async (req, res, next) => {
   try {
-    const loggedUserId = req.loginUser.id
+    const loggedUserId = +req.loginUser.id
     console.log(loggedUserId)
     let data = await User.findOne({
       where: {id: loggedUserId}

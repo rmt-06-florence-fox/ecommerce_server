@@ -2,8 +2,10 @@
 const {User,Product,Cart} = require('../models')
 
 module.exports = async (req, res, next) => {
-  const UserId = +req.user.id;
-  const ProductId = +req.params.id;
+
+  const UserId = +req.loginUser.id
+  const ProductId = +req.params.id
+  console.log(req.params)
   try {
     const cart = await Cart.findOne({
       where: {
@@ -17,10 +19,10 @@ module.exports = async (req, res, next) => {
         name: 'AuthorizationFailed'
       };
     } else {
-      next();
+      next()
     }
   } catch (err) {
-    next(err);
+    next(err)
   }
 
 }
