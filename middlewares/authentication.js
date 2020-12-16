@@ -16,8 +16,6 @@ function authentication(req, res, next) {
             let email = decoded.email
             let id = decoded.id
             let role = decoded.role
-            req.dataUser = decoded
-            
             User.findOne({
                 where: {
                     email,
@@ -25,19 +23,15 @@ function authentication(req, res, next) {
                 }
             })
             .then(data => {
-                console.log(data)
-                if(data.role === "admin") {
-                    next()
-                }else {
-                        throw {
-                            status: 400,
-                            message: "Forbiden Acces"
-                        }
-                    }
-                })
-                .catch(err => {
-                   next(err)
-                })
+                req.dataUser = decoded
+                next()  
+            })
+            .catch(err => {
+                throw {
+                    status: 400,
+                    message: "You must have account"
+                }
+            })
         }
     } 
     catch(err) {

@@ -20,6 +20,7 @@ class ControllerCategorie {
                 res.status(201).json(data)
             })
             .catch(err => {
+                console.log(err)
                 next(err)
             })
     }

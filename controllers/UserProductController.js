@@ -1,4 +1,4 @@
-const { UserProduct, Product } = require('../models')
+const { UserProduct, Product, sequelize } = require('../models')
 
 class ControllerUserProduct {
 
@@ -116,6 +116,39 @@ class ControllerUserProduct {
             })
     }
     
+    // Sequelize transaction v6
+    static async checkout (req, res, next) {
+        try {
+            let UserId = req.dataUser.id
+            let t = await sequelize.transaction()
+            const userProduct = await UserProduct.findAll({
+                where: {
+                    UserId, status: false
+                }
+            }, {
+                transaction: t
+            })
+            for (const item of userProduct) {
+                const product = await Product.findByPk(item.ProductId)
+                if(item.quantity > product.stock) {
+                    throw {name: 'MaximumAmountExceeded'}
+                }else {
+                    let stock = product.stock - item.quantity
+                    await Product.update({stock}, {where: {id: item.ProductId}})
+                    await UserProduct.update({status: true}, {where: { UserId, ProductId: item.ProductId, status: false}})
+                }
+            }
+            t.afterCommit(() => {
+                return res.status(200).json({message: 'Success update stock'})
+            })
+            await t.commit()
+        }
+        catch(err){
+        // console.log(err)
+        await t.rollback()
+        next(err)
+        }
+    }
 }
 
 module.exports = ControllerUserProduct

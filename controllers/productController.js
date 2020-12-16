@@ -32,15 +32,17 @@ class ControllerProduct {
             name: req.body.name,
             image_url: req.body.image_url,
             price: req.body.price,
-            stock: req.body.stock
+            stock: req.body.stock,
+            CategorieId: req.body.CategorieId
         }
-
+        console.log(objProduct)
         Product.create(objProduct)
             .then(data => {
+                // console.log(data)
                 res.status(201).json(data)
             })
             .catch(err => {
-                console.log(err)
+                console.log(err, '------')
                 next(err)
             })
     }

@@ -21,10 +21,6 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: {
           args: true,
           msg: "Name cannot empty"
-        },
-        isAlpha: {
-          args: true,
-          msg: "You must input with alphabet"
         }
       }
     },
@@ -62,7 +58,8 @@ module.exports = (sequelize, DataTypes) => {
         args: true,
         msg: "You must input with number type"
       }
-    }
+    },
+    CategorieId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Product',
