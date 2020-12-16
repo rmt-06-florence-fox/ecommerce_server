@@ -1,0 +1,32 @@
+[
+    {
+        "name" : "sapi",
+        "image_url" : "https://duniasapi.com/media/k2/items/cache/75b44b0e9c2e5d305fa323c6c51d3476_Generic.jpg",
+        "price" : 50000000,
+        "stock" : 10
+    },
+    {
+        "name" : "kambing",
+        "image_url" : "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Hausziege_04.jpg/1200px-Hausziege_04.jpg",
+        "price" : 1000000,
+        "stock" : 4
+    },
+    {
+        "name" : "cupang",
+        "image_url" : "https://cdn.idntimes.com/content-images/post/20200914/59288fa35aa18aae47a459d2da9ee86e-8594da9da9d0305d2525c445f3bd48f4_600x400.jpg",
+        "price" : 50000,
+        "stock" : 5
+    },
+    {
+        "name" : "ayam",
+        "image_url" : "hhttps://cdn1-production-images-kly.akamaized.net/Bj64giukOLfIrKzvymQmzezQmag=/673x379/smart/filters:quality(75):strip_icc():format(jpeg)/kly-media-production/medias/2754736/original/029427300_1552960593-iStock-925574762.jpg",
+        "price" : 500000,
+        "stock" : 7
+    },
+    {
+        "name" : "komodo",
+        "image_url" : "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Komodo_dragon_%28Varanus_komodoensis%29.jpg/1200px-Komodo_dragon_%28Varanus_komodoensis%29.jpg",
+        "price" : 50000000,
+        "stock" : 2
+    }
+]
