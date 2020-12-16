@@ -90,6 +90,28 @@ class CartController{
     }
   }
 
+  static async fetchHistory (req, res, next){
+    try {
+      // console.log(req.loggedInUser.id, 'mashook');
+      let totalPrice = 0
+      const carts = await Cart.findAll({ 
+        where: {
+          UserId: req.loggedInUser.id,
+          status: true
+        }, 
+        include: [ Product ],
+        order: [['updatedAt', 'ASC']]
+      })
+
+
+      // console.log(totalPrice);
+      // carts.totalPrice = totalPrice
+      res.status(200).json(carts)
+    } catch (error) {
+      next(error)
+    }
+  }
+
   static async delete (req, res, next){
     try {
       const CartId = req.body.cartId
