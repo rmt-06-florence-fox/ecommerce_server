@@ -1,6 +1,7 @@
 const Jwt = require('../helper/jwt')
 module.exports = async (req, res, next) => {
     const token = req.headers.access_token
+    console.log(token);
     if (!token) {
         res.status(401).json(`you must login first`)
     }else{
@@ -16,7 +17,12 @@ module.exports = async (req, res, next) => {
                 next()
             }
         } catch (error) {
-            next(error)
+            console.log(error);
+            const err = {
+                status: 401,
+                message: 'you must login first'
+            }
+            next(err)
         }
     }
 }

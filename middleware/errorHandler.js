@@ -5,6 +5,8 @@ module.exports = (err, req, res, next) => {
         res.status(401).json('email has been created')
     }else if(err.name == 'SequelizeValidationError'){
         res.status(401).json(err.errors[0].message)
+    }else if(err.JsonWebTokenError){
+        res.status(401).json(`you must login first`)
     }else{
         // console.log(err);
         res.status(500).json(`oops sorry, it seems any problem from server`)
