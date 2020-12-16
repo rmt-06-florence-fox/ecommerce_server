@@ -15,27 +15,27 @@ class CartController {
         if (((checkProduct.stock - checkCart.quantity - Number(req.body.quantity)) >= 0 ) ||
             (checkProduct.stock <= checkCart.quantity && Number(req.body.quantity) < 0)) {
           const payload = { quantity: checkCart.quantity + Number(req.body.quantity) }
-          const result = await Cart.update(payload, {
-            where: {
-              id: checkCart.id,
-              UserId: req.loginUser.id,
-              ProductId: req.params.productId,
-              status: false
-            },
-            returning: true
-          })
-          if (result.length) {
-            if (result[1][0].quantity === 0) {
-              const deleteCart = await Cart.destroy({ 
-                where: { 
-                  id: result[1][0].id,
-                  UserId: req.loginUser.id,
-                  ProductId: req.params.productId,
-                  status: false 
-                }
-              })
-              res.status(200).json({ message: `Successfully deleted this cart !`}) 
-            } else res.status(200).json(result[1][0])
+          if( payload.quantity === 0 ) {
+            const deleteCart = await Cart.destroy({ 
+              where: { 
+                id: checkCart.id,
+                UserId: req.loginUser.id,
+                ProductId: req.params.productId,
+                status: false 
+              }
+            })
+            res.status(200).json({ message: `Successfully deleted this cart !`})
+          }else {
+            const result = await Cart.update(payload, {
+              where: {
+                id: checkCart.id,
+                UserId: req.loginUser.id,
+                ProductId: req.params.productId,
+                status: false
+              },
+              returning: true
+            })
+            res.status(200).json(result[1][0])
           }
         }else {
           throw {
@@ -67,9 +67,8 @@ class CartController {
         include: [ Product ]
       })
       let totalPrice = 0
-      data.forEach(e => totalPrice += (e.quantity * e.Product.price))
-      data.push({ totalPrice })
-      res.status(200).json(data)
+      data.forEach(e => totalPrice += (e.quantity * e.Product.price))   //cari method sum in row query
+      res.status(200).json({ totalPrice, data })
     }catch(err) {
       next(err)
     }
@@ -80,17 +79,19 @@ class CartController {
     try{
       const findData = await Cart.findAll({ where: { UserId: req.loginUser.id }, include: [Product]})
       let errors = []
-      const arrPromises = []
+      const arrPromisesCart = []
+      const arrPromisesProduct = []
       findData.forEach(e => {
         if (e.quantity <= e.Product.stock && e.status === false){
           let payloadCart = { status: true }
           let payloadProduct = { stock: e.Product.stock - e.quantity }
-          arrPromises.push(Cart.update(payloadCart, { where: { id: e.id }, returning: true, transaction: t }))
-          arrPromises.push(Product.update(payloadProduct, { where: { id: e.ProductId }, returning: true, transaction: t }))
+          arrPromisesCart.push(Cart.update(payloadCart, { where: { id: e.id }, returning: true, transaction: t }))
+          arrPromisesProduct.push(Product.update(payloadProduct, { where: { id: e.ProductId }, returning: true, transaction: t }))
         }
-        else if(e.quantity > e.Product.stock && e.status ===  false) errors.push(`failed to buy ${e.Product.name}`) 
+        else if(e.quantity > e.Product.stock && e.status ===  false) errors.push(`Sorry, Failed to buy ${e.Product.name} !!!`) 
       })
-      const data = await Promise.all(arrPromises)
+      const dataCart = await Promise.all(arrPromisesCart)
+      const dataProduct = await Promise.all(arrPromisesProduct)
       if(errors.length) {
         throw {
           status: 400,
@@ -98,10 +99,8 @@ class CartController {
         }
       }
       await t.commit()
-      const result = data.map((e, index) => {
-        if(index % 2 === 0) {
-          return e[1][0]
-        }
+      const result = dataCart.map(e => {
+        return e[1][0]
       })
       res.status(200).json(result)
     } catch(err) {
