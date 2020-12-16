@@ -21,7 +21,7 @@ router.patch('/checkout', authentication.user, CartController.checkout)
 router.get('/history', authentication.user, CartController.history)
 
 router.use('/products', ProductRoute)
-router.use('/category', CategoryRoute)
+router.use('/categories', CategoryRoute)
 router.use('/banners', BannerRoute)
 router.use('/cart', CartRoute)
 router.use('/wishlist', WishlishRoute)
