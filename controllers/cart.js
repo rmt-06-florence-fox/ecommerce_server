@@ -1,4 +1,4 @@
-const { Cart, Product, User } = require('../models')
+const { Cart, Product, User, sequelize } = require('../models')
 
 class CartController{
   static async addOrEditCart (req, res, next){
@@ -20,10 +20,11 @@ class CartController{
       const theUser = await User.findByPk(payload.UserId)
       // console.log(theProduct.stock)
       
+      //tambah kondisi kalau udah ada quantity sebelom nya
       if(theProduct.quantity === 0){
         throw { status: 401, message: 'out of stock'}
       }
-      if(theCart && theProduct.stock <= theCart.quantity){
+      if(theCart && theProduct.stock <= theCart.quantity){ 
         throw { status: 401, message: 'out of stock'}
       }
       if(!theCart){
@@ -85,28 +86,38 @@ class CartController{
   }
 
   static async checkout (req, res, next){
+    const t = await sequelize.transaction();
     try {
       const checkoutCarts = await Cart.findAll({
         where: {
           UserId: req.loggedInUser.id,
           status: false
+        },
+        include: [ Product ]
+      })
+      const errors = []
+      const toBeExecute = []
+      // res.status(200).json(checkoutCarts)
+      checkoutCarts.forEach( e => {
+        if (e.quantity < e.Product.stock) {
+          toBeExecute.push(Product.update({ stock: e.Product.stock - e.quantity}, { where: { id: e.Product.id}, returning: true , transaction: t}))
+          toBeExecute.push(Cart.update({status: true},{where: { id: e.id}, returning: true, transaction: t}))
+        }else {
+          errors.push(`failed to buy ${e.Product.name}`)
+          // throw { status: 400, message: 'transaction failed'}
         }
       })
-      let errors = []
-      checkoutCarts.forEach( async (e) => {
-        const checkProduct = await Product.findByPk(e.ProductId)
-        if(checkProduct.stock > e.quantity){
-          await Product.update({ stock: checkProduct.stock - e.quantity }, {where: {id: checkProduct.id}})
-          await Cart.update({status: true},{where: { id: e.id}})
-        }else{
-          errors.push(`failed to buy ${checkProduct.name}`)
-        }
-      })
+      // console.log(toBeExecute);
+      const result = await Promise.all(toBeExecute)
       if(errors.length > 0){
-        throw { status: 400, message: errors }
+        throw { status: 400, message: errors}
       }
-      res.status(200).json({ message: 'sukses'})
+      await t.commit();
+      console.log(result);
+      res.status(200).json({ success: result , failed: errors})
+
     } catch (error) {
+      await t.rollback();
       next(error)
     }
   }
