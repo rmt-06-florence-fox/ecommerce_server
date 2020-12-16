@@ -31,7 +31,7 @@ class CartController {
                 else if (payload.ProductId === cart.ProductId) {
                     payload.quantity = cart.quantity + 1
                     const updatedCart = await Cart.update(payload, { where: { id: cart.id }, returning: true })
-                    res.status(200).json(updatedCart)                                        
+                    res.status(200).json(updatedCart[1][0])                                        
                 }
             }
         } catch (error) {
@@ -52,6 +52,11 @@ class CartController {
                         model: Product
                     }]  
                 })
+
+            let total_unit = []
+            for (let i = 0; i < carts.length; i++) {
+                total_unit.push(carts[i].Product.price*carts[i].quantity) 
+            }
             let total = 0;
             for (let i = 0; i < carts.length; i++) {
                 total += carts[i].Product.price*carts[i].quantity
