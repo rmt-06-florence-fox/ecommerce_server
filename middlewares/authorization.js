@@ -1,10 +1,10 @@
-const { Product } = require('../models')
+const { User } = require('../models')
 
 module.exports = (req,res,next) => {
-        Product.findOne({where: {id: req.params.id}})
+        User.findOne({where: {id: req.loggedInUser.id}})
         .then(data => {
             if(data){
-                if (data.UserId == req.loggedInUser.id){
+                if (data.status == 'admin'){
                     next()
                 } else {
                     throw {
@@ -14,8 +14,8 @@ module.exports = (req,res,next) => {
                 }
             } else {
                 throw {
-                    status: 404,
-                    message: 'Product not found'
+                    status: 401,
+                    message: 'you are not authorize'
                 }
             }
         })

@@ -12,7 +12,6 @@ class UserController {
             if(data){
                 if(compare(req.body.password, data.password)){
                     const access_token = generateToken({id: data.id, email:data.email})
-                    console.log(access_token, '<<<<<<<<< user controller login')
                     res.status(200).json(
                         access_token
                     ) 
@@ -36,17 +35,24 @@ class UserController {
 
     }
 
-    // static login(req,res,next){
-    //     User.findOne({where: {
-    //         email: req.body.email
-    //     }})
-    //     .then(data => {
-    //         res.status(200).json("hai")
-    //     })
-    //     .catch(error => {
-    //         next(error)
-    //     })
-    // }
+    static register (req,res,next) {
+        const obj = {
+            name: req.body.name,
+            email: req.body.email,
+            password: req.body.password
+        }
+        User.create(obj)
+        .then(data => {
+            res.status(201).json({
+                id: data.id,
+                name: data.name,
+                email: data.email
+            })
+        })
+        .catch(error => {
+            next(error)
+        })
+    }
 }
 
 module.exports = UserController

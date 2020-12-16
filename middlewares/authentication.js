@@ -11,8 +11,7 @@ module.exports = (req,res,next) => {
                 message: 'please login first'
             }
         } else {
-            // const decoded = verifyToken(access_token)
-            const decoded = jwt.verify(access_token, process.env.SECRET);
+            const decoded = verifyToken(access_token)
             req.loggedInUser = decoded
             User.findOne({where: {id: decoded.id}})
             .then(data => {
