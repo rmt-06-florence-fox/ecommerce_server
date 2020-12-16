@@ -4,7 +4,8 @@
 ``` JS
 Server: https://ecommerce-by-litha.herokuapp.com/
 Client:
-  - Admin: https://e-commerce-admin-by-litha.web.app/ 
+  - Admin: https://e-commerce-admin-by-litha.web.app/
+  - Customer: https://e-commerce-customer-by-litha.web.app/ 
 ```
 #
 ## ROUTE
@@ -170,6 +171,12 @@ access_token = `admin access token`
   "message": "You aren't admin !"
 }
 ```
+>or
+```JS
+{
+  "message": "Please Login First !"
+}
+```
 #
 ##### ERROR *`'Internal Server Error'`*
 - Response *`(500)`*
@@ -243,6 +250,12 @@ access_token = `admin access token`
 ```JS
 {
   "message": "You aren't admin !"
+}
+```
+>or
+```JS
+{
+  "message": "Please Login First !"
 }
 ```
 #
@@ -320,6 +333,12 @@ access_token = `admin access token`
   "message": "You aren't admin !"
 }
 ```
+>or
+```JS
+{
+  "message": "Please Login First !"
+}
+```
 #
 ##### ERROR *`'Internal Server Error'`*
 - Response *`(500)`*
@@ -351,6 +370,247 @@ access_token = `admin access token`
 ```JS
 {
   "message": "You aren't admin !"
+}
+```
+>or
+```JS
+{
+  "message": "Please Login First !"
+}
+```
+#
+##### ERROR *`'Internal Server Error'`*
+- Response *`(500)`*
+```JS
+{
+  "message" : "Internal Server Error"
+}
+```
+#
+### POST /carts/:productId
+- Request params
+```JS
+productId = [integer]
+```
+- Request headers
+```JS
+access_token = 'customer access token'
+```
+- Request body
+```JS
+{
+  quantity: [integer]
+}
+```
+##### SUCCESS
+- Response *`(201)`*
+```JS
+{
+  "id": 125,
+  "UserId": 12,
+  "ProductId": 3,
+  "updatedAt": "2020-12-16T14:15:51.686Z",
+  "createdAt": "2020-12-16T14:15:51.686Z",
+  "status": false,
+  "quantity": 1
+}
+```
+- Response *`(200)`*
+```JS
+{
+  "id": 125,
+  "UserId": 12,
+  "ProductId": 3,
+  "status": false,
+  "quantity": 2,
+  "createdAt": "2020-12-16T14:15:51.686Z",
+  "updatedAt": "2020-12-16T14:19:07.629Z"
+}
+```
+#
+##### ERROR *`'Stock product not enough'`*
+- Response *`(400)`*
+```JS
+{
+  "message": "Stock product not enough"
+}
+```
+#
+##### ERROR *`'Unauthorized'`*
+- Response *`(401)`*
+```JS
+{
+  "message": "Please Login First !"
+}
+```
+#
+##### ERROR *`'Internal Server Error'`*
+- Response *`(500)`*
+```JS
+{
+  "message" : "Internal Server Error"
+}
+```
+#
+### GET /carts
+- Request headers
+```JS
+access_token = 'customer access token'
+```
+##### SUCCESS
+- Response *`(200)`*
+```JS
+{
+  "totalPrice": 200000,
+  "data": [
+    {
+      "id": 125,
+      "UserId": 12,
+      "ProductId": 3,
+      "status": false,
+      "quantity": 2,
+      "createdAt": "2020-12-16T14:15:51.686Z",
+      "updatedAt": "2020-12-16T14:19:07.629Z",
+      "Product": {
+        "id": 3,
+        "name": "Al-Qur'an",
+        "image_url": "https://i.pinimg.com/564x/e4/08/b1/e408b1b3dd4cba7f31e07ea3e6fd035b.jpg",
+        "price": 100000,
+        "stock": 3,
+        "...
+      }
+    }
+  ]
+}
+```
+#
+##### ERROR *`'Unauthorized'`*
+- Response *`(401)`*
+```JS
+{
+  "message": "Please Login First !"
+}
+```
+#
+##### ERROR *`'Internal Server Error'`*
+- Response *`(500)`*
+```JS
+{
+  "message" : "Internal Server Error"
+}
+```
+#
+### PATCH /carts/checkout
+- Request headers
+```JS
+access_token = 'customer access token'
+```
+##### SUCCESS
+- Response *`(200)`*
+```JS
+[
+  {
+    "id": 125,
+    "UserId": 12,
+    "ProductId": 3,
+    "status": true,
+    "quantity": 2,
+    "createdAt": "2020-12-16T14:15:51.686Z",
+    "updatedAt": "2020-12-16T14:23:26.883Z"
+  }
+]
+```
+#
+##### ERROR *`'Unauthorized'`*
+- Response *`(401)`*
+```JS
+{
+  "message": "Please Login First !"
+}
+```
+#
+##### ERROR *`'Internal Server Error'`*
+- Response *`(500)`*
+```JS
+{
+  "message" : "Internal Server Error"
+}
+```
+#
+### GET /carts/histories
+- Request headers
+```JS
+access_token = 'customer access token'
+```
+##### SUCCESS
+- Response *`(200)`*
+```JS
+[
+  {
+    "id": 6,
+    "UserId": 12,
+    "ProductId": 7,
+    "status": true,
+    "quantity": 1,
+    "createdAt": "2020-12-15T15:03:37.326Z",
+    "updatedAt": "2020-12-16T12:24:22.120Z",
+    "Product": {
+      "id": 7,
+      "name": "Talbis Iblis karya Ibnul Jauzi",
+      "image_url": "https://ecs7.tokopedia.net/img/cache/700/product-1/2020/1/14/593445387/593445387_a41cfe01-e454-412b-ab73-acf98169152c_1080_1080.jpg",
+      "price": 100000,
+      "stock": 0,
+        ...
+    }
+  },
+  ...
+]
+```
+#
+##### ERROR *`'Unauthorized'`*
+- Response *`(401)`*
+```JS
+{
+  "message": "Please Login First !"
+}
+```
+#
+##### ERROR *`'Internal Server Error'`*
+- Response *`(500)`*
+```JS
+{
+  "message" : "Internal Server Error"
+}
+```
+#
+### DELETE /carts/:id
+- Request params
+```JS
+id = [integer]
+```
+- Request headers
+```JS
+access_token = 'customer access token'
+```
+##### SUCCESS
+- Response *`(200)`*
+```JS
+{
+  "message": "Successfully deleted this cart !!!"
+}
+```
+#
+##### ERROR *`'Unauthorized'`*
+- Response *`(401)`*
+```JS
+{
+  "message": "You aren't authorized !"
+}
+```
+> or
+```JS
+{
+  "message": "Please Login First !"
 }
 ```
 #
