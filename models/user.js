@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const { generatePw } = require('../helpers/password')
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -11,11 +12,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasMany(models.Cart)
+      User.hasMany(models.History)
     }
   };
   User.init({
     email: {
       type: DataTypes.STRING,
+      unique: true,
       validate: {
         notEmpty: {
           msg: 'Email is required'
@@ -37,6 +41,7 @@ module.exports = (sequelize, DataTypes) => {
     hooks: {
       beforeCreate(user, opt){
         user.role = 'customer'
+        user.password = generatePw(user.password)
       }
     }
   });

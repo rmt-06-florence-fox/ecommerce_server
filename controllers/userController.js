@@ -20,7 +20,38 @@ class UserController {
                     }
                 }
                 else if
-                 (comparePw(password, user.password)){
+                 (comparePw(password, user.password) && user.role == 'customer'){
+                    const access_token = createToken({id: user.id, email: user.email})
+                    res.status(200).json({access_token})
+                } else {
+                    throw{
+                        status: 400,
+                        message: 'Invalid email/password'
+                    }
+                }
+            })
+            .catch(err => {
+                // console.log(err, '<<<???');
+                next(err)
+            })
+    }
+
+    static loginAdmin(req, res, next){
+        const { email, password } = req.body
+        User.findOne({
+            where: {
+                email: email
+            }
+        })
+            .then(user => {
+                if (!user) {
+                    throw{
+                        status: 400,
+                        message: 'Invalid email/password'
+                    }
+                }
+                else if
+                 (comparePw(password, user.password) && user.role == 'admin'){
                     const access_token = createToken({id: user.id, email: user.email})
                     res.status(200).json({access_token})
                 } else {
@@ -71,6 +102,20 @@ class UserController {
         .catch(err => {
             next(err)
         })
+    }
+
+    static register(req, res, next){
+        const obj = {
+            email: req.body.email,
+            password: req.body.password
+        }
+        User.create(obj)
+            .then(data => {
+                res.status(201).json({id: data.id, email: data.email})
+            })
+            .catch(err => {
+                next(err)
+            })
     }
 }
 

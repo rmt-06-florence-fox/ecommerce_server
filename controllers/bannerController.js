@@ -19,7 +19,7 @@ class BannerController {
             title, status, imageUrl
         })
             .then(banner => {
-                res.status(201).json(banner)
+                res.status(201).json({msg: 'Success add banner'})
             })
             .catch(err => {
                 next(err)
