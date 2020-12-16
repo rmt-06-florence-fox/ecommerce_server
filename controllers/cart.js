@@ -10,6 +10,7 @@ class CartController{
                 attributes: {
                     exclude: ['createdAt','updatedAt']
                 },
+                order: [['id','DESC']],
                 include: [Product]
             })
             res.status(200).json({cart})
