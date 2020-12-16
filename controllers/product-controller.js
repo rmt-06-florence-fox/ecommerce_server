@@ -5,9 +5,9 @@ class ProductController {
     static async addProduct (req, res, next){
 
         try {
-            const {name, imageUrl, stock, price} = req.body
+            const { name, imageUrl, stock, price, category } = req.body
 
-            const product = await Product.create({ name, imageUrl, stock, price }, {returning : true})
+            const product = await Product.create({ name, imageUrl, stock, price, category }, {returning : true})
 
             if (product){
                 res.status(201).json({
@@ -41,13 +41,13 @@ class ProductController {
 
     static async update (req, res, next){
         try {
-            const { name, imageUrl, stock, price } = req.body
+            const { name, imageUrl, stock, price, category } = req.body
             const id = req.params.id
             const product = await Product.findByPk(id)
 
             if ( product ){
                 const array = await Product.update(
-                    { name, imageUrl, stock, price }, 
+                    { name, imageUrl, stock, price, category }, 
                     {where : { id }, returning : true }
                 )
                 

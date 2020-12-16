@@ -18,7 +18,7 @@ module.exports = {
 
   down: async (queryInterface, Sequelize) => {
     try {
-      await queryInterface.bulkDelete('Users', null)
+      await queryInterface.bulkDelete('Products', null)
 
     } catch (err) {
       console.log(err)

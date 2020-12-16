@@ -54,7 +54,8 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     
-    }
+    },
+    category: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Product',
