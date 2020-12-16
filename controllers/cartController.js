@@ -12,7 +12,8 @@ class CartController {
       })
       if(checkCart){
         const checkProduct = await Product.findByPk(req.params.productId)
-        if((checkProduct.stock - checkCart.quantity - Number(req.body.quantity)) >= 0 ) {
+        if (((checkProduct.stock - checkCart.quantity - Number(req.body.quantity)) >= 0 ) ||
+            (checkProduct.stock <= checkCart.quantity && Number(req.body.quantity) < 0)) {
           const payload = { quantity: checkCart.quantity + Number(req.body.quantity) }
           const result = await Cart.update(payload, {
             where: {
@@ -36,7 +37,7 @@ class CartController {
               res.status(200).json({ message: `Successfully deleted this cart !`}) 
             } else res.status(200).json(result[1][0])
           }
-       }else {
+        }else {
           throw {
             status: 400,
             message: `Stock product not enough`
