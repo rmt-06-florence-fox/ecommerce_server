@@ -15,6 +15,7 @@ async function authentication(req,res,next){
         })
 
         if(getUser){
+            console.log('get data ========', decode)
             req.loginUser = decode
             next()
         }else {

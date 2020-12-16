@@ -7,6 +7,7 @@ class UserController {
     static async login(req,res,next){
         const email = req.body.email
         const password = `${req.body.password}`
+        console.log('========= login=======', email)
 
         try {
             const loginUser = await User.findOne({
@@ -14,7 +15,7 @@ class UserController {
                     email 
                 }
             })
-
+            console.log(loginUser)
             if ( loginUser){
 
                 if(comparePassword(password, loginUser.password)){
@@ -40,6 +41,25 @@ class UserController {
             console.log(error, '<<<<<<< ')
             next(error)
         }
+    }
+
+    static async register(req,res,next){
+        const newUser = {
+            email:req.body.email,
+            password:req.body.password
+        }
+        console.log(newUser, '< ============= New User')
+        
+        try {
+            const registNewUser = await User.create(newUser)
+            res.status(200).json({
+                id: registNewUser.dataValues.id,
+                email: registNewUser.dataValues.email
+            })
+        } catch (error) {
+            next(error)
+        }
+
     }
 }
 

@@ -9,6 +9,8 @@ data.forEach( element =>{
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
+    await queryInterface.bulkInsert('Products', data, {});
+
     // await queryInterface.bulkInsert('Products', data, {});
     /**
      * Add seed commands here.
@@ -22,6 +24,8 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
+    await queryInterface.bulkDelete('Products', null, {});
+
     // await queryInterface.bulkDelete('Products', null, {});
 
     /**

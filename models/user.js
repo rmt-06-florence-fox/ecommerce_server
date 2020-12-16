@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      User.belongsToMany(models.Product , {through: 'Carts'})
       // define association here
     }
   };
@@ -40,6 +41,9 @@ module.exports = (sequelize, DataTypes) => {
 
   User.beforeCreate((instance,option) =>{
     instance.password = encryptPass(instance.password)
+    if (instance.role === '' || instance.role ===  undefined || instance.role || null) {
+      instance.role = 'customer'
+    }
   })
   return User;
 };
