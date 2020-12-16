@@ -5,6 +5,6 @@ const authorizationCustomer = require('../middlewares/authorizationCustomer')
 
 route.use(authentication)
 route.get('/', authorizationCustomer, TransactionController.listTransactions)
-route.post('/:productId', authorizationCustomer, TransactionController.addTransaction)
+route.patch('/', authorizationCustomer, TransactionController.checkoutData)
 
 module.exports = route
