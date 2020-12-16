@@ -29,13 +29,26 @@ class CartController {
             let checkProduct = await Cart.findOne(
                 {where:{UserId: payload.UserId, ProductId: payload.ProductId}, 
                 include:Product})
-            if (stock >= payload.quantity && payload.quantity > 0) {
+            if (stock >= payload.quantity) {
                 if (checkProduct){
-                    const data = await Cart.update(
-                        {quantity: payload.quantity}, 
-                        {where:{UserId: payload.UserId, ProductId: payload.ProductId}, 
-                        returning:true})
-                    res.status(200).json(data[1][0])
+                    let quantity = checkProduct.quantity + payload.quantity
+                    if (quantity <= stock) {
+                        if (quantity == 0) {
+                            const data = await Cart.destroy({where:{UserId: payload.UserId, ProductId: payload.ProductId}})
+                            res.status(200).json({message: 'Product Deleted Successfuly'})
+                        } else {
+                            const data = await Cart.update(
+                                {quantity}, 
+                                {where:{UserId: payload.UserId, ProductId: payload.ProductId}, 
+                                returning:true})
+                            res.status(200).json(data[1][0])
+                        }
+                    } else {
+                        throw{
+                            status: 400,
+                            message: `Product Quantity is min 1 and max ${stock}`
+                        }
+                    }
                 } else {
                     const data = await Cart.create(payload)
                     res.status(201).json(data)
