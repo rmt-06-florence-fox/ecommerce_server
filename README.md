@@ -17,9 +17,8 @@ E-commerce is the activity of electronically buying or selling of products on on
 - `PUT /banners/:id`
 - `DELETE /banners/:id`
 - `GET /cart/`
-- `POST /cart/:idProduct`
-- `PATCH /cart/:idProduct`
-- `DELETE /cart/:idProduct`
+- `PUT /cart/:idProduct`
+- `DELETE /cart/:idCart`
 
 
 **Register Account**
