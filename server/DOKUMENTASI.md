@@ -428,7 +428,7 @@ Error Response:
 Code: 500 INTERNAL SERVER ERROR
 Content: { error : "INTERNAL SERVER ERROR." }
 
-*Get product
+*Get banners
 Get all list of banners.
 
 URL
@@ -470,3 +470,209 @@ Error Response:
 
 Code: 500 INTERNAL SERVER ERROR
 Content: { error : "INTERNAL SERVER ERROR." }
+
+*Add to cart
+Add a product to your cart
+
+URL
+/carts
+
+Method:
+POST
+
+URL Params
+none
+
+Headers
+required:
+access_token
+
+Data Params
+None
+
+Success Response:
+Code: 200
+Content: 
+        {
+            "id": integer,
+            "UserId": integer,
+            "ProductId": integer,
+        }, 
+
+Error Response:
+
+Code: 400 INTERNAL SERVER ERROR
+Content: { error : "Product not found" }
+
+*Get Carts
+show all products in your cart
+
+URL
+/carts
+
+Method:
+GET
+
+URL Params
+none
+
+Headers
+required:
+access_token
+
+Data Params
+None
+
+Success Response:
+Code: 200
+Content:[
+            {
+                "id": integer,
+                "UserId": integer,
+                "ProductId": integer,
+                "Product" : {
+                    "id" : integer,
+                    "name" : string,
+                    "imageUrl": string,
+                    "stock": integer,
+                    "price": integer
+                }
+            }
+        ]    
+
+Error Response:
+
+Code: 400 INTERNAL SERVER ERROR
+Content: { error : "Product not found" }
+
+*Delete Carts
+remove an item from your cart
+
+URL
+/carts
+
+Method:
+delete
+
+URL Params
+none
+
+Headers
+required:
+access_token
+
+Data Params
+required
+id: integer
+
+Success Response:
+Code: 200
+Content: {message: "cart succesfully deleted"}    
+
+Error Response:
+
+Code: 400 INTERNAL SERVER ERROR
+Content: { error : "Product not found" }
+
+*Add to Wishlist
+Add a product to your Wishlist
+
+URL
+/wishlist
+
+Method:
+POST
+
+URL Params
+productId: integer
+
+Headers
+required:
+access_token
+
+Data Params
+None
+
+Success Response:
+Code: 200
+Content: 
+        {
+            "id": integer,
+            "UserId": integer,
+            "ProductId": integer,
+        }, 
+
+Error Response:
+
+Code: 400 INTERNAL SERVER ERROR
+Content: { error : "can't add the same product to your wishlist" }
+
+*Get Wishlist
+show all products in your wishlist
+
+URL
+/wishlist
+
+Method:
+GET
+
+URL Params
+none
+
+Headers
+required:
+access_token
+
+Data Params
+None
+
+Success Response:
+Code: 200
+Content:[
+            {
+                "id": integer,
+                "UserId": integer,
+                "ProductId": integer,
+                "Product" : {
+                    "id" : integer,
+                    "name" : string,
+                    "imageUrl": string,
+                    "stock": integer,
+                    "price": integer
+                }
+            }
+        ]    
+
+Error Response:
+
+Code: 400 INTERNAL SERVER ERROR
+Content: { error : "Product not found" }
+
+*Delete Wishlist
+remove a product from your wishlist
+
+URL
+/wishlis
+
+Method:
+delete
+
+URL Params
+none
+
+Headers
+required:
+access_token
+
+Data Params
+required
+id: integer
+
+Success Response:
+Code: 200
+Content: {message: "wishlist succesfully deleted"}    
+
+Error Response:
+
+Code: 400 INTERNAL SERVER ERROR
+Content: { error : "wishlist not found" }
