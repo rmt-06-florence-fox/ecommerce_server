@@ -62,9 +62,17 @@ class ControllerCart {
 
     static async updateProduct (req, res, next) {
         try {
-            let Qty = {Qty: req.body.Qty}
-            const qty = await Cart.update(Qty, {where: {ProductId: req.params.id}})
-            res.status(200).json({qty})
+            const find = await Cart.findOne({where: {ProductId: req.params.id, status: 'unpaid'}})
+            if (find){
+                let Qty = {Qty: req.body.Qty}
+                const qty = await Cart.update(Qty, {where: {ProductId: req.params.id, status: 'unpaid'}})
+                res.status(200).json({message: 'success to change quantity'})
+            } else {
+                throw {
+                    status: 404,
+                    message: 'data not found'
+                }
+            }
         } catch (err) {
             next(err)
         }
