@@ -64,8 +64,6 @@ response(500)
 oops sorry, it seems any problem from server
 
 # Show All Product /product GET
-## Request Headers
-acces_token
 ## Response Success
 response(201)
 [
@@ -79,12 +77,6 @@ response(201)
     "updatedAt": "2020-12-09T14:01:37.599Z"
   }
 ]
-## Response Fail not Login
-response(401)
-you must login first
-
-response(401)
-Your Session Is Time Up
 ## Response Error from Server
 response(500)
 oops sorry, it seems any problem from server
@@ -92,8 +84,6 @@ oops sorry, it seems any problem from server
 # Show Product By Id /product/:id GET
 ## Request Params
 id
-## Request Headers
-acces_token
 ## Response Success
 response(201)
 {
@@ -105,12 +95,6 @@ response(201)
   "updatedAt": "2020-12-09T13:55:08.780Z",
   "createdAt": "2020-12-09T13:55:08.780Z"
 }
-## Response Fail not Login
-response(401)
-you must login first
-
-response(401)
-Your Session Is Time Up
 ## Response Not Found
 response(404)
 data not found
@@ -183,6 +167,173 @@ Your Session Is Time Up
 ## Response Fail if not Admin
 response(401)
 "You not admin!"
+## Response Error from Server
+response(500)
+oops sorry, it seems any problem from server
+
+# Show All Product have user /cart GET
+## Request Headers
+acces_token
+## Response Success
+response(201)
+[
+    {
+        "id": 18,
+        "UserId": 3,
+        "ProductId": 2,
+        "quantity": 1,
+        "createdAt": "2020-12-16T17:00:34.344Z",
+        "updatedAt": "2020-12-16T17:00:34.344Z",
+        "User": {
+            "id": 3,
+            "email": "user@mail.com",
+            "password": "$2b$10$PWNpnupjenR2pQJ6LxtYBOYhQ57hB2kSTq0lTisWM1CDqDjHYxepu",
+            "role": "customer",
+            "createdAt": "2020-12-15T13:13:45.121Z",
+            "updatedAt": "2020-12-15T13:13:45.121Z"
+        },
+        "Product": {
+            "id": 2,
+            "name": "Gudang Garam Surya",
+            "image_url": "https://........",
+            "price": 24000,
+            "stock": 2500,
+            "createdAt": "2020-12-15T13:13:01.702Z",
+            "updatedAt": "2020-12-15T13:13:10.395Z"
+        }
+    }
+]
+## Response Fail not Login
+response(401)
+you must login first
+
+response(401)
+Your Session Is Time Up
+## Response Error from Server
+response(500)
+oops sorry, it seems any problem from server
+
+
+# CREATE /cart POST
+## Request Headers
+acces_token
+## Request Body
+ProductId
+
+## Response Success
+response(201)
+{
+    "id": 18,
+    "UserId": 3,
+    "ProductId": 2,
+    "quantity": 2,
+    "createdAt": "2020-12-16T17:00:34.344Z",
+    "updatedAt": "2020-12-16T17:26:16.392Z"
+}
+## Response if ProductId not found
+response(404)
+data not found
+## Response Fail not Login
+response(401)
+you must login first
+
+response(401)
+Your Session Is Time Up
+## Response Fail from Validation
+response(401)
+<"message error validation">
+## Response Error from Server
+response(500)
+oops sorry, it seems any problem from server
+
+
+# Update Quantity /cart PATCH
+## Request Headers
+acces_token
+## Request Body
+ProductId
+quantity
+
+## Response Success
+response(201)
+{
+    "id": 18,
+    "UserId": 3,
+    "ProductId": 2,
+    "quantity": 3,
+    "createdAt": "2020-12-16T17:00:34.344Z",
+    "updatedAt": "2020-12-16T17:26:16.392Z"
+}
+## Response quantity more than stock product or less than equal 0
+response(401)
+Stock not already yet
+
+
+response(401)
+Quantity cannot 0
+## Response if ProductId not found
+response(404)
+data not found
+## Response Fail not Login
+response(401)
+you must login first
+
+response(401)
+Your Session Is Time Up
+## Response Fail from Validation
+response(401)
+<"message error validation">
+## Response Error from Server
+response(500)
+oops sorry, it seems any problem from server
+
+
+# Show Cart By Id cart/:cartId GET
+## Request Params
+cartId
+## Request Headers
+acces_token
+## Response Success
+response(201)
+{
+    "id": 18,
+    "UserId": 3,
+    "ProductId": 2,
+    "quantity": 3,
+    "createdAt": "2020-12-16T17:00:34.344Z",
+    "updatedAt": "2020-12-16T17:26:16.392Z"
+}
+## Response Fail not Login
+response(401)
+you must login first
+
+response(401)
+Your Session Is Time Up
+## Response Not Found
+response(404)
+data not found
+## Response Error from Server
+response(500)
+oops sorry, it seems any problem from server
+
+
+# Remove Cart By Id cart/:cartId DELETE
+## Request Params
+cartId
+## Request Headers
+acces_token
+## Response Success
+response(201)
+Cart success to delete
+## Response Fail not Login
+response(401)
+you must login first
+
+response(401)
+Your Session Is Time Up
+## Response Not Found
+response(404)
+data not found
 ## Response Error from Server
 response(500)
 oops sorry, it seems any problem from server

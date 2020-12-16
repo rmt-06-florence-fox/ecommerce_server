@@ -8,6 +8,7 @@ router.get('/', CartController.getAll)
 router.post('/', CartController.create)
 router.patch('/', CartController.patch)
 router.use('/:cartId',authorizationCart)
+router.get('/:cartId', CartController.getById)
 router.delete('/:cartId', CartController.remove)
 
 module.exports = router

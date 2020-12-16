@@ -135,5 +135,27 @@ class CartController{
             next(error)
         })
     }
+    static async getById(req, res, next){
+        try {
+            const id = req.params.cartId
+            const cart = await Cart.findByPk(id,
+                {include: [{
+                    model: User
+                  },
+                {
+                    model: Product
+                }]})
+            if (!cart) {
+                throw {
+                    status: 404,
+                    message: `data not found`
+                }
+            }else{
+                res.status(200).json(cart)
+            }
+        } catch (error) {
+            next(error)
+        }
+    }
 }
 module.exports = CartController
