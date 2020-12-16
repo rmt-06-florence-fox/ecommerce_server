@@ -52,7 +52,11 @@ class CartController {
                         model: Product
                     }]  
                 })
-            res.status(200).json(carts)            
+            let total = 0;
+            for (let i = 0; i < carts.length; i++) {
+                total += carts[i].Product.price*carts[i].quantity
+            }
+            res.status(200).json({carts, total})            
         } catch (error) {
             next(error)
         }
