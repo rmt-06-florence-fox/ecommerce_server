@@ -88,46 +88,58 @@ class TransactionController {
           // ! change into history & make a new transaction
           let history = ''
           let total = 0
-          for (let i = 0; i < transaction.Products.length; i++) {
-            const element = transaction.Products[i];
-            total += element.Cart.total
-            let newStock = +element.stock - +element.Cart.quantity
-            const product = await Product.update({
-              stock: newStock
-            }, {
+          let checkstock = transaction.Products.every(e => e.stock >= e.Cart.quantity) // ? true / false
+
+          if (!checkstock) {
+
+            throw {
+              status: 400,
+              message: `Cannot checkout if the quantity is more than product(s) stock, please double check your cart and the product(s) stock again`
+            }
+
+          } else {
+
+            for (let i = 0; i < transaction.Products.length; i++) {
+              const element = transaction.Products[i];
+              total += element.Cart.total
+              let newStock = +element.stock - +element.Cart.quantity
+              const product = await Product.update({
+                stock: newStock
+              }, {
+                where: {
+                  id: element.id
+                },
+                returning: true
+              })
+  
+              if (i === transaction.Products.length - 1) {
+                history += `${element.id}/s${element.name}/s${element.Cart.quantity}/s${element.price}`
+              } else {
+                history += `${element.id}/s${element.name}/s${element.Cart.quantity}/s${element.price}\n`
+              }
+            }
+            
+            const payload = {
+              status: 'completed',
+              history,
+              total
+            }
+            
+            const put = await Transaction.update(payload, {
               where: {
-                id: element.id
-              },
-              returning: true
+                id
+              }
             })
-
-            if (i === transaction.Products.length - 1) {
-              history += `${element.id},${element.name},${element.Cart.quantity},${element.price}`
-            } else {
-              history += `${element.id},${element.name},${element.Cart.quantity},${element.price}.`
-            }
+  
+            const newtransaction = await Transaction.create({
+              status: 'uncompleted',
+              history: null,
+              total: 0,
+              UserId
+            })
+      
+            res.status(200).json({message: `Checkout Successfully`})
           }
-          
-          const payload = {
-            status: 'completed',
-            history,
-            total
-          }
-          
-          const put = await Transaction.update(payload, {
-            where: {
-              id
-            }
-          })
-
-          const newtransaction = await Transaction.create({
-            status: 'uncompleted',
-            history: null,
-            total: 0,
-            UserId
-          })
-    
-          res.status(200).json({message: `Checkout Successfully`})
         }
       }
 
