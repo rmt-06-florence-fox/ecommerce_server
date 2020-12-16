@@ -5,6 +5,7 @@ const { ControllerCart } = require ('../controllers')
 
 cart.use(authentication)
 cart.get('/', ControllerCart.onCart)
+cart.post('/checkout', ControllerCart.checkoutCart)
 cart.post('/:id', ControllerCart.addToCart)
 cart.delete('/:id', ControllerCart.deleteFromCart)
 

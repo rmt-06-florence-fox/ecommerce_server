@@ -10,6 +10,9 @@ class ControllerCart {
                     { transaction: t })
 
                 if (checkProductAmount) {
+                    if (checkProductAmount.stock == 0) {
+                        throw new Error (`Sorry there's no stock for this product`)
+                    }
                     const checkOnCheckout = await UserProduct.findOne({
                         where: {
                             ProductId: checkProductAmount.id,
@@ -21,7 +24,7 @@ class ControllerCart {
                     if(checkOnCheckout) {
                         console.log(+checkOnCheckout.amount + +req.body.amount)
                         if ((+checkOnCheckout.amount + +req.body.amount) > +checkProductAmount.stock) {
-                            throw ({status: 400, message: `Amount can't be larger than stock`})
+                            throw new Error(`Amount can't be larger than stock`)
                         } else {
                             console.log()
                             const data = {
@@ -49,7 +52,7 @@ class ControllerCart {
                         return newCart
                     }
                 } else {
-                    throw ({status: 400, message: `Product doesn't exist`})
+                    throw new Error(`Product doesn't exist`)
                 }
               });
             
@@ -63,7 +66,8 @@ class ControllerCart {
         try {
             const data = await UserProduct.findAll({
                 where: {
-                    UserId: req.loggedUser.id
+                    UserId: req.loggedUser.id,
+                    on_cart: true
                 },
                 attributes: ['id', 'UserId', 'ProductId', 'on_cart', 'amount'],
                 include: {model: Product}
@@ -82,6 +86,50 @@ class ControllerCart {
                 }
             })
             res.status(200).json({message: `Successfully deleted from cart`})
+        } catch (err) {
+            next(err)
+        }
+    }
+
+    static async checkoutCart (req, res, next) {
+        try {
+
+            const result = await sequelize.transaction(async (t) => {
+                const check = []
+                for (let i = 0; i < req.body.checkout.length; i++) {
+                    const { cart, amount } = req.body.checkout[i]
+                    const checkProductAmount = await Product.findByPk(cart.Product.id,
+                        { transaction: t })
+                    check.push(checkProductAmount)
+                    if (checkProductAmount.stock < amount) {
+                        throw new Error(`Amount can't be larger than stock`)
+                        throw ({status: 400, message: `Amount can't be larger than stock`})
+                    } else {
+                        const updateCart = await UserProduct.update({
+                            on_cart: false,
+                            amount: amount,
+                            bought: true
+                        }, {
+                            where: {
+                                id: cart.id
+                            }
+                        }, { transaction: t })
+
+                        const updateProduct = await Product.update({
+                            stock: +checkProductAmount.stock - +amount
+                        }, {
+                            where: {
+                                id: cart.Product.id
+                            }
+                        }, { transaction: t })
+                        // +checkProductAmount.stock - +amount
+                        // return true
+                    }
+                }
+                return true
+              });
+            // console.log(result)
+            res.status(201).json(result)
         } catch (err) {
             next(err)
         }
