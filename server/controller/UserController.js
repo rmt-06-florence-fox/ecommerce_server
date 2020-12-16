@@ -87,16 +87,16 @@ class UserController {
        }
         
         else if (!compare(req.body.password,data.password)){
-          res.status(404).json({message: 'Invalid Email/Password'})
-          // throw {
-          //   status: 404,
-          //   message: 'Invalid Email/Password'
-          // }
+          // res.status(404).json({message: 'Invalid Email/Password'})
+          throw {
+            status: 404,
+            message: 'Invalid Email/Password'
+          }
           }
       })
       .catch (err=>{
         console.log(err)
-        next(err)
+        // next(err)
       })
 
 
