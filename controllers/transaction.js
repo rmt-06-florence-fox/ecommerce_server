@@ -99,7 +99,7 @@ class TransactionController {
             }
 
           } else {
-
+            // Promise All harusnya
             for (let i = 0; i < transaction.Products.length; i++) {
               const element = transaction.Products[i];
               total += element.Cart.total
@@ -119,7 +119,28 @@ class TransactionController {
                 history += `${element.id}/s${element.name}/s${element.Cart.quantity}/s${element.price}\n`
               }
             }
+
+            // Promise.all(
+            //   transaction.Products.map( async (product) => {
+            //   total += product.Cart.total
+            //   let newStock = +product.stock - +product.Cart.quantity
+            //   const updateProduct = Product.update({
+            //     stock: newStock
+            //   }, {
+            //     where: {
+            //       id: product.id
+            //     },
+            //     returning: true
+            //   })
+
+            //     if (i === transaction.Products.length - 1) {
+            //       history += `${product.id}/s${product.name}/s${product.Cart.quantity}/s${product.price}`
+            //     } else {
+            //       history += `${product.id}/s${product.name}/s${product.Cart.quantity}/s${product.price}\n`
+            //   }
+            // }))
             
+            // ? tidak perlu di promise all kaerna lanjutan setelah looping
             const payload = {
               status: 'completed',
               history,

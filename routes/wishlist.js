@@ -6,7 +6,7 @@ const checkWishlistId = require('../middlewares/check-wishlistid')
 
 routes.get('/wishlists', WishlistController.getWishlists)
 
-routes.use(custAuth)
+routes.use('/wishlists', custAuth)
 
 routes.post('/wishlists/:id', checkProductId, WishlistController.postWishlist)
 routes.delete('/wishlists/:id', checkWishlistId, WishlistController.deleteWishlist)

@@ -6,7 +6,7 @@ const cekId = require('../middlewares/check-transactionid')
 routes.get('/transaction', TransactionController.getTransaction)
 routes.get('/history', TransactionController.history)
 
-routes.use(custAuth)
+routes.use('/transaction', custAuth)
 routes.use('/transaction/:id', cekId)
 routes.delete('/transaction/:id', TransactionController.deleteTransaction)
 routes.put('/transaction/:id', TransactionController.checkout)
