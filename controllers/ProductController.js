@@ -36,7 +36,10 @@ class ProductController {
     try {
       const id = Number(req.params.id)
       let product = await Product.findByPk({
-        where: { id }
+        where: { id },
+        include: [{
+          model: Category
+        }]
       })
       if(!product) {
         next({name: 'NOT_FOUND'})
@@ -55,6 +58,7 @@ class ProductController {
       let payload = {
         name: req.body.name,
         image_url: req.body.image_url,
+        CategoryId: req.body.CategoryId,
         price: req.body.price,
         stock: req.body.stock
       }
