@@ -30,7 +30,6 @@ module.exports = function (err, request, response, next) {
 			message = "Email or Password is Invalid!";
 			break;
 
-
 		case "AuthenticationFailed":
 			status = 401;
 			message = "Authentication failed!"
@@ -44,6 +43,11 @@ module.exports = function (err, request, response, next) {
 		case "NotFound":
 			status = 404;
 			message = "Not found!"
+			break;
+
+		case "EmptyCart":
+			status = 404;
+			message = "Cart is empty!"
 			break;
 
 		default:

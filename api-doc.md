@@ -309,3 +309,189 @@ _Response (500)_
 }
 ```
 
+## RESTful Client's Cart Endpoints
+### GET /carts
+
+> Get all Logged In client's cart on database
+
+_Request Header_
+```
+{ 
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ1c2VyMkBnbWFpbC5jb20iLCJpYXQiOjE2MDQyMTIzMzR9.tP1dBk7IY0AXtIYHrstuTnm1_o5Pu94Eam4oXK3tICo"
+}
+```
+
+_Response (200)_
+```
+{
+    "cart": {
+        "id": 1,
+        "UserId": 3,
+        "status": "on-process",
+        "createdAt": "2020-12-17T02:04:18.596Z",
+        "updatedAt": "2020-12-17T02:04:18.596Z",
+        "CartProducts": [
+            {
+                "id": 1,
+                "CartId": 1,
+                "ProductId": 3,
+                "quantity": 2,
+                "createdAt": "2020-12-17T02:19:56.426Z",
+                "updatedAt": "2020-12-17T02:19:56.462Z",
+                "Product": {
+                    "id": 3,
+                    "name": "Gundam 00 Sky Moebius (HGBD:R)",
+                    "image_url": "https://www.1999.co.jp/itbig70/10707215.jpg",
+                    "price": 315000,
+                    "stock": 10,
+                    "UserId": 1,
+                    "createdAt": "2020-12-10T07:06:49.610Z",
+                    "updatedAt": "2020-12-10T07:06:49.610Z"
+                }
+            },
+            {
+                "id": 2,
+                "CartId": 1,
+                "ProductId": 2,
+                "quantity": 6,
+                "createdAt": "2020-12-17T02:24:48.305Z",
+                "updatedAt": "2020-12-17T02:25:34.026Z",
+                "Product": {
+                    "id": 2,
+                    "name": "Alus Earthree Gundam (HGBD:R)",
+                    "image_url": "https://www.1999.co.jp/itbig66/10667783.jpg",
+                    "price": 257000,
+                    "stock": 5,
+                    "UserId": 1,
+                    "createdAt": "2020-12-10T07:06:06.241Z",
+                    "updatedAt": "2020-12-10T07:06:06.241Z"
+                }
+            }
+        ]
+    }
+}
+```
+
+_Response (500)_
+```
+{
+    message: "Internal Server Error
+}
+```
+
+### POST /carts
+
+> Add new product into user cart
+
+_Request Header_
+```
+{ 
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ1c2VyMkBnbWFpbC5jb20iLCJpYXQiOjE2MDQyMTIzMzR9.tP1dBk7IY0AXtIYHrstuTnm1_o5Pu94Eam4oXK3tICo"
+}
+```
+
+_Request Body_
+```
+{
+    productId: 3
+}
+```
+
+_Response (201)_
+```
+[
+    {
+        "CartId": 1,
+        "CartProductId": 2
+    }
+]
+```
+
+_Response (500)_
+```
+{
+    message: "Internal Server Error
+}
+```
+
+### PATCH /carts/:id
+
+> update product quantity in cart
+
+_Request Header_
+```
+{
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ1c2VyMkBnbWFpbC5jb20iLCJpYXQiOjE2MDQyMTIzMzR9.tP1dBk7IY0AXtIYHrstuTnm1_o5Pu94Eam4oXK3tICo"
+}
+```
+
+_Request Params_
+```
+{
+    id: "3"
+}
+```
+
+_Request Body_
+```
+{
+    itemQuantity: 1
+}
+```
+
+_Response (200)_
+```
+[
+    {
+        "message": "Successfully update item quantity."
+    }
+]
+```
+
+_Response (500)_
+```
+{
+    message: "Internal Server Error
+}
+```
+
+### DELETE /carts/product/:id
+
+> remove product in cart
+
+_Request Header_
+```
+{
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ1c2VyMkBnbWFpbC5jb20iLCJpYXQiOjE2MDQyMTIzMzR9.tP1dBk7IY0AXtIYHrstuTnm1_o5Pu94Eam4oXK3tICo"
+}
+```
+
+_Request Params_
+```
+{
+    id: "3"
+}
+```
+
+_Request Body_
+```
+{
+    cartId: 1
+}
+```
+
+_Response (200)_
+```
+[
+    {
+        "message": "Successfully deleted item from cart."
+    }
+]
+```
+
+_Response (500)_
+```
+{
+    message: "Internal Server Error
+}
+```

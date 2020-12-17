@@ -14,8 +14,6 @@ async function authentication(request, response, next) {
             });
             if(!user) {
                 throw { name: 'AuthenticationFailed' }
-            }else if(user.role != 'admin') {    
-                throw { name: 'AuthenticationFailed' }
             }else {
                 request.loggedInUser = decoded;
                 next();
