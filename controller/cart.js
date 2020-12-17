@@ -23,7 +23,7 @@ class CartControl {
           },
           include: [Product]
         })
-        carts.forEach(el => {
+        carts.forEach(el => { // to promise all
           if (el.dataValues.ProductId == data.ProductId) {
             sameCart = true
             const quantity = el.dataValues.quantity + data.quantity

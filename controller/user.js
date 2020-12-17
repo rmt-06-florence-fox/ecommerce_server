@@ -15,10 +15,12 @@ class UserControl {
         }
       })
       if (!data) {
+        console.log('masuk sini 1');
         throw {
           name: `Wrong User Password`
         }
       } else if (compare(value.password, data.password)) {
+        console.log('masuk sini 2');
         const access_token = createToken({
           id: data.id,
           email: data.email,
@@ -26,6 +28,7 @@ class UserControl {
         })
         res.status(201).json({ access_token })
       } else {
+        console.log('masuk sini 3');
         throw {
           name: `Wrong User Password`
         }

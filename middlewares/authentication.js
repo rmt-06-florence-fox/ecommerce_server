@@ -59,6 +59,7 @@ async function customerAuthentication (req, res, next) {
           email: data.email,
           role: data.role
         }
+        next()
       }
     }
   } catch (err) {
