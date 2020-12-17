@@ -38,9 +38,9 @@ class CartController {
                 return Cart.create({quantity, ProductId, status, UserId})
             }
             else {
-                const newqty = Number(quantity)
+                let newqty = result.quantity + Number(quantity)
                 console.log(newqty, 'ini qty baru')
-                if (newqty >= currentProduct.stock ) {
+                if (newqty > currentProduct.stock ) {
                     throw {name: "Cannot preceed product's stock", status: 400}
                 }
                 else {
@@ -80,6 +80,22 @@ class CartController {
         res.status(204).json({})
       })
       .catch(err =>{
+        next(err)
+      })
+    }
+    static update (req, res, next) {
+      const { id } = req.params
+      const {quantity} = req.body 
+      console.log(quantity, 'ini dari server')
+      console.log(id, 'ini dari server')
+      const qty = Number(quantity)
+      Cart.update({
+        quantity: qty
+      }, {where: {id}}, {returning: true})
+      .then(data => {
+        res.status(200).json(data)
+      })
+      .catch(err => {
         next(err)
       })
     }

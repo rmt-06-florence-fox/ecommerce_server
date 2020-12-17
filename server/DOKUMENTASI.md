@@ -504,6 +504,39 @@ Error Response:
 Code: 400 INTERNAL SERVER ERROR
 Content: { error : "Product not found" }
 
+*Update cart
+Update the amount of a product in your cart
+
+URL
+/carts/:id
+
+Method:
+POST
+
+URL Params
+id: integer
+
+Headers
+required:
+access_token
+
+Data Params
+None
+
+Success Response:
+Code: 200
+Content: 
+        {
+            "id": integer,
+            "UserId": integer,
+            "ProductId": integer,
+        }, 
+
+Error Response:
+
+Code: 400 INTERNAL SERVER ERROR
+Content: { error : "Product not found" }
+
 *Get Carts
 show all products in your cart
 
