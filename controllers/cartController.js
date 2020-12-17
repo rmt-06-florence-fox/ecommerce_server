@@ -35,6 +35,7 @@ class CartController {
                     res.status(200).json({message: 'cart succes to delete'})      
                 }
                 else if (payload.ProductId === cart.ProductId) {
+                    payload.quantity = req.body.quantity
                     const updatedCart = await Cart.update(payload, { where: { id: cart.id }, returning: true })
                     res.status(200).json(updatedCart[1][0])                                        
                 }
