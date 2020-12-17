@@ -1,6 +1,6 @@
 # ecommerce_server
 
-link demo-Customer: ()
+link demo-Customer: (https://ecommerce-client-jar.web.app/)
 link demo-CMS: (https://ecommerce-jar.web.app/)
 link server: (https://e-commerce-jar.herokuapp.com/)
 login with admin account : email: admin@mail.com, password: 123456
