@@ -62,6 +62,9 @@ class CartController {
                     UserId: req.loggedInUser.id,
                     status: false
                 },
+                order: [
+                    ['id', 'ASC']
+                ],
                 include: [Product]
             })
             res.status(200).json(data)
@@ -83,7 +86,7 @@ class CartController {
         })
         if (updatedData[1][0].status === true) {
             const updateStock = await Product.update({
-                status: Number(dataProduct.stock)-Number(dataCart.quantity)
+                stock: Number(dataProduct.stock)-Number(dataCart.quantity)
             }, {
                 where: {
                     id: dataCart.ProductId
@@ -104,7 +107,9 @@ class CartController {
             console.log(req.body.quantity);
             const dataCart = await Cart.findOne({
                 where: {
-                    ProductId: req.params.id
+                    UserId: req.loggedInUser.id,
+                    ProductId: req.params.id,
+                    status: false
                 }
             })
             const dataProduct = await Product.findByPk(req.params.id)
@@ -116,12 +121,14 @@ class CartController {
                         message: `You can only increase the amount of order up to ${dataProduct.stock}`
                     }
                 }
+                console.log(dataCart.id);
                 const updatedData = await Cart.update({
                     quantity: updatedQuantity,
                     price: Number(dataProduct.price)*updatedQuantity
                     }, {
                     where: {
-                        id: dataCart.id
+                        id: dataCart.id,
+                        status: false
                     },
                     returning: true
                 })
@@ -186,6 +193,9 @@ class CartController {
                     UserId: req.loggedInUser.id,
                     status: true
                 },
+                order: [
+                    ['id', 'ASC']
+                ],
                 include: [Product]
             })
             res.status(200).json(data)
