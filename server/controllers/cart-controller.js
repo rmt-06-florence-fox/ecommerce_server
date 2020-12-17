@@ -14,7 +14,7 @@ class CartController {
   static increaseItem(req, res, next) {
     Cart.increment(
       { quantity: 1 },
-      { where: { ProductId: req.body.ProductId } }
+      { where: { UserId: req.userData.id, ProductId: req.body.ProductId } }
     )
       .then((data) => {
         res.status(200).json(data);
@@ -28,7 +28,7 @@ class CartController {
   static decreaseItem(req, res, next) {
     Cart.increment(
       { quantity: -1 },
-      { where: { ProductId: req.body.ProductId } }
+      { where: { UserId: req.userData.id, ProductId: req.body.ProductId } }
     )
       .then((data) => {
         res.status(200).json(data);
@@ -65,7 +65,10 @@ class CartController {
   }
 
   static checkout(req, res, next) {
-    Cart.destroy({ where: { id: [8, 9, 10], UserId: req.userData.id } })
+    console.log(req.body, "<<<<<,");
+    Cart.destroy({
+      where: { id: req.body.checkout.data, UserId: req.userData.id },
+    })
       .then((data) => {
         res.status(200).json({ message: "successfully checkout" });
       })
