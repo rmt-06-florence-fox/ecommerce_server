@@ -5,7 +5,7 @@
 
 * **URL**
 
-  <_https://arfafa-kanban.herokuapp.com/register_>
+  <https://cms-server-arfafa.herokuapp.com/register_>
 
 * **Method**
 
@@ -45,7 +45,7 @@
 
 * **URL**
 
-  <_https://arfafa-kanban.herokuapp.com/login/admin>
+  <https://cms-server-arfafa.herokuapp.com/login/admin>
 
 * **Method**
 
@@ -77,7 +77,7 @@
 
 * **URL**
 
-  <_https://arfafa-kanban.herokuapp.com/login/admin>
+  <https://cms-server-arfafa.herokuapp.com/login/admin>
 
 * **Method**
 
@@ -109,7 +109,7 @@
 
 * **URL**
 
-  <_https://arfafa-kanban.herokuapp.com/product>
+  <https://cms-server-arfafa.herokuapp.com/product>
 
 * **Method**
 
@@ -181,7 +181,7 @@
 
 * **URL**
 
-  <_https://arfafa-kanban.herokuapp.com/product>
+  <https://cms-server-arfafa.herokuapp.com/product>
 
 * **Method**
 
@@ -210,7 +210,7 @@
 
 * **URL**
 
-  <_https://arfafa-kanban.herokuapp.com/product/:id>
+  <https://cms-server-arfafa.herokuapp.com/product/:id>
 
 * **Method**
 
@@ -246,7 +246,7 @@
 
 * **URL**
 
-  <_https://arfafa-kanban.herokuapp.com/product/:id>
+  <https://cms-server-arfafa.herokuapp.com/product/:id>
 
 * **Method**
 
@@ -326,7 +326,7 @@
 
 * **URL**
 
-  <_https://arfafa-kanban.herokuapp.com/product/:id>
+  <https://cms-server-arfafa.herokuapp.com/product/:id>
 
 * **Method**
 
@@ -360,7 +360,7 @@ If data available on database quantity will plus by 1, if not data will new crea
 
 * **URL**
 
-  <_https://arfafa-kanban.herokuapp.com/charts>
+  <https://cms-server-arfafa.herokuapp.com/charts>
 
 * **Method**
 
@@ -406,7 +406,7 @@ if want to adding quantity
 
 * **URL**
 
-  <_https://arfafa-kanban.herokuapp.com/charts>
+  <https://cms-server-arfafa.herokuapp.com/charts>
 
 * **Method**
 
@@ -446,7 +446,7 @@ if want to minus quantity
 
 * **URL**
 
-  <_https://arfafa-kanban.herokuapp.com/charts>
+  <https://cms-server-arfafa.herokuapp.com/charts>
 
 * **Method**
 
@@ -484,7 +484,7 @@ if want to minus quantity
 
 * **URL**
 
-  <_https://arfafa-kanban.herokuapp.com/charts>
+  <https://cms-server-arfafa.herokuapp.com/charts>
 
 * **Method**
 
@@ -513,7 +513,7 @@ if want to minus quantity
 
 * **URL**
 
-  <_https://arfafa-kanban.herokuapp.com/charts>
+  <https://cms-server-arfafa.herokuapp.com/charts>
 
 * **Method**
 
