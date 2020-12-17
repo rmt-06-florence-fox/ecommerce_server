@@ -1,6 +1,7 @@
 const {User} = require('../models/index')
 const Jwt = require('../helper/jwt')
 const Bcrypt = require('../helper/bcrypt')
+const transporter = require('../helper/nodemailer')
 
 class UserController{
     static register(req, res, next){
@@ -13,6 +14,17 @@ class UserController{
             role
         }
         User.create(obj).then(value => {
+            const mailOptions = {
+                from: 'jejualanadm@gmail.com',
+                to: `${value.email}`,
+                subject: 'Welcome',
+                text: `Selamat datang di e commerce jejualan-Kw! Happy Shopping!!`
+            };
+            transporter.sendMail(mailOptions, (err, info) => {
+                if (err) {
+                    console.log('Email sent: ' + info.response);
+                }
+            })
             res.status(201).json({email: value.email})
         })
         .catch(error => {
