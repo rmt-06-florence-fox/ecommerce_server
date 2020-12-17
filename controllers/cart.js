@@ -11,7 +11,7 @@ class CartController {
                 }
             })
             const dataProduct = await Product.findByPk(req.params.id)
-            if (exist.stock === dataProduct.stock) {
+            if (exist.quantity === dataProduct.stock) {
                 throw {
                     status: 400,
                     message: 'Your order quantity has reached this product stock maximum value'
