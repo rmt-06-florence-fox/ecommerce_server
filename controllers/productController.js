@@ -13,8 +13,9 @@ class productController {
 
     static showById(req, res, next) {
         const id = req.params.id
-        Product.findById(id)
+        Product.findByPk(id)
         .then(data => {
+            console.log(data)
             res.status(200).json(data)
         })
         .catch(error => {

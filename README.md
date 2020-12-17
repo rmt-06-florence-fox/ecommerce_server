@@ -204,7 +204,7 @@ _Response(500)_
   message : "internal server error"
 }
 ```
-### delete /products/:id
+### DELETE /products/:id
 >delete product
 _Request Header_
 ```
