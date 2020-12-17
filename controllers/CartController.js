@@ -48,7 +48,7 @@ class CartController {
                 return Cart.create(item)
             } else {
                 let qty = result2.quantity
-                if (currentProduct.stock < qty) {
+                if (currentProduct.stock <= qty) {
                     res.status(400).json({message: "Out of stock!"})
                 } else {
                     let plusQty = result2.quantity + 1

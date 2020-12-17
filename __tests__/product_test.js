@@ -20,6 +20,7 @@ let data2 = {
     stock: 111,
     price: 1234
 }
+let data_dummy
 
 beforeAll (async (done) => {
     try {
@@ -65,6 +66,22 @@ describe('CRUD /product', ()=> {
             })
         })
     })
+    describe('Create product error POST /product', () => {
+        test.only('error post product', (done) => {
+            request(app)
+            .post('/product')
+            .send(data_dummy)
+            .set('access_token', access_token_admin)
+            .end((err, res) => {
+                const {body, status} = res
+
+                if(err) return done(err) 
+                expect(status).toBe(500)
+                expect(body).toHaveProperty("message", "Internal server error")
+                done()
+            })
+        })
+    })
     describe('Read all product Success GET /product', () => {
         test('response with data', (done) => {
             request(app)
@@ -79,6 +96,22 @@ describe('CRUD /product', ()=> {
                 done()
             })
         })  
+    })
+    describe('Create product error GET /product', () => {
+        test.only('error get product', (done) => {
+            request(app)
+            .get('/product')
+            .send(data_dummy)
+            .set('access_token', access_token_admin)
+            .end((err, res) => {
+                const {body, status} = res
+
+                if(err) return done(err) 
+                expect(status).toBe(500)
+                expect(body).toHaveProperty("message", "Internal server error")
+                done()
+            })
+        })
     })
     describe('Edit product Success Edit /product/:id', () => {
         test('response with data', (done) => {
@@ -99,6 +132,21 @@ describe('CRUD /product', ()=> {
             })
         })  
     })
+    describe('Edit product fail Edit /product/:id', () => {
+        test('response with error', (done) => {
+            request(app)
+            .put('/product/' + id)
+            .set('access_token', access_token_admin)
+            .send(data2)
+            .end((err, res) => {
+    
+                if(err) return done(err) 
+                expect(status).toBe(500)
+                expect(body).toHaveProperty("message", "Internal server error")
+                done()
+            })
+        })  
+    })
     describe('Delete product Success Delete /product/:id', () => {
         test('response with data', (done) => {
             request(app)
@@ -109,6 +157,21 @@ describe('CRUD /product', ()=> {
 
                 if(err) return done(err)
                 expect(status).toBe(200)
+                done()
+            })
+        })  
+    })
+    describe('Delete product error Delete /product/:id', () => {
+        test('response with error', (done) => {
+            request(app)
+            .delete('/product/' + id)
+            .set('access_token', access_token_admin)
+            .end((err, res) => {
+                const {body, status} = res
+
+                if(err) return done(err) 
+                expect(status).toBe(500)
+                expect(body).toHaveProperty("message", "Internal server error")
                 done()
             })
         })  
