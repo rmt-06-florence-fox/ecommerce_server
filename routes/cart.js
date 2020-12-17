@@ -7,5 +7,5 @@ route.use(authCustomer)
 route.get('/', CartController.fetchCartProduct)
 route.put('/:idProduct', CartController.updateOrAddCart)
 route.delete('/:idCart', authCart, CartController.delCartProduct)
-
+route.patch('/', CartController.checkout)
 module.exports = route

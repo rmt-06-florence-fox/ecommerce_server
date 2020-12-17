@@ -5,7 +5,7 @@ class CartController {
     static async fetchCartProduct (req, res, next) {
         try {
             let UserId = +req.loggedInUser.id
-            const data = await Cart.findAll({where:{UserId}, include: Product})
+            const data = await Cart.findAll({where:{UserId, status: false}, include: Product})
             let totalPrice = 0
             data.forEach(e => {
                 totalPrice += e.quantity * e.Product.price;
@@ -27,7 +27,7 @@ class CartController {
             let checkStock = await Product.findOne({where:{id: payload.ProductId}})
             let stock = +checkStock.stock
             let checkProduct = await Cart.findOne(
-                {where:{UserId: payload.UserId, ProductId: payload.ProductId}, 
+                {where:{UserId: payload.UserId, ProductId: payload.ProductId, status: false}, 
                 include:Product})
             if (stock >= payload.quantity) {
                 if (checkProduct){
@@ -39,7 +39,7 @@ class CartController {
                         } else {
                             const data = await Cart.update(
                                 {quantity}, 
-                                {where:{UserId: payload.UserId, ProductId: payload.ProductId}, 
+                                {where:{UserId: payload.UserId, ProductId: payload.ProductId, status: false}, 
                                 returning:true})
                             res.status(200).json(data[1][0])
                         }
@@ -72,8 +72,34 @@ class CartController {
     static async delCartProduct (req, res, next) {
         try {
             let id = +req.params.idCart
-            let data = await Cart.destroy({where:{id}})
+            let data = await Cart.destroy({where:{id, status: false}})
             res.status(200).json({message: 'Product Deleted Successfuly'})
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    static async checkout (req, res, next) {
+        try {
+            let UserId = +req.loggedInUser.id
+            let updateCarts = []
+            let updateProducts = []
+            let cart = await Cart.findAll({where:{UserId, status:false}, include: Product})
+            cart.forEach(e => {
+                if (!e.status && e.Product.stock >= e.quantity) {
+                    let updateStatus = {status: true}
+                    let updateStock = {stock: e.Product.stock - e.quantity}
+                    updateCarts.push(Cart.update(updateStatus, {where:{id: e.id}}))
+                    updateProducts.push(Product.update(updateStock, {where:{id: e.ProductId}}))
+                } else {
+                    throw{
+                        status: 400,
+                        message: 'Stock not enough'
+                    }
+                }
+            })
+            let checkout = await Promise.all(updateProducts)
+            res.status(200).json({message: 'Cart Checkout Successfuly'})
         } catch (error) {
             next(error)
         }

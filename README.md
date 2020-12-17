@@ -1043,8 +1043,6 @@ E-commerce is the activity of electronically buying or selling of products on on
 
 * **Data Params**
 
-  **Required:**
-
     None
 
 * **Success Response:**
@@ -1086,3 +1084,68 @@ E-commerce is the activity of electronically buying or selling of products on on
         "message": "Error Not Found"
     }
     ```
+
+**Checkout Cart Product**
+---
+    Checkout Product in Cart.
+
+* **URL**
+
+    `/cart`
+
+* **Method:**
+
+    `PATCH`
+
+* **Header:**
+
+    `access_token:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJ0YXVmaWsxQG1haWwuY29tIiwiaWF0IjoxNjA4MDEwOTM4fQ.CYq2hbqgOgnioY5BrIzGbDUcT3YJq0em59cHil0NSn8`
+
+* **URL Params**
+
+    None
+
+* **Data Params**
+
+    None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+    ```json
+    {
+        "message": "Cart Checkout Successfuly"
+    }
+    ```
+
+* **Error Response:**
+
+  * **Code:** 401 Unauthorized <br />
+    **Content:**
+    ```json
+    {
+        "message": "Please Login First"
+    }
+    ```
+
+    OR
+
+  * **Code:** 401 Unauthorized <br />
+    **Content:**
+    ```json
+    {
+        "message": "invalid token"
+    }
+    ```
+
+    OR
+
+  * **Code:** 400 Bad Request <br />
+    **Content:**
+    ```json
+    {
+        "message": "Stock not enough"
+    }
+    ```
+
