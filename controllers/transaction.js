@@ -28,7 +28,8 @@ class TransactionController {
         where: {
           UserId,
           status: 'completed'
-        }
+        },
+        order: [['updatedAt', 'desc']]
       })
       res.status(200).json({transactions})
     } catch (error) {

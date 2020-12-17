@@ -35,6 +35,12 @@ module.exports = {
        image: "keyboard",
        createdAt: new Date(),
        updatedAt: new Date()
+     },
+     {
+       name: "Headset",
+       image: "headset",
+       createdAt: new Date(),
+       updatedAt: new Date()
      }
    ], {})
   },

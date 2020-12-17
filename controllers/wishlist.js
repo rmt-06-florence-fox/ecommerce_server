@@ -1,4 +1,4 @@
-const { Wishlist, Product } = require('../models')
+const { Wishlist, Product, Category } = require('../models')
 
 class WishlistController {
   static async getWishlists (req, res, next) {
@@ -10,7 +10,10 @@ class WishlistController {
            UserId
          },
          include: [{
-           model: Product
+           model: Product,
+           include: [{
+            model: Category
+          }]
          }]
       })
 
@@ -27,7 +30,8 @@ class WishlistController {
     try {
       const find = await Wishlist.findOne({
         where: {
-          ProductId
+          ProductId,
+          UserId
         }
       })
 

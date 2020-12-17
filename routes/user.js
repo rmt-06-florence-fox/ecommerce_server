@@ -4,6 +4,7 @@ const authentication = require('../middlewares/authentication')
 
 routes.post('/login/admin', UserController.loginAdmin)
 routes.post('/login/customer', UserController.loginCustomer)
+routes.post('/login/google', UserController.loginGoogle)
 routes.post('/register', UserController.register)
 
 routes.use(authentication) // ! authentication

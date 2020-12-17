@@ -81,26 +81,36 @@ class CartController {
           model: Product
         }]
       })
-    
+      
       if (+quantity > +cart.Product.stock) {
         throw {
           status: 400,
           message: `Cannot add to cart`
         }
       } else {
-        const total = +quantity * +cart.Product.price
+        if (quantity == 0) {
+          const deleteCart = await Cart.destroy({
+            where: {
+              id
+            }
+          })
 
-        const updatedCart = await Cart.update({
-          total,
-          quantity
-        }, {
-          where: {
-            id
-          },
-          returning: true
-        })
+          res.status(200).json({message: `This product deleted successfully from the cart`})
+        } else {
+          const total = +quantity * +cart.Product.price
 
-        res.status(200).json({cart: updatedCart[1][0]})
+          const updatedCart = await Cart.update({
+            total,
+            quantity
+          }, {
+            where: {
+              id
+            },
+            returning: true
+          })
+
+          res.status(200).json({cart: updatedCart[1][0]})
+        }
       }
       
     } catch (error) {
