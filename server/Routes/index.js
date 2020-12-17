@@ -6,11 +6,11 @@ const Authenticate = require("../middlewares/Authentication")
 const Authorization = require("../middlewares/Authorized")
 
 // Admin
-router.post("/login/admin", UserController.login)
+router.post("/login/admin", UserController.loginAdmin)
 
 // Customer
 router.post("/register", UserController.register)
-router.post("/login", UserController.login)
+router.post("/login", UserController.loginCustomer)
 
 router.get("/product", ProductController.getProduct)
 router.get("/product/:id", ProductController.getOneProduct)

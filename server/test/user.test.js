@@ -139,7 +139,7 @@ describe("POST User /login", () => {
     describe("Error login", () => {
         test("response with invalid account", (done) => {
             request(app)
-            .post("/login")
+            .post("/login/admin")
             .send({email: "arf@mail.com", password: "arfafa"})
             .end((err, res) => {
                 const { status, body } = res

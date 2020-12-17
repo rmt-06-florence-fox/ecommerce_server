@@ -146,7 +146,7 @@ class ProductController {
     }
 
     static getAllChart(req, res, next) {
-        Chart.findAll({where: {UserId: req.LoginUser.id}})
+        Chart.findAll({where: {UserId: req.LoginUser.id}, order: [['id', 'DESC']]})
             .then(data => {
                 res.status(200).json(data)
             })
@@ -183,12 +183,20 @@ class ProductController {
 
     static incrementChart(req, res, next) {
         const idChart = req.params.idChart
+        let chart
         let productMin
 
         Chart.findOne({where: {id: idChart}})
             .then(data => {
-                if (data.quantity > 0) {
-                    return Chart.increment('quantity', {where: {id: data.id}})          
+                chart = data
+                console.log(chart)
+                return Product.findOne({where: {id: data.ProductId}})
+            })
+            .then(data => {
+                // console.log(chart.quantity, 'ini quantity')
+                // console.log(data.stock, 'ini stock')
+                if (chart.quantity < data.stock) {
+                    return Chart.increment('quantity', {where: {id: idChart}})          
                 } else {
                     productMin = 'tidak bisa melibihi batas minimum'
                 }
