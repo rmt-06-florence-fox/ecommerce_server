@@ -4,7 +4,8 @@ class CartController {
   static getCart(req, res, next) {
     User.findOne({
       where: {
-        id: Number(req.params.id)
+        id: Number(req.params.id),
+        UserId: Number(req.userData.id)
       },
       attributes: { exclude: ['password'] },
       include: [{
@@ -13,6 +14,7 @@ class CartController {
         order: [['id', 'ASC']],
         include : [{
           model: Product,
+          order: [['id', 'ASC']],
           include: [{
             model: Category
           }]
@@ -69,7 +71,8 @@ class CartController {
     const id = Number(req.params.id)
 
     Cart.findOne({
-      where: {id}
+      id,
+      UserId: Number(req.userData.id)
     })
       .then(cart => {
         if (cart) {
@@ -97,7 +100,10 @@ class CartController {
     const id = Number(req.params.id)
 
     Cart.findOne({
-      where: {id},
+      where: {
+        id,
+        UserId: Number(req.userData.id)
+      },
       include: [{
         model: Product
       }]
@@ -149,8 +155,8 @@ class CartController {
   }
 
   static addTrans(req, res, next) {
-    const UserId = Number(req.params.id)
     let codeTrans;
+    const UserId = Number(req.userData.id)
 
     User.findOne({
       where: {id: UserId}
@@ -192,7 +198,7 @@ class CartController {
           code,
           name: req.body.name,
           address: req.body.address,
-          email: req.body.email,
+          email: req.userData.email,
           products: req.body.products,
           total_price: req.body.total_price
         }
@@ -213,22 +219,15 @@ class CartController {
   }
 
   static getTransactionsUser(req, res, next) {
-    const id = Number(req.params.id)
-
-    User.findOne({
-      where: {id}
+    Transaction.findAll({
+      where: { UserId: Number(req.userData.id) }
     })
-      .then(user => {
-        if (user) {
-          return Transaction.findAll({
-            where: { email: user.email }
-          })
+      .then(transactions => {
+        if (transactions) {
+          res.status(200).json(transactions)
         } else {
           next({ name: 'NOT_FOUND' })
         }
-      })
-      .then(transactions => {
-        res.status(200).json(transactions)
       })
       .catch(err => {
         next(err)
@@ -239,7 +238,10 @@ class CartController {
     const code = Number(req.params.id)
 
     Transaction.findOne({
-      where: {code}
+      where: {
+        code,
+        UserId: Number(req.userData.id)
+      }
     })
       .then(transaction => {
         if (transaction) {

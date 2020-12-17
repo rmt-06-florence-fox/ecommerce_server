@@ -24,7 +24,7 @@ router.delete('/carts/:id', userAuthorization, CartController.delete)
 
 router.get('/transactions/:id', userAuthorization, CartController.getTransactionsUser)
 router.get('/transaction/:id', userAuthorization, CartController.getOneTransaction)
-router.post('/transaction/:id', userAuthorization, CartController.addTrans)
+router.post('/transaction', userAuthorization, CartController.addTrans)
 router.delete('/transaction/:id', userAuthorization, CartController.deleteTrans)
 
 router.use(authorization);
