@@ -87,7 +87,7 @@ _Request Body_
   }
   ```
 ---
-### POST /register
+### POST /registerCustomer
 > Create new user
 
 _Request Params_
@@ -334,6 +334,223 @@ _Response (200)_
 ```
 {
   "Products Deleted Successfully"
+}
+```
+_Response (500 - Bad Request)_
+```
+{
+  "msg": "Internal server error"
+}
+```
+_Response (404 - Not Found)_
+```
+{
+  "msg": "Error not found!"
+}
+```
+---
+### GET /carts
+
+> Get all product in carts
+
+_Request Params_
+```
+Not needed
+```
+_Request Header_
+```
+{
+  "access_token": "<customer access token>"
+}
+```
+_Request Body_
+```
+not needed
+```
+_Response (200)_
+```
+{
+    "id": 1,
+    "quantity": 1,
+    "checkout": "false",
+    "ProductId": 1,
+    "UserId": 3,
+    "Product": {
+        "id": 1,
+        "name": "X-Box Series X",
+        "image_url": "https://images-na.ssl-images-amazon.com/images/I/51A41nLe5IL._AC_SX522_.jpg",
+        "price": "9000000",
+        "stock": "12",
+        "category": "Electronic",
+        "UserId": 1
+    }
+}
+```
+_Response (500 - Bad Request)_
+```
+{
+  "msg": "Internal server error"
+}
+```
+---
+### POST /carts
+
+> Create new carts
+
+_Request Params_
+```
+Not needed
+```
+_Request Header_
+```
+{
+  "access_token": "<customer access token>"
+}
+```
+_Request Body_
+```
+{
+  "ProductId": "<Product id>"
+}
+```
+_Response (201 - Created)_
+```
+{
+    "id": 3,
+    "quantity": 2,
+    "checkout": "false",
+    "ProductId": 3,
+    "UserId": 2
+}
+```
+_Response (400 - Bad Request)_
+```
+{
+  "msg": "Out Of Products!"
+}
+```
+_Response (500 - Bad Request)_
+```
+{
+  "msg": "Internal server error"
+}
+```
+---
+### GET /carts/:id
+
+> Get cart with specific id
+
+_Request Params_
+```
+Not needed
+```
+_Request Header_
+```
+{
+  "access_token": "<customer access token>"
+}
+```
+_Request Body_
+```
+not needed
+```
+_Response (200)_
+```
+{
+  "id": 1,
+  "quantity": 1,
+  "checkout": "false",
+  "ProductId": 1,
+  "UserId": 3,
+  "Product": {
+      "id": 1,
+      "name": "X-Box Series X",
+      "image_url": "https://images-na.ssl-images-amazon.com/images/I/51A41nLe5IL._AC_SX522_.jpg",
+      "price": "9000000",
+      "stock": "12",
+      "category": "Electronic",
+      "UserId": 1
+  }
+}
+```
+_Response (500 - Bad Request)_
+```
+{
+  "msg": "Internal server error"
+}
+```
+---
+### DELETE /carts/:id
+
+> Delete cart with specific id
+
+_Request Params_
+```
+Products's ID
+```
+_Request Header_
+```
+{
+  "access_token": "<customer access token>"
+}
+```
+_Request Body_
+```
+Products's ID
+```
+_Response (200)_
+```
+{
+  "Product on your cart deleted successfully!"
+}
+```
+_Response (500 - Bad Request)_
+```
+{
+  "msg": "Internal server error"
+}
+```
+_Response (404 - Not Found)_
+```
+{
+  "msg": "Error not found!"
+}
+```
+---
+### PUT /carts/:id
+
+> Update cart with specific id
+
+_Request Params_
+```
+Products's ID
+```
+_Request Header_
+```
+{
+  "access_token": "<cusomer access token>"
+}
+```
+_Request Body_
+```
+{
+  "quantity": "<stock product>"
+}
+```
+_Response (200)_
+```
+{
+  "id": 3,
+  "quantity": 2,
+  "checkout": "false",
+  "ProductId": 3,
+  "UserId": 2
+}
+```
+_Response (400 - Bad Request)_
+```
+{
+  "msg": "Out Of Products!"
 }
 ```
 _Response (500 - Bad Request)_

@@ -72,7 +72,7 @@ class CartsController {
         }
       }
     } catch (err) {
-      console.log(err)
+      console.log(err.message)
       next(err)
     }
   }
@@ -104,7 +104,7 @@ class CartsController {
             model: Product
           }
         })
-      if (quantity > checkStock.Product.stock) {
+      if (quantity < checkStock.Product.stock) {
         return next({
           name: 'OutOfProduct',
           msg: 'Out Of Product!'
