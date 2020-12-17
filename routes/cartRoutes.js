@@ -8,7 +8,6 @@ cart.get('/', cartController.get)
 cart.post('/', cartController.create)
 cart.post('/checkout', cartController.checkout)
 cart.put('/:id', cartController.update)
-cart.use('/:id', authorize)
 cart.delete('/:id', cartController.delete)
 
 module.exports = cart
