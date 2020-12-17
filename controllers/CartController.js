@@ -51,15 +51,30 @@ class CartController {
     }
 
     static UpdateCart (req,res,next) {
-        Cart.update({
-            quantity: req.body.quantity 
-        }, {where: {UserId: req.loggedInUser.id, ProductId: req.body.ProductId}})
-        .then(data2 => {
-            res.status(200).json({message: 'quantity updated'})
-        })
-        .catch(error => {
-            next(error)
-        })
+        console.log(req.body.quantity,req.body.status, '<<<<<<<<<<<<<, masuk update')
+        if(req.body.status == 'add') {
+            Cart.update({
+                quantity: req.body.quantity+1
+            }, {where: {UserId: req.loggedInUser.id, ProductId: req.body.ProductId}})
+            .then(data2 => {
+                console.log('sudah update')
+                res.status(200).json({message: 'quantity updated'})
+            })
+            .catch(error => {
+                next(error)
+            })
+        } else {
+            Cart.update({
+                quantity: req.body.quantity-1
+            }, {where: {UserId: req.loggedInUser.id, ProductId: req.body.ProductId}})
+            .then(data2 => {
+                console.log('sudah update')
+                res.status(200).json({message: 'quantity updated'})
+            })
+            .catch(error => {
+                next(error)
+            })
+        }
     }
 }
 
