@@ -7,6 +7,7 @@ const authorization = require("../middlewares/authorization");
 
 router.post("/register", userController.register);
 router.post("/login", userController.login);
+router.get("/allproducts", productController.readClient);
 
 router.use(authentication);
 router.post("/products", productController.create);

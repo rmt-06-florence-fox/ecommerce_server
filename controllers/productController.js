@@ -38,6 +38,16 @@ class productController{
         }
     }
 
+    static async readClient(request, response, next) {
+        try {
+            const data = await Product.findAll();
+            response.status(200).json(data);
+        } catch (error) {
+            // console.log(error);
+            next(error);
+        }
+    }
+
     static async readById(request, response, next) {
         const userId = +request.loggedInUser.id;
         const productId = +request.params.id;

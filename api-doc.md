@@ -435,7 +435,7 @@ _Request Params_
 _Request Body_
 ```
 {
-    itemQuantity: 1
+    value: +1
 }
 ```
 

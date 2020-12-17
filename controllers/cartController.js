@@ -26,7 +26,7 @@ class cartController {
 
     static async removeItem(request, response, next) {
         const productId = request.params.id
-        const cartId = request.body.cartId
+        const cartId = request.body.CartId
 
         try {
             const deletedItem = await CartProduct.destroy({ 
@@ -72,7 +72,6 @@ class cartController {
                 })
                 existInCart[0].quantity += 1
                 existInCart[0].save()
-                console.log("EXIST CART QUANTITY ",existInCart[0].quantity += 1);
                 response.status(201).json({
                     CartId: foundCart[0].id,
                     CartProductId: existInCart[0].id
@@ -86,15 +85,15 @@ class cartController {
 
     static async updateQuantity(request, response, next) {
         const productId = +request.params.id
-        const itemQuantity = Number(request.body.itemQuantity)
-
+        const value = Number(request.body.value)
+        
         try {
             const itemInCart = await CartProduct.findOne({ 
                 where: { 
                     ProductId: productId 
                 } 
             })
-            itemInCart.quantity = itemInCart.quantity + itemQuantity
+            itemInCart.quantity += value
             itemInCart.save()
             response.status(200).json({ 
                 message: 'Successfully update item quantity.' 
