@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
       User.hasMany(models.Cart)
+      User.hasMany(models.Wishlist)
     }
   };
   User.init({

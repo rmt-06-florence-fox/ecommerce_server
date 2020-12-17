@@ -3,28 +3,45 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Cart extends Model {
+  class History extends Model {
     static associate(models) {
-      Cart.belongsTo(models.User)
-      Cart.belongsTo(models.Product)
     }
   };
-  Cart.init({
-    UserId: {
-      type: DataTypes.INTEGER,
+  History.init({
+    name: {
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: {
-          msg: 'UserId is required'
+          msg: "Name is required"
         }
       }
     },
-    ProductId: {
+    image_url: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Image Url is required"
+        }
+      }
+    },
+    price: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notEmpty: {
-          msg: 'ProductId is required'
+          msg: "Price is required"
+        },
+        notNull:{
+          msg: "Price cannot be null"
+        },
+        min:{
+          args: [0],
+          msg: "Minimum price is 0"
+        },
+        isNumeric:{
+          msg: "Only Number is Allowed"
         }
       }
     },
@@ -47,18 +64,18 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    status: {
-      type: DataTypes.STRING,
+    UserId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notEmpty: {
-          msg: 'Status is required'
+          msg: 'UserId is required'
         }
       }
-    },
+    }
   }, {
     sequelize,
-    modelName: 'Cart',
+    modelName: 'History',
   });
-  return Cart;
+  return History;
 };

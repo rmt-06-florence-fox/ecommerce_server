@@ -1,4 +1,4 @@
-const {Cart, Product} = require('../models')
+const {Cart, Product, History} = require('../models')
 
 class CartController {
 
@@ -84,6 +84,7 @@ class CartController {
             let UserId = +req.loggedInUser.id
             let updateCarts = []
             let updateProducts = []
+            let updateHistory = []
             let cart = await Cart.findAll({where:{UserId, status:false}, include: Product})
             cart.forEach(e => {
                 if (!e.status && e.Product.stock >= e.quantity) {
@@ -91,6 +92,13 @@ class CartController {
                     let updateStock = {stock: e.Product.stock - e.quantity}
                     updateCarts.push(Cart.update(updateStatus, {where:{id: e.id}}))
                     updateProducts.push(Product.update(updateStock, {where:{id: e.ProductId}}))
+                    updateHistory.push(History.create({
+                        name: e.Product.name,
+                        image_url: e.Product.image_url,
+                        price: e.Product.price,
+                        quantity: e.quantity,
+                        UserId: +req.loggedInUser.id
+                    }))
                 } else {
                     throw{
                         status: 400,
@@ -98,7 +106,7 @@ class CartController {
                     }
                 }
             })
-            let checkout = await Promise.all(updateProducts)
+            let checkout = await Promise.all(updateProducts, updateCarts, updateHistory)
             res.status(200).json({message: 'Cart Checkout Successfuly'})
         } catch (error) {
             next(error)

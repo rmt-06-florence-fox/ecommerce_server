@@ -1,14 +1,14 @@
-const { Cart } = require('../models')
+const { Wishlist } = require('../models')
 
 module.exports = async (req, res, next) => {
     try {
-        const cart = await Cart.findOne({ where: { id: +req.params.idCart } })
-        if (!cart) {
+        const wishlist = await Wishlist.findOne({ where: { id: +req.params.id } })
+        if (!wishlist) {
             throw {
                 status: 404,
                 message: 'Error Not Found'
             }
-        } else if (cart.UserId === +req.loggedInUser.id) {
+        } else if (wishlist.UserId === +req.loggedInUser.id) {
             next()
         } else {
             throw {
