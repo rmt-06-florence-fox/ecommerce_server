@@ -1,6 +1,6 @@
 const request = require('supertest')
 const app = require('../app')
-const {sequelize} = require('../models')
+const {sequelize, Product} = require('../models')
 const {queryInterface} = sequelize
 
 let data = {
@@ -9,6 +9,15 @@ let data = {
   price: 100000,
   stock: 17
 }
+beforeAll(async (done) => {
+  try {
+    await Product.create(data)
+    await Product.create(data)
+    done()
+  }catch(err) {
+    done(err)
+  }
+})
 afterAll(async (done)=>{
   try{
     await queryInterface.bulkDelete('Products', null, {})

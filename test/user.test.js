@@ -48,7 +48,7 @@ describe('Login User POST /admin/login', () => {
           }
           expect(status).toBe(200)
           expect(body).toHaveProperty('email', 'admin@mail.com')
-          expect(body).toHaveProperty('access_token')
+          expect(body).toHaveProperty('access_token', expect.any(String))
           done()
         })
     })
