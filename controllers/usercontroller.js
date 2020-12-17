@@ -1,4 +1,4 @@
-const {User} = require('../models/')
+const {User} = require('../database/models')
 const {verifyHash} = require('../helpers/bcrypt')
 const {signToken} = require('../helpers/jwt')
 
@@ -18,6 +18,11 @@ class UserController {
         throw {
           status: 400,
           message: 'wrong email/password'
+        }
+      } else if (login.role === 'Customer'){
+        throw{
+          status: 401,
+          message: unauthorized
         }
       } else if (!verifyHash(password, login.password)) {
         throw {

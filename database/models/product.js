@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 
-const { pascalCase } = require('../helpers/pascalCase')
+const { pascalCase } = require('../../helpers/pascalCase')
 
 module.exports = (sequelize, DataTypes) => {
   class Product extends Model {
@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Product.belongsTo(models.User, {foreignKey: 'UserId'})
+      Product.hasMany(models.CartList, {foreignKey: 'ProductId'})
     }
   };
   Product.init({

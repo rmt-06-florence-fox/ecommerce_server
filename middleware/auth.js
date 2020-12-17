@@ -1,4 +1,4 @@
-const {User, Product, Banner} = require('../models');
+const {User, Product, Banner} = require('../database/models');
 const {verifyToken} = require('../helpers/jwt');
 
 const authentication = async (req, res, next) => {

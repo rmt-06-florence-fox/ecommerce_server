@@ -2,7 +2,7 @@
 const {
   Model
 } = require('sequelize');
-const {hashPassword} = require('../helpers/bcrypt')
+const {hashPassword} = require('../../helpers/bcrypt')
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       User.hasMany(models.Product, {foreignKey: 'UserId'})
       User.hasMany(models.Banner, {foreignKey: 'UserId'})
+      User.hasMany(models.ShoppingCart, {foreignKey: 'UserId'})
     }
   };
   User.init({

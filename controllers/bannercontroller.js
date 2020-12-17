@@ -1,4 +1,4 @@
-const {Banner} = require('../models/')
+const {Banner} = require('../database/models')
 
 class BannerController {
   static async getAllBanners (req, res, next) {

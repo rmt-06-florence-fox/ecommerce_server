@@ -1,4 +1,4 @@
-const {Product} = require('../models/')
+const {Product} = require('../database/models')
 
 class ProductController {
   static async getAllProducts (req, res, next) {
