@@ -23,8 +23,9 @@ class Controller{
 
    static async login(req,res,next){
       console.log('login...')
-      const host = req.get('host')
-      const isCms = host.includes('cms') ? true : false
+      const origin = req.get('origin')
+      console.log(origin);
+      const isCms = origin.includes('cms') ? true : false
       const payload = {
          email:req.body.email,
          password:req.body.password
