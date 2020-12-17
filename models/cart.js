@@ -50,6 +50,9 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
       }
+    },
+    Status: {
+      type: DataTypes.BOOLEAN
     }
   }, {
     sequelize,

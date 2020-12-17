@@ -1,7 +1,7 @@
 const { User } = require("../models");
 const { verifyToken } = require("../helpers/tokenHandler");
 
-module.exports = async (req, res, next) => {
+const authentication = async (req, res, next) => {
   try {
     const { access_token } = req.headers;
     if (access_token) {
@@ -30,3 +30,5 @@ module.exports = async (req, res, next) => {
     next(error);
   }
 };
+
+module.exports = authentication

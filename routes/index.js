@@ -14,7 +14,7 @@ router.use("/admin", adminRoutes);
 
 // customer
 router.post('/register', userController.register)
-// router.post('/login', userController.loginUser)
+router.post('/login', userController.loginUser)
 
 router.use('/cart', cartRoutes)
 

@@ -60,6 +60,44 @@ class userController {
         next(err);
       });
   }
+  // login user
+  static async loginUser (req, res, next) {
+    User.findOne({
+      where: {
+        email: req.body.email,
+        role: "customer"
+      },
+    })
+      .then((data) => {
+        // console.log(data)
+        if (!data) {
+          throw {
+            status: 404,
+            message: "Account not found!",
+          };
+        } else if (compare(req.body.password, data.password)) {
+          const access_token = generateToken({
+            id: data.id,
+            email: data.email,
+            role: data.role
+          });
+          res.status(200).json({
+            id: data.id,
+            username: data.username,
+            email: data.email,
+            access_token,
+          });
+        } else {
+          throw {
+            status: 400,
+            message: "Wrong email/password",
+          };
+        }
+      })
+      .catch((err) => {
+        next(err);
+      });
+  }
 }
 
 module.exports = userController;
