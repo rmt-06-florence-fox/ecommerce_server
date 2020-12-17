@@ -1,7 +1,8 @@
-const { User, Product, Cart, Wishlist } = require('../models')
+const { User, Product, Cart, Wishlist, Transaction } = require('../models')
 const generateToken = require('../helpers/generateToken')
 const verifyPassword = require("../helpers/verifyPassword")
-const wishlist = require('../models/wishlist')
+const { sequelize } = require("../models/index.js")
+const { compareSync } = require('bcryptjs')
 
 
 class CustomerController {
@@ -291,6 +292,62 @@ class CustomerController {
         console.log(err + " <<< ini dari delete wishlist")
         next(err)
       })
+  }
+  static async checkout (req, res, next) {
+      try {
+        let carts = req.body.carts
+        let transactions = []
+        for (let i = 0; i < carts.length; i++) {
+          let stockLeft;
+          let qty;
+          Product.findOne({
+            where: {
+              id: carts[i].ProductId
+            }
+          })
+          .then(product => {
+            stockLeft = product.stock
+            if (carts[i].quantity > stockLeft) {
+              qty = stockLeft
+            }
+            else {
+              qty = carts[i].quantity
+            }
+            return Cart.destroy({
+              where: {
+                ProductId: carts[i].ProductId,
+                UserId: carts[i].UserId
+              }})
+          })
+            .then(() => {
+              return Product.update({
+                stock: stockLeft - qty
+              },{
+                where: {
+                  id: carts[i].ProductId
+                }
+              })
+            })
+            .then(() => {
+              return Transaction.create({
+                ProductId: carts[i].ProductId,
+                UserId: carts[i].UserId,
+                quantity: qty
+              })
+            })
+            .then(transaction => {
+              transactions.push(transaction)
+            })
+            .catch(err => {
+              next(err)
+            })
+        }
+        res.status(200).json(transactions)
+
+      } catch (error) {
+        next(error)
+
+      }
   }
 }
 

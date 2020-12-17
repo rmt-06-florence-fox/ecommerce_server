@@ -14,4 +14,5 @@ router.patch('/carts/:ProductId', UserController.decreaseItemfromCart) // ini ro
 router.get('/wishlist', UserController.getWishlist)
 router.post('/wishlist/:ProductId', UserController.addWishlist)
 router.delete('/wishlist/:ProductId', UserController.deleteWishlist)
+router.put('/checkout', UserController.checkout)
 module.exports = router
