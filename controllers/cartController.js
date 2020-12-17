@@ -122,7 +122,6 @@ class CartController{
 
    static async destroyCart(req,res,next){
       const id = +req.params.id
-      console.log('destroy')
       console.log(req.params);
       try {
          const target = await Cart.findOne({where:{id},include:Product})
@@ -186,6 +185,30 @@ class CartController{
          next(error)
       }
    }
+
+   static async checkOutCarts(req,res,next){
+      console.log('checking out');
+      try {
+         const cart = await Cart.findAll({
+            where: {
+               UserId: req.loggedIn.id
+            },
+            order:[
+               ['id','ASC']
+            ],
+            include: Product
+         })
+         cart.forEach(async (item) => {
+            const deleted = await Cart.destroy({where: {
+               id: item.id
+            }})
+         })
+         res.status(200).json({message:'checkout success'})
+      } catch (error) {
+         next(error)
+      }
+   }
+
 
 }
 

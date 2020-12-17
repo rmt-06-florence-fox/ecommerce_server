@@ -7,6 +7,7 @@ router.use(authentication)
 router.post('/',CartController.createCart)
 router.get('/', CartController.fetchCarts)
 router.patch('/:id',CartController.updateCart)
+router.delete('/',CartController.checkOutCarts)
 router.delete('/:id',CartController.destroyCart)
 
 

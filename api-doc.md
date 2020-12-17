@@ -853,3 +853,64 @@
             "message":"Server Error"
          }
       ```
+
+
+
+**Checkout Cart**
+----
+  Returns json data of message confirmation.
+
+* **URL**
+
+  /carts
+
+* **Method:**
+
+  `DELETE`
+  
+*  **URL Params**
+
+   **Required:**
+   `id=[integer]`
+
+* **Headers**
+   **Required:**
+   `access_token=[string]`
+
+* **Data Params**
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+    ```json
+      {  
+         "message":"Checkout Success"       
+      }
+    ```
+ 
+* **Error Response:**
+
+  * **Code:** 400 <br />
+    **Content:** 
+      ```json 
+         {
+            "message": "You must login first"
+         }
+      ```
+  OR
+  * **Code:** 400 <br />
+    **Content:** 
+      ```json 
+         {
+            "message": "You are not authorized to add/edit/update/delete carts"
+         }
+      ``` 
+   OR
+  * **Code:** 500 <br />
+    **Content:**
+      ```json
+         {
+            "message":"Server Error"
+         }
+      ```
