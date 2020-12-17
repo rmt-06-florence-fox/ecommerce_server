@@ -303,6 +303,7 @@ class CustomerController {
           let stockLeft;
           let qty;
           promises.push(Product.findOne({
+            transaction: t,
             where: {
               id: carts[i].ProductId
             }
@@ -316,6 +317,7 @@ class CustomerController {
               qty = carts[i].quantity
             }
             return Cart.destroy({
+              transaction: t,
               where: {
                 ProductId: carts[i].ProductId,
                 UserId: carts[i].UserId
@@ -325,6 +327,7 @@ class CustomerController {
               return Product.update({
                 stock: stockLeft - qty
               },{
+                transaction: t,
                 where: {
                   id: carts[i].ProductId
                 }
@@ -335,7 +338,7 @@ class CustomerController {
                 ProductId: carts[i].ProductId,
                 UserId: carts[i].UserId,
                 quantity: qty
-              })
+              }, {transaction: t})
             })
             .then(transaction => {
               transactions.push(transaction)
