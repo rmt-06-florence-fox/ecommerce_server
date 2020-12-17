@@ -25,7 +25,6 @@ class cartController {
   // create
   static async create(req, res, next) {
     try {
-      let cartCheck = false
       const data = await Cart.findOne({
         where: {
           UserId: req.loggedin.id,
@@ -42,33 +41,25 @@ class cartController {
         })
         res.status(201).json({ Cart: data })
       } else {
-        console.log(data)
-          if (data.ProductId == req.body.ProductId) {
-            cartCheck = true
-            const quantity = data.quantity + +req.body.quantity
-            if (data.Product.stock < quantity) {
-              throw {
-                status: 401,
-                message: "lack of stock"
-              }
-            } else {
-              Cart.update({
-                quantity, 
-              }, {
-                where: {
-                  ProductId: req.body.ProductId
-                },
-                returning: true
-              })
-                .then((data) => {
-                  res.status(200).json(data[1][0])
-                })
-                .catch((err) => {
-                  console.log(err)
-                })
-            }
-          }
-      }
+        	console.log(data)
+					const quantity = data.quantity + +req.body.quantity
+					if (data.Product.stock < quantity) {
+						throw {
+							status: 401,
+							message: "lack of stock"
+						}
+					} else {
+						const updatedCart = await Cart.update({
+							quantity, 
+						}, {
+							where: {
+								ProductId: req.body.ProductId
+							},
+							returning: true
+						})
+						res.status(201).json({ Cart: updatedCart })
+					}
+				}
     } catch (error) {
       console.log(error)
       next(error)
