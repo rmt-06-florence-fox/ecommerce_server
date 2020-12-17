@@ -63,13 +63,21 @@ class CustomerController {
     })
       .then(product => {
         if (product) {
-          stock = product.stock
-          return Cart.findOne({
+          if (product.stock < 1){
+            throw {
+              status: 400,
+              message: "Product is out of stock"
+            }
+          }
+          else {
+            stock = product.stock
+            return Cart.findOne({
             where: {
               UserId: req.loggedIn.id,
               ProductId: req.params.ProductId
             }
           })
+          }
         }
         else {
           throw {
@@ -97,19 +105,11 @@ class CustomerController {
           }
         }
         else {
-          if (stock < 1) {
-            throw {
-              status: 400,
-              message: "Product is out of stock"
-            }
-          }
-          else {
-            return Cart.create({
-              UserId: req.loggedIn.id,
-              ProductId: req.params.ProductId,
-              quantity: 1
-            })
-          }
+          return Cart.create({
+            UserId: req.loggedIn.id,
+            ProductId: req.params.ProductId,
+            quantity: 1
+          })
         }
       })
       .then(cart => {
