@@ -99,6 +99,104 @@
 
   * **Code:** 500 INTERNAL SERVER ERROR<br />
 
+**Register User**
+----
+  Add new Customer in database
+
+* **URL**
+
+  `/registerCust`
+
+* **Method:**
+
+  `POST` 
+
+**Request :**
+
+**Data Params**
+```json
+  {
+    "email" : "cust@mail.com",
+    "password" : "aa",
+
+  }
+  ```
+
+**Success Response:**
+
+  * **Code:** 201 CREATED <br />
+  {
+    "id": 1,
+    "email": "cust@mail.com"
+}
+
+
+**Error Response:**
+
+  * **Code:** 400 BAD REQUEST <br />
+    **message** 
+    ```json
+      {
+        "message" : "error message"
+      }
+    ```
+
+  **OR**
+  * **Code:** 500 INTERNAL SERVER ERROR<br />
+
+
+**User Login**
+----
+  Cust login
+
+* **URL**
+
+  `/loginCust`
+
+* **Method:**
+
+  `POST` 
+
+**Request :**
+
+**Data Params**
+```json
+  {
+  
+    "email" : "cust@mail.com",
+    "password" : "aa"
+  }
+```
+
+
+**Success Response:**
+
+  * **Code:** 200 OK <br />
+  **Content:** 
+  ```json
+    {
+      "access_token"
+    }
+  ```
+
+
+**Error Response:**
+
+  * **Code:** 400 BAD REQUEST <br />
+    **message** 
+    ```json
+      {
+        "message" : "error message"
+      }
+    ```
+
+  **OR**
+  * **Code:** 401 UNAUTHORIZED<br />
+
+  **OR**
+
+  * **Code:** 500 INTERNAL SERVER ERROR<br />
+
 
 # Products #
 **Get All Products**
@@ -321,3 +419,208 @@
   **OR**
   * **Code:** 500 INTERNAL SERVER ERROR<br />
 
+
+# Cart
+**Get All Cart**
+----
+  Get all Cart data
+* **URL**
+  `/carts`
+* **Method:**
+  
+  `GET` 
+
+**Request :**
+
+**Header Params**
+```json
+  {
+    "access_token"
+  }
+```
+**Success Response:**
+  * **Code:** 200 OK <br />
+  **Content:** 
+  ```json
+  [
+    {
+        "id": 4,
+        "UserId": 1,
+        "ProductId": 2,
+        "Amount": 2
+        "Product": {{}}
+    }
+  ]
+  ```
+**Error Response:**
+  **Code:** 400 BAD REQUEST <br />
+    **message** 
+    ```json
+      {
+        "message" : "error message"
+      }
+    ```
+    
+  **OR**
+  * **Code:** 401 UNAUTHORIZED<br />
+  **OR**
+  * **Code:** 500 INTERNAL SERVER ERROR<br />
+
+
+**Add New Cart**
+----
+  Create new Cart or Update
+* **URL**
+  `/add/carts`
+* **Method:**
+  
+  `POST` or `UPDATE`
+
+**Request :**
+
+**Header Params**
+```json
+  {
+    "access_token"
+  }
+```
+**Data Params**
+```json
+  {
+
+    "amount":1,
+    "ProductId": 2,
+
+}
+```
+**Success Response:**
+
+  **Code:** 200 OK <br />
+
+  **Content:** 
+  ```json ```
+  {
+    "id": 4,
+    "ProductId": 2,
+    "amount": 1,
+    "updatedAt": "2020-12-01T12:09:00.604Z",
+    "createdAt": "2020-12-01T12:09:00.604Z"
+}
+
+**Error Response:**
+   **Code:** 400 BAD REQUEST <br />
+    **message** 
+    ```json
+      {
+        "message" : "error message"
+      }
+    ```
+    
+  **OR**
+  **Code:** 401 UNAUTHORIZED<br />
+  **OR**
+  * **Code:** 500 INTERNAL SERVER ERROR<br />
+
+
+**Decrease or Increase Amount Cart**
+----
+  
+* **URL**
+  `/carts/:od`
+* **Method:**
+  
+  `PATCH`
+
+**Request :**
+
+**Header Params**
+```json
+  {
+    "access_token"
+  }
+```
+**Data Params**
+```json
+  {
+
+    "amount":1,
+
+}
+```
+**Success Response:**
+
+  **Code:** 200 OK <br />
+
+  **Content:** 
+  ```json ```
+  {
+    "id": 4,
+    "ProductId": 2,
+    "amount": 3,
+    "updatedAt": "2020-12-01T12:09:00.604Z",
+    "createdAt": "2020-12-01T12:09:00.604Z"
+}
+
+**Error Response:**
+   **Code:** 400 BAD REQUEST <br />
+    **message** 
+    ```json
+      {
+        "message" : "error message"
+      }
+    ```
+    
+  **OR**
+  **Code:** 401 UNAUTHORIZED<br />
+  **OR**
+  * **Code:** 500 INTERNAL SERVER ERROR<br />
+
+  
+**Delete Cart**
+----
+  Delete Cart by Id
+
+ **URL**
+  `/carts/:id`
+
+
+ **Method:**
+  `DELETE`
+
+**Required :**
+  `id,access_token`
+  
+**Header Params**
+```json
+  {
+    "access_token"
+  }
+```
+**Success Response:**
+  * **Code:** 200 OK <br />
+
+```json
+  {
+    "message": "Cart deleted"
+  } 
+```
+
+**Error Response:**
+  * **Code:** 400 BAD REQUEST <br />
+    **message** 
+    ```json
+      {
+        "message" : "error message"
+      }
+    ```
+    
+  **OR**
+  * **Code:** 401 UNAUTHORIZED<br />
+  ```json
+      {
+        "message" :   "You Dont Have Permission to Do this Action"
+      }
+    ```
+
+  **OR**
+  * **Code:** 500 INTERNAL SERVER ERROR<br />
