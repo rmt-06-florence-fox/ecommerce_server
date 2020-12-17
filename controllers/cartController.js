@@ -10,6 +10,7 @@ class CartController{
          quantity: 1,
          totalPrice: req.body.price
       }
+
       console.log(payload);
       const isCarted = await Cart.findOne({
          where: {
@@ -21,10 +22,19 @@ class CartController{
       if (!isCarted) {
 
          try {
+            console.log(payload.ProductId);
             const cart = await Cart.create(payload,{returning:true})
+            console.log('decrementing belum ada');
+            const updated = await Product.decrement({stock:1},{
+               where: {
+                  id: payload.ProductId
+               }
+            })
+            console.log('success');
             res.status(201).json(cart)
          } catch (error) {
-            next(error)
+            console.log(error);
+            //next(error)
          }
       } else {
          try {
@@ -38,10 +48,47 @@ class CartController{
                   ProductId: payload.ProductId
                }
             })
+            console.log(payload.ProductId);
+            console.log('decrementing sudah ada');
+
+            const updated = await Product.decrement({stock:1},{
+               where: {
+                  id: payload.ProductId
+               }
+            })
+            console.log('success');
             res.status(201).json(cart)
          } catch (error) {
+            console.log(error);
             next(error)
          }
+      }
+   }
+
+   static async decrementProduct(id){
+      console.log(id,'<<<<< decrment');
+      try {
+         const updated = await Product.decrement({stock:1},{
+            where: {
+               id
+            }
+         })
+      } catch (error) {
+         console.log(error);
+         next(error)
+      }
+   }
+
+   static async incrementProduct(id){
+      try {
+         const updated = await Product.increment({stock:1},{
+            where: {
+               id
+            }
+         })
+      } catch (error) {
+         console.log(error);
+         next(error)
       }
    }
 
@@ -53,7 +100,6 @@ class CartController{
       const id = req.params.id
 
       try {
-
          const cart = await Cart.decrement(payload,{where:{
            id
          }})
@@ -63,6 +109,11 @@ class CartController{
                status: 404,
                message: 'Cart Not Found'
             }
+         const updated = await Product.increment({stock:1},{
+            where: {
+               id: cart[0][0][0].ProductId
+            }
+         })
          res.status(201).json(cart[0][0][0])
       } catch (error) {
          next(error)
@@ -72,7 +123,9 @@ class CartController{
    static async destroyCart(req,res,next){
       const id = +req.params.id
       console.log('destroy')
+      console.log(req.params);
       try {
+         const target = await Cart.findOne({where:{id},include:Product})
          const destroyed = await Cart.destroy({where:{id},returning:true}) 
          console.log(destroyed)
 
@@ -81,7 +134,12 @@ class CartController{
                status: 404,
                message: 'Product Not Found'
             }
-            
+         console.log(target);  
+         const updated = await Product.increment({stock:target.quantity},{
+            where: {
+               id: target.Product.id
+            }
+         })
          res.status(200).json({message:"Resource Deleted Successfully"})
       } catch (error) {
          next(error)
