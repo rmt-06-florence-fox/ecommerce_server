@@ -1,0 +1,65 @@
+[
+    {
+        "name": "Macbook Pro",
+        "image_url": "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mbp-silver-select-202011?wid=892&hei=820&&qlt=80&.v=1603406899000",
+        "price": 20000000,
+        "stock": 5,
+        "CategoryId": 1
+    },
+    {
+        "name": "iPhone 11 Pro",
+        "image_url": "https://assets.stickpng.com/thumbs/5e90a856c7c8f9000434dd97.png",
+        "price": 18000000,
+        "stock": 7,
+        "CategoryId": 1
+    },
+    {
+        "name": "iPad Pro 11",
+        "image_url": "https://img.favpng.com/7/0/6/ipad-pro-12-9-inch-2nd-generation-apple-ipad-pro-11-apple-ipad-pro-12-9-3rd-generation-apple-ipad-pro-12-9-png-favpng-G9CBKE1y1JiXCCD8YfPTf8HRs.jpg",
+        "price": 21000000,
+        "stock": 3,
+        "CategoryId": 1
+    },
+    {
+        "name": "Nike Cortez",
+        "image_url": "https://img2.pngdownload.id/20180611/tur/kisspng-nike-free-nike-air-max-nike-cortez-sneakers-nike-cortez-5b1e0ac2aa0437.0168633615286954906964.jpg",
+        "price": 1000000,
+        "stock": 15,
+        "CategoryId": 2
+    },
+    {
+        "name": "Nike Air Jordan 1",
+        "image_url": "https://www.pngfind.com/pngs/m/292-2924335_air-jordan-1-retro-high-og-bred-toe.png",
+        "price": 2100000,
+        "stock": 9,
+        "CategoryId": 2
+    },
+    {
+        "name": "Air Jordan x Dior ",
+        "image_url": "https://www.pngitem.com/pimgs/m/508-5089009_dior-x-nike-air-jordan-1-hd-png.png",
+        "price": 98000000,
+        "stock": 2,
+        "CategoryId": 2
+    },
+    {
+        "name": "Kemeja",
+        "image_url": "https://img2.pngdownload.id/20180703/egv/kisspng-long-sleeved-t-shirt-long-sleeved-t-shirt-dress-sh-white-short-sleeves-5b3b8cb7f2f7f2.7325943115306293039952.jpg",
+        "price": 300000,
+        "stock": 19,
+        "CategoryId": 3
+    },
+    {
+        "name": "Kaos Nike",
+        "image_url": "https://banner2.cleanpng.com/20180805/gvv/kisspng-t-shirt-sports-fan-jersey-dri-fit-nike-nike-mu%C5%A1ka-majica-tee-futura-icon-5b668ad032afd0.0104992015334468642076.jpg",
+        "price": 250000,
+        "stock": 22,
+        "CategoryId": 3 
+    },
+    {
+        "name": "Jeans levis",
+        "image_url": "https://img2.pngdownload.id/20180928/sau/kisspng-jeans-clothing-levis-5-1-levi-strauss-co-shopp-french-cutting-denim-pantsb-size-sml-5bae70c0c90b22.9440963715381587848235.jpg",
+        "price": 98000000,
+        "stock": 8,
+        "CategoryId": 3
+    }
+]
