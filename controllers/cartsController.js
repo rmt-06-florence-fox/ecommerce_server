@@ -67,11 +67,12 @@ class CartsController {
             msg: 'Out Of Product!'
           })
         } else {
-          const cart =  await Cart.create(data)
+          const cart = await Cart.create(data)
           res.status(201).json(cart)
         }
       }
     } catch (err) {
+      console.log(err)
       next(err)
     }
   }

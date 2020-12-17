@@ -18,6 +18,7 @@ async function authorization(req, res, next) {
 }
 
 async function authorizationCustomer(req, res, next) {
+    const UserId = req.loggedInUser.id
     try {
         const user = await User.findByPk(UserId)
         if (user.role !== 'customer') {

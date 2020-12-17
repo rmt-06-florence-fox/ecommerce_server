@@ -1,9 +1,13 @@
-# Ecommercce-CMS Documentation
+# Ecommercce-Server Documentation
 
-Ecommerce-CMS is an application to manage your merchandise. This app has : 
+Ecommerce-Server is an application to manage your merchandise. This app has : 
 * RESTful endpoint for todo's CRUD operation
 * JSON formatted response
 
+# URL Local
+```
+Client URL : http://localhost:8080
+Server URL : http://localhost:3000
 
 ## RESTful endpoints
 ### POST /login
@@ -16,7 +20,45 @@ _Request Header_
 ```
 Not needed
 ```
+_Request Body_
+```
+{
+  "email": "<your email>",
+  "password": "<your password>",
+  "role": "<admin ecommerce>"
+}
+```
+### _Success Response_
+  _Response (200)_
+  ```
+  {
+    "access_token": "<your access token>"
+  }
+  ```
+### _Errors Response_
+  _Response (401)_
+  ```
+  {
+    "msg": "Wrong Email/Password"
+  }
+  ```
+  _Response (500)_
+  ```
+  {
+    "msg": "Internal server error"
+  }
+  ```
+---
+### POST /loginCustomer
 
+_Request Params_
+```
+Not needed
+```
+_Request Header_
+```
+Not needed
+```
 _Request Body_
 ```
 {
@@ -24,27 +66,72 @@ _Request Body_
   "password": "<your password>"
 }
 ```
+### _Success Response_
+  _Response (200)_
+  ```
+  {
+    "access_token": "<your access token>"
+  }
+  ```
+### _Errors Response_
+  _Response (401)_
+  ```
+  {
+    "msg": "Wrong Email/Password"
+  }
+  ```
+  _Response (500)_
+  ```
+  {
+    "msg": "Internal server error"
+  }
+  ```
+---
+### POST /register
+> Create new user
 
-_Response (200)_
+_Request Params_
+```
+Not needed
+```
+_Request Header_
+```
+Not needed
+```
+_Request Body_
 ```
 {
-  "access_token": "<your access token>"
+  "email": "<email to get insert into>",
+  "password": "<password to get insert into>"
 }
 ```
-
-_Response (401)_
-```
-{
-  "msg": "Wrong Email/Password"
-}
-```
-
-_Response (500 - Bad Request)_
-```
-{
-  "msg": "Internal server error"
-}
-```
+### _Success Response_
+  _Response (201)_
+  ```
+  {
+    "id": <given id by system>,
+    "email": "<posted email>"
+  }
+  ```
+### _Errors Response_
+  _Response (500)_
+  ```
+  {
+    "msg": "Internal server error"
+  }
+  ```
+  _Response (400)_
+  ```
+  {
+    "msg": "Password is required!, Password must be more than 6 character"
+  }
+  ```
+  _Response (400)_
+  ```
+  {
+    "msg": "Email is required!, Email must be a format sample@mail.com"
+  }
+  ```
 ---
 ### GET /products
 
