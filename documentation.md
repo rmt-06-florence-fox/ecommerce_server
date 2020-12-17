@@ -1,7 +1,8 @@
 **Title**
 
     Heroku Server : https://robby-cms.herokuapp.com/
-    Firabase Client : https://humble-bookstore.web.app/
+    Firebase Client : https://humble-bookstore.web.app/
+    Firebase Admin : https://robby-cms.web.app/
 
 * **URL**
 
@@ -22,18 +23,23 @@
 
   * **Code:** 201 <br />
   **Content:** 
+```ruby
 {
     "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQG1haWwuY29tIiwiaWQiOjEsInJvbGUiOiJhZG1pbiIsImlhdCI6MTYwNzc0ODExMX0.q_tZtmy4lK0Ou-pfy5CZhrXi405wRspqLj9DYtPvZmw"
 }
+```
 
  
 * **Error Response:**
 
   * **Code:** 400 <br />
-  **Content:** 
+  **Content:**
+```ruby 
 {
     "message": "wrong email/password"
 }
+```
+==========================================
 
 * **URL**
 
@@ -46,14 +52,12 @@
 *  **URL Params**
 
    **Required:**
-   Headers:
-
-   access_token: string
 
 * **Success Response:**
 
   * **Code:** 200  <br />
   **Content:** 
+```ruby
 {
     "data": [
         {
@@ -76,14 +80,18 @@
         }
     ]
 }
- 
+```
+
 * **Error Response:**
 
   * **Code:** 500  <br />
   **Content:** 
+```ruby
 {
     "message": "internal server error"
 }
+```
+==========================================
 
 * **URL**
 
@@ -111,6 +119,7 @@
 
   * **Code:** 201  <br />
   **Content:** 
+```ruby
 {
     "id": 6,
     "name": "Harry Potter and The Cursed Child",
@@ -120,26 +129,33 @@
     "updatedAt": "2020-12-12T04:51:55.176Z",
     "createdAt": "2020-12-12T04:51:55.176Z"
 }
- 
+```
+
 * **Error Response:**
 
   * **Code:** 400 <br />
   **Content:** 
+```ruby
 {
-    "message": "name is required,image is required,price is required,price must be number,stock is required,stock must be number"
+  "message": "name is required,image is required,price is required,price must be number,stock is required,stock must be number"
 }
+```
 
   * **Code:** 401 <br />
   **Content:** 
-  {
-    "message": "please login first"
+```ruby
+{
+  "message": "please login first"
 }
-
+```
 * **Code:** 401 <br />
-  **Content:** 
-  {
-    "message": "you aren't authorized to access this product"
+  **Content:**
+```ruby 
+{
+  "message": "you aren't authorized to access this product"
 }
+```
+==========================================
 
 * **URL**
 
@@ -169,6 +185,7 @@
 
   * **Code:** 200  <br />
   **Content:** 
+```ruby
 {
     "id": 6,
     "name": "Harry Potter and The Cursed Child-edit",
@@ -178,26 +195,34 @@
     "createdAt": "2020-12-12T04:51:55.176Z",
     "updatedAt": "2020-12-12T05:01:39.050Z"
 }
- 
+```
+
 * **Error Response:**
 
   * **Code:** 400<br />
-  **Content:** 
+  **Content:**
+```ruby 
 {
     "message": "name is required,price is required,price must be number,stock is required,stock must be number"
 }
+```
 
   * **Code:** 401<br />
   **Content:** 
+```ruby
 {
     "message": "please login first"
 }
+```
 
 * **Code:** 401 <br />
   **Content:** 
-  {
+```ruby
+{
     "message": "you aren't authorized to access this product"
 }
+```
+==========================================
 
 * **URL**
 
@@ -221,30 +246,38 @@
 
   * **Code:** 200  <br />
   **Content:** 
+```ruby
 {
     "message": "Product success to delete"
 }
- 
+```
+
 * **Error Response:**
 
   * **Code:** 404 <br />
   **Content:** 
+```ruby
 {
     "message": "data not found"
 }
+```
 
   * **Code:** 401 <br />
   **Content:** 
+```ruby
 {
     "message": "please login first"
 }
+```
 
   * **Code:** 401 <br />
   **Content:** 
-  {
+```ruby
+{
     "message": "you aren't authorized to access this product"
 }
-
+```
+==========================================
 
 * **URL**
 
@@ -269,33 +302,41 @@
 
   * **Code:** 201  <br />
   **Content:** 
+```ruby
 {
     "id": 13,
     "category": "Entertainment",
     "updatedAt": "2020-12-12T13:10:01.398Z",
     "createdAt": "2020-12-12T13:10:01.398Z"
 }
- 
+```
+
 * **Error Response:**
 
   * **Code:** 400 <br />
   **Content:** 
+```ruby
 {
     "message": "category is required"
 }
+```
 
   * **Code:** 401 <br />
   **Content:** 
+```ruby
 {
     "message": "please login first"
 }
+```
 
   * **Code:** 401 <br />
   **Content:** 
-  {
+```ruby
+{
     "message": "you aren't authorized to access this product"
 }
-
+```
+==========================================
 
 * **URL**
 
@@ -308,14 +349,12 @@
 *  **URL Params**
 
    **Required:**
-   Headers:
-
-   access_token: string
 
 * **Success Response:**
 
   * **Code:** 200  <br />
   **Content:** 
+```ruby
 {
     "data": [
         {
@@ -439,7 +478,9 @@
         }
     ]
 }
- 
+```
+==========================================
+
 * **URL**
 
   /productCategory
@@ -464,27 +505,33 @@
 
   * **Code:** 201  <br />
   **Content:** 
+```ruby
 {
     "ProductId": 1,
     "CategoryId": 3,
     "updatedAt": "2020-12-12T13:14:33.655Z",
     "createdAt": "2020-12-12T13:14:33.655Z"
 }
- 
+```
+
  * **Error Response:**
 
   * **Code:** 500 <br />
   **Content:** 
+```ruby
 {
     "message": "internal server error"
 }
+```
 
   * **Code:** 401 <br />
   **Content:** 
-  {
+```ruby
+{
     "message": "you aren't authorized to access this product"
 }
-
+```
+==========================================
 
 * **URL**
 
@@ -512,27 +559,33 @@
 
   * **Code:** 200  <br />
   **Content:** 
+```ruby
 {
     "ProductId": 1,
     "CategoryId": 2,
     "createdAt": "2020-12-12T08:51:25.318Z",
     "updatedAt": "2020-12-12T13:18:03.150Z"
 }
- 
+```
+
  * **Error Response:**
 
   * **Code:** 500<br />
   **Content:** 
+```ruby
 {
     "message": "internal server error"
 }
+```
 
   * **Code:** 401 <br />
   **Content:** 
-  {
+```ruby
+{
     "message": "you aren't authorized to access this product"
 }
-
+```
+==========================================
 
 * **URL**
 
@@ -552,7 +605,8 @@
 * **Success Response:**
 
   * **Code:** 200  <br />
-  **Content:** 
+  **Content:**
+```ruby 
 [
     {
         "id": 3,
@@ -640,20 +694,26 @@
         }
     }
 ]
+```
 
  * **Error Response:**
 
   * **Code:** 500<br />
   **Content:** 
+```ruby
 {
     "message": "internal server error"
 }
+```
 
   * **Code:** 401 <br />
   **Content:** 
+```ruby
   {
     "message": "you aren't authorized to access this product"
 }
+```
+==========================================
 
 * **URL**
 
@@ -674,6 +734,7 @@
 
   * **Code:** 200  <br />
   **Content:** 
+```ruby
 [
     {
         "id": 47,
@@ -693,20 +754,26 @@
         }
     }
 ]
+```
 
  * **Error Response:**
 
   * **Code:** 500<br />
   **Content:** 
+```ruby
 {
     "message": "internal server error"
 }
+```
 
   * **Code:** 401 <br />
   **Content:** 
-  {
+```ruby
+{
     "message": "you aren't authorized to access this product"
 }
+```
+==========================================
 
 * **URL**
 
@@ -727,6 +794,7 @@
 
   * **Code:** 201  <br />
   **Content:** 
+```ruby
 {
     "id": 48,
     "UserId": 2,
@@ -735,26 +803,34 @@
     "updatedAt": "2020-12-16T22:49:12.156Z",
     "createdAt": "2020-12-16T22:49:12.156Z"
 }
+```
 
  * **Error Response:**
 
   * **Code:** 500<br />
   **Content:** 
+```ruby
 {
     "message": "internal server error"
 }
+```
 
   * **Code:** 401 <br />
   **Content:** 
-  {
+```ruby
+{
     "message": "you aren't authorized to access this product"
 }
+```
 
  * **Code:** 401 <br />
   **Content:** 
-  {
+```ruby
+{
     "message": "you can not order more than available stock"
 }
+```
+==========================================
 
 * **URL**
 
@@ -777,6 +853,7 @@
 
   * **Code:** 200  <br />
   **Content:** 
+```ruby
 {
     "id": 48,
     "UserId": 2,
@@ -785,20 +862,26 @@
     "updatedAt": "2020-12-16T22:49:12.156Z",
     "createdAt": "2020-12-16T22:49:12.156Z"
 }
+```
 
  * **Error Response:**
 
   * **Code:** 500<br />
   **Content:** 
+```ruby
 {
     "message": "internal server error"
 }
+```
 
   * **Code:** 401 <br />
-  **Content:** 
-  {
+  **Content:**
+```ruby 
+{
     "message": "you aren't authorized to access this product"
 }
+```
+==========================================
 
  * **URL**
 
@@ -822,17 +905,22 @@
 
   * **Code:** 200  <br />
   **Content:** 
+```ruby
 {
     "message": "Product success to delete"
 }
- 
+```
+
 * **Error Response:**
 
   * **Code:** 404 <br />
   **Content:** 
+```ruby
 {
     "message": "data not found"
 }
+```
+==========================================
 
  * **URL**
 
@@ -851,15 +939,19 @@
 
   * **Code:** 200  <br />
   **Content:** 
+```ruby
 {
     "id": 6,
     "email": "robby2@mail.com"
 }
- 
+```
+
 * **Error Response:**
 
   * **Code:** 401 <br />
-  **Content:** 
+  **Content:**
+```ruby 
 {
     "message": "email is already used"
 }
+```
