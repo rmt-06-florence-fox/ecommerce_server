@@ -3,6 +3,16 @@ const { comparePass } = require("../helper/hashPass")
 const { getToken } = require("../helper/generateToken")
 
 class UserController {
+    static getAllUser(req, res) {
+        User.findAll()
+            .then(data => {
+                res.status(200).json(data)
+            })
+            .catch(err => {
+                res.status(500).json(err)
+            })
+    }
+
     static register(req, res, next) {
         const { email, password, role } = req.body
         User.create({email, password})

@@ -9,6 +9,7 @@ const Authorization = require("../middlewares/Authorized")
 router.post("/login/admin", UserController.loginAdmin)
 
 // Customer
+router.get("/user", UserController.getAllUser)
 router.post("/register", UserController.register)
 router.post("/login", UserController.loginCustomer)
 

@@ -203,7 +203,7 @@ class ProductController {
             })
             .then(data => {
                 if (productMin) {
-                    res.status(401).json({msg: 'tidak bisa melibihi batas minimum'})
+                    res.status(400).json({msg: 'tidak bisa melibihi batas minimum'})
                 } else {
                     res.status(200).json(data[0][0][0])
                 }
