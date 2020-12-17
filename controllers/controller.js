@@ -15,6 +15,7 @@ class Controller {
             if(!user){
                 res.status(401).json({message : "invalid account"})
             } else {
+                console.log(bcrypt.compareSync(req.body.password, user[0].password))
                 if(bcrypt.compareSync(req.body.password, user[0].password)){
                     let accesstoken = jwt.sign({id: user[0].dataValues.id, email: user[0].dataValues.email, role: user[0].dataValues.role}, 'process.env.SECRET')
                     res.status(200).json({accesstoken})
@@ -28,6 +29,47 @@ class Controller {
             console.log('YYYYYY')
 
             res.status(401).json({message : "invalid account"})
+        })
+    }
+    static loginCustomer(req, res) {
+        User.findAll({
+            where:{
+                email : req.body.email
+            }
+        })
+        .then(user => {
+            if(user[0].role !== 'customer'){
+                res.status(401).json({message : "invalid account"})
+            } else {
+                console.log(bcrypt.compareSync(req.body.password, user[0].password))
+                if(bcrypt.compareSync(req.body.password, user[0].password)){
+                    let accesstoken = jwt.sign({id: user[0].dataValues.id, email: user[0].dataValues.email, role: user[0].dataValues.role}, 'process.env.SECRET')
+                    res.status(200).json({accesstoken})
+                } else {
+
+                res.status(401).json({message : "invalid account"})
+                }
+            }
+        })
+        .catch(err =>{
+            console.log('YYYYYY')
+
+            res.status(401).json({message : "invalid account"})
+        })
+    }
+    static register (req, res) {
+        let newUser = {
+            email: req.body.email,
+            password: req.body.password,
+            role: 'customer'
+        }
+        console.log(newUser, '<<<')
+        User.create(newUser)
+        .then(user => {
+            res.status(201).json(user)
+        })
+        .catch(err => {
+            res.status(400).json(err)
         })
     }
 
@@ -81,7 +123,8 @@ class Controller {
     }
     static fetchData (req, res) {
         Product.findAll({
-            order:[['createdAt', 'DESC']]
+            order:[['id', 'ASC']],
+            
         })
         .then(result => {
             res.status(200).json(result)
