@@ -4,7 +4,7 @@ class CartController {
   static getCart(req, res, next) {
     User.findOne({
       where: {
-        UserId: Number(req.userData.id)
+        id: Number(req.userData.id)
       },
       attributes: { exclude: ['password'] },
       include: [{
@@ -34,7 +34,7 @@ class CartController {
 
   static add(req, res, next) {
     const payload = {
-      UserId: Number(req.body.UserId),
+      UserId: Number(req.userData.id),
       ProductId: Number(req.body.ProductId),
       quantity: 1
     }
