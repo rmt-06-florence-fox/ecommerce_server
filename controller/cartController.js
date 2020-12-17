@@ -60,7 +60,7 @@ class CartController {
   static async readCart(req,res,next) {
     try {
       const UserId = req.UserLogin.id
-      const lists = await Cart.findAll({where: {UserId, buyStatus: false}, include: Product, order: [['id', 'ASC']]})
+      const lists = await Cart.findAll({where: {UserId}, include: Product, order: [['id', 'ASC']]})
       if (lists) {
         const pricetags = lists.map(e => e.totalPrice)
         let totalCheckout = 0
