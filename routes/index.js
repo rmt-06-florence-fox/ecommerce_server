@@ -11,7 +11,8 @@ const authorization = require("../middlewares/authorization")
 // endpoint User
 route.post("/registeradmin", ControllerUser.registerAdmin)
 route.post("/registercustomer", ControllerUser.registerCustomer)
-route.post("/login", ControllerUser.loginUser)
+route.post("/logincustomer", ControllerUser.loginCustomer)
+route.post("/loginadmin", ControllerUser.loginCustomer)
 route.get('/categorie', ControllerCategorie.fetchAllCategories)
 route.get("/products", ControllerProduct.showAllData)
 

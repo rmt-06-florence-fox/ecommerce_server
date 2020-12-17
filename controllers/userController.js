@@ -37,37 +37,72 @@ class ControllerUser {
            })
     }
 
-    static loginUser(req, res, next) {
+    static loginCustomer(req, res, next) {
         let email = req.body.email
         let password = req.body.password
-        let role = req.body.role
-
+        let role = 'customer'
         User.findOne({
             where: {
                 email,
                 role
             }
         })
-            .then(data => {
-                if(data) {
-                    let passwordInDataBase = data.password
-                    if (bcrypt.compareSync(password, passwordInDataBase)) {
-                        let acces_token = createToken({ id: data.id, email: data.email, role: data.role })
-                        res.status(200).json({acces_token})
-                    }else {
-                        throw {
-                            status: 400,
-                            message: { message: "wrong Password/Email"}
-                        }
-                    }
+        .then(data => {
+            if(data) {
+                let passwordInDataBase = data.password
+                if (bcrypt.compareSync(password, passwordInDataBase)) {
+                    let acces_token = createToken({ id: data.id, email: data.email, role: data.role })
+                    res.status(200).json({acces_token})
                 }else {
                     throw {
-                        status: 500,
-                        message: { message: "Account not found, please input the correct Email/Password" }
+                        status: 400,
+                        message: { message: "wrong Password/Email"}
                     }
                 }
+            }else {
+                throw {
+                    status: 500,
+                    message: { message: "Account not found, please input the correct Email/Password" }
+                }
+            }
+        })
+        .catch(err => {
+            // console.log(err)
+                next(err)
             })
-            .catch(err => {
+    }
+
+    static loginAdmin(req, res, next) {
+        let email = req.body.email
+        let password = req.body.password
+        let role = 'admin'
+        User.findOne({
+            where: {
+                email,
+                role
+            }
+        })
+        .then(data => {
+            if(data) {
+                let passwordInDataBase = data.password
+                if (bcrypt.compareSync(password, passwordInDataBase)) {
+                    let acces_token = createToken({ id: data.id, email: data.email, role: data.role })
+                    res.status(200).json({acces_token})
+                }else {
+                    throw {
+                        status: 400,
+                        message: { message: "wrong Password/Email"}
+                    }
+                }
+            }else {
+                throw {
+                    status: 500,
+                    message: { message: "Account not found, please input the correct Email/Password" }
+                }
+            }
+        })
+        .catch(err => {
+            // console.log(err)
                 next(err)
             })
     }

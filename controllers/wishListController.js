@@ -1,7 +1,6 @@
 const { Wishlist, Product } = require('../models/wishlist')
 
 class ControllerWishList {
-
     static showAllDataWishlist (req, res, next) {
         const UserId = req.dataUser.id
         Wishlist.findAll({

@@ -1,9 +1,11 @@
-const { Product } = require("../models/index")
+const { Product, Categorie } = require("../models/index")
 
 class ControllerProduct {
 
     static showAllData(req, res, next) {
-        Product.findAll()
+        Product.findAll({
+            include: Categorie
+        })
             .then(data => {
                 res.status(200).json({data: data})
             })

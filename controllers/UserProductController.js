@@ -31,11 +31,14 @@ class ControllerUserProduct {
             quantity,
             status
         }
+        // console.log(objUserProduct, "<=========")
         UserProduct.create(objUserProduct)
             .then(data => {
+                // console.log("-----")
                 res.status(201).json(data)
             })
             .catch(err => {
+                console.log(err)
                 next(err)
             })
     }
@@ -83,9 +86,12 @@ class ControllerUserProduct {
             }
         })
             .then(data => {
+                console.log('11111')
                 if(data) {
+                    console.log('222')
                     res.status(200).json({ The_number_of_destroyed_rows: data})
                 }else {
+                    console.log('3333')
                     throw {
                         status: 400,
                         message: { error: "UserProduct not found" }
@@ -93,6 +99,7 @@ class ControllerUserProduct {
                 }
             })
             .catch(err => {
+                console.log('444')
                 next(err)
             })
     }
@@ -115,7 +122,7 @@ class ControllerUserProduct {
                 next(err)
             })
     }
-    
+
     // Sequelize transaction v6
     static async checkout (req, res, next) {
         try {

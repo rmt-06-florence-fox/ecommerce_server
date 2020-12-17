@@ -1,8 +1,10 @@
-const { Categorie } = require('../models')
+const { Categorie, Product } = require('../models')
 
 class ControllerCategorie {
     static fetchAllCategories(req, res, next) {
-        Categorie.findAll()
+        Categorie.findAll({
+            include: Product
+        })
             .then(data => {
                 res.status(200).json(data)
             })
