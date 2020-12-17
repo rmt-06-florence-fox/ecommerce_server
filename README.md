@@ -521,6 +521,16 @@ access_token = 'customer access token'
 ]
 ```
 #
+##### ERROR *`'Failed to buy product'`*
+- Response *`(400)`*
+```JS
+{
+  "messages": [
+    "Sorry, Failed to buy Talbis Iblis karya Ibnul Jauzi !!!"
+  ]
+}
+```
+#
 ##### ERROR *`'Unauthorized'`*
 - Response *`(401)`*
 ```JS

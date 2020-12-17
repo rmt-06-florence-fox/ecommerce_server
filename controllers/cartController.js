@@ -91,7 +91,7 @@ class CartController {
         else if(e.quantity > e.Product.stock && e.status ===  false) errors.push(`Sorry, Failed to buy ${e.Product.name} !!!`) 
       })
       const dataCart = await Promise.all(arrPromisesCart)
-      const dataProduct = await Promise.all(arrPromisesProduct)
+      await Promise.all(arrPromisesProduct)
       if(errors.length) {
         throw {
           status: 400,
