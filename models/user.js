@@ -6,6 +6,11 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
+      this.hasMany(models.History);
+      this.belongsToMany(models.Product, {
+        through: "Carts",
+        foreignKey: "UserId"
+      });
     }
     getFullName() {
       return `${this.first_name} ${this.last_name}`;
@@ -61,16 +66,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     role: {
       type: DataTypes.STRING,
-      allowNull: false,
       validate: {
-        notNull: {
-          args: true,
-          msg: "Role is required."
-        },
-        notEmpty: {
-          args: true,
-          msg: "Role is required."
-        },
         isIn: {
           args: ["admin", "customer"],
           msg: "Role is invalid."
