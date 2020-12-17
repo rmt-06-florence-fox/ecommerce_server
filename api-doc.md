@@ -521,6 +521,16 @@ Response:
     "message": "Please login first"
 }
 ```
+
+- status: 404
+- body: 
+
+```json
+{
+  "message": "Error! Data not found"
+}
+```
+
 - status: 500
 - body:
 
@@ -560,6 +570,299 @@ Response
 ```
 - status: 401
 - body:
+
+```json
+{
+    "message": "Please login first"
+}
+```
+- status: 500
+- body:
+
+```json
+{
+    "message": "Internal Server Error"
+}
+```
+
+### DELETE /customer/carts/:ProductId
+Request:
+- headers:
+
+```json
+{
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTYwNzc3NDA2NX0.z_XL_PgXukWPAB6YoSN4Os19ZUQRmVntrglPIvRgInw"
+}
+```
+
+- params: ProductId (integer)
+
+Response
+
+- status: 200
+- body: 
+
+```json
+{
+  "message": "Successfully delete cart"
+}
+
+```
+- status: 401
+- body:
+
+```json
+{
+    "message": "Please login first"
+}
+```
+- status: 500
+- body:
+
+```json
+{
+    "message": "Internal Server Error"
+}
+```
+
+### GET /customer/wishlist
+
+Request:
+- headers: 
+
+```json
+{
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTYwNzc3NDA2NX0.z_XL_PgXukWPAB6YoSN4Os19ZUQRmVntrglPIvRgInw"
+}
+```
+
+Response:
+- status: 200
+- body: 
+
+```json
+[
+    {
+        "id": 46,
+        "UserId": 10,
+        "ProductId": 6,
+        "quantity": 2,
+        "createdAt": "2020-12-17T01:54:03.338Z",
+        "updatedAt": "2020-12-17T01:54:06.341Z",
+        "Product": {
+            "id": 6,
+            "name": "Kaos Uniqlo",
+            "image_url": "https://ecs7.tokopedia.net/img/cache/700/product-1/2019/1/6/5166058/5166058_eb0c056b-4885-4a21-a82e-88a5857c9b62_869_869.jpg",
+            "price": 99000,
+            "stock": 9,
+            "createdAt": "2020-12-12T03:08:29.494Z",
+            "updatedAt": "2020-12-16T23:53:40.381Z"
+        }
+    },
+    {
+        "id": 47,
+        "UserId": 10,
+        "ProductId": 4,
+        "quantity": 1,
+        "createdAt": "2020-12-17T01:54:09.998Z",
+        "updatedAt": "2020-12-17T01:54:09.998Z",
+        "Product": {
+            "id": 4,
+            "name": "Lenovo Ideapad",
+            "image_url": "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full/MTA-7756348/lenovo_lenovo-ideapad-3---14ada05-4aid-laptop--amd-athlon-gold-3150u---4gb-onboard---4gb-ddr4---512gb-ssd-m-2-pcie---14-inch-fhd---win-10---ohs-2019-_full01.jpg",
+            "price": 15000000,
+            "stock": 5,
+            "createdAt": "2020-12-12T03:05:34.629Z",
+            "updatedAt": "2020-12-16T23:59:33.647Z"
+        }
+    }
+]
+```
+- status: 401
+- body: 
+
+```json
+{
+    "message": "Please login first"
+}
+```
+
+- status: 500
+- body:
+
+```json
+{
+    "message": "Internal Server Error"
+}
+```
+
+### POST /customer/wishlist/:ProductId
+
+Request:
+- headers:
+
+```json
+{
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTYwNzc3NDA2NX0.z_XL_PgXukWPAB6YoSN4Os19ZUQRmVntrglPIvRgInw"
+}
+```
+
+- params: ProductId (integer)
+
+Response: 
+- status: 201
+- body: 
+
+```json
+{
+    "id": 47,
+    "UserId": 10,
+    "ProductId": 4,
+    "quantity": 1,
+    "updatedAt": "2020-12-17T01:54:09.998Z",
+    "createdAt": "2020-12-17T01:54:09.998Z"
+}
+```
+- status: 400
+- body: 
+
+```json
+{
+  "message": "You have added this item to your wishlist"
+}
+```
+
+- status: 401
+- body:
+
+```json
+{
+    "message": "Please login first"
+}
+```
+
+- status: 404
+- body: 
+
+```json
+{
+  "message": "Error! Data not found"
+}
+```
+
+- status: 500
+- body:
+
+```json
+{
+    "message": "Internal Server Error"
+}
+```
+### DELETE /customer/wishlist/:ProductId
+
+Request:
+- headers:
+
+```json
+{
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTYwNzc3NDA2NX0.z_XL_PgXukWPAB6YoSN4Os19ZUQRmVntrglPIvRgInw"
+}
+```
+
+- params: ProductId (integer)
+
+Response
+
+- status: 200
+- body: 
+
+```json
+{
+  "message": "Successfully remove item from your wishlist"
+}
+
+```
+- status: 401
+- body:
+
+```json
+{
+    "message": "Please login first"
+}
+```
+- status: 500
+- body:
+
+```json
+{
+    "message": "Internal Server Error"
+}
+```
+
+### PUT /customer/checkout
+
+
+Request:
+- headers: 
+
+```json
+{
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTYwNzc3NDA2NX0.z_XL_PgXukWPAB6YoSN4Os19ZUQRmVntrglPIvRgInw"
+}
+```
+- body: 
+
+```json
+[
+    {
+        "id": 46,
+        "UserId": 10,
+        "ProductId": 6,
+        "quantity": 2,
+        "createdAt": "2020-12-17T01:54:03.338Z",
+        "updatedAt": "2020-12-17T01:54:06.341Z",
+        "Product": {
+            "id": 6,
+            "name": "Kaos Uniqlo",
+            "image_url": "https://ecs7.tokopedia.net/img/cache/700/product-1/2019/1/6/5166058/5166058_eb0c056b-4885-4a21-a82e-88a5857c9b62_869_869.jpg",
+            "price": 99000,
+            "stock": 9,
+            "createdAt": "2020-12-12T03:08:29.494Z",
+            "updatedAt": "2020-12-16T23:53:40.381Z"
+        }
+    },
+    {
+        "id": 47,
+        "UserId": 10,
+        "ProductId": 4,
+        "quantity": 1,
+        "createdAt": "2020-12-17T01:54:09.998Z",
+        "updatedAt": "2020-12-17T01:54:09.998Z",
+        "Product": {
+            "id": 4,
+            "name": "Lenovo Ideapad",
+            "image_url": "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full/MTA-7756348/lenovo_lenovo-ideapad-3---14ada05-4aid-laptop--amd-athlon-gold-3150u---4gb-onboard---4gb-ddr4---512gb-ssd-m-2-pcie---14-inch-fhd---win-10---ohs-2019-_full01.jpg",
+            "price": 15000000,
+            "stock": 5,
+            "createdAt": "2020-12-12T03:05:34.629Z",
+            "updatedAt": "2020-12-16T23:59:33.647Z"
+        }
+    }
+]
+```
+Response:
+
+- status: 200
+- body:
+
+```json
+{
+  "message": "Checkout berhasil"
+}
+```
+
+- status: 401
+- body: 
 
 ```json
 {
