@@ -563,3 +563,128 @@ _Response (500 - Bad Request)_
   "message": "Internal Server Error"
 }
 ```
+
+### POST/cart
+
+>Create new cart
+
+__Request Header_
+```
+{
+  access_token: token
+}
+```
+_Request Body_
+```
+{
+  "ProductId": "<ProductId to get insert into>",
+}
+```
+_Response (201 - Created)_
+```
+    {
+        "id": 1,
+        "UserId": "1",
+        "ProductId": "1",
+        "quantity": 1,
+        "createdAt": "2020-11-30T10:15:44.126Z",
+        "updatedAt": "2020-11-30T10:15:44.126Z"
+    }
+```
+
+_Response (500 - Bad Request)_
+```
+{
+  "message": "Internal Server Error"
+}
+```
+### GET/cart
+
+>GET cart
+
+__Request Header_
+```
+{
+  access_token: token
+}
+```
+_Request Body_
+```
+_Response (200)_
+```
+    {
+        "id": 1,
+        "UserId": "1",
+        "ProductId": "1",
+        "quantity": 1,
+        "createdAt": "2020-11-30T10:15:44.126Z",
+        "updatedAt": "2020-11-30T10:15:44.126Z"
+    }
+
+```
+
+_Response (500 - Bad Request)_
+```
+{
+  "message": "Internal Server Error"
+}
+```
+### PATCH/cart
+
+>upadete cart
+__Request Header_
+```
+{
+  access_token: token,
+  headers: CartId
+}
+```
+_Request Body_
+```
+{
+  "quantity": "<quantity to get insert into>",
+}
+_Response (200)_
+```
+    {
+        "id": 1,
+        "UserId": "1",
+        "ProductId": "1",
+        "quantity": 2,
+        "createdAt": "2020-11-30T10:15:44.126Z",
+        "updatedAt": "2020-11-30T10:15:44.126Z"
+    }
+
+```
+
+_Response (500 - Bad Request)_
+```
+{
+  "message": "Internal Server Error"
+}
+```
+### DELETE/cart
+
+>GET cart
+
+__Request Header_
+```
+{
+  access_token: token,
+  params: cartId
+}
+```
+_Request Body_
+```
+_Response (200)_
+```
+{'delete success}
+
+```
+
+_Response (500 - Bad Request)_
+```
+{
+  "message": "Internal Server Error"
+}
+```
