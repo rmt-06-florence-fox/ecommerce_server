@@ -1,4 +1,4 @@
-const { Product } = require('../models/index')
+const { Product, ShoppingCart, User } = require('../models/index')
 
 class ProductController {
     static getProduct(req, res, next) {
@@ -158,6 +158,107 @@ class ProductController {
             res.status(200).json({
                 message: 'Data deleted successfully.'
             })
+        })
+        .catch(err => {
+            next(err)
+        })
+    }
+
+    static addOrder(req, res, next) {
+        const newOrder = {
+            UserId: req.loggedInUser.id,
+            ProductId: req.body.productId,
+            quantity: +req.body.quantity
+        }
+
+        ShoppingCart.findOne({
+            where: {
+                UserId: newOrder.UserId,
+                ProductId: newOrder.ProductId
+            }
+        })
+        .then(data => {
+            if (data) {
+                const newQuantity = data.quantity + newOrder.quantity
+                return ShoppingCart.update({quantity: newQuantity}, {
+                    where: {
+                        ProductId: data.ProductId
+                    }
+                })
+            } else {
+                return ShoppingCart.create(newOrder)
+            }
+        })
+        .then(data => {
+            if (!data.length) {
+                res.status(201).json(data)
+            } else {
+                res.status(200).json({message: 'Data updated.'})
+            }
+        })
+        .catch(err => {
+            next(err)
+        })
+    }
+    
+    static updateQuantity(req, res, next) {
+        ShoppingCart.findOne({
+            where: {
+                id: req.body.orderId
+            }
+        })
+        .then(data => {
+            if (data) {
+                return ShoppingCart.update({quantity: data.quantity + +req.body.quantity}, {
+                    where: {
+                        ProductId: data.ProductId
+                    }
+                })
+            } else {
+                next({
+                    status: 404,
+                    message: 'Data not found!'
+                })
+            }
+        })
+        .then(data => {
+            res.status(200).json({
+                message: 'Quantity updated'
+            })
+        })
+        .catch(err => {
+            next(err)
+        })
+    }
+
+    static deleteOrder(req, res, next) {
+        ShoppingCart.destroy({
+            where: {
+                id: req.body.id
+            }
+        })
+        .then(data => {
+            res.status(200).json({
+                message: 'Data deleted'
+            })
+        })
+        .catch(err => {
+            next(err)
+        })
+    }
+
+    static getOrder(req, res, next) {
+        ShoppingCart.findAll({
+            where: {
+                UserId: req.loggedInUser.id
+            },
+            attributes: {
+                include: ['id']
+            },
+            include: [Product]
+        })
+        .then(data => {
+            res.status(200).json(data)
         })
         .catch(err => {
             next(err)

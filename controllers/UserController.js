@@ -49,6 +49,24 @@ class UserController {
             }
         }
     }
+
+    static registerUser (req, res, next) {
+        const newUser = {
+            email: req.body.email,
+            password: req.body.password
+        }
+
+        User.create(newUser)
+        .then(data => {
+            res.status(201).json({
+                id: data.id,
+                email: data.email
+            })
+        })
+        .catch(err => {
+            next(err)
+        })
+    }
 } 
 
 module.exports = UserController
