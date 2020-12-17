@@ -4,7 +4,6 @@ class CartController {
   static getCart(req, res, next) {
     User.findOne({
       where: {
-        id: Number(req.params.id),
         UserId: Number(req.userData.id)
       },
       attributes: { exclude: ['password'] },

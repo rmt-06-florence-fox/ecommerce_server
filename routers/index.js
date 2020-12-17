@@ -16,7 +16,7 @@ router.get('/categories', CategoryController.getAll);
 
 router.use(authentication);
 
-router.get('/carts/:id', userAuthorization, CartController.getCart)
+router.get('/carts', userAuthorization, CartController.getCart)
 router.post('/carts', userAuthorization, CartController.add)
 router.patch('/carts/minus/:id', userAuthorization, CartController.minus)
 router.patch('/carts/plus/:id', userAuthorization, CartController.plus)
