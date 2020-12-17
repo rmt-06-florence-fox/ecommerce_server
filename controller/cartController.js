@@ -7,11 +7,9 @@ class CartController {
       let id = req.params.productId
       const list = await Product.findOne({where: {id}})
       if (list) {
-        console.log(list);
         if (list.stock > 0) {
           const cartList = await Cart.findOne({where: {ProductId: list.id}})
           if (cartList) {
-            console.log(cartList, list);
             if (cartList.totalItem < list.stock) {
               let obj = {
                 UserId: req.UserLogin.id,
@@ -61,7 +59,7 @@ class CartController {
   static async readCart(req,res,next) {
     try {
       const UserId = req.UserLogin.id
-      const lists = await Cart.findAll({where: {UserId}, include: Product, order: [['id', 'ASC']]})
+      const lists = await Cart.findAll({where: {UserId, buyStatus: false}, include: Product, order: [['id', 'ASC']]})
       if (lists) {
         const pricetags = lists.map(e => e.totalPrice)
         let totalCheckout = 0

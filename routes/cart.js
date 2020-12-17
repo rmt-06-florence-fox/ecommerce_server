@@ -2,7 +2,7 @@ const express = require('express')
 const route = express.Router()
 const {CartController} = require('../controller')
 const authentication = require('../middleware/authentication')
-const authorization = require('../middleware/authorization')
+const authorization = require('../middleware/authorizationCart')
 
 route.use(authentication)
 route.get('/', CartController.readCart)

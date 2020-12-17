@@ -2,9 +2,8 @@ const {decoded} = require('../helper/jsonwebtoken')
 const {User} = require('../models')
 
 module.exports = async (req,res,next) => {
-
   try {
-    if (req.headers.access_token) {
+    if (req.headers.access_token !== 'null') {
       const {access_token} = req.headers
       const decode = decoded(access_token)
       const found = await User.findOne({where : {id : decode.id}})
