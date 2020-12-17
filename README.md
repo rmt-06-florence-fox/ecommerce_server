@@ -1,17 +1,18 @@
 # ecommerce_server
 
 ## Demo App
+* [Client-Customer](https://jarooda-ecommerce-customer.web.app/)
 * [Client-CMS](https://jarooda-ecommerce-cms.web.app/)
 * [Server](https://jarooda-db-ecommerce.herokuapp.com/)
 
 ## Api Documentation
 * [Postman](https://documenter.getpostman.com/view/13590441/TVsoFVJQ)
 
-**User - Login**
+**User Admin - Login**
 ---
 * **URL**
 
-    /login
+    /login/admin
 
 * **Method:**
 
@@ -54,6 +55,96 @@
     * **Code:** 500 Internal Server Error <br />
     **Content:** `{"message": "Internal Server Error"}`
 
+**User Customer - Login**
+---
+* **URL**
+
+    /login/customer
+
+* **Method:**
+
+    `POST`
+  
+*  **URL Params**
+
+    None
+
+* **Data Params**
+
+    **Required:**
+ 
+    `email=[string]`<br />
+    `password=[string]`
+
+
+* **Success Response:**
+
+    * **Code:** 200 <br />
+    **Content:** 
+    ```javascript
+    { 
+        "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTYwNzc3ODMwN30.TEsFEjkUdmnyGwaZAFbtyrh9SWMMq-mryPv4jJTS8u0"
+    }
+    ```
+ 
+* **Error Response:**
+
+    * **Code:** 400 Bad Request <br />
+    **Content:** `{"message": "Wrong Email / Password"}`
+
+    OR
+
+    * **Code:** 403 Forbidden <br />
+    **Content:** `{"message": "Admin Account Cannot Be Used In Customer Side"}`
+
+    OR
+
+    * **Code:** 500 Internal Server Error <br />
+    **Content:** `{"message": "Internal Server Error"}`
+
+**User Customer - Register**
+---
+* **URL**
+
+    /register
+
+* **Method:**
+
+    `POST`
+  
+*  **URL Params**
+
+    None
+
+* **Data Params**
+
+    **Required:**
+ 
+    `email=[string]`<br />
+    `password=[string]`
+
+
+* **Success Response:**
+
+    * **Code:** 200 <br />
+    **Content:** 
+    ```javascript
+    {
+      "id": 2,
+      "email": "contoh@mail.com"
+    }
+    ```
+ 
+* **Error Response:**
+
+    * **Code:** 400 Bad Request <br />
+    **Content:** `{"message": "Password Min 6 Characters, Email Invalid, Email Required, Password Required"}`
+
+    OR
+
+    * **Code:** 500 Internal Server Error <br />
+    **Content:** `{"message": "Internal Server Error"}`
+
 **Products - Fetch All Data**
 ---
 * **URL**
@@ -70,9 +161,7 @@
 
 * **Data Params**
 
-    **Required:**
- 
-    `access_token=[string]`
+    None
 
 
 * **Success Response:**
@@ -198,9 +287,7 @@
 
 * **Data Params**
 
-    **Required:**
- 
-    `access_token=[string]`
+    None
 
 
 * **Success Response:**
@@ -461,6 +548,359 @@
 
     * **Code:** 401 Unauthorized <br />
     **Content:** `{"message": "Please Login First"}`
+
+    OR
+
+    * **Code:** 500 Internal Server Error <br />
+    **Content:** `{"message": "Internal Server Error"}`
+
+**Cart - Add Product to Cart (If post again will add 1 product)**
+---
+* **URL**
+
+    /cart/:ProductId
+
+* **Method:**
+
+    `POST`
+  
+*  **URL Params**
+
+    `ProductId=[integer]`
+
+* **Data Params**
+
+    **Required:**
+ 
+    `access_token=[string]`
+
+* **Success Response:**
+
+    * **Code:** 200 <br />
+    **Content:** 
+    ```javascript
+    {
+      "cart": {
+        "id": 1,
+        "TransactionId": 1,
+        "ProductId": 1,
+        "quantity": 1,
+        "total": 100000,
+        "updatedAt": "2020-12-17T05:17:55.894Z",
+        "createdAt": "2020-12-17T05:17:55.894Z"
+      }
+    }
+    ```
+ 
+* **Error Response:**
+
+    * **Code:** 401 Unauthorized <br />
+    **Content:** `{"message": "Please Login First"}`
+
+    OR
+
+    * **Code:** 404 Not Found <br />
+    **Content:** `{"message": "Error Not Found"}`
+
+    OR
+
+    * **Code:** 500 Internal Server Error <br />
+    **Content:** `{"message": "Internal Server Error"}`
+
+**Cart - Edit Quantity in Cart**
+---
+* **URL**
+
+    /cart/:id
+
+* **Method:**
+
+    `PUT`
+  
+*  **URL Params**
+
+    `id=[integer]`
+
+* **Data Params**
+
+    **Required:**
+ 
+    `access_token=[string]`
+
+    **Required Body:**
+ 
+    `quantity=[integer]`
+
+* **Success Response:**
+
+    * **Code:** 200 <br />
+    **Content:** 
+    ```javascript
+    {
+      "cart": {
+        "id": 1,
+        "TransactionId": 1,
+        "ProductId": 1,
+        "quantity": 1,
+        "total": 100000,
+        "createdAt": "2020-12-17T05:17:55.894Z",
+        "updatedAt": "2020-12-17T05:22:53.347Z"
+      }
+    }
+    ```
+ 
+* **Error Response:**
+
+    * **Code:** 401 Unauthorized <br />
+    **Content:** `{"message": "Please Login First"}`
+
+    OR
+
+    * **Code:** 404 Not Found <br />
+    **Content:** `{"message": "Error Not Found"}`
+
+    OR
+
+    * **Code:** 500 Internal Server Error <br />
+    **Content:** `{"message": "Internal Server Error"}`
+
+**Cart - Delete Cart**
+---
+* **URL**
+
+    /cart/:id
+
+* **Method:**
+
+    `GET`
+  
+*  **URL Params**
+
+    `id=[integer]`
+
+* **Data Params**
+
+    **Required:**
+ 
+    `access_token=[string]`
+
+* **Success Response:**
+
+    * **Code:** 200 <br />
+    **Content:** 
+    ```javascript
+    {
+      "message" : "This product deleted successfully from the cart"
+    }
+    ```
+ 
+* **Error Response:**
+
+    * **Code:** 401 Unauthorized <br />
+    **Content:** `{"message": "Please Login First"}`
+
+    OR
+
+    * **Code:** 404 Not Found <br />
+    **Content:** `{"message": "Error Not Found"}`
+
+    OR
+
+    * **Code:** 500 Internal Server Error <br />
+    **Content:** `{"message": "Internal Server Error"}`
+
+**Transaction - Get All Cart & Uncompleted Transaction**
+---
+* **URL**
+
+    /transaction
+
+* **Method:**
+
+    `GET`
+  
+*  **URL Params**
+
+    None
+
+* **Data Params**
+
+    **Required:**
+ 
+    `access_token=[string]`
+
+* **Success Response:**
+
+    * **Code:** 200 <br />
+    **Content:** 
+    ```javascript
+    {
+      "transaction": {
+        "id": 1,
+        "status": "uncompleted",
+        "UserId": 2,
+        "history": null,
+        "total": 0,
+        "createdAt": "2020-12-17T04:56:54.694Z",
+        "updatedAt": "2020-12-17T04:56:54.694Z",
+        "Products": [
+          {
+            "id": 1,
+            "name": "Keyboard Logitech K380",
+            "image_url": "https://www.mombasacomputers.com/wp-content/uploads/2020/07/Logitech-K380-Wireless-Multi-Device-Keyboard-1.png",
+            "price": 100000,
+            "stock": 5,
+            "CategoryId": 4,
+            "createdAt": "2020-12-17T04:14:43.259Z",
+            "updatedAt": "2020-12-17T04:14:43.259Z",
+            "Cart": {
+              "id": 1,
+              "TransactionId": 1,
+              "ProductId": 1,
+              "quantity": 2,
+              "total": 200000,
+              "createdAt": "2020-12-17T05:17:55.894Z",
+              "updatedAt": "2020-12-17T05:18:11.953Z"
+            }
+          }
+        ]
+      }
+    }
+    ```
+ 
+* **Error Response:**
+
+    * **Code:** 401 Unauthorized <br />
+    **Content:** `{"message": "Please Login First"}`
+
+    OR
+
+    * **Code:** 500 Internal Server Error <br />
+    **Content:** `{"message": "Internal Server Error"}`
+
+
+**Transaction - Clear Transaction**
+---
+* **URL**
+
+    /transaction/:id
+
+* **Method:**
+
+    `DELETE`
+  
+*  **URL Params**
+
+    `id=[integer]`
+
+* **Data Params**
+
+    **Required:**
+ 
+    `access_token=[string]`
+
+* **Success Response:**
+
+    * **Code:** 200 <br />
+    **Content:** 
+    ```javascript
+    {
+      "message": "Cart has been cleared"
+    }
+    ```
+ 
+* **Error Response:**
+
+    * **Code:** 401 Unauthorized <br />
+    **Content:** `{"message": "Please Login First"}`
+
+    OR
+
+    * **Code:** 404 Not Found <br />
+    **Content:** `{"message": "Error Not Found"}`
+
+
+    OR
+
+    * **Code:** 401 Unauthorized <br />
+    **Content:** `{"message": "Cannot Edit / Delete Completed Status"}`
+
+    OR
+
+    * **Code:** 403 Forbidden <br />
+    **Content:** `{"message": "Cannot edit others transaction"}`
+
+    OR
+
+    * **Code:** 500 Internal Server Error <br />
+    **Content:** `{"message": "Internal Server Error"}`
+
+
+  **Transaction - Checkout Transaction**
+---
+* **URL**
+
+    /transaction/:id
+
+* **Method:**
+
+    `PUT`
+  
+*  **URL Params**
+
+    `id=[integer]`
+
+* **Data Params**
+
+    **Required:**
+ 
+    `access_token=[string]`
+
+* **Success Response:**
+
+    * **Code:** 200 <br />
+    **Content:** 
+    ```javascript
+    {
+      "message": "Checkout Successfully"
+    }
+    ```
+ 
+* **Error Response:**
+
+    * **Code:** 401 Unauthorized <br />
+    **Content:** `{"message": "Please Login First"}`
+
+    OR
+
+    * **Code:** 400 Bad Request <br />
+    **Content:** `{"message": "Cannot checkout if the quantity is more than product(s) stock, please double check your cart and the product(s) stock again"}`
+
+    OR
+
+    * **Code:** 400 Bad Request <br />
+    **Content:** `{"message": "Cannot checkout empty cart"}`
+
+    OR
+
+    * **Code:** 404 Not Found <br />
+    **Content:** `{"message": "Error Not Found"}`
+
+
+    OR
+
+    * **Code:** 401 Unauthorized <br />
+    **Content:** `{"message": "Cannot Edit / Delete Completed Status"}`
+
+    OR
+
+    * **Code:** 403 Forbidden <br />
+    **Content:** `{"message": "Cannot edit others transaction"}`
+
+    OR
+
+    * **Code:** 403 Forbidden <br />
+    **Content:** `{"message": "Cannot checkout others cart"}`
 
     OR
 
