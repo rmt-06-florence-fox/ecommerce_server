@@ -3,7 +3,7 @@ const { Cart, Product } = require('../models')
 class CartController {
   static async showCart(req, res, next) {
     try {
-      const data = await Cart.findAll({ where: { UserId: req.signedInUser.id } })
+      const data = await Cart.findAll({ where: { UserId: req.signedInUser.id }, include: [Product] })
       res.status(200).json({ data })
     } catch (error) {
       next(error)
