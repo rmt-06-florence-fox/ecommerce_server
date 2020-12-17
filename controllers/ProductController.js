@@ -6,6 +6,7 @@ class ProductController {
       let payload = {
         name: req.body.name,
         image_url: req.body.image_url,
+        CategoryId: req.body.CategoryId,
         price: req.body.price,
         stock: req.body.stock
       }
