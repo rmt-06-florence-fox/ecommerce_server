@@ -2,7 +2,11 @@ const { Product } = require("../models/index.js")
 
 class ProductController {
   static showAll(req, res, next){
-    Product.findAll()
+    Product.findAll({
+      order: [
+        ['createdAt', 'ASC']
+      ]
+    })
       .then(products => {
         res.status(200).json(products)
       })
