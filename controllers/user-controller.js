@@ -18,10 +18,12 @@ class UserController {
           id: user.id,
           email: user.email,
           role: user.role,
+          name: user.name
         })
         res.status(200).json({
           id: user.id,
           role: user.role,
+          name:user.name,
           access_token
         })
       } else {
