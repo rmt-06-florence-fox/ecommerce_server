@@ -28,8 +28,13 @@ class CartController {
                     const newCart = await Cart.create(payload)
                     res.status(201).json(newCart)                                        
                 }
+                else if (payload.quantity === 0) {
+                    await Cart.destroy({
+                        where: { id: cart.id }
+                    })
+                    res.status(200).json({message: 'cart succes to delete'})      
+                }
                 else if (payload.ProductId === cart.ProductId) {
-                    payload.quantity = cart.quantity + 1
                     const updatedCart = await Cart.update(payload, { where: { id: cart.id }, returning: true })
                     res.status(200).json(updatedCart[1][0])                                        
                 }
@@ -53,9 +58,8 @@ class CartController {
                     }]  
                 })
 
-            let total_unit = []
             for (let i = 0; i < carts.length; i++) {
-                total_unit.push(carts[i].Product.price*carts[i].quantity) 
+                carts[i].dataValues.total_unit = carts[i].Product.price*carts[i].quantity
             }
             let total = 0;
             for (let i = 0; i < carts.length; i++) {
@@ -69,7 +73,7 @@ class CartController {
 
     static async removeCart (req, res, next) {
         try {
-            Cart.destroy({
+            await Cart.destroy({
                 where: { id: req.params.id }
             })
             res.status(200).json({message: 'cart succes to delete'})
