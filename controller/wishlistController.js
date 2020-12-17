@@ -46,7 +46,7 @@ class WishlistController {
       let id = req.params.id
       const data = await Wishlist.destroy({where: {id}})
       if (data) {
-        res.status(200).json({'message': `your list's deleted`})
+        res.status(200).json({'message': `your wishlist's deleted`})
       } else {
         throw {
           status : 404,

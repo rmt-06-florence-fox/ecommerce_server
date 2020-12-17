@@ -18,8 +18,8 @@ class CartController {
                 totalPrice: cartList.totalPrice + list.price,
                 buyStatus: false
               }
-              console.log(obj);
               const data = await Cart.update(obj, {where: {id: cartList.id}, returning : true})
+              // console.log(data[1][0]);
               res.status(200).json(data[1][0])
             } else {
               throw {
@@ -36,6 +36,7 @@ class CartController {
               buyStatus: false
             }
             const data = await Cart.create(obj)
+            // console.log(data);
             res.status(201).json(data)
           }
         } else {
@@ -67,6 +68,7 @@ class CartController {
           totalCheckout += pricetags[i]
         }
         const result = [lists, [{totalCheckout: totalCheckout}]]
+        // console.log(result);
         res.status(200).json(result)
       } else {
         throw {
@@ -102,7 +104,6 @@ class CartController {
       let id = req.params.id
       const list = await Cart.findOne({where: {id}, include: Product})
       if (list) {
-        console.log(list);
         let obj = {
           UserId: list.UserId,
           ProductId: list.ProductId,
@@ -110,10 +111,9 @@ class CartController {
           totalPrice: list.totalPrice + list.Product.price,
           buyStatus: false
         }
-        console.log(obj, list.id);
         const data = await Cart.update(obj, {where: {id: list.id}, returning : true})
         if (data) {
-          console.log(data, 'ini di data');
+          // console.log(data, 'ini di data');
           res.status(200).json(data[1][0])
         } else {
           throw {
@@ -137,7 +137,6 @@ class CartController {
       let id = req.params.id
       const list = await Cart.findOne({where: {id}, include: Product})
       if (list) {
-        console.log(list);
         let obj = {
           UserId: list.UserId,
           ProductId: list.ProductId,
@@ -145,10 +144,9 @@ class CartController {
           totalPrice: list.totalPrice - list.Product.price,
           buyStatus: false
         }
-        console.log(obj, list.id);
         const data = await Cart.update(obj, {where: {id: list.id}, returning : true})
         if (data) {
-          console.log(data, 'ini di data');
+          // console.log(data, 'ini di data');
           res.status(200).json(data[1][0])
         } else {
           throw {
@@ -172,7 +170,7 @@ class CartController {
       let id = req.params.id
       const data = await Cart.destroy({where: {id}})
       if (data) {
-        res.status(200).json({'message': `your list's deleted`})
+        res.status(200).json({'message': `your cart's deleted`})
       } else {
         throw {
           status : 404,

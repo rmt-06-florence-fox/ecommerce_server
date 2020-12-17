@@ -10,7 +10,7 @@ class ProductController {
         price: req.body.price,
         stock: req.body.stock
       }
-      // console.log(obj);
+      console.log(obj);
       const data = await Product.create(obj)
       res.status(201).json(data)
     } catch (error) {
