@@ -18,15 +18,11 @@ class CartController {
     }
 
     static createData (req, res) {
-        let counter = 0
         let item = {
             AdminId: req.loggedIn.id,
             ProductId: req.params.ProductId,
             status: true,
             quantity: 1
-        }
-        let newQty = {
-            quantity: req.body.quantity
         }
         let currentProduct
 
