@@ -7,7 +7,7 @@ class CartController {
             const payload = {
                 ProductId: product.id,
                 CustomerId: req.loggedInUser.id,
-                quantity: req.body.quantity,
+                quantity: 1,
                 status: 'unpaid'
             }
             if (!product) {
@@ -81,6 +81,10 @@ class CartController {
             next(error)
         }
     }
+
+    // static async checkout (req, res, next) {
+
+    // }
 }
 
 module.exports = CartController
