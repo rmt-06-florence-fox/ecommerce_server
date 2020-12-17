@@ -218,7 +218,11 @@ class ProductController {
         const idChart = req.params.idChart
         Chart.destroy({where: {id: idChart}})
             .then(data => {
-                res.status(200).json({msg: "Success Deleted"})
+                if(data) {
+                    res.status(200).json({msg: "Success Deleted"})
+                } else {
+                    res.status(404).json({msg: "DataNotFound"})
+                }
             })
             .catch(err => {
                 res.status(500).json(err)
