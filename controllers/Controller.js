@@ -124,7 +124,7 @@ class Controller {
                 include: [Product],
                 returning: true
             })
-            if (cart) {
+            if (ProductId === cart.ProductId && cart) {
                 const inputQty = cart.quantity + 1
                 const totalPrice = price * inputQty
                 const inputUpdate = {
@@ -135,7 +135,7 @@ class Controller {
                 }
                 Cart.update(inputUpdate, {
                     where: {
-                        UserId: cart.UserId
+                        id: cart.id
                     },
                     returning: true
                 })
