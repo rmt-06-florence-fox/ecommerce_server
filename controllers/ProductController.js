@@ -239,7 +239,7 @@ class ProductController {
         })
         .then(data => {
             res.status(200).json({
-                message: 'Data deleted'
+                message: 'Data deleted!'
             })
         })
         .catch(err => {

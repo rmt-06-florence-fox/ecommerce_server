@@ -51,21 +51,35 @@ class UserController {
     }
 
     static registerUser (req, res, next) {
-        const newUser = {
-            email: req.body.email,
-            password: req.body.password
-        }
-
-        User.create(newUser)
-        .then(data => {
-            res.status(201).json({
-                id: data.id,
-                email: data.email
+        if (req.body.email && req.body.password) {
+            const newUser = {
+                email: req.body.email,
+                password: req.body.password
+            }
+    
+            User.create(newUser)
+            .then(data => {
+                res.status(201).json({
+                    id: data.id,
+                    email: data.email
+                })
             })
-        })
-        .catch(err => {
-            next(err)
-        })
+            .catch(err => {
+                next(err)
+            })
+        } else {
+            if (!req.body.password && !req.body.email) {
+                next({
+                    status: 400,
+                    message: 'Please input email/password!'
+                })
+            } else {
+                next({
+                    status: 400,
+                    message: 'Password cannot be empty!'
+                })
+            }
+        }
     }
 } 
 
