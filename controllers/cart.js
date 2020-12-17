@@ -26,7 +26,6 @@ class ControllerCart {
             const find = await Cart.findOne({where: {ProductId: data.ProductId, status: 'unpaid'}})
             if(find){
                 data.Qty = +data.Qty + find.Qty
-                console.log(data.Qty);
                 const Qty = await Cart.update({Qty: data.Qty }, {where: {ProductId: req.params.id}})
                 const showData = await Cart.findOne({where: {ProductId: data.ProductId}})
                 res.status(200).json(showData)

@@ -6,13 +6,6 @@ const {generateToken} = require('../helpers/jwt')
 let idProduct = null
 let admin = {email : 'admin@mail.com', password: '123456', role : 'admin'}
 let customer = {email : 'admina@mail.com', password: '123456', role : 'customer'}
-let dataProduct = {
-    name : "Baju Hitam",
-    image_url : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2qt7ScReh9LkBDPnvMLQjt92tZCEQ0HwjzdOiNtAz7rz0dwfdFIA_xIytTG20Phqh1Gwb8f0&usqp=CAc",
-    price : 5000,
-    stock : 1,
-    description : "Baju polos"
-}
 let access_token_admin 
 let access_token_user
 
@@ -44,7 +37,7 @@ afterAll(done => { queryInterface.bulkDelete('Products', {})
 })
 
 describe("admin product", () => {
-    describe("created success", () => {
+    describe("products", () => {
         test("response create product", done => {
             request(app)
             .post("/products")
@@ -64,6 +57,27 @@ describe("admin product", () => {
                 idProduct = body.id
                 expect(status).toBe(201)
                 expect(body).toHaveProperty("name", "Baju")
+                done()
+            })
+        })
+        test("response fail to create product name null", done => {
+            request(app)
+            .post("/products")
+            .set('access_token', access_token_admin)
+            .send({
+                name : "",
+                image_url : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2qt7ScReh9LkBDPnvMLQjt92tZCEQ0HwjzdOiNtAz7rz0dwfdFIA_xIytTG20Phqh1Gwb8f0&usqp=CAc",
+                price : 50000,
+                stock : 10,
+                description : "Baju polos"
+            })
+            .end((err, res) => {
+                const {body, status} = res
+                if(err){
+                    return done(err)
+                }
+                expect(status).toBe(400)
+                expect(body).toHaveProperty("message", "Product name minimal 3 Characters")
                 done()
             })
         })
@@ -88,7 +102,7 @@ describe("admin product", () => {
                 done()
             })
         })
-        test("response fail to create product name null", done => {
+        test("response fail to create product price 0", done => {
             request(app)
             .post("/products")
             .set('access_token', access_token_admin)
@@ -109,7 +123,7 @@ describe("admin product", () => {
                 done()
             })
         })
-        test("response fail to create product name null", done => {
+        test("response fail to create product stock 0", done => {
             request(app)
             .post("/products")
             .set('access_token', access_token_admin)
@@ -145,6 +159,35 @@ describe("admin product", () => {
             })
         })
 
+        test("response to get product by id", done => {
+            request(app)
+            .get(`/products/${idProduct}`)
+            .set('access_token', access_token_admin)
+            .end((err, res) => {
+                const {body, status} = res
+                if(err){
+                    return done(err)
+                }
+                expect(status).toBe(200)
+                expect(body).toHaveProperty("name", "Baju")
+                done()
+            })
+        })
+        test("response fail to get product by id", done => {
+            request(app)
+            .get(`/products/${idProduct+10}`)
+            .set('access_token', access_token_admin)
+            .end((err, res) => {
+                const {body, status} = res
+                if(err){
+                    return done(err)
+                }
+                expect(status).toBe(404)
+                expect(body).toHaveProperty("message", "Product not found")
+                done()
+            })
+        })
+
         test("response to edit product", done => {
             request(app)
             .put(`/products/${idProduct}`)
@@ -167,7 +210,7 @@ describe("admin product", () => {
         })
         test("response fail to edit product not found", done => {
             request(app)
-            .put("/products/1")
+            .put(`/products/${idProduct+10}`)
             .set('access_token', access_token_admin)
             .send({
                 name : "Baju hitam",
@@ -182,10 +225,11 @@ describe("admin product", () => {
                     return done(err)
                 }
                 expect(status).toBe(404)
+                expect(body).toHaveProperty("message", "Product not found")
                 done()
             })
         })
-        test("response to edit product", done => {
+        test("response to edit product fail price", done => {
             request(app)
             .put(`/products/${idProduct}`)
             .set('access_token', access_token_admin)
@@ -202,10 +246,11 @@ describe("admin product", () => {
                     return done(err)
                 }
                 expect(status).toBe(400)
+                expect(body).toHaveProperty("message", "minimum price Rp. 1")
                 done()
             })
         })
-        test("response to edit product", done => {
+        test("response to edit product fail stock", done => {
             request(app)
             .put(`/products/${idProduct}`)
             .set('access_token', access_token_admin)
@@ -222,6 +267,7 @@ describe("admin product", () => {
                     return done(err)
                 }
                 expect(status).toBe(400)
+                expect(body).toHaveProperty("message", "minimum stock 1")
                 done()
             })
         })
@@ -242,6 +288,7 @@ describe("admin product", () => {
                     return done(err)
                 }
                 expect(status).toBe(400)
+                expect(body).toHaveProperty("message", "image url must be in url format")
                 done()
             })
         })
@@ -262,6 +309,7 @@ describe("admin product", () => {
                     return done(err)
                 }
                 expect(status).toBe(400)
+                expect(body).toHaveProperty("message", "Product name minimal 3 Characters")
                 done()
             })
         })      
@@ -281,7 +329,7 @@ describe("admin product", () => {
             })
         test("response fail to delete product", done => {
             request(app)
-            .delete("/products/25")
+            .delete(`/products/${idProduct+10}`)
             .set('access_token', access_token_admin)
             .end((err, res) => {
                 const {body, status} = res
@@ -289,6 +337,7 @@ describe("admin product", () => {
                     return done(err)
                 }
                 expect(status).toBe(404)
+                expect(body).toHaveProperty("message", "Product not found")
                 done()
             })
         })
@@ -314,6 +363,7 @@ describe("user product", () => {
                     return done(err)
                 }
                 expect(status).toBe(401)
+                expect(body).toHaveProperty('message', 'Unauthorized')
                 done()
             })
         })
@@ -327,14 +377,14 @@ describe("user product", () => {
                 if(err){
                     return done(err)
                 }
-                expect(status).toBe(401)
+                expect(status).toBe(200)
                 done()
             })
         })
 
         test("response to delete product", done => {
             request(app)
-            .delete("/products/23")
+            .delete(`/products/${idProduct}`)
             .set('access_token', access_token_user)
             .end((err, res) => {
                 const {body, status} = res
@@ -342,13 +392,14 @@ describe("user product", () => {
                     return done(err)
                 }
                 expect(status).toBe(401)
+                expect(body).toHaveProperty('message', 'Unauthorized')
                 done()
             })
         })
 
         test("response to edit product", done => {
             request(app)
-            .put("/products/23")
+            .put(`/products/${idProduct}`)
             .set('access_token', access_token_user)
             .send({
                 name : "Baju hitam",
@@ -363,6 +414,7 @@ describe("user product", () => {
                     return done(err)
                 }
                 expect(status).toBe(401)
+                expect(body).toHaveProperty('message', 'Unauthorized')
                 done()
             })
         })
