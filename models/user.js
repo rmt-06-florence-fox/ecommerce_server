@@ -1,4 +1,6 @@
 'use strict';
+const { hash } = require('../helpers/bcrypt')
+
 const {
   Model
 } = require('sequelize');
@@ -11,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasMany(models.Cart)
     }
   };
   User.init({
@@ -37,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         valcount(value) {
-          if (value.length < 6) {
+          if (value.length < 6 && value.length > 0) {
             throw new Error("Password length minimum 6 characters")
           }
         },
@@ -67,5 +70,10 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'User',
   });
+
+  User.beforeCreate((instance, opt) => {
+    instance.password = hash(instance.password)
+  })
+  
   return User;
 };
