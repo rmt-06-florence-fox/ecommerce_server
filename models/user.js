@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasMany(models.Cart);
     }
   }
   User.init(
@@ -47,7 +48,11 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      role: DataTypes.STRING
+      role: {
+        type: DataTypes.STRING,
+        defaultValue: "customer",
+        isIn: [["admin", "customer"]],
+      },
     },
     {
       sequelize,

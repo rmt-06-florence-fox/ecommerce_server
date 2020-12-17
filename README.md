@@ -1,12 +1,67 @@
 # ecommerce_server
 
-link demo: (https://ecommerce-jar.web.app/)
+link demo-Customer: ()
+link demo-CMS: (https://ecommerce-jar.web.app/)
 link server: (https://e-commerce-jar.herokuapp.com/)
-login with account : email: admin@mail.com,
-                     password: 123456
+login with admin account : email: admin@mail.com, password: 123456
+
 ## Users Routes
 
-### POST /login : login to user's account
+### POST /register : register to user's account
+
+    - Request Header
+        Not required.
+
+    - Request Body
+        {
+            "email": "<user's email>",
+            "password": "<user's password>"
+        }
+
+    - Response 200: OK
+        {
+            "email": "<user's email>",
+            "password": "<user's password>"
+        }
+
+    - Response 400: Bad Request
+        {
+            "message": "Invalid email/password"
+        }
+
+    - Response 500: Internal server error
+        {
+            "message": "Internal Server Error"
+        }
+
+### POST /logincustomer : login to user's customer account
+
+    - Request Header
+        Not required.
+
+    - Request Body
+        {
+            "email": "<user's email>",
+            "password": "<user's password>"
+            "role": "customer"
+        }
+
+    - Response 200: OK
+        {
+            "access_token": "<user's token>"
+        }
+
+    - Response 400: Bad Request
+        {
+            "message": "Invalid email/password"
+        }
+
+    - Response 500: Internal server error
+        {
+            "message": "Internal Server Error"
+        }
+        
+### POST /login : login to user's admin account
 
     - Request Header
         Not required.
@@ -94,7 +149,7 @@ login with account : email: admin@mail.com,
             "message": `Internal Server Error.`
         }
 
-### GET /Products : show all product lists.
+### GET /products : show all product lists.
 
     - Request Header
         {
@@ -146,7 +201,7 @@ login with account : email: admin@mail.com,
             "message": `Internal Server Error. <show error>`
         }
 
-### GET /Products/:id : show a selected product list based on id
+### GET /products/:id : show a selected product list based on id
 
     - Request Header
         {
@@ -187,7 +242,7 @@ login with account : email: admin@mail.com,
             "message": `Internal Server Error.`
         }
 
-### PUT /Products/:id : update a product list
+### PUT /products/:id : update a product list
 
     - Request Header
         {
@@ -255,7 +310,7 @@ login with account : email: admin@mail.com,
             "message": `Internal Server Error.`
         }
 
-### DELETE /Products/:id : delete a selected product list based on id
+### DELETE /products/:id : delete a selected product list based on id
 
     - Request Header
         {
@@ -273,6 +328,203 @@ login with account : email: admin@mail.com,
     - Response 200: OK
         {
             "message": "Successfully to delete products"
+        }
+
+    - Response 401: Unauthorized
+        {
+            "message": "Please Login First"
+        }
+
+    - Response 404: Not Found
+        {
+            "message": `Error not found.`
+        }
+
+    - Response 500: Internal server error
+        {
+            "message": `Internal Server Error.`
+        }
+
+## Carts Routes
+
+### POST /carts : Create new cart list
+
+    - Request Header
+        {
+            "access_token":"<access token>"
+        }
+
+
+    - Request Body
+        {
+            "User.id": "<req.loggedInUser.id>",
+            "ProductId": "<req.body.ProductId>",
+            "quantity": "<quantity of cart>"
+        }
+
+    - Response 201: Created
+        {
+            "status": false,
+            "id": 48,
+            "UserId": 9,
+            "ProductId": 1,
+            "quantity": 1,
+            "updatedAt": "2020-12-16T17:35:28.295Z",
+            "createdAt": "2020-12-16T17:35:28.295Z"
+        }
+
+    - Response 400: Bad Request
+        {
+            "message": "stock not available"
+        }
+
+    - Response 401: Unauthorized
+        {
+            "message": "Please Login First"
+        }
+
+    - Response 500: Internal server error
+        {
+            "message": `Internal Server Error.`
+        }
+
+### GET /carts : show all cart lists.
+
+    - Request Header
+        {
+            "access_token":"<access token>"
+        }
+
+    - Request Body
+        Not required.
+
+    - Response 200: OK
+    [
+        {
+            "id": 48,
+            "UserId": 9,
+            "ProductId": 1,
+            "quantity": 1,
+            "status": false,
+            "createdAt": "2020-12-16T17:35:28.295Z",
+            "updatedAt": "2020-12-16T17:35:28.295Z",
+            "Product": {
+                "id": 1,
+                "name": "Iphone 12 Pro",
+                "image_url": "https://i.pcmag.com/imagery/reviews/03vN5IfWzyBHdqN00j3w6Dd-5..1604007897.jpg",
+                "price": 18499000,
+                "stock": 5,
+                "createdAt": "2020-12-15T15:31:46.695Z",
+                "updatedAt": "2020-12-15T15:31:46.695Z"
+            }
+        }
+    ]
+
+    - Response 401: Unauthorized
+        {
+            "message": "Please Login First"
+        }
+    - Response 500: Internal server error
+        {
+            "message": `Internal Server Error. <show error>`
+        }
+
+### PATCH /carts/:id : update a cart list
+
+    - Request Header
+        {
+            "access_token":"<access token>"
+        }
+
+    - Request Parameter
+        {
+            "id": <selected cart list id>
+        }
+
+    - Request Body
+        {
+            "quantity": "<req.body.quantity>"
+        }
+
+    - Response 200: OK
+        {
+            "id": 33,
+            "UserId": 9,
+            "ProductId": 2,
+            "quantity": 3,
+            "status": false,
+            "createdAt": "2020-12-16T12:42:19.136Z",
+            "updatedAt": "2020-12-16T14:37:24.357Z"
+        }
+
+    - Response 400: Bad Request
+        {
+            "message": "stock not available"
+        }
+
+    - Response 401: Unauthorized
+        {
+            "message": "Please Login First"
+        }
+
+    - Response 404: Not Found
+        {
+            "message": `Error not found.`
+        }
+
+    - Response 500: Internal server error
+        {
+            "message": `Internal Server Error.`
+        }
+
+### DELETE /carts/:id : delete a selected cart list based on id
+
+    - Request Header
+        {
+            "access_token":"<access token>"
+        }
+
+    - Request Parameter
+        {
+            "id": <selected cart list id>
+        }
+
+    - Request Body
+        Not required.
+
+    - Response 200: OK
+        {
+            "message": "Successfully to delete carts"
+        }
+
+    - Response 401: Unauthorized
+        {
+            "message": "Please Login First"
+        }
+
+    - Response 404: Not Found
+        {
+            "message": `Error not found.`
+        }
+
+    - Response 500: Internal server error
+        {
+            "message": `Internal Server Error.`
+        }
+
+### DELETE /carts : delete a all cart list
+
+    - Request Header
+        {
+            "access_token":"<access token>"
+        }
+
+    - Request Body
+        Not required.
+
+    - Response 200: OK
+        {
+            "message": "Successfully delete items from cart!"
         }
 
     - Response 401: Unauthorized

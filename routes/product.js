@@ -5,8 +5,8 @@ const {
   authorization,
 } = require("../middlewares/authentication-authorization");
 
-router.use(authentication);
 router.get("/", ProductController.show);
+router.use(authentication);
 router.use(authorization);
 router.post("/", ProductController.add);
 router.get("/:id", ProductController.find);
