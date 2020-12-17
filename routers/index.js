@@ -22,11 +22,18 @@ router.patch('/carts/minus/:id', userAuthorization, CartController.minus)
 router.patch('/carts/plus/:id', userAuthorization, CartController.plus)
 router.delete('/carts/:id', userAuthorization, CartController.delete)
 
+router.get('/transactions/:id', userAuthorization, CartController.getTransactionsUser)
+router.get('/transaction/:id', userAuthorization, CartController.getOneTransaction)
+router.post('/transaction/:id', userAuthorization, CartController.addTrans)
+router.delete('/transaction/:id', userAuthorization, CartController.deleteTrans)
+
 router.use(authorization);
 router.post('/categories', CategoryController.add);
 router.get('/categories/:id', CategoryController.getOne);
 router.put('/categories/:id', CategoryController.edit);
 router.delete('/products/:id', CategoryController.delete);
+
+router.get('/admin/transactions', CartController.getTransactions)
 
 router.post('/products', ProductController.add);
 router.get('/products/:id', ProductController.getOne);

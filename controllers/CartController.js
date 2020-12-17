@@ -1,4 +1,5 @@
-const { Cart, User, Product, Category } = require('../models/index')
+const { Cart, User, Product, Category, Transaction } = require('../models/index')
+const transaction = require('../models/transaction')
 
 class CartController {
   static getCart(req, res, next) {
@@ -146,6 +147,136 @@ class CartController {
       .catch(err => {
         next(err)
       })
+  }
+
+  static addTrans(req, res, next) {
+    const UserId = Number(req.params.id)
+    let codeTrans;
+
+    User.findOne({
+      where: {id: UserId}
+    })
+      .then(user => {
+        if (user) {
+          return Cart.findAll({
+            where: { UserId },
+            include: [Product]
+          })
+        } else {
+          next({ name: 'NOT_FOUND'})
+        }
+      })
+      .then(cart => {
+        let updateStock = []
+        cart.map(el => {
+          updateStock.push(el.Product.update({
+            stock: el.Product.stock - el.quantity
+          }))
+        })
+        return Promise.all(updateStock)
+      })
+      .then(result => {
+        return Transaction.findAll()
+      })
+      .then(transactions => {
+        let idTrans = transactions.length
+        let dateString = new Date().toLocaleDateString('id-ID')
+        let dateTrans = ''
+        for(let i = 0; i < dateString.length; i++) {
+          if (dateString[i] !== '/') {
+            dateTrans += dateString[i]
+          }
+        }
+        let code = (idTrans+1) + dateTrans
+
+        const payload = {
+          code,
+          name: req.body.name,
+          address: req.body.address,
+          email: req.body.email,
+          products: req.body.products,
+          total_price: req.body.total_price
+        }
+        return Transaction.create(payload)
+      })
+      .then(result => {
+        codeTrans = result.code
+        return Cart.destroy({
+          where: { UserId }
+        })
+      })
+      .then(() => {
+        res.status(201).json({ codeTrans })
+      })
+      .catch(err => {
+        next(err)
+      })
+  }
+
+  static getTransactionsUser(req, res, next) {
+    const id = Number(req.params.id)
+
+    User.findOne({
+      where: {id}
+    })
+      .then(user => {
+        if (user) {
+          return Transaction.findAll({
+            where: { email: user.email }
+          })
+        } else {
+          next({ name: 'NOT_FOUND' })
+        }
+      })
+      .then(transactions => {
+        res.status(200).json(transactions)
+      })
+      .catch(err => {
+        next(err)
+      })
+  }
+
+  static getOneTransaction (req, res, next) {
+    const code = Number(req.params.id)
+
+    Transaction.findOne({
+      where: {code}
+    })
+      .then(transaction => {
+        if (transaction) {
+          res.status(200).json(transaction)
+        } else {
+          next({ name: 'NOT_FOUND' })
+        }
+      })
+      .catch(err => {
+        next(err)
+      })
+  }
+
+  static deleteTrans(req, res, next) {
+    const id = Number(req.params.id)
+
+    Transaction.findOne({
+      where: {id}
+    })
+      .then(transaction => {
+        if (transaction) {
+          return transaction.destroy
+        } else {
+          next({ name: 'NOT_FOUND' })
+        }
+      })
+      .then(() => {
+        res.status(200).json("Successfully deleted transaction")
+      })
+      .catch(err => {
+        next(err)
+      })
+  }
+
+  static getTransactions(req, res, next) {
+
   }
 }
 
