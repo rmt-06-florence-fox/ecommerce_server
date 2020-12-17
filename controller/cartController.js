@@ -235,5 +235,29 @@ class CartController{
           next(error)
       }
     }
+    static async getHistory(req, res, next) {
+        try {
+            const cart = await Cart.findAll({
+                where: {
+                    UserId: +req.loginUser.id,
+                    status: true
+                },
+                include: [{
+                    model: User
+                  },
+                {
+                    model: Product
+                }]
+            })
+            let totalPrice = 0
+            cart.forEach(e => {
+               totalPrice += e.Product.price * e.quantity
+            });
+            res.status(200).json({totalPrice, cart})
+        } catch (error) {
+            console.log(error);
+            next(error)
+        }
+    }
 }
 module.exports = CartController

@@ -2,7 +2,8 @@
 # LINK
 server: https://jejualan.herokuapp.com
 
-client: https://jejualan-kw.web.app
+client admin: https://jejualan-kw.web.app
+client customor : https://jejualan-kw-super.web.app
 
 More Docs: https://documenter.getpostman.com/view/13590085/TVmTcF8K
 
@@ -171,7 +172,7 @@ response(401)
 response(500)
 oops sorry, it seems any problem from server
 
-# Show All Product have user /cart GET
+# Show All Cart have user /cart GET
 ## Request Headers
 acces_token
 ## Response Success
@@ -410,6 +411,53 @@ acces_token
         ]
     ]
 ]
+## Response Fail not Login
+response(401)
+you must login first
+
+response(401)
+Your Session Is Time Up
+## Response Error from Server
+response(500)
+oops sorry, it seems any problem from server
+
+
+# Show All history checkout have user /cart/history GET
+## Request Headers
+acces_token
+## Response Success
+response(201)
+{
+    "totalPrice": 48000,
+    "cart": [
+        {
+            "id": 11,
+            "UserId": 2,
+            "ProductId": 1,
+            "status": true,
+            "quantity": 2,
+            "createdAt": "2020-12-17T00:50:23.984Z",
+            "updatedAt": "2020-12-17T00:50:26.859Z",
+            "User": {
+                "id": 2,
+                "email": "icih@mail.com",
+                "password": "$2b$10$3llLiDBDaHeexIlClm6b8eciPnuXD4nhAphjknbLK9jCaW6gKswhy",
+                "role": "customer",
+                "createdAt": "2020-12-16T22:16:21.690Z",
+                "updatedAt": "2020-12-16T22:16:21.690Z"
+            },
+            "Product": {
+                "id": 1,
+                "name": "Gudang Garam Surya",
+                "image_url": "http://....",
+                "price": 24000,
+                "stock": 2500,
+                "createdAt": "2020-12-16T22:18:48.235Z",
+                "updatedAt": "2020-12-16T22:31:08.848Z"
+            }
+        }
+    ]
+}
 ## Response Fail not Login
 response(401)
 you must login first
