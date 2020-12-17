@@ -40,6 +40,42 @@ _Response (401 - Unauthorized)_
 }
 ```
 ---
+### POST /register
+
+_Request Params_
+```
+Not needed
+```
+_Request Header_
+```
+Not needed
+```
+
+_Request Body_
+```
+{
+  "first_name": "<your first name>"
+  "last_name": "<your last name>"
+  "email": "<your email>",
+  "password": "<your password>"
+}
+```
+
+_Response (201 - CREATED)_
+```
+{
+  "id": "<user id>",
+  "email": "<your email>"
+}
+```
+
+_Response (400 - Bad Request)_
+```
+{
+  "message": "First name is required."
+}
+```
+---
 ### POST /products
 
 > Create a new product
@@ -157,7 +193,7 @@ _Response (200 - OK)_
 ```
 [
   {
-    " "id": <product id by request>,
+    "id": <product id by request>,
     "name": "<product name>",
     "CategoryId": "<product CategoryId>",
     "image_url": "<product image_url>",
@@ -316,6 +352,169 @@ _Response (200 - OK)_
 ```
 {
   "message": "The product has been successfully deleted."
+}
+```
+_Response (404 - Not Found)_
+```
+{
+  "message": "Data is not found."
+}
+```
+---
+### POST /carts
+
+> Create a new cart item
+
+_Request Params_
+```
+Not needed
+```
+_Request Header_
+```
+{
+  "access_token": "<your access token>"
+}
+```
+_Request Body_
+```
+{
+  "UserId": "<UserId to get insert into>",
+  "ProductId": "<ProductId to get insert into>"
+}
+```
+_Response (201 - Created)_
+```
+{
+  "id": <cart id>"
+  "UserId": "<cart UserId>",
+  "ProductId": "<cart ProductId>",
+  "quantity": "<cart quantity>",
+  "updatedAt": "2020-11-28T09:57:17.359Z",
+  "createdAt": "2020-11-28T09:57:17.359Z",
+}
+```
+_Response (400 - Bad Request)_
+```
+{
+  "messages": [
+        "ProductId must be numeric."
+    ]
+}
+```
+### GET /carts
+
+> Get all carts
+
+_Request Params_
+```
+Not needed
+```
+_Request Header_
+```
+{
+  "access_token": "<your access token>"
+}
+```
+_Request Body_
+```
+Not needed
+```
+_Response (200 - OK)_
+```
+[
+  {
+    "id": <cart id>,
+    "UserId": "<cart UserId>",
+    "ProductId": "<cart ProductId>",
+    "quantity": "<cart quantity>",
+    "createdAt": "2020-11-25T00:09:34.514Z",
+    "updatedAt": "2020-11-25T00:09:34.514Z",
+    "Product": {
+      "id": <product id by request>,
+      "name": "<product name>",
+      "CategoryId": "<product CategoryId>",
+      "image_url": "<product image_url>",
+      "price": "<product price>",
+      "stock": "<product stock>"
+      "updatedAt": "2020-11-28T09:57:17.359Z",
+      "createdAt": "2020-11-28T09:57:17.359Z",
+    }
+  }
+]
+```
+_Response (401 - Unauthorized)_
+```
+{
+  "message": "Unauthorised Access!"
+}
+```
+---
+### PATCH/carts/:id
+
+> Update quantity of a cart with specific id 
+
+_Request Params_
+```
+id=[integer]
+```
+_Request Header_
+```
+{
+  "access_token": "<your access token>"
+}
+```
+_Request Body_
+```
+{
+  "quantity": "<cart new quantity>"
+}
+```
+_Response (200 - OK)_
+```
+{
+  "id": <cart id>"
+  "UserId": "<cart UserId>",
+  "ProductId": "<cart ProductId>",
+  "quantity": "<cart updated quantity>",
+  "updatedAt": "2020-11-28T09:57:17.359Z",
+  "createdAt": "2020-11-28T09:57:17.359Z",
+}
+```
+_Response (401 - Unuthorized)_
+```
+{
+   "message": "Unauthorized Access!"
+}
+```
+_Response (404 - Not Found)_
+```
+{
+  "message": "Data is not found."
+}
+```
+---
+### DELETE /products/:id
+
+> Delete a cart item with specific id
+
+_Request Params_
+```
+id=[integer]
+```
+_Request Header_
+```
+{
+  "access_token": "<your access token>"
+}
+```
+_Request Body_
+```
+Not needed
+```
+_Response (200 - OK)_
+```
+{
+  "message": "The product has been removed from your cart."
 }
 ```
 _Response (404 - Not Found)_

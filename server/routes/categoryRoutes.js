@@ -1,12 +1,10 @@
 const route = require("express").Router();
 const CategoryController = require("../controllers/CategoryController");
 const authentication = require("../middlewares/authentication");
-const authorization = require("../middlewares/authorization");
+const authorizationAdmin = require("../middlewares/authorizationAdmin");
 
 route.use(authentication);
-route.get("/", CategoryController.read);
-
-route.use(authorization);
+route.use(authorizationAdmin);
 route.post("/", CategoryController.add);
 route.get("/:id", CategoryController.findByPk);
 route.put("/:id", CategoryController.put);
