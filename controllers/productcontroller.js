@@ -3,7 +3,7 @@ const { Product } = require('../models')
 class ProductController {
   static async getProduct(req, res, next) {
     try {
-      const data = await Product.findAll()
+      const data = await Product.findAll({ order: [['id', 'ASC']] })
       res.status(200).json(data)
     } catch (error) {
       next(error)

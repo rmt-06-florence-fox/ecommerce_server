@@ -79,6 +79,7 @@ class CartController {
       if (data) {
         for (let i = 0; i < data.length; i++) {
           await Product.decrement('stock', { by: data[i].quantity, where: { id: data[i].ProductId } })
+          await Cart.destroy({ where: { ProductId: data[i].ProductId } })
         }
       }
       res.status(200).json({ message: 'Thanks for shopping with us' })
