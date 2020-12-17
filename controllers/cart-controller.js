@@ -122,6 +122,43 @@ class CartController {
       next(err)
     }
   }
+
+  static async checkout (req, res, next) {
+    try {
+      const UserId = +req.currentUserId
+      const carts = await Cart.findAll({
+        where: { UserId },
+        include: [Product],
+        attributes: ['id', 'ProductId','quantity']
+      })
+      // console.log(carts)
+      let unSuccess = []
+      carts.forEach(async cart => {
+        const ProductId = cart.ProductId
+        // console.log('produknya nih >>>', cart.Product.stock, cart.quantity)
+        const stock = +cart.Product.stock - +cart.quantity
+        const isSuccess = await Product.update({ stock }, {
+          where: { id: ProductId },
+          fields: ['stock']
+        })
+        // console.log('is success >>>>', isSuccess)
+        if (isSuccess) {
+          await Cart.destroy({ where: { id: cart.id }})
+        } else {
+          unSuccess.push(cart.Product.name)
+        }
+      })
+      // console.log('unsuccess >>>>>>>>', unSuccess)
+      if (!unSuccess.length) {
+        res.status(200).json({ message: 'sucessfully checking out all carts'})
+      } else {
+        res.status(200).json({ message: 'some carts cannot be checked out'})
+      }
+      
+    } catch (err) {
+      next (err)
+    }
+  }
 }
 
 module.exports = CartController
