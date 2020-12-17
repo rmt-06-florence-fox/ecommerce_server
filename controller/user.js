@@ -34,6 +34,24 @@ class UserControl {
       next(err)
     }
   }
+
+  static async signup(req, res, next) {
+    try {
+      const value = {
+        email: req.body.email,
+        password: req.body.password,
+        role: req.body.role
+      }
+      const user = await User.create(value)
+      res.status(201).json({
+        id: user.id,
+        email: user.email,
+        role: user.role
+      })
+    } catch (err) {
+      next(err)
+    }
+  }
 }
 
 module.exports = UserControl

@@ -1,11 +1,9 @@
 'use strict';
-const { hash } = require('../helpers/bcrypt');
 const {
   Model
 } = require('sequelize');
-const product = require('./product');
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
+  class Banner extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,44 +11,38 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.hasMany(models.Product)
+      Banner.belongsTo(models.User, { foreignKey: "UserId" })
     }
   };
-  User.init({
-    email: {
+  Banner.init({
+    title: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: {
-          msg: 'Email Required'
-        },
-        isEmail: {
-          args: true,
-          msg: 'Incorrect email format'
+          msg: 'Title required'
         }
       }
     },
-    password: {
-      type: DataTypes.STRING,
+    status: DataTypes.BOOLEAN,
+    image_url: {
+      type: DataTypes.TEXT,
       allowNull: false,
       validate: {
         notEmpty: {
-          msg: 'Password Required'
+          msg: 'Image URL required'
         }
       }
     },
-    role: DataTypes.STRING
+    UserId: DataTypes.INTEGER
   }, {
     hooks: {
-      beforeCreate(user, opt) {
-        user.password = hash(user.password)
-        if (user.role !== 'admin' || null) {
-          user.role = 'customer'
-        }
+      beforeCreate(banner) {
+        banner.status = false
       }
     },
     sequelize,
-    modelName: 'User',
+    modelName: 'Banner',
   });
-  return User;
+  return Banner;
 };
