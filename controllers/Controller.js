@@ -258,7 +258,7 @@ class Controller {
                 }
                 Cart.update(inputUpdate, {
                     where: {
-                        UserId: cart.UserId
+                        id: cart.id
                     },
                     returning: true
                 })
@@ -294,7 +294,7 @@ class Controller {
                 }
                 Cart.update(inputUpdate, {
                     where: {
-                        UserId: cart.UserId
+                        id: cart.id
                     },
                     returning: true
                 })
