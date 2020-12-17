@@ -18,7 +18,7 @@ module.exports = (err, req, res, next) => {
         res.status(err.status).json({message : err.message})
     } else {
         console.log(err);
-        res.status(501).json(err)
+        res.status(500).json(err)
     }    
     
 }

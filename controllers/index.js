@@ -51,12 +51,14 @@ class Controller{
 
     static async createProduct(req, res, next){
         try {
+            let UserId = req.user.id
             let product = {
                 name : req.body.name,
                 image_url : req.body.image_url,
                 price : req.body.price,
                 stock : req.body.stock,
-                description : req.body.description
+                description : req.body.description,
+                UserId
             }
             const data = await Product.create(product)
             res.status(201).json(data)
