@@ -10,8 +10,12 @@ class cartController {
         },
         order: [['createdAt', 'DESC']],
         include: [ Product ]
-      })
-      res.status(200).json(data)
+			})
+			let totalPrice = 0
+			data.forEach(e => {
+				totalPrice += e.quantity * e.Product.price
+			})
+      res.status(200).json({data, totalPrice})
     } catch (error) {
       console.log(error)
       next(error)
