@@ -49,6 +49,38 @@ class Controller{
         }
     }
 
+    static async loginCustomer(req, res, next){
+        try {
+            let user = {
+                email : req.body.email,
+                password : req.body.password,
+            }
+            const data = await User.findOne({where : {
+                email : user.email,
+                role: 'customer'
+            }})
+            if (!data){
+                throw {
+                    status : 404,
+                    message : "user not found"
+                }
+            } else {
+                if(bcrypt.compareSync(user.password, data.password)){
+                    let needGenerate = {id : data.id, email : data.email, role : data.role}
+                    let access_token = generateToken(needGenerate)
+                    res.status(200).json({access_token})
+                } else {
+                    throw {
+                        status : 400,
+                        message : "email/password wrong"
+                    }
+                }
+            }
+        } catch (err) {
+            next(err)
+        }
+    }
+
     static async createProduct(req, res, next){
         try {
             let UserId = req.user.id
