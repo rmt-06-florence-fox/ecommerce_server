@@ -1,24 +1,15 @@
 const { Product } = require('../models')
 class ProductController {
   static getlist(req, res, next) {
-    const role = req.loggedIn.role
 
-    if (role !== "Admin") {
-      throw {
-        status: 401,
-        message: "You're not allowed access this page"
-      }
-    } else {
-      Product.findAll()
-        .then(data => {
-          res.status(200).json(data)
+    Product.findAll()
+      .then(data => {
+        res.status(200).json(data)
 
-        })
-        .catch(err => {
-          next(err)
-        })
-    }
-
+      })
+      .catch(err => {
+        next(err)
+      })
   }
 
   static async create(req, res, next) {
@@ -43,9 +34,9 @@ class ProductController {
   }
 
   static async dataUpdate(req, res, next) {
-    const id=+req.params.id
+    const id = +req.params.id
     const role = req.loggedIn.role
-    const updateData={
+    const updateData = {
       name: req.body.name,
       image_url: req.body.image_url,
       price: req.body.price,
@@ -57,20 +48,20 @@ class ProductController {
           status: 401,
           message: "You're not allowed access this page"
         }
-      }else{
-        let product= await Product.findByPk(id)
-        if(!product){
+      } else {
+        let product = await Product.findByPk(id)
+        if (!product) {
           throw {
             status: 404,
             message: "Product not found"
           }
         }
-        let update= await Product.update(updateData,{
-          where:{id},
-          returning:true
+        let update = await Product.update(updateData, {
+          where: { id },
+          returning: true
         })
-        let updated= update[1][0]
-        res.status(200).json({message: "Update Success", updated})
+        let updated = update[1][0]
+        res.status(200).json({ message: "Update Success", updated })
       }
 
     } catch (err) {
@@ -120,17 +111,17 @@ class ProductController {
           status: 401,
           message: "You're not allowed access this page"
         }
-      }else{
+      } else {
         let product = await Product.findByPk(id)
         if (!product) {
           throw {
             status: 404,
             message: "Product not found"
           }
-        }else{
-          let deleted= await Product.destroy({
-            where:{id},
-            returning:true
+        } else {
+          let deleted = await Product.destroy({
+            where: { id },
+            returning: true
           })
           res.status(200).json({ message: "Delete Success", deleted: product })
         }
@@ -139,7 +130,7 @@ class ProductController {
     } catch (err) {
       next(err)
     }
-   
+
   }
 
 }

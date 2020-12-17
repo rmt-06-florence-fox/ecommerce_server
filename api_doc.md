@@ -14,6 +14,7 @@ by. Syihab Muchsin
 <br>
 [Users](#users)
   
+  * [User Register](#user-register)
   * [User Login](#user-login)
 
 [Products](#products)
@@ -28,7 +29,83 @@ by. Syihab Muchsin
 
 ## *Users*
 ----
+
+### Register
+----
+
+Method: `POST /register`
+
+Request Body (Required) :
+  
+    name      = [string]
+    email     = [string]
+    password  = [string]
+
+
+Success Response :
+ 
+  ```
+    
+    -- Register Success -- 
+    ----------------------------------------------------
+
+        Status : 201 Created
+        Body   :
+
+        {
+          "message": "Register Success !",
+          "id": [integer],
+          "email": [string]
+        }
+
+    ----------------------------------------------------
+  ```
+ 
+Error Responses :
+  ```
+   
+    -- Empty Required Field --
+    ----------------------------------------------------
+
+        Status : 400 Bad Request
+        Body   :
+        
+        {
+          "message": [field] "cannot be empty"
+        }
+        ...
+        ...
+
+    ----------------------------------------------------
+
+    -- Invalid Input --
+    ----------------------------------------------------
+
+        Status : 400 Bad Request
+        Body   :
+        
+        {
+          "message": [ valida input information ] 
+        }
+
+    ----------------------------------------------------
+
+
+    -- Others --
+    ----------------------------------------------------
+
+        Status : 500 Internal Server Error
+        Body   :
+        
+        "Internal Server Error"
+
+    ----------------------------------------------------
+
+  ```
+
+
 ### User Login 
+----
 
   
 Method: `POST /login`
@@ -232,9 +309,6 @@ Error Responses :
 ----
 Method: `GET /products`
 
- Request Headers (*required*) :
-  
-    access_token
 
 Success Response :
  
@@ -272,30 +346,6 @@ Success Response :
 Error Responses :
   ```
     
-    -- Not login -- 
-    ----------------------------------------------------
-
-        Status : 401 Unauthorized
-        Body   :
-        
-        {
-          "message": "Please login"
-        }
-
-    ----------------------------------------------------
-
-    -- Not Admin -- 
-    ----------------------------------------------------
-
-        Status : 401 Unauthorized
-        Body   :
-        
-        {
-          "message": "You're not allowed access this page"
-        }
-
-    ----------------------------------------------------
-
     -- Others --
     ----------------------------------------------------
 

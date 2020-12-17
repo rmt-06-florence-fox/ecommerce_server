@@ -34,5 +34,20 @@ class UserController {
       next(err)
     }
   }
+
+  static async register(req, res, next) {
+    let newUser = {
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password
+    }
+    try {
+      let user = await User.create(newUser)
+      res.status(201).json({ message: "Register Success !", id:user.id, email:user.email })
+
+    } catch (err) {
+      next(err)
+    }
+  }
 }
 module.exports = UserController
