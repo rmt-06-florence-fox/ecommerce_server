@@ -22,7 +22,7 @@ router.patch('/carts/minus/:id', userAuthorization, CartController.minus)
 router.patch('/carts/plus/:id', userAuthorization, CartController.plus)
 router.delete('/carts/:id', userAuthorization, CartController.delete)
 
-router.get('/transactions/:id', userAuthorization, CartController.getTransactionsUser)
+router.get('/transactions', userAuthorization, CartController.getTransactionsUser)
 router.get('/transaction/:id', userAuthorization, CartController.getOneTransaction)
 router.post('/transaction', userAuthorization, CartController.addTrans)
 router.delete('/transaction/:id', userAuthorization, CartController.deleteTrans)
