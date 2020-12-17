@@ -40,7 +40,7 @@ class CartController {
 
         const cartUpdate = await Cart.update(dataUpdate, {
           where: {
-            UserId: cart.UserId
+            id: cart.id
           },
           returning: true
         })
