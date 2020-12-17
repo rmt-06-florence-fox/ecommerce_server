@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Product.hasMany(models.Cart)
     }
   };
   Product.init({
@@ -74,7 +75,7 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'Stock must be a number value'
         },
         notMinus(value) {
-          if (value <= 0) {
+          if (value < 0) {
             throw new Error('Stock must graeter than 0(nol) or equal to 0(nol)');
           }
         }
