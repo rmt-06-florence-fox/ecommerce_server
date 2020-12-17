@@ -11,6 +11,7 @@ class CartController {
                 }
             })
             const dataProduct = await Product.findByPk(req.params.id)
+            console.log(exist.quantity);
             if (exist.quantity === dataProduct.stock) {
                 throw {
                     status: 400,
