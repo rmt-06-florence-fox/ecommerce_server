@@ -294,13 +294,15 @@ class CustomerController {
       })
   }
   static async checkout (req, res, next) {
-      try {
+    try{
+      const t = await sequelize.transaction()
         let carts = req.body.carts
         let transactions = []
+        let promises = []
         for (let i = 0; i < carts.length; i++) {
           let stockLeft;
           let qty;
-          Product.findOne({
+          promises.push(Product.findOne({
             where: {
               id: carts[i].ProductId
             }
@@ -339,15 +341,26 @@ class CustomerController {
               transactions.push(transaction)
             })
             .catch(err => {
-              next(err)
+              throw(err)
             })
+          )
         }
-        res.status(200).json(transactions)
+        Promise.all(promises)
+          .then(() => {
+            return t.commit()
+          })
+          .then(() => {
+            res.status(200).json({message: "Checkout berhasil"})
+          })
+          .catch(err => {
+            throw(err)
+          })
+    }
+    catch (err){
+      await t.rollback()
+      next(err)
+    }
 
-      } catch (error) {
-        next(error)
-
-      }
   }
 
   static getTransactions (req, res, next) {
