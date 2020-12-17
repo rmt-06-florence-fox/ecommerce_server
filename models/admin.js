@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const {generatePassword} = require('../helper/helper_password')
 module.exports = (sequelize, DataTypes) => {
   class Admin extends Model {
     /**
@@ -11,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      // Admin.hasMany(models.Product)
+      Admin.hasMany(models.Cart)
     }
   };
   Admin.init({
@@ -46,11 +47,10 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Admin',
   });
-   Admin.addHook('beforeBulkCreate', (instance, option) => {
-    const salt = bcrypt.genSaltSync(10)
-    const hash = bcrypt.hashSync(instance.password, salt)
-
-    instance.password = hash
+   Admin.addHook('beforeCreate', (instance, option) => {
+    
+    const password = generatePassword(instance.password)
+    instance.password = password
   })
   return Admin;
 };
