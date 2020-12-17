@@ -1,10 +1,10 @@
-const {Product, User} = require('../models')
+const {Cart, User} = require('../models')
 
 module.exports = async (req,res,next) => {
   try {
     let id = req.params.id
     let userId = req.UserLogin.id
-    let data = await Product.findOne({where : {id}})
+    let data = await Cart.findOne({where : {id}})
     if (data) {
       if (data.UserId === userId) {
         next()

@@ -5,7 +5,7 @@ module.exports = (err, req, res, next) => {
     const message = err.errors.map(e => e.message)
     res.status(400).json({message})
   } else if (err.name === 'SequelizeUniqueConstraintError') {
-    console.log(err.errors);
+    // console.log(err.errors);
     let message
     if (err.errors[0].message === 'email must be unique') {
       message = ['sorry, your email has been taken']

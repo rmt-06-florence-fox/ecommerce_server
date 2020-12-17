@@ -48,7 +48,7 @@ Response:
 ```json
 {
   "message": [
-    "invalid email/password"
+    "We found your email or password is not match with our data. Please try again"
   ]
 }
 ```

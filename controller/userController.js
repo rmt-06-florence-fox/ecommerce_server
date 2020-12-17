@@ -43,13 +43,13 @@ class UserController {
         } else {
           throw {
             status : 401,
-            message : 'invalid email/password'
+            message : 'We found your email or password is not match with our data. Please try again'
           }
         }
       } else {
         throw {
           status : 401,
-          message : 'invalid email/password'
+          message : 'We found your email or password is not match with our data. Please try again'
         }
       }
     } catch (error) {

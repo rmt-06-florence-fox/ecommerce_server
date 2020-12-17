@@ -213,7 +213,7 @@ describe("test for user's section", () => {
             return done(err)
           }
           expect(res.status).toBe(401)
-          expect(res.body).toHaveProperty('message', 'invalid email/password')
+          expect(res.body).toHaveProperty('message', 'We found your email or password is not match with our data. Please try again')
           done()
         })
       })
@@ -229,7 +229,7 @@ describe("test for user's section", () => {
             return done(err)
           }
           expect(res.status).toBe(401)
-          expect(res.body).toHaveProperty('message', 'invalid email/password')
+          expect(res.body).toHaveProperty('message', 'We found your email or password is not match with our data. Please try again')
           done()
         })
       })
@@ -245,7 +245,7 @@ describe("test for user's section", () => {
             return done(err)
           }
           expect(res.status).toBe(401)
-          expect(res.body).toHaveProperty('message', 'invalid email/password')
+          expect(res.body).toHaveProperty('message', 'We found your email or password is not match with our data. Please try again')
           done()
         })
       })
@@ -261,7 +261,7 @@ describe("test for user's section", () => {
             return done(err)
           }
           expect(res.status).toBe(401)
-          expect(res.body).toHaveProperty('message', 'invalid email/password')
+          expect(res.body).toHaveProperty('message', 'We found your email or password is not match with our data. Please try again')
           done()
         })
       })
@@ -277,7 +277,7 @@ describe("test for user's section", () => {
             return done(err)
           }
           expect(res.status).toBe(401)
-          expect(res.body).toHaveProperty('message', 'invalid email/password')
+          expect(res.body).toHaveProperty('message', 'We found your email or password is not match with our data. Please try again')
           done()
         })
       })

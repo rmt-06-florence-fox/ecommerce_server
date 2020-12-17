@@ -21,7 +21,7 @@ class ProductController {
 
   static async read(req,res,next) {
     try {
-      const lists = await Product.findAll()
+      const lists = await Product.findAll({order: [['id', 'ASC']]})
       if (lists) {
         res.status(200).json(lists)
       } else {
