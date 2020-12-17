@@ -6,6 +6,7 @@ const authorization = require('../middlewares/authorization');
 router.use(authentication)
 router.post('/',CartController.createCart)
 router.get('/', CartController.fetchCarts)
+router.get('/:productId', CartController.fetchAllCarts)
 router.patch('/:id',CartController.updateCart)
 router.delete('/',CartController.checkOutCarts)
 router.delete('/:id',CartController.destroyCart)

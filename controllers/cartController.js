@@ -24,12 +24,12 @@ class CartController{
          try {
             console.log(payload.ProductId);
             const cart = await Cart.create(payload,{returning:true})
-            console.log('decrementing belum ada');
-            const updated = await Product.decrement({stock:1},{
-               where: {
-                  id: payload.ProductId
-               }
-            })
+            // console.log('decrementing belum ada');
+            // const updated = await Product.decrement({stock:1},{
+            //    where: {
+            //       id: payload.ProductId
+            //    }
+            // })
             console.log('success');
             res.status(201).json(cart)
          } catch (error) {
@@ -51,11 +51,11 @@ class CartController{
             console.log(payload.ProductId);
             console.log('decrementing sudah ada');
 
-            const updated = await Product.decrement({stock:1},{
-               where: {
-                  id: payload.ProductId
-               }
-            })
+            // const updated = await Product.decrement({stock:1},{
+            //    where: {
+            //       id: payload.ProductId
+            //    }
+            // })
             console.log('success');
             res.status(201).json(cart)
          } catch (error) {
@@ -109,11 +109,11 @@ class CartController{
                status: 404,
                message: 'Cart Not Found'
             }
-         const updated = await Product.increment({stock:1},{
-            where: {
-               id: cart[0][0][0].ProductId
-            }
-         })
+         // const updated = await Product.increment({stock:1},{
+         //    where: {
+         //       id: cart[0][0][0].ProductId
+         //    }
+         // })
          res.status(201).json(cart[0][0][0])
       } catch (error) {
          next(error)
@@ -134,11 +134,11 @@ class CartController{
                message: 'Product Not Found'
             }
          console.log(target);  
-         const updated = await Product.increment({stock:target.quantity},{
-            where: {
-               id: target.Product.id
-            }
-         })
+         // const updated = await Product.increment({stock:target.quantity},{
+         //    where: {
+         //       id: target.Product.id
+         //    }
+         // })
          res.status(200).json({message:"Resource Deleted Successfully"})
       } catch (error) {
          next(error)
@@ -150,6 +150,24 @@ class CartController{
          const cart = await Cart.findAll({
             where: {
                UserId: req.loggedIn.id
+            },
+            order:[
+               ['id','ASC']
+            ],
+            include: Product
+         })
+         res.status(200).json({data:cart})
+      } catch (error) {
+         next(error)
+      }
+   }
+
+   static async fetchAllCarts(req,res,next){
+      const ProductId = req.params.productId
+      try {
+         const cart = await Cart.findAll({
+            where: {
+               ProductId
             },
             order:[
                ['id','ASC']
@@ -199,6 +217,18 @@ class CartController{
             include: Product
          })
          cart.forEach(async (item) => {
+            if ( item.quantity > item.Product.stock ) {
+               throw {
+                  status: 400,
+                  message: `${item.Product.name} stock not enough`
+               }
+            }
+
+            const updated = await Product.decrement({stock:item.quantity},{
+               where: {
+                  id: item.ProductId
+               }
+            })
             const deleted = await Cart.destroy({where: {
                id: item.id
             }})
