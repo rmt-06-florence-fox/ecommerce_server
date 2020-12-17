@@ -11,9 +11,9 @@ password : qwerty
 #
 # URL
 ```
-Client URL : http://localhost:8080/ ||
-Server URL : http://localhost:3000/ || 
-Customer URL : 
+Client URL : https://candra-admin.web.app/
+Server URL : 'https://candra-store.herokuapp.com'
+Customer URL : https://candra-store.web.app/
 ```
 
 ### GET/login
