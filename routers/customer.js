@@ -15,4 +15,5 @@ router.get('/wishlist', UserController.getWishlist)
 router.post('/wishlist/:ProductId', UserController.addWishlist)
 router.delete('/wishlist/:ProductId', UserController.deleteWishlist)
 router.put('/checkout', UserController.checkout)
+router.get('/transactions', UserController.getTransactions)
 module.exports = router

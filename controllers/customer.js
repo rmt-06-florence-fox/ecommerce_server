@@ -349,6 +349,24 @@ class CustomerController {
 
       }
   }
+
+  static getTransactions (req, res, next) {
+    Transaction.findAll({
+      where: {
+        UserId: req.loggedIn.id
+      },
+      include: Product,
+      order: [
+        ['createdAt', 'ASC']
+      ]
+    })
+    .then(transactions => {
+      res.status(200).json(transactions)
+    })
+    .catch(err => {
+      next(err)
+    })
+  }
 }
 
 module.exports = CustomerController
