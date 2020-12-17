@@ -6,13 +6,13 @@ class CartController {
         const obj = {
             UserId: req.loggedInUser.id,
             ProductId: req.body.ProductId,
-            quantity: req.body.quantity
+            quantity: 1
         }
         Cart.findOne({where: {UserId: req.loggedInUser.id, ProductId: req.body.ProductId}})
         .then(data => {
             if (data) {
                 return Cart.update({
-                    quantity: req.body.quantity 
+                    quantity: data.quantity+1
                 }, {where: {UserId: req.loggedInUser.id, ProductId: req.body.ProductId}})
                 .then(data2 => {
                     res.status(200).json({message: 'quantity updated'})
@@ -30,6 +30,7 @@ class CartController {
     }
 
     static removeProductCart(req,res,next){
+        console.log('<<<<<<<<<< masuk remove')
         Cart.destroy({where: {id: req.body.id}})
         .then(data => {
             res.status(200).json({message: 'product deleted from cart'})
