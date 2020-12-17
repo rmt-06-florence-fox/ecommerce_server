@@ -1,5 +1,4 @@
 const { Cart, User, Product, Category, Transaction } = require('../models/index')
-const transaction = require('../models/transaction')
 
 class CartController {
   static getCart(req, res, next) {
