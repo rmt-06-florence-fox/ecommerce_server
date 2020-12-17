@@ -833,3 +833,33 @@
 {
     "message": "data not found"
 }
+
+ * **URL**
+
+  /register
+
+* **Method:**
+
+  `POST`
+  
+*  **URL Params**
+
+
+   **Required:**
+
+* **Success Response:**
+
+  * **Code:** 200  <br />
+  **Content:** 
+{
+    "id": 6,
+    "email": "robby2@mail.com"
+}
+ 
+* **Error Response:**
+
+  * **Code:** 401 <br />
+  **Content:** 
+{
+    "message": "email is already used"
+}
