@@ -11,6 +11,17 @@ class productController {
         })
     }
 
+    static showById(req, res, next) {
+        const id = req.params.id
+        Product.findById(id)
+        .then(data => {
+            res.status(200).json(data)
+        })
+        .catch(error => {
+            res.status(500).json({massage: 'internal server error'})
+        })
+    }
+
     static addProduct(req, res, next){
         const newProduct = {
             name: req.body.name,
@@ -59,7 +70,7 @@ class productController {
             }
         })
         .then(data => {
-            res.status(200).json(data)
+            res.status(200).json({massage: 'Successfully delete item'})
         })
         .catch(error => {
             res.status(500).json({massage: 'internal server error'})

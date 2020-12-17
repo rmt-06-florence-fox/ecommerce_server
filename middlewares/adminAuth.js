@@ -13,8 +13,9 @@ module.exports = async (req, res, next) => {
             const decoded = verifyToken(token)
             req.loggedInUser = decoded
             const user = await User.findByPk(decoded.id)
+            console.log(user.role)
             
-            if(user.role == 'customer'){
+            if(user.role == 'admin'){
                 next()
             }else {
                 res.status(401).json({msg: 'please login first'})                
