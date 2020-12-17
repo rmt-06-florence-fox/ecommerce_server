@@ -367,6 +367,21 @@ class CustomerController {
       next(err)
     })
   }
+
+  static deleteCart (req, res, next) {
+    Cart.destroy({
+      where: {
+        ProductId: req.params.ProductId,
+        UserId: req.loggedIn.id
+      }
+    })
+      .then(() => {
+        res.status(200).json({message: 'Successfully delete cart'})
+      })
+      .catch(err => {
+        next(err)
+      })
+  }
 }
 
 module.exports = CustomerController
