@@ -113,7 +113,7 @@ class Controller {
     } 
     static async createCart(req, res, next) {
         try {
-            const { ProductId, total } = req.body
+            const { ProductId, Price } = req.body
             const UserId = req.loggedInUser.id
             let cartUpdate;
             const cart = await Cart.findOne({
@@ -126,7 +126,7 @@ class Controller {
             })
             if (cart) {
                 const inputQty = cart.quantity + 1
-                const totalPrice = cart.total * inputQty
+                const totalPrice = Price * inputQty
                 const inputUpdate = {
                     UserId: cart.UserId,
                     ProductId: cart.ProductId,
@@ -161,7 +161,7 @@ class Controller {
                     next(err)
                 });
             } else {
-                const input = { UserId, ProductId, quantity: 1, total }
+                const input = { UserId, ProductId, quantity: 1, total: Price }
                 const product = await Product.findOne({
                     where: {
                         id: ProductId,

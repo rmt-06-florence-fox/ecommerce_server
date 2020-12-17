@@ -1,6 +1,6 @@
 # ecommerce_server
 
-server: https://git.heroku.com/ecommerce-cms-cemsky.git
+server: https://ecommerce-cms-cemsky.herokuapp.com/
 client: https://cemsky-cms.web.app/products
 
 user : admin@email.com
