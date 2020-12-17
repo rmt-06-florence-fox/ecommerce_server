@@ -3,6 +3,7 @@ const { User } = require('../models')
 const jwt = require("jsonwebtoken")
 
 module.exports = (req,res,next) => {
+    console.log('<<<<<<<<<<<<<<< masuk authentication')
     try {
         const { access_token } = req.headers
         if (!access_token){

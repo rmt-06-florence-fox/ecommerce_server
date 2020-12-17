@@ -29,7 +29,6 @@ class UserController {
             }      
         })
         .catch(error => {
-            console.log(error)
             next(error)
         })
 
@@ -39,14 +38,18 @@ class UserController {
         const obj = {
             name: req.body.name,
             email: req.body.email,
-            password: req.body.password
+            password: req.body.password,
+            status: 'customer',
+            createdAt: new Date(),
+            updatedAt: new Date()
         }
         User.create(obj)
         .then(data => {
             res.status(201).json({
                 id: data.id,
                 name: data.name,
-                email: data.email
+                email: data.email,
+                status: data.status
             })
         })
         .catch(error => {

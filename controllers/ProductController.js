@@ -1,5 +1,6 @@
 const { Product } = require("../models")
 const { User } = require("../models")
+const { Cart } = require("../models")
 
 class ProductController {
     static showProduct(req,res,next){
