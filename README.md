@@ -522,4 +522,323 @@ id: "id"
   
   ```
 
+   ## 13. Get Carts
+* URL
+  /carts/
+
+* Method
+ `GET`
+
+* URL Params
+  None
+
+* Data Params
+```
+  none
+
+
+  headers:{access_token}
+
+```
+
+* Success Response
+  Code: `201 Created`
+  Content: 
+  ```
+  totalPrice: "totalPrice",
+  status: "status",
+  UserId: "UserId",
+  CartLists: [
+    {
+      ProductId: "ProductId",
+      CartId: "CartId",
+      quantity: "quantity",
+      price: "price",
+      Product: {
+        name: "name",
+        image_url: "image_url",
+        price: "price",
+        stock: "stock",
+        UserId: "UserId",
+        category: "category"
+      }
+    }
+  ]
+
+  ```
+
+* Error Response
+  code: `500 Internal Server Error`
+  content:
+  ```
+  
+    msg: "Internal Server Error"
+  
+  ```
+## 14. Add Cart
+* URL
+  /carts/addCart
+
+* Method
+ `POST`
+
+* URL Params
+  None
+
+* Data Params
+```
+UserId: "UserId",
+status: "status"
+
+headers:{access_token}
+
+```
+
+* Success Response
+  Code: `201 Created`
+  Content: 
+  ```
+  CartList: "CartList",
+  Product: "Product"
+  ```
+
+* Error Response
+  code: `500 Internal Server Error`
+  content:
+  ```
+  
+    msg: "Internal Server Error"
+  
+  ```
+
+
+## 15. Delete Cart
+* URL
+  /carts/:id
+
+* Method
+ `DELETE`
+
+* URL Params
+  
+```
+id: "id"
+
+```
+
+* Data Params
+
+```
+
+headers:{access_token}
+
+```
+
+* Success Response
+  Code: `200 OK`
+  Content: 
+  ```
+  "Cart is deleted
+  ```
+
+* Error Response
+
+
+  code: `500 Internal Server Error`
+  content:
+  ```
+  
+    msg: "Internal Server Error"
+  
+  ```
+## 16. Edit Cart by Id
+* URL
+  /carts/editcart/:id
+
+* Method
+ `PUT`
+
+* URL Params
+```
+status: "status",
+ProductId: "ProductId",
+UserId: "UserId"
+
+```
+
+* Data Params
+
+```
+
+  quantity: "quantity"
+
+  headers:{access_token}
+
+```
+
+* Success Response
+  Code: `201 Created`
+  Content: 
+  ```
+  quantity: "quantity"
+  ```
+
+* Error Response
+
+  code: `400 Bad Request`
+  content: 
+  ```
+    msg: "Can't add anymore product"
+
+  ```
+  code: `500 Internal Server Error`
+  content:
+  ```
+  
+    msg: "Internal Server Error"
+  
+  ```
+## 17. Get products from customer
+
+* URL
+  /customers/
+
+* Method
+ `GET`
+
+* URL Params
+  None
+
+* Data Params
+```
+  id: "id"
+
+
+  headers:{access_token}
+
+```
+
+* Success Response
+  Code: `201 Created`
+  Content: 
+  ```
+  name: "name",
+  image_url: "image_url",
+  price: "price",
+  stock: "stock",
+  category: "category"
+
+  ```
+
+* Error Response
+  code: `500 Internal Server Error`
+  content:
+  ```
+  
+    msg: "Internal Server Error"
+  
+  ```
+## 18. Register customers
+* URL
+  /customers/register
+
+* Method
+ `POST`
+
+* URL Params
+  None
+
+* Data Params
+```
+Email: "Email",
+Password: "Password",
+Role: "Customer"
+
+headers:{access_token}
+
+```
+
+* Success Response
+  Code: `200 OK`
+  Content: 
+  ```
+  Id: "Id",
+  Email: "Email"
+  ```
+
+* Error Response
+  code: `500 Internal Server Error`
+  content:
+  ```
+  
+    msg: "Internal Server Error"
+  
+  ```
+
+
+## 19. Login Customer
+* URL
+  /customers/login
+
+* Method
+ `POST`
+
+* URL Params
+  
+  none
+
+* Data Params
+
+```
+Email: "Email",
+Password: "Password",
+Role: "Customer"
+
+
+headers:{access_token}
+
+```
+
+* Success Response
+  Code: `200 OK`
+  Content: 
+  ```
+  access_token: "access_token"
+  ```
+
+* Error Response
+
+  code: `400 Bad Request`
+  content:
+  ```
+  
+    msg: "wrong email/password"
+  
+  ```
+
+  code: `400 Bad Request`
+  content:
+  ```
+  
+    msg: "wrong email/password"
+  
+  ```
+
+  code: `401 Unauthorized`
+  content:
+  ```
+  
+    msg: "Unauthorized"
+  
+  ```
+
+  code: `500 Internal Server Error`
+  content:
+  ```
+  
+    msg: "Internal Server Error"
+  
+  ```
+
+
   ### Link Heroku :https://fast-reaches-72869.herokuapp.com/

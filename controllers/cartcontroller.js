@@ -329,7 +329,7 @@ class CartController {
       const updated = promise.map(el => {
         return el[1][0]
       })
-
+      console.log(updated+'check checkout');
       const status = {
         status: 2
       }
