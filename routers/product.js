@@ -5,6 +5,7 @@ const authorize = require('../middlewear/authorize')
 
 routerProduct.get('/products', Controller.getAll)
 routerProduct.use(authentication)
+routerProduct.get('/products', Controller.getAll)
 routerProduct.post('/products', authorize, Controller.createProduct)
 routerProduct.get('/products/:id', authorize, Controller.getById)
 routerProduct.delete('/products/:id', authorize, Controller.deleteProduct)
