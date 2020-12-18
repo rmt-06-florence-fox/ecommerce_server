@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         {through: models.UserProduct,
           foreignKey: 'ProductId'
         })
+      Product.hasMany(models.UserProduct)
     }
   };
   Product.init({

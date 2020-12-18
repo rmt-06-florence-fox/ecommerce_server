@@ -1,11 +1,11 @@
-const { Product, Category, UserProduct, sequelize } = require ('../models')
+const { Product, Category, UserProduct, User } = require ('../models')
 
 class ControllerProduct {
 
     static async get (req, res, next) {
         try {
             const productList = await Product.findAll ({
-                include: Category
+                include: [Category, UserProduct]
             })
             res.status(200).json({products: productList})
         } catch (err) {
@@ -50,70 +50,40 @@ class ControllerProduct {
         }
     }
 
-    static async addToCart (req, res, next) {
+    static async addWishList (req, res, next) {
         try {
-            const result = await sequelize.transaction(async (t) => {
-
-                const checkProductAmount = await Product.findByPk(req.params.id,
-                    { transaction: t })
-
-                if (checkProductAmount) {
-                    const checkOnCheckout = await UserProduct.findOne({
-                        where: {
-                            ProductId: checkProductAmount.id,
-                            'on_cart': true
-                        },
-                        attributes: ['id', 'UserId', 'ProductId', 'on_cart', 'amount']
-                    }, { transaction: t })
-
-                    if(checkOnCheckout) {
-                        console.log(+checkOnCheckout.amount + +req.body.amount)
-                        if ((+checkOnCheckout.amount + +req.body.amount) > +checkProductAmount.stock) {
-                            throw ({status: 400, message: `Amount can't be larger than stock`})
-                        } else {
-                            console.log()
-                            const data = {
-                                UserId: req.loggedUser.id,
-                                ProductId: req.params.id,
-                                amount: +checkOnCheckout.amount + +req.body.amount,
-                                on_cart: true,
-                            }
-                            console.log(checkOnCheckout)
-                            const newCart = await UserProduct.update(data, {
-                                where: {
-                                    id: checkOnCheckout.id
-                                }
-                            }, { transaction: t })
-                            return newCart
-                        }
-                    } else {
-                        const data = {
-                            UserId: req.loggedUser.id,
-                            ProductId: req.params.id,
-                            amount: +req.body.amount,
-                            on_cart: true,
-                        }
-                        const newCart = await UserProduct.create(data, {returning: true}, { transaction: t })
-                        return newCart
-                    }
-                } else {
-                    throw ({status: 400, message: `Product doesn't exist`})
+            console.log(req.params.productId)
+            const data = await UserProduct.findOne({
+                where: {
+                    ProductId: req.params.productId,
+                    UserId: req.loggedUser.id,
+                    on_wishlist: true
                 }
-              });
-            
-            res.status(201).json(result)
+            })
+            if (data) {
+                throw new Error ('You already have this item on your whistlist')
+            } else {
+                const newWish = await UserProduct.create({
+                    ProductId: req.params.productId,
+                    UserId: req.loggedUser.id,
+                    on_wishlist: true
+                })
+
+                res.status(200).json(newWish)
+            }
         } catch (err) {
             next(err)
         }
     }
 
-    static async onCart (req, res, next) {
+    static async getWishList (req, res, next) {
         try {
             const data = await UserProduct.findAll({
                 where: {
-                    UserId: req.loggedUser.id
+                    UserId: req.loggedUser.id,
+                    on_wishlist: true
                 },
-                include: {model: Product}
+                attributes: {include: 'id'}
             })
             res.status(200).json(data)
         } catch (err) {
@@ -121,11 +91,17 @@ class ControllerProduct {
         }
     }
 
-    static async deleFromCart (req, res, next) {
+    static async deleteWishList (req, res, next) {
         try {
-            
+            const data = await UserProduct.destroy({
+                where: {
+                    id: req.params.id
+                }
+            })
+
+            res.status(200).json(`Successfully removed from wishlist`)
         } catch (err) {
-            
+            next (err)
         }
     }
 }
