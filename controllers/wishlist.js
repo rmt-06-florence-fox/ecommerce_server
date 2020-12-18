@@ -7,8 +7,16 @@ class WishlistController {
                 UserId: +req.loggedInUser.id,
                 ProductId: +req.params.idProduct
             }
-            let data = await Wishlist.create(payload)
-            res.status(201).json(data)
+            let checkData = await Wishlist.findOne({where:{UserId: payload.UserId, ProductId: payload.ProductId}})
+            if (!checkData) {
+                let data = await Wishlist.create(payload)
+                res.status(201).json(data)
+            } else {
+                throw{
+                    status: 400,
+                    message: 'Data exist in wishlist'
+                }
+            }
         } catch (error) {
             res.status(500).json(error)
         }
