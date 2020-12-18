@@ -39,7 +39,9 @@ class UserController {
             email: data.email
           }
           let access_token = makeToken(inData)
-          res.status(200).json({access_token})
+          let name = data.name
+          console.log(data);
+          res.status(200).json({access_token, name})
         } else {
           throw {
             status : 401,

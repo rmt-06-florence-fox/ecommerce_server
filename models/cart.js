@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.User, {foreignKey: "UserId", targetKey: "id"})
       this.belongsTo(models.Product, {foreignKey: "ProductId", targetKey: "id"})
     }
+  
   };
   Cart.init({
     UserId: DataTypes.INTEGER,

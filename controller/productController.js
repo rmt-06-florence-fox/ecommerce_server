@@ -1,4 +1,4 @@
-const {Product, User} = require('../models')
+const {Product, User, Category} = require('../models')
 
 class ProductController {
   static async create(req,res,next) {
@@ -12,6 +12,19 @@ class ProductController {
       }
       // console.log(obj);
       const data = await Product.create(obj)
+      const catData = await Category.findAll()
+      if (catData.length === 0) {
+        await Category.create({name: data.category})
+      } else {
+        for (let i = 0; i < catData.length; i++) {
+          if (catData[i].name === data.category) {
+            break
+          } else {
+            await Category.create({name: data.category})
+          }
+          
+        }
+      }
       res.status(201).json(data)
     } catch (error) {
       // console.log(error);
