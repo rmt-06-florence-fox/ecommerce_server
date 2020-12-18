@@ -155,6 +155,7 @@ describe("admin product", () => {
                     return done(err)
                 }
                 expect(status).toBe(200)
+                expect(body).toEqual(expect.any(Array))
                 done()
             })
         })
@@ -205,6 +206,8 @@ describe("admin product", () => {
                     return done(err)
                 }
                 expect(status).toBe(200)
+                expect(body).toEqual(expect.any(Array))
+                expect(body[0]).toHaveProperty("name", "Baju hitam")
                 done()
             })
         })
@@ -378,6 +381,7 @@ describe("user product", () => {
                     return done(err)
                 }
                 expect(status).toBe(200)
+                expect(body).toEqual(expect.any(Array))
                 done()
             })
         })
