@@ -16,6 +16,7 @@ class ControllerUser {
                 res.status(201).json({message: 'Success to register Admin'})
            }) 
            .catch(err => {
+               console.log(err)
                 next(err)
            })
     }
@@ -26,7 +27,7 @@ class ControllerUser {
             password : req.body.password,
             role: "customer"
         }
-
+        console.log(objUser)
         User.create(objUser)
            .then(data => {
                 res.status(201).json({message: 'Success to register Customer'})
@@ -76,6 +77,7 @@ class ControllerUser {
         let email = req.body.email
         let password = req.body.password
         let role = 'admin'
+        console.log(email, password, role)
         User.findOne({
             where: {
                 email,

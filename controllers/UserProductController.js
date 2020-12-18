@@ -22,35 +22,90 @@ class ControllerUserProduct {
 
     static addDataUserProduct (req, res, next) {
         let idUser = req.dataUser.id
-        let productId = req.params.id
+        let productId = req.params.productId
+        console.log(productId)
         let quantity = 1
         let status = false
+        let cartData = null
+        let quantityProduct = null
+
         let objUserProduct = {
             UserId: idUser,
             ProductId: productId,
             quantity,
             status
         }
-        // console.log(objUserProduct, "<=========")
-        UserProduct.create(objUserProduct)
-            .then(data => {
-                // console.log("-----")
-                res.status(201).json(data)
-            })
-            .catch(err => {
-                console.log(err)
+        UserProduct.findOne({
+            where: {
+                ProductId: productId,
+                UserId: idUser
+            }
+        })
+          .then(data => {
+            cartData = data
+                return Product.findOne({
+                     where: {
+                        id: productId
+                    }
+                })
+          })
+          .then(data => {
+            quantityProduct = data.stock
+            if(!cartData) {
+                return UserProduct.create(objUserProduct)
+            }else {
+                let quantityWillUpdate = cartData.quantity
+                if (quantityWillUpdate === quantityProduct) {
+                    throw {
+                        message: "The quantity exceeds stock"
+                    }
+                }else if (quantityWillUpdate <= quantityProduct) {
+                    return UserProduct.increment('quantity', {
+                        by: 1,
+                        where: {
+                            ProductId: productId,
+                            UserId: idUser
+                        }
+                    })
+                }
+            }
+          })
+          .then(data => {
+                if(!cartData) {
+                    res.status(201).json({ message: 'Succesed create ProductId' })
+                }else {
+                    res.status(200).json({ message: 'Succesed add quantity' })
+                }
+          })
+          .catch(err => {
                 next(err)
-            })
+          })
     }
 
     static incrementQuantityDataUserProduct (req, res, next) {
-        let id = req.params.id
-        UserProduct.increment('quantity', {
-            by: 1,
+        let id = req.params.productId
+        
+        UserProduct.findOne({
             where: {
                 id
-            }
+            },
+            include: Product,
+            order: [['createdAt', 'ASC']]
         })
+            .then(data => {
+                if(data.Product.stock === data.quantity) {
+                    throw {
+                        message: "The quantity exceeds stock"
+                    }
+                }else {
+                    return UserProduct.increment('quantity', {
+                                by: 1,
+                                where: {
+                                    id
+                                }
+                            })
+                }
+            })
             .then(data => {
                 res.status(200).json({ message: 'Success increment stock'})
             })
@@ -60,13 +115,31 @@ class ControllerUserProduct {
     }
 
     static decrementQuantityDataUserProduct (req, res, next) {
-        let id = req.params.id
-        UserProduct.decrement('quantity', {
-            by: 1,
+        let id = req.params.productId
+
+        UserProduct.findOne({
             where: {
                 id
-            }
+            },
+            include: Product,
+            order: [['createdAt', 'ASC']]
         })
+            .then(data => {
+                console.log(data.quantity)
+                console.log(data.Product.stock)
+                if(data.quantity === 1) {
+                    throw {
+                        message: "can't be decrement again"
+                    }
+                }else {
+                    return UserProduct.decrement('quantity', {
+                        by: 1,
+                        where: {
+                            id
+                        }
+                    })
+                }
+            })
             .then(data => {
                 res.status(200).json({ message: 'Success decrement stock'})
             })
@@ -76,7 +149,7 @@ class ControllerUserProduct {
     }
 
     static deleteDataUserProduct (req, res, next) {
-        let id = req.params.id
+        let id = req.params.productId
         let UserId = req.dataUser.id
         UserProduct.destroy({
             where: {
