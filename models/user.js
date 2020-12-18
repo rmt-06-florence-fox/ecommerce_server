@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     role: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     }
   }, {
     sequelize,
@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
       beforeCreate(user) {
         user.password = hashPassword(user.password);
         if(!user.role) {
-          user.role = 'user';
+          user.role = 'customer';
         }
       }
     }
