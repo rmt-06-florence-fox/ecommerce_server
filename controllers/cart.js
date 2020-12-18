@@ -73,7 +73,6 @@ class CartController {
     }
 
     static async updateCart(req, res, next) {
-        console.log(req.body.addOrRemove)
           try {
             const data = await Cart.findOne({
               where: {
@@ -82,38 +81,34 @@ class CartController {
               include: [Product]
             })
             console.log(data.quantity)
+            const id = data.dataValues.id
+            let updateData = {
+              quantity: null
+            }
+            if(data.quantity === 1 && req.body.addOrRemove == 'remove' || data.quantity >= data.Product.stock && req.body.addOrRemove == 'add'){
+                throw {
+                  status: 400,
+                  message: 'No more stock'
+                }
+            }
             if(data.quantity < data.Product.stock && req.body.addOrRemove == 'add'){
-                const id = data.dataValues.id
-                const updateData = {
+                updateData = {
                 quantity: data.dataValues.quantity + 1
                 }
-                const data2 = await Cart.update(updateData,{
-                where:{
-                    id: id
-                },
-                returning: true
-                })
-                res.status(200).json(data2[1][0])
             }
             else if(data.quantity > 1 && req.body.addOrRemove == 'remove') {
-                console.log('masuk sini')
-                const id = data.dataValues.id
-                const updateData = {
+                updateData = {
                 quantity: data.dataValues.quantity - 1
                 }
-                const data2 = await Cart.update(updateData,{
-                where:{
-                    id: id
-                },
-                returning: true
-                })
-                res.status(200).json(data2[1][0])
-            }else{
-                throw {
-                    status: 400,
-                    message: 'No more stock'
-                }
-            }
+             }
+            const data2 = await Cart.update(updateData,{
+            where:{
+                id: id
+            },
+            returning: true
+            })
+            res.status(200).json(data2[1][0])
+            
           } catch (error) {
             next(error)
           }

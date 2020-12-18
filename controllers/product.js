@@ -58,7 +58,7 @@ class ProductController {
             const data = await Product.update(updatedProduct,{
                 where:{
                     id: id
-                },
+                },  
                 returning: true
             })
             if(data[1].length > 0){
@@ -85,7 +85,7 @@ class ProductController {
                 }
             })
             if(data){
-                res.status(200).json({message: `Task success to delete`})
+                res.status(200).json({message: `Product success to delete`})
             }else{
                 throw {
                     status: 404,
