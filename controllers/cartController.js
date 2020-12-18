@@ -7,7 +7,7 @@ class cartController {
       const data = await Cart.findAll({
         where: {
 					UserId: req.loggedin.id,
-					// Status: false,
+					Status: false,
         },
         order: [['createdAt', 'DESC']],
         include: [ Product ]

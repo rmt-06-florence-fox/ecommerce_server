@@ -1,591 +1,694 @@
 # ecommerce_server
 
-
 ```
 icanqpedia
 
 admin login
-email : admin@admin.com
-password : adminganteng
+email     : admin@admin.com
+password  : adminganteng
 
 .env
-SECRET_KEY=pergikebulan
-PORT=4000
-SALT=10
-PASSWORD_ADMIN=adminganteng
+SECRET_KEY     = pergikebulan
+PORT           = 4000
+SALT           = 10
+PASSWORD_ADMIN = adminganteng
 ```
 
 ## Endpoints
+
 #
+
 # URL
+
 ```
-Server URL :  http://localhost:3000/
-              https://ecommerce-icanq.herokuapp.com//
-Customer URL : https://e-commerce-tio.web.app/
+Server URL    : http://localhost:3000/
+                https://ecommerce-icanq.herokuapp.com/
+CMS URL       : https://icanqpedia.web.app/
+Customer URL  : https://tokokelontonkqu.web.app/
 ```
 
-### GET/login
->login
+### POST/admin/login
+
+> admin login
 
 _Request Header_
+
 ```
 none
 ```
+
 _Request Body_
+
 ```
-email : tio@mail.com
-password : tiotio
+email : admin@admin.com
+password : adminganteng
 ```
+
 _Response(200)_
+
+```
+{
+  id: 1,
+  username: admin,
+  email: admin@admin.com
+  access_token : "token string"
+}
+```
+
+_Response(400)_
+
+```
+{
+  message : "Wrong email/password"
+}
+```
+
+_Response(500)_
+
+```
+{
+  message : "Internal server error"
+}
+```
+
+### POST/register
+
+> Register
+
+_Request Header_
+
+```
+none
+```
+
+_Request Body_
+
+```
+username  : icanq
+email     : icanq@mail.com
+password  : okeoke
+```
+
+_Response(201)_
+
+```
+{
+  id: 1,
+  username: icanq,
+  email: icanq@mail.com
+}
+```
+
+_Response(400)_
+
+```
+{
+  message : "username taken",
+  message : "Username is required, cannot be blank",
+  message : "Email have been registered",
+  message : "Password is required cannot be blank",
+  message : "Password minimal 6 character",
+
+}
+```
+
+_Response(500)_
+
+```
+{
+  message : "Internal server error"
+}
+```
+
+### POST/login
+
+> login
+
+_Request Header_
+
+```
+none
+```
+
+_Request Body_
+
+```
+email : icanq@mail.com
+password : okeoke
+```
+
+_Response(200)_
+
 ```
 {
   access_token : "token string"
 }
 ```
+
 _Response(404)_
+
 ```
 {
-  message : 'email is not registered'
+  message : 'Account not found'
 }
 ```
+
 _Response(400)_
+
 ```
 {
-  message : "invalid"
+  message : "Wrong email/password"
 }
 ```
-_Response(400)_
-```
-{
-  message : "field can not be empty"
-}
-```
+
 _Response(500)_
+
 ```
 {
-  message : "internal server error"
+  message : "Internal server error"
 }
 ```
+
 ### POST /products
->create product
+
+> create product
 
 _Request Header_
+
 ```
 access_token : 'token string'
 ```
+
 _Request Body_
+
 ```
 {
-  name : 'jam 2',
-  "image_url": "https://www.jakartanotebook.com/images/products/72/63/22590/67/,
-  price : 200000,
-  stock : 10
+  "name": "rendang daging mantap betul",
+  "image_url": "https://www.kitchensanctuary.com/wp-content/uploads/2018/01/Beef-Rendang-square-FS-28.jpg",
+  "price": 30000,
+  "stock": 300,
 }
 ```
+
 _Response(201)_
+
 ```
 {
-  "id": 8,
-  "name": "jam 2",
-  "image_url": "https://www.jakartanotebook.com/images/products/72/63/22590/67/jam-dinding-bulat-european-style-34cm-colorful-vintage-multi-color-70.jpg",
-  "price": 200000,
-  "stock": 10
+    "id": 5,
+    "name": "rendang daging mantap betul",
+    "image_url": "https://www.kitchensanctuary.com/wp-content/uploads/2018/01/Beef-Rendang-square-FS-28.jpg",
+    "price": 30000,
+    "stock": 300,
+    "UserId": 1,
+    "updatedAt": "2020-12-18T02:45:27.504Z",
+    "createdAt": "2020-12-18T02:45:27.504Z"
 }
 ```
-_Response(404)_
+
+_Response(401)_
+
 ```
 {
-  message : 'email is not registered'
+  message : 'login first'
 }
 ```
+
 _Response(400)_
+
 ```
 {
-  message : "invalid"
+  message : "Name is required, cannot be blank",
+  message : "Name cannot be null",
+  message : "ImageUrl is required, cannot be blank",
+  message : "ImageUrl cannot be null",
+  message : "Price is required, cannot be blank",
+  message : "Price must be number",
+  message : "Cannot set to minus",
+  message : "Stock is required, cannot be blank",
+  message : "Stock must be number",
+  message : "Cannot set to minus",
 }
 ```
-_Response(400)_
-```
-{
-  message : "field can not be empty"
-}
-```
+
 _Response(500)_
+
 ```
 {
-  message : "internal server error"
+  message : "Internal server error"
 }
 ```
 
 ### GET /products
->fetch all products
+
+> fetch all products
 
 _Request Header_
+
 ```
 access_token : 'token string'
 ```
+
 _Request Body_
+
 ```
 {
   none
 }
 ```
+
 _Response(200)_
+
 ```
-{
-  "products": [
-        {
-            "id": 3,
-            "name": "groot",
-            "image_url": "https://ae01.alicdn.com/kf/H21b16fc89a5b4e6c87e9d80ef495b4f1k/Lucu-Marvel-Avangers-Baby-Groot-Action-Figure-Mainan-PVC-Pahlawan-Model-Bayi-Manusia-Pohon-Lucu-Model.jpg",
-            "price": 300000,
-            "stock": 1,
-            "createdAt": "2020-12-09T09:24:14.712Z",
-            "updatedAt": "2020-12-09T12:35:27.052Z"
-        },
-        ...
-    ]
-}
+[
+    {
+        "id": 1,
+        "name": "rendang rancak bana",
+        "image_url": "https://asset.kompas.com/crops/gi24VPQMhftubxYIWPJATjHrxTA=/0x0:1000x667/750x500/data/photo/2020/06/30/5efb0cb4a0226.jpg",
+        "price": 125000,
+        "stock": 200,
+        "UserId": 1,
+        "createdAt": "2020-12-12T09:20:38.587Z",
+        "updatedAt": "2020-12-12T09:20:49.098Z"
+    },
+    {
+        "id": 2,
+        "name": "nasi daging enak pokoknya",
+        "image_url": "https://i0.wp.com/www.pesenmakan.id/wp-content/uploads/2020/02/makanan-enak-di-jakarta-3.jpg?resize=696%2C696&ssl=1",
+        "price": 20000,
+        "stock": 333,
+        "UserId": 1,
+        "createdAt": "2020-12-12T16:16:25.240Z",
+        "updatedAt": "2020-12-12T16:16:36.714Z"
+    },
+    {
+        "id": 4,
+        "name": "Sandal Baginda",
+        "image_url": "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//85/MTA-2825131/swallow_swallow-sandal-jepit-original_full03.jpg",
+        "price": 10000,
+        "stock": 5,
+        "UserId": 1,
+        "createdAt": "2020-12-15T02:41:31.458Z",
+        "updatedAt": "2020-12-15T02:41:50.408Z"
+    },
+    {
+        "id": 5,
+        "name": "rendang daging mantap betul",
+        "image_url": "https://www.kitchensanctuary.com/wp-content/uploads/2018/01/Beef-Rendang-square-FS-28.jpg",
+        "price": 30000,
+        "stock": 300,
+        "UserId": 1,
+        "createdAt": "2020-12-18T02:45:27.504Z",
+        "updatedAt": "2020-12-18T02:45:27.504Z"
+    }
+]
 ```
+
 _Response(500)_
+
 ```
 {
-  message : "internal server error"
+  message : "Internal server error"
 }
 ```
 
 ### GET /products/:id
->find by id
+
+> find by id
 
 _Request Header_
+
 ```
 access_token : 'token string'
 ```
+
 _Request Body_
+
 ```
 {
   none
 }
 ```
+
 _Request Params_
+
 ```
 {
-  id : 3
+  id : 2
 }
 ```
+
 _Response(200)_
+
 ```
 {
-  {
-      "id": 3,
-      "name": "groot",
-      "image_url": "https://ae01.alicdn.com/kf/H21b16fc89a5b4e6c87e9d80ef495b4f1k/Lucu-Marvel-Avangers-Baby-Groot-Action-Figure-Mainan-PVC-Pahlawan-Model-Bayi-Manusia-Pohon-Lucu-Model.jpg",
-      "price": 300000,
-      "stock": 1,
-      "createdAt": "2020-12-09T09:24:14.712Z",
-      "updatedAt": "2020-12-09T12:35:27.052Z"
-  },
+    "id": 2,
+    "name": "nasi daging enak pokoknya",
+    "image_url": "https://i0.wp.com/www.pesenmakan.id/wp-content/uploads/2020/02/makanan-enak-di-jakarta-3.jpg?resize=696%2C696&ssl=1",
+    "price": 20000,
+    "stock": 333,
+    "UserId": 1,
+    "createdAt": "2020-12-12T16:16:25.240Z",
+    "updatedAt": "2020-12-12T16:16:36.714Z"
 }
 ```
+
 _Response(500)_
+
 ```
 {
-  message : "internal server error"
+  message : "Internal server error"
 }
 ```
+
 ### put /products/:id
->edit product
+
+> edit product
 
 _Request Header_
+
 ```
 access_token : 'token string'
 ```
+
 _Request Params_
+
 ```
-id : 3
+id : 2
 ```
+
 _Request Body_
+
 ```
 {
-  name : 'groot2',
-  image_url : 'https://ecs7.tokopedia.net/img/cache/900/product-1/2018/5/25/10897244/10897244_f9732383-bd09-4102-b740-75aab701b410_800_800.jpg',
-  price : 20000,
-  stock : 20
+  "name"      : "nasi kapau",
+  "image_url" : "https://i0.wp.com/www.pesenmakan.id/wp-content/uploads/2020/02/makanan-enak-di-jakarta-3.jpg?resize=696%2C696&ssl=1",
+  "price"     : 40000,
+  "stock"     : 3000,
 }
 ```
+
 _Response(200)_
+
 ```
-{ 
-  id : 3
-  name : 'groot2',
-  image_url : 'https://ecs7.tokopedia.net/img/cache/900/product-1/2018/5/25/10897244/10897244_f9732383-bd09-4102-b740-75aab701b410_800_800.jpg',
-  price : 20000,
-  stock : 20
+{
+    "id": 2,
+    "name": "nasi daging enak pokoknya",
+    "image_url": "https://i0.wp.com/www.pesenmakan.id/wp-content/uploads/2020/02/makanan-enak-di-jakarta-3.jpg?resize=696%2C696&ssl=1",
+    "price": 20000,
+    "stock": 333,
+    "UserId": 1,
+    "createdAt": "2020-12-12T16:16:25.240Z",
+    "updatedAt": "2020-12-12T16:16:36.714Z"
 }
 ```
+
 _Response(404)_
+
 ```
-{ 
-  "message": "product not found"
+{
+  "message": "Product not found"
 }
 ```
+
 _Response(401)_
+
 ```
-{ 
-  "message": "please logoin first"
+{
+  "message": "login first"
 }
 ```
+
 _Response(401)_
+
 ```
-{ 
-  "message": "you are not an admin"
+{
+  "message": "Unauthorized"
 }
 ```
+
 _Response(400)_
+
 ```
-{ 
+{
   "message": [
-    "stock can not lower than 0",
-    "price can not lower than 0",
-    "stock must be a number",
-    "price must be a number"
+    "Name is required, cannot be blank",
+    "Name cannot be null",
+    "ImageUrl is required, cannot be blank",
+    "ImageUrl cannot be null",
+    "Price is required, cannot be blank",
+    "Price must be number",
+    "Cannot set to minus",
+    "Stock is required, cannot be blank",
+    "Stock must be number",
+    "Cannot set to minus",
   ]
 }
 ```
+
 ### delete /products/:id
->delete product
+
+> delete product
 
 _Request Header_
+
 ```
 access_token : 'token string'
 ```
+
 _Request Params_
+
 ```
 id : 3
 ```
+
 _Request Body_
+
 ```
 {
   none
 }
 ```
+
 _Response(200)_
+
 ```
-{ 
-  "message": "succesfully delete a product"
+{
+  "message": "Succesfully deleted"
 }
 ```
+
 _Response(401)_
+
 ```
-{ 
-  "message": "please logoin first"
+{
+  "message": "login first"
 }
 ```
+
 _Response(401)_
+
 ```
-{ 
-  "message": "you are not an admin"
+{
+  "message": "Unauthorized"
 }
 ```
-### GET/register
->register
+
+### POST /cart
+
+> create or edit a cart for customer
 
 _Request Header_
+
 ```
-none
+access_token: 'token string'
 ```
+
 _Request Body_
+
 ```
-email : tio@mail.com
-password : tiotio
-```
-_Response(200)_
-```
-{
-  {
-    "id": 3,
-    "email": "tio2@mail.com",
-    "password": "$2a$08$OXugZS7CtcODtT5Nd8/lbe1e5dJbQr4aBkykkJ0JdCDbofyIym.Yi",
-    "role": "user",
-    "updatedAt": "2020-12-15T03:43:40.823Z",
-    "createdAt": "2020-12-15T03:43:40.823Z"
-    }
-}
-```
-_Response(400)_
-```
-{
-  {
-    "messages": [
-        "email must be unique",
-        "must be between 6 to 20 characters"
-    ]
-  }
-}
+ProductId: integer
 ```
 
-### GET/logincustomer
->login for customer
-
-_Request Header_
-```
-none
-```
-_Request Body_
-```
-email : tio2@mail.com
-password : tiotio
-```
-_Response(200)_
-```
-{
-  access_token : "token string"
-}
-```
-_Response(404)_
-```
-{
-  message : 'email is not registered'
-}
-```
-_Response(400)_
-```
-{
-  message : "invalid"
-}
-```
-_Response(400)_
-```
-{
-  message : "field can not be empty"
-}
-```
-_Response(500)_
-```
-{
-  message : "internal server error"
-}
-```
-
-### POST/carts
->creat or edit a cart for customer
-
-_Request Header_
-```
-access_token: 'string'
-```
-_Request Body_
-```
-productId: number
-```
 _Response(201)_
+
 ```
 {
-  {
-    "id": 28,
+  "Cart": {
+    "id": 11,
+    "ProductId": 5,
     "UserId": 3,
-    "ProductId": 3,
     "quantity": 1,
-    "status": false,
-    "updatedAt": "2020-12-16T14:14:42.460Z",
-    "createdAt": "2020-12-16T14:14:42.460Z"
+    "Status": false,
+    "updatedAt": "2020-12-18T02:58:22.117Z",
+    "createdAt": "2020-12-18T02:58:22.117Z"
   }
 }
 ```
+
 _Response(200)_
+
 ```
-[
-    1,
-    [
-        {
-            "id": 28,
-            "UserId": 3,
-            "ProductId": 3,
-            "status": false,
-            "quantity": 2,
-            "createdAt": "2020-12-16T14:14:42.460Z",
-            "updatedAt": "2020-12-16T14:15:25.494Z"
-        }
-    ]
-]
-
-or
-
 {
-  message: 'successfully delete a cart'
+  "Cart": {
+    "id": 11,
+    "ProductId": 5,
+    "UserId": 3,
+    "quantity": 2,
+    "Status": false,
+    "updatedAt": "2020-12-18T02:58:22.117Z",
+    "createdAt": "2020-12-18T02:58:22.117Z"
+  }
 }
+
 ```
+
 _Response(401)_
+
 ```
 {
-  message: 'out of stock'
+  message: 'lack of stock'
 }
 ```
+
 _Response(500)_
+
 ```
 {
-  message: 'internal server error'
+  message: 'Internal server error'
 }
 ```
-### GET/carts
->fetch all unpaid carts for customer
+
+### GET /cart
+
+> fetch all carts with status false(unpaid)
 
 _Request Header_
+
 ```
 access_token: 'string'
 ```
+
 _Request Body_
+
 ```
 none
 ```
+
 _Response(200)_
+
 ```
 {
-    "totalPrice": 600000,
-    "carts": [
+    "data": [
         {
-            "id": 28,
-            "UserId": 3,
-            "ProductId": 3,
-            "status": false,
-            "quantity": 2,
-            "createdAt": "2020-12-16T14:14:42.460Z",
-            "updatedAt": "2020-12-16T14:15:25.494Z",
+            "id": 2,
+            "ProductId": 2,
+            "UserId": 1,
+            "quantity": 5,
+            "Status": false,
+            "createdAt": "2020-12-17T04:46:10.299Z",
+            "updatedAt": "2020-12-17T05:50:24.331Z",
             "Product": {
-                "id": 3,
-                "name": "groot2",
-                "image_url": "https://ae01.alicdn.com/kf/H21b16fc89a5b4e6c87e9d80ef495b4f1k/Lucu-Marvel-Avangers-Baby-Groot-Action-Figure-Mainan-PVC-Pahlawan-Model-Bayi-Manusia-Pohon-Lucu-Model.jpg",
-                "price": 300000,
-                "stock": 9,
-                "createdAt": "2020-12-09T09:24:14.712Z",
-                "updatedAt": "2020-12-16T13:22:40.078Z"
+                "id": 2,
+                "name": "nasi daging enak pokoknya",
+                "image_url": "https://i0.wp.com/www.pesenmakan.id/wp-content/uploads/2020/02/makanan-enak-di-jakarta-3.jpg?resize=696%2C696&ssl=1",
+                "price": 20000,
+                "stock": 333,
+                "UserId": 1,
+                "createdAt": "2020-12-12T16:16:25.240Z",
+                "updatedAt": "2020-12-12T16:16:36.714Z"
+            }
+        },
+        {
+            "id": 1,
+            "ProductId": 1,
+            "UserId": 1,
+            "quantity": 1,
+            "Status": false,
+            "createdAt": "2020-12-17T04:45:50.940Z",
+            "updatedAt": "2020-12-17T07:07:13.826Z",
+            "Product": {
+                "id": 1,
+                "name": "rendang rancak bana",
+                "image_url": "https://asset.kompas.com/crops/gi24VPQMhftubxYIWPJATjHrxTA=/0x0:1000x667/750x500/data/photo/2020/06/30/5efb0cb4a0226.jpg",
+                "price": 125000,
+                "stock": 200,
+                "UserId": 1,
+                "createdAt": "2020-12-12T09:20:38.587Z",
+                "updatedAt": "2020-12-12T09:20:49.098Z"
             }
         }
-    ]
+    ],
+    "totalPrice": 225000
 }
 ```
+
 _Response(500)_
+
 ```
 {
   message: 'internal server error'
 }
 ```
-### GET/carts/histories
->fetch histories for customer
+### DELETE /cart/
+
+> delete a cart for customer
 
 _Request Header_
+
 ```
 access_token: 'string'
 ```
-_Request Body_
-```
-none
-```
-_Response(200)_
-```
-"carts": [
-        {
-            "id": 28,
-            "UserId": 3,
-            "ProductId": 3,
-            "status": true,
-            "quantity": 2,
-            "createdAt": "2020-12-16T14:14:42.460Z",
-            "updatedAt": "2020-12-16T14:15:25.494Z",
-            "Product": {
-                "id": 3,
-                "name": "groot2",
-                "image_url": "https://ae01.alicdn.com/kf/H21b16fc89a5b4e6c87e9d80ef495b4f1k/Lucu-Marvel-Avangers-Baby-Groot-Action-Figure-Mainan-PVC-Pahlawan-Model-Bayi-Manusia-Pohon-Lucu-Model.jpg",
-                "price": 300000,
-                "stock": 9,
-                "createdAt": "2020-12-09T09:24:14.712Z",
-                "updatedAt": "2020-12-16T13:22:40.078Z"
-            }
-        }
-    ]
-```
-_Response(500)_
-```
-{
-  message: 'internal server error'
-}
-```
-### DELETE/carts/
->delete a cart for customer
 
-_Request Header_
-```
-access_token: 'string'
-```
 _Request Body_
+
 ```
 cartId
 ```
+
 _Response(200)_
+
 ```
 {
-  message: 'succesfully deleted an item'
+  message: 'remove product from cart succeed'
 }
 ```
+
 _Response(500)_
+
 ```
 {
-  message: 'internal server error'
+  message: 'Internal server error'
 }
 ```
-### DELETE/carts/
->checkout all active cart for customer
+
+### POST /cart/checkout
+
+> checkout all active cart for customer
 
 _Request Header_
+
 ```
 access_token: 'string'
 ```
+
 _Request Body_
+
 ```
 none
 ```
+
 _Response(200)_
+
 ```
 {
-  {
-    "success": [
-        [
-            1,
-            [
-                {
-                    "id": 3,
-                    "name": "groot2",
-                    "image_url": "https://ae01.alicdn.com/kf/H21b16fc89a5b4e6c87e9d80ef495b4f1k/Lucu-Marvel-Avangers-Baby-Groot-Action-Figure-Mainan-PVC-Pahlawan-Model-Bayi-Manusia-Pohon-Lucu-Model.jpg",
-                    "price": 300000,
-                    "stock": 7,
-                    "createdAt": "2020-12-09T09:24:14.712Z",
-                    "updatedAt": "2020-12-16T14:26:22.830Z"
-                }
-            ]
-        ],
-        [
-            1,
-            [
-                {
-                    "id": 28,
-                    "UserId": 3,
-                    "ProductId": 3,
-                    "status": true,
-                    "quantity": 2,
-                    "createdAt": "2020-12-16T14:14:42.460Z",
-                    "updatedAt": "2020-12-16T14:26:22.830Z"
-                }
-            ]
-        ]
-    ]
-}
+  message: "checkout success"
 }
 ```
+
 _Response(400)_
+
 ```
-  {
-    message: [
-      'failed to buy {product-name}',
-      ...
-  { ]
+{
+  message: "Internal server error"
+}
 ```
