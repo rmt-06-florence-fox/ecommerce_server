@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
         through: "Carts",
         foreignKey: "UserId"
       });
+      this.belongsToMany(models.Product, {
+        through: "Wishlists",
+        foreignKey: "UserId"
+      });
     }
     getFullName() {
       return `${this.first_name} ${this.last_name}`;
