@@ -1,0 +1,25 @@
+const router = require('express').Router()
+const whisRouter = require('./wish')
+const Controller = require('../controllers/controller')
+const CartController = require('../controllers/cartController')
+const authentic = require('../middlewares/authentication')
+const adminAuthorize = require('../middlewares/adminAuthorize')
+const userAuthorize = require('../middlewares/userAuthorize')
+
+
+router.post('/login', Controller.login)
+router.post('/loginCustomer', Controller.loginCustomer)
+router.post('/register', Controller.register)
+router.get('/products', Controller.fetchData)
+
+router.use(authentic)
+router.use('/wish', whisRouter)
+router.post('/products', adminAuthorize ,Controller.create)
+router.put('/products/:id',adminAuthorize, Controller.update)
+router.delete('/products/:id',adminAuthorize, Controller.delete)
+router.post('/carts/:id', CartController.addToCart)
+router.get('/carts', CartController.fetchCarts)
+router.delete('/carts/:id', userAuthorize, CartController.deleteCart)
+router.patch('/carts/:id', userAuthorize, CartController.updateCart)
+router.patch('/checkout', CartController.checkoutCart)
+module.exports = router
