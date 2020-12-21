@@ -42,7 +42,7 @@ class HistoryController {
                     id
                 }
             });
-            res.status(200).json({ message: "The transaction history has been successfully deleted." });
+            res.status(200).json({ message: "Deleted from history" });
         } catch (err) {
             next(err);
         }

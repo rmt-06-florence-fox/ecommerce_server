@@ -1,4 +1,4 @@
-const { Wishlist, Product } = require("../models");
+const { Wishlist, Product, Category } = require("../models");
 
 class WishlistController {
     static add(req, res, next) {
@@ -16,6 +16,10 @@ class WishlistController {
                 message: 'The product has already been in your wishlist.'
               }
           } else {
+              const obj = {
+                UserId: req.loggedInUser.id,
+                ProductId: req.params.ProductId
+              }
               return Wishlist.create(obj)
           }
         })
@@ -67,7 +71,7 @@ class WishlistController {
                     id
                 }
             });
-            res.status(200).json({ message: "The product has been removed from your wishlist." });
+            res.status(200).json({ message: "Removed from your wishlist" });
         } catch (err) {
             next(err);
         }
@@ -75,13 +79,13 @@ class WishlistController {
 
     static async deleteFromProduct(req, res, next) {
       try {
-          const id = Number(req.params.id);
+          const ProductId = Number(req.params.ProductId);
           const result = await Wishlist.destroy({
               where: {
-                  ProductId: id
+                  ProductId
               }
           });
-          res.status(200).json({ message: "The product has been removed from your wishlist." });
+          res.status(200).json({ message: "Removed from your wishlist" });
       } catch (err) {
           next(err);
       }

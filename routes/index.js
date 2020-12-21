@@ -6,10 +6,10 @@ const cartRoutes = require("./cartRoutes");
 const historyRoutes = require("./historyRoutes");
 const wishlistRoutes = require("./wishlistRoutes");
 const ProductController = require("../controllers/ProductController");
-const CategoryController = require('../controllers/CategoryController');
+const CategoryController = require("../controllers/CategoryController");
 
-route.get("/categories", CategoryController.read);
 route.get("/products", ProductController.read);
+route.get("/categories", CategoryController.read);
 
 route.use(userRoutes);
 route.use("/products", productRoutes);

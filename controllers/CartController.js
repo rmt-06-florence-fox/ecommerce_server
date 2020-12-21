@@ -25,7 +25,7 @@ class CartController {
             } else {
                 throw {
                   status: 400,
-                  message: 'The quantity exceeds the stock in database.'
+                  message: 'Quantity exceeds stock'
                 }
             }
           } else {
@@ -49,7 +49,7 @@ class CartController {
             } else { 
                 throw {
                   status: 400,
-                  message: 'The quantity exceeds the stock in database.'
+                  message: 'Quantity exceeds stock'
                 }
             }
           }
@@ -101,8 +101,13 @@ class CartController {
           if (req.body.quantity > cart.Product.stock) {
             throw {
               status: 400,
-              message: "The quantity exceeds the stock in database."
+              message: "Quantity exceeds stock"
             }
+          } else if (req.body.quantity <= 0) {
+              throw {
+                status: 400,
+                message: 'Minimum quantity is 1'
+              }
           } else {
             const obj = {
               quantity: req.body.quantity,
@@ -131,7 +136,7 @@ class CartController {
                     id
                 }
             });
-            res.status(200).json({ message: "The product has been removed from your cart." });
+            res.status(200).json({ message: "Removed from your cart" });
         } catch (err) {
             next(err);
         }
