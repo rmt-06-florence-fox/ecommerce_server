@@ -3,7 +3,6 @@ const CategoryController = require("../controllers/CategoryController");
 const authentication = require("../middlewares/authentication");
 const authorizationAdmin = require("../middlewares/authorizationAdmin");
 
-route.use(authentication);
 route.use(authorizationAdmin);
 route.post("/", CategoryController.add);
 route.get("/:id", CategoryController.findByPk);
