@@ -4,7 +4,8 @@ module.exports = async (req, res, next) => {
   try {
     const result = await Wishlist.findOne({
       where: {
-        ProductId: req.params.ProductId
+        ProductId: req.params.ProductId,
+        UserId: req.loggedInUser.id
       }
     });
     if(!result) {
