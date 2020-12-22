@@ -1,0 +1,50 @@
+[
+    {
+        "name": "Earthree Gundam (HGBD:R)",
+        "image_url": "https://www.1999.co.jp/itbig63/10631811.jpg",
+        "price": 250000,
+        "stock": 3
+    },
+    {
+        "name": "Jupitive Gundam (HGBD:R)",
+        "image_url": "https://www.1999.co.jp/itbig64/10645824.jpg",
+        "price": 300000,
+        "stock": 5
+    },
+    {
+        "name": "Uraven Gundam (HGBD:R)",
+        "image_url": "https://www.1999.co.jp/itbig67/10673789.jpg",
+        "price": 350000,
+        "stock": 6
+    },
+    {
+        "name": "Core Gundam II (G-3 Color) (HGBD:R)",
+        "image_url": "https://www.1999.co.jp/itbig72/10721913.jpg",
+        "price": 180000,
+        "stock": 4
+    },
+    {
+        "name": "Core Gundam II (Titans Color) (HGBD:R)",
+        "image_url": "https://www.1999.co.jp/itbig72/10721914.jpg",
+        "price": 180000,
+        "stock": 6
+    },
+    {
+        "name": "Gundam 00 Sky Moebius (HGBD:R)",
+        "image_url": "https://www.1999.co.jp/itbig70/10707215.jpg",
+        "price": 350000,
+        "stock": 7
+    },
+    {
+        "name": "Load Astray Double Rebake (HGBD:R)",
+        "image_url": "https://www.1999.co.jp/itbig70/10700176.jpg",
+        "price": 280000,
+        "stock": 7
+    },
+    {
+        "name": "Gundam Animarize (HGBD:R)",
+        "image_url": "https://www.1999.co.jp/itbig69/10693602.jpg",
+        "price": 250000,
+        "stock": 10
+    }
+]
