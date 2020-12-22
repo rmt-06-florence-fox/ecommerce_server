@@ -1,0 +1,16 @@
+[
+    {
+        "first_name" : "Angga",
+        "last_name" : "Setiawan",
+        "email" : "admin@mail.com",
+        "password" : "123456",
+        "role"     : "admin"
+    },
+    {
+        "first_name" : "Budi",
+        "last_name" : "Santoso",
+        "email" : "budisantoso@mail.com",
+        "password" : "123456",
+        "role"     : "customer"
+    }
+]
