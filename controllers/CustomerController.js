@@ -92,7 +92,7 @@ class CustomerController {
         }
     })
     .then((user) => {
-        const access_token = sign(user.id, user.email);
+        const access_token = sign(user.id, user.email, user.role);
         res.status(200).json({ access_token })
     })
     .catch((err) => {
