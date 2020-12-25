@@ -30,12 +30,14 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
+    name: DataTypes.STRING,
+    subject: DataTypes.STRING,
     role: {
       type: DataTypes.STRING,
       validate: {
         isIn: {
-          args: [['admin', 'customer']],
-          msg: 'Role has to be either admin or customer'
+          args: [['teacher', 'student']],
+          msg: 'Role has to be either teacher or student'
         }
       }
     },

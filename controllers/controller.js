@@ -7,9 +7,11 @@ class Controller {
 
     static register(req, res, next) {
         const obj = {
+            name: req.body.name,
             email: req.body.email,
-            role: 'customer',
-            password: req.body.password
+            role: req.body.role,
+            password: req.body.password,
+            subject: req.body.subject
         }
         User.create(obj)
         .then(data => {
@@ -111,33 +113,33 @@ class Controller {
                 res.status(401).json({msg: 'Data cant be found'})
             }
         })
-        .then(product => {
-            return Cart.findOne({where: {ProductId: req.params.id, UserId: req.loggedInUser.id}})
-        })
-        .then(result => {
-            if (result) {
-                count = result.count + 1
-                return Cart.update({count}, {where: {ProductId: req.params.id, UserId: req.loggedInUser.id}})
-            } else {
-                let obj = {
-                    UserId: req.loggedInUser.id,
-                    ProductId: req.params.id,
-                    count: 1
-                }
-                return Cart.create(obj)
-            }
-        })
-        .then(data => {
-            return Cart.findOne({where: {ProductId: req.params.id, UserId: req.loggedInUser.id}})
-        })
-        .then(result => {
-            if (result.count >= stock) {
-                res.status(200).json({result, increment: true})
-            }
-            res.status(200).json({result, increment: false})
-            // console.log(result.count, '<<<<<<<<<')
-            // console.log(stock);
-        })
+        // .then(product => {
+        //     return Cart.findOne({where: {ProductId: req.params.id, UserId: req.loggedInUser.id}})
+        // })
+        // .then(result => {
+        //     if (result) {
+        //         count = result.count + 1
+        //         return Cart.update({count}, {where: {ProductId: req.params.id, UserId: req.loggedInUser.id}})
+        //     } else {
+        //         let obj = {
+        //             UserId: req.loggedInUser.id,
+        //             ProductId: req.params.id,
+        //             count: 1
+        //         }
+        //         return Cart.create(obj)
+        //     }
+        // })
+        // .then(data => {
+        //     return Cart.findOne({where: {ProductId: req.params.id, UserId: req.loggedInUser.id}})
+        // })
+        // .then(result => {
+        //     if (result.count >= stock) {
+        //         res.status(200).json({result, increment: true})
+        //     }
+        //     res.status(200).json({result, increment: false})
+        //     // console.log(result.count, '<<<<<<<<<')
+        //     // console.log(stock);
+        // })
         .catch(err => {
             console.log(err);
             next(err)

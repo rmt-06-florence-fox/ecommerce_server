@@ -17,10 +17,11 @@ router.use(authentication)
 
 router.post('/products', authorization, Controller.addProducts)
 router.delete('/products/:id', authorization, Controller.deleteProduct)
-router.patch('/products/:id', Controller.patchProduct)
+router.patch('/products/:id', authorization, Controller.patchProduct)
 router.get('/products/:id', Controller.oneProduct)
 router.put('/products/:id', Controller.updateProduct)
 
+router.post('/carts/:id', CartController.addCart)
 router.get('/carts', CartController.getAllCart)
 router.patch('/carts/:id', CartController.decrement)
 router.delete('/carts/:id', CartController.deleteCart)
