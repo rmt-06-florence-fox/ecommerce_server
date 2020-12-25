@@ -11,7 +11,8 @@ class Controller {
             email: req.body.email,
             role: req.body.role,
             password: req.body.password,
-            subject: req.body.subject
+            subject: req.body.subject,
+            motive: req.body.motive
         }
         User.create(obj)
         .then(data => {
