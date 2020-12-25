@@ -32,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     name: DataTypes.STRING,
     subject: DataTypes.STRING,
+    motive: DataTypes.STRING,
     role: {
       type: DataTypes.STRING,
       validate: {
