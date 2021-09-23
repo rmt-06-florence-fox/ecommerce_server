@@ -2,7 +2,6 @@ const { Wishlist, Product } = require("../models");
 
 class WishlistController {
 	static getWishlists(req, res, next) {
-		// res.status(200).json('masuk');
 		const UserId = req.loggedInUser.id;
 		Wishlist.findAll({
 			where: {
