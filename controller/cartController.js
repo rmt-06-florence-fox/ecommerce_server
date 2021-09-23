@@ -1,5 +1,5 @@
-const e = require('express');
-const { Product, Cart, User } = require('../models');
+const e = require("express");
+const { Product, Cart, User } = require("../models");
 
 class CartController {
 	static getCart(req, res, next) {
@@ -9,7 +9,7 @@ class CartController {
 			where: {
 				UserId,
 			},
-			order: [['id', 'ASC']],
+			order: [["id", "ASC"]],
 			include: [Product],
 		})
 			.then((data) => {
@@ -31,12 +31,11 @@ class CartController {
 		const ProductId = req.params.productId;
 		const UserId = req.loggedInUser.id;
 		let ProductStock;
-		// res.status(200).json({ ProductId, UserId });
 		Product.findByPk(ProductId)
 			.then((data) => {
 				if (!data) {
 					next({
-						name: 'ProductNotFound',
+						name: "ProductNotFound",
 					});
 				} else {
 					ProductStock = data.stock;
@@ -57,7 +56,7 @@ class CartController {
 					});
 				} else if (data.quantity === ProductStock) {
 					next({
-						name: 'StockNotEnough',
+						name: "StockNotEnough",
 					});
 				} else {
 					const updateQuantity = {
@@ -81,7 +80,7 @@ class CartController {
 				}
 				res.status(200).json({
 					response,
-					message: 'Your Cart is Updated',
+					message: "Your Cart is Updated",
 				});
 			})
 			.catch((err) => {
@@ -101,11 +100,11 @@ class CartController {
 			.then((data) => {
 				if (!data) {
 					next({
-						name: 'CartNotFound',
+						name: "CartNotFound",
 					});
 				} else if (data.quantity === 1) {
 					next({
-						name: 'ThisCartQuantityAlreadyOne',
+						name: "ThisCartQuantityAlreadyOne",
 					});
 				} else {
 					const minusQuantity = {
@@ -123,11 +122,11 @@ class CartController {
 				const response = data[1][0];
 				res.status(200).json({
 					response,
-					message: 'Your Cart is Updated',
+					message: "Your Cart is Updated",
 				});
 			})
 			.catch((err) => {
-				console.log('masuk sini');
+				console.log("masuk sini");
 				next(err);
 			});
 	}
@@ -144,7 +143,7 @@ class CartController {
 			.then((data) => {
 				if (!data) {
 					next({
-						name: 'CartNotFound',
+						name: "CartNotFound",
 					});
 				} else {
 					return Cart.destroy({
@@ -156,7 +155,7 @@ class CartController {
 			})
 			.then((data) => {
 				res.status(200).json({
-					message: 'This Item has Been Removed',
+					message: "This Item has Been Removed",
 				});
 			})
 			.catch((err) => {
