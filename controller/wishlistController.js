@@ -1,4 +1,4 @@
-const { Wishlist, Product } = require('../models');
+const { Wishlist, Product } = require("../models");
 
 class WishlistController {
 	static getWishlists(req, res, next) {
@@ -33,7 +33,7 @@ class WishlistController {
 			.then((data) => {
 				if (!data) {
 					next({
-						name: 'ProductNotFound',
+						name: "ProductNotFound",
 					});
 				} else {
 					return Wishlist.findOne({
@@ -47,16 +47,15 @@ class WishlistController {
 			.then((data) => {
 				if (data) {
 					next({
-						name: 'YouAlreadyAddThisWishlist',
+						name: "YouAlreadyAddThisWishlist",
 					});
 				} else {
-					// res.status(200).json('masuk sini');
 					return Wishlist.create(newWishlist);
 				}
 			})
 			.then((data) => {
 				res.status(201).json({
-					message: 'Success add this Product to Your Wishlist',
+					message: "Success add this Product to Your Wishlist",
 				});
 			})
 			.catch((err) => {
@@ -76,7 +75,7 @@ class WishlistController {
 			.then((data) => {
 				if (!data) {
 					next({
-						name: 'WishListNotFound',
+						name: "WishListNotFound",
 					});
 				} else {
 					return Wishlist.destroy({
@@ -88,7 +87,7 @@ class WishlistController {
 			})
 			.then((data) => {
 				res.status(200).json({
-					message: 'Success Remove this Product from Your Wishlist',
+					message: "Success Remove this Product from Your Wishlist",
 				});
 			})
 			.catch((err) => {
