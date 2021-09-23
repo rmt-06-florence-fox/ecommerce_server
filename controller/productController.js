@@ -1,9 +1,9 @@
-const { Product } = require('../models');
+const { Product } = require("../models");
 
 class ProductController {
 	static getProducts(req, res, next) {
 		Product.findAll({
-			order: [['id', 'ASC']],
+			order: [["id", "ASC"]],
 		})
 			.then((data) => {
 				res.status(200).json(data);
@@ -22,7 +22,7 @@ class ProductController {
 		})
 			.then((data) => {
 				if (!data) {
-					const errorName = 'ProductNotFound';
+					const errorName = "ProductNotFound";
 					next({
 						name: errorName,
 					});
@@ -43,12 +43,12 @@ class ProductController {
 			stock: req.body.stock,
 		};
 		if (req.body.stock < 0) {
-			const errorName = 'StockCannotLessThanZero';
+			const errorName = "StockCannotLessThanZero";
 			next({
 				name: errorName,
 			});
 		} else if (req.body.price < 0) {
-			const errorName = 'PriceCannotLessThanZero';
+			const errorName = "PriceCannotLessThanZero";
 			next({
 				name: errorName,
 			});
@@ -73,12 +73,12 @@ class ProductController {
 		};
 
 		if (req.body.stock < 0) {
-			const errorName = 'StockCannotLessThanZero';
+			const errorName = "StockCannotLessThanZero";
 			next({
 				name: errorName,
 			});
 		} else if (req.body.price < 0) {
-			const errorName = 'PriceCannotLessThanZero';
+			const errorName = "PriceCannotLessThanZero";
 			next({
 				name: errorName,
 			});
@@ -90,7 +90,7 @@ class ProductController {
 			})
 				.then((data) => {
 					if (!data) {
-						const errorName = 'ProductNotFound';
+						const errorName = "ProductNotFound";
 						next({
 							name: errorName,
 						});
@@ -119,7 +119,7 @@ class ProductController {
 		};
 
 		if (req.body.stock < 0) {
-			const errorName = 'StockCannotLessThanZero';
+			const errorName = "StockCannotLessThanZero";
 			next({
 				name: errorName,
 			});
@@ -134,7 +134,7 @@ class ProductController {
 							returning: true,
 						});
 					} else {
-						const errorName = 'ProductNotFound';
+						const errorName = "ProductNotFound";
 						next({
 							name: errorName,
 						});
@@ -161,16 +161,12 @@ class ProductController {
 					});
 				} else {
 					res.status(404).json({
-						message: 'Product Not Found',
+						message: "Product Not Found",
 					});
-					// const errorName = 'ProductNotFound';
-					// return next({
-					// 	name: errorName,
-					// });
 				}
 			})
 			.then((data) => {
-				const message = 'Product Deleted';
+				const message = "Product Deleted";
 				res.status(200).json({
 					message,
 				});
