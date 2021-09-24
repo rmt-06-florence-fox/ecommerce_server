@@ -1,6 +1,6 @@
-const { User } = require('../models');
-const { comparePassword } = require('../helpers/bcrypt');
-const { generateToken } = require('../helpers/jwt');
+const { User } = require("../models");
+const { comparePassword } = require("../helpers/bcrypt");
+const { generateToken } = require("../helpers/jwt");
 
 class UserController {
 	static register(req, res, next) {
@@ -21,11 +21,10 @@ class UserController {
 	}
 
 	static login(req, res, next) {
-		// res.status(200).json('masuk');
 		const email = req.body.email;
 		const password = req.body.password;
 		if (!email || !password) {
-			const errorName = 'EmailOrPasswordCannotBeNull';
+			const errorName = "EmailOrPasswordCannotBeNull";
 			next({
 				name: errorName,
 			});
@@ -45,7 +44,7 @@ class UserController {
 					// console.log(access_token);
 					res.status(200).json({ access_token });
 				} else {
-					const errorName = 'InvalidAccountOrPassword';
+					const errorName = "InvalidAccountOrPassword";
 					next({
 						name: errorName,
 					});
@@ -61,7 +60,7 @@ class UserController {
 		const email = req.body.email;
 		const password = req.body.password;
 		if (!email || !password) {
-			const errorName = 'EmailOrPasswordCannotBeNull';
+			const errorName = "EmailOrPasswordCannotBeNull";
 			next({
 				name: errorName,
 			});
@@ -73,8 +72,8 @@ class UserController {
 		})
 			.then((user) => {
 				if (user && comparePassword(password, user.password)) {
-					if (user.role === 'admin') {
-						const errorName = 'ThisForCustomer';
+					if (user.role === "admin") {
+						const errorName = "ThisForCustomer";
 						next({
 							name: errorName,
 						});
@@ -88,7 +87,7 @@ class UserController {
 						res.status(200).json({ access_token });
 					}
 				} else {
-					const errorName = 'InvalidAccountOrPassword';
+					const errorName = "InvalidAccountOrPassword";
 					next({
 						name: errorName,
 					});
