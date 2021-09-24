@@ -70,7 +70,7 @@ beforeAll((done) => {
 		.catch((err) => {
 			done(err);
 		});
-
+	// CHECK
 	queryInterface
 		.bulkInsert(
 			"Products",
