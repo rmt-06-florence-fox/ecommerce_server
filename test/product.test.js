@@ -57,6 +57,7 @@ beforeAll((done) => {
 		)
 		.then((user) => {
 			// console.log(user);
+			// test
 			const payload = {
 				id: user[0].id,
 				email: user[0].email,
@@ -69,7 +70,7 @@ beforeAll((done) => {
 		.catch((err) => {
 			done(err);
 		});
-
+	// CHECK
 	queryInterface
 		.bulkInsert(
 			"Products",
